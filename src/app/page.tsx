@@ -47,7 +47,7 @@ export default function Page() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
-            <CardHeader>
+            <CardHeader className="h-80">
               <Image
                 src="/undraw_switches.svg"
                 alt="Configure"
@@ -57,14 +57,13 @@ export default function Page() {
               />
               <CardTitle>1. Configure</CardTitle>
               <CardDescription className="text-md">
-                The program will be tailored based on amount of sessions, time
-                per session, experience, injures, available equipment, your
-                goals and more.
+                The program will be tailored based on your needs regarding
+                experience, injures, available equipment, goals and more.
               </CardDescription>
             </CardHeader>
           </Card>
           <Card>
-            <CardHeader>
+            <CardHeader className="h-80">
               <Image
                 src="/undraw_data_processing.svg"
                 alt="Configure"
@@ -80,7 +79,7 @@ export default function Page() {
             </CardHeader>
           </Card>
           <Card>
-            <CardHeader>
+            <CardHeader className="h-80">
               <Image
                 src="/undraw_personal_trainer.svg"
                 alt="Configure"
@@ -90,13 +89,14 @@ export default function Page() {
               />
               <CardTitle>3. Execute</CardTitle>
               <CardDescription className="text-md">
-                The fun part! There is no shortcuts when it comes to do the
-                work.
+                The fun part! There is simply no shortcuts when it comes to
+                putting in the work. Execute the program we provide and reap the
+                benefits of regular exercise.
               </CardDescription>
             </CardHeader>
           </Card>
           <Card>
-            <CardHeader>
+            <CardHeader className="h-80">
               <Image
                 src="/undraw_set_preferences.svg"
                 alt="Configure"
@@ -106,8 +106,8 @@ export default function Page() {
               />
               <CardTitle>4. Repeat</CardTitle>
               <CardDescription className="text-md">
-                Fine tune the configuration, repeat the process and reap the
-                benefits of regular exercise.
+                Fine tune the configuration, repeat the process and stay
+                healthy.
               </CardDescription>
             </CardHeader>
           </Card>
