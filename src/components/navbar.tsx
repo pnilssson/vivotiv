@@ -7,18 +7,26 @@ import {
   NavigationMenuLink,
 } from "@radix-ui/react-navigation-menu";
 import { navigationMenuTriggerStyle } from "./ui/navigation-menu";
+import { Separator } from "./ui/separator";
 
 export default function Component({ children }: { children: React.ReactNode }) {
   return (
-    <NavigationMenu>
-      <NavigationMenuList className="py-2 flex">
-        <NavigationMenuItem>
-          <NavigationMenuLink className={navigationMenuTriggerStyle()} href="/">
-            vivotiv
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem className="ml-auto">{children}</NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+    <div className="container">
+      <NavigationMenu>
+        <NavigationMenuList className="py-2 flex">
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              className={navigationMenuTriggerStyle()}
+              href="/">
+              vivotiv
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem className="ml-auto flex items-center">
+            {children}
+          </NavigationMenuItem>
+        </NavigationMenuList>
+      </NavigationMenu>
+      <Separator />
+    </div>
   );
 }

@@ -11,5 +11,5 @@ export default async function Layout({
   if (error || !data?.user) {
     redirect("/auth/signin");
   }
-  return <div className="py-4 px-4">{children}</div>;
+  return <div className="py-4 px-4 container">{children}</div>;
 }
