@@ -4,7 +4,7 @@ import "./globals.css";
 
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/navbar";
-import { auth } from "@/auth";
+import LoginButton from "@/components/buttons/login-button";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -22,8 +22,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
-
   return (
     <html lang="en">
       <body
@@ -31,7 +29,9 @@ export default async function RootLayout({
           "min-h-screen bg-background font-sans antialiased container",
           fontSans.variable
         )}>
-        <Navbar session={session} />
+        <Navbar>
+          <LoginButton />
+        </Navbar>
         {children}
       </body>
     </html>

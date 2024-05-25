@@ -1,8 +1,3 @@
-"use client";
-
-import { signIn, signOut } from "next-auth/react";
-import { Session } from "next-auth";
-import { LogInIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import {
   Tooltip,
@@ -10,16 +5,29 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { signOut } from "@/lib/supabase/actions";
+import { EnterIcon, ExitIcon } from "@radix-ui/react-icons";
 
-export default function Component({ session }: { session: Session | null }) {
+export default async function Component() {
+  const supabase = createClient();
+  const { data } = await supabase.auth.getUser();
+
   return (
     <TooltipProvider>
-      {session ? (
+      {data?.user ? (
         <Tooltip>
-          <TooltipTrigger>
-            <Button onClick={() => signOut()} variant="outline" size="icon">
-              <LogInIcon className="h-4 w-4" />
-            </Button>
+          <TooltipTrigger asChild>
+            <form action={signOut}>
+              <Button
+                type="submit"
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8">
+                <ExitIcon />
+              </Button>
+            </form>
           </TooltipTrigger>
           <TooltipContent>
             <p>Sign out</p>
@@ -28,8 +36,10 @@ export default function Component({ session }: { session: Session | null }) {
       ) : (
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button onClick={() => signIn()} variant="outline" size="icon">
-              <LogInIcon className="h-4 w-4" />
+            <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
+              <Link href="/auth/signin">
+                <EnterIcon />
+              </Link>
             </Button>
           </TooltipTrigger>
           <TooltipContent>

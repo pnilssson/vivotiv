@@ -7,21 +7,17 @@ import {
   NavigationMenuLink,
 } from "@radix-ui/react-navigation-menu";
 import { navigationMenuTriggerStyle } from "./ui/navigation-menu";
-import LoginButton from "./buttons/login-button";
-import { Session } from "next-auth";
 
-export default function Component({ session }: { session: Session | null }) {
+export default function Component({ children }: { children: React.ReactNode }) {
   return (
     <NavigationMenu>
       <NavigationMenuList className="py-2 flex">
         <NavigationMenuItem>
           <NavigationMenuLink className={navigationMenuTriggerStyle()} href="/">
-            Home
+            vivotiv
           </NavigationMenuLink>
         </NavigationMenuItem>
-        <NavigationMenuItem className="ml-auto">
-          <LoginButton session={session} />
-        </NavigationMenuItem>
+        <NavigationMenuItem className="ml-auto">{children}</NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   );
