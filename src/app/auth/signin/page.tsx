@@ -26,7 +26,8 @@ export default function Page() {
           <CardHeader>
             <CardTitle className="text-2xl">Sign in</CardTitle>
             <CardDescription>
-              We will send a sign-in link to your email address.
+              We will send a sign-in link to your email. We will also create an
+              account for you if this is your first time.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-2">

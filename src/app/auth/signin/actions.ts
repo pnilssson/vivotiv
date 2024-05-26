@@ -34,7 +34,7 @@ export async function login(
   const { error } = await supabase.auth.signInWithOtp({
     email: validated.data.email,
     options: {
-      emailRedirectTo: getURL() + "/log",
+      emailRedirectTo: getURL(),
     },
   });
 
