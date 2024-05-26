@@ -47,7 +47,7 @@ export default function Page() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
-            <CardHeader className="h-80">
+            <CardHeader className="md:min-h-80">
               <Image
                 src="/undraw_switches.svg"
                 alt="Configure"
@@ -63,7 +63,7 @@ export default function Page() {
             </CardHeader>
           </Card>
           <Card>
-            <CardHeader className="h-80">
+            <CardHeader className="md:min-h-80">
               <Image
                 src="/undraw_data_processing.svg"
                 alt="Configure"
@@ -79,7 +79,7 @@ export default function Page() {
             </CardHeader>
           </Card>
           <Card>
-            <CardHeader className="h-80">
+            <CardHeader className="md:min-h-80">
               <Image
                 src="/undraw_personal_trainer.svg"
                 alt="Configure"
@@ -96,7 +96,7 @@ export default function Page() {
             </CardHeader>
           </Card>
           <Card>
-            <CardHeader className="h-80">
+            <CardHeader className="md:min-h-80">
               <Image
                 src="/undraw_set_preferences.svg"
                 alt="Configure"

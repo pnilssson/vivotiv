@@ -20,7 +20,7 @@ export default function Component({
   return (
     <>
       {issues.map((error, index) => (
-        <p className="ml-2 text-sm font-bold text-destructive" key={index}>
+        <p className="ml-2 mt-2 text-sm text-destructive" key={index}>
           {error}
         </p>
       ))}
