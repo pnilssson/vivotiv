@@ -57,8 +57,9 @@ export default function Page() {
               />
               <CardTitle>1. Configure</CardTitle>
               <CardDescription className="text-md">
-                The program will be tailored based on your needs regarding
-                experience, injures, available equipment, goals and more.
+                The programs will be tailor-made based on your needs regarding
+                and takes preivious experience, injures, available equipment,
+                goals and more in consideration.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -73,8 +74,9 @@ export default function Page() {
               />
               <CardTitle>2. Generate</CardTitle>
               <CardDescription className="text-md">
-                We are using AI to generate personalized traning program based
-                on your configuration.
+                We use AI to generate personalized traning program based on your
+                configuration. We will offer you multiple suggestions to choose
+                from.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -89,9 +91,9 @@ export default function Page() {
               />
               <CardTitle>3. Execute</CardTitle>
               <CardDescription className="text-md">
-                The fun part! There is simply no shortcuts when it comes to
-                putting in the work. Execute the program we provide and reap the
-                benefits of regular exercise.
+                The fun part! Execute the program we provide you with and reap
+                the benefits of regular exercise. No need for a gym membership
+                or external equipment.
               </CardDescription>
             </CardHeader>
           </Card>

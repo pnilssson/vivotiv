@@ -83,8 +83,7 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-12">
-      <form action={formAction} className=" md:w-1/2">
+      <form action={formAction}>
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="text-2xl">Personalize your program</CardTitle>
@@ -238,24 +237,6 @@ export default function Page() {
           </CardFooter>
         </Card>
       </form>
-      <div className="md:w-1/2">
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="text-2xl">Your program</CardTitle>
-            <CardDescription></CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-2">
-            {formState.program ? (
-              <pre className="text-wrap">
-                {JSON.stringify(formState.program, null, 2)}
-              </pre>
-            ) : (
-              "No program generated yet."
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
   );
 }
 
