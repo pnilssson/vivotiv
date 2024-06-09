@@ -46,7 +46,7 @@ export default function Page() {
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card>
+          <Card className="border-0 shadow-md">
             <CardHeader className="md:min-h-80">
               <Image
                 src="/undraw_switches.svg"
@@ -57,13 +57,13 @@ export default function Page() {
               />
               <CardTitle>1. Configure</CardTitle>
               <CardDescription className="text-md">
-                The programs will be tailor-made based on your needs regarding
-                and takes preivious experience, injures, available equipment,
-                goals and more in consideration.
+                The programs will be tailor-made based on your needs and takes
+                previous experience, injures, available equipment, goals and
+                more in consideration.
               </CardDescription>
             </CardHeader>
           </Card>
-          <Card>
+          <Card className="border-0 shadow-md">
             <CardHeader className="md:min-h-80">
               <Image
                 src="/undraw_data_processing.svg"
@@ -80,7 +80,7 @@ export default function Page() {
               </CardDescription>
             </CardHeader>
           </Card>
-          <Card>
+          <Card className="border-0 shadow-md">
             <CardHeader className="md:min-h-80">
               <Image
                 src="/undraw_personal_trainer.svg"
@@ -97,7 +97,7 @@ export default function Page() {
               </CardDescription>
             </CardHeader>
           </Card>
-          <Card>
+          <Card className="border-0 shadow-md">
             <CardHeader className="md:min-h-80">
               <Image
                 src="/undraw_set_preferences.svg"
@@ -112,6 +112,48 @@ export default function Page() {
                 healthy.
               </CardDescription>
             </CardHeader>
+          </Card>
+        </div>
+      </section>
+      <section className="flex flex-col justify-center container mt-16 md:mt-32 py-12 ">
+        <div className="text-center mb-8">
+          <h2 className="text-4xl md:text-6xl font-bold mt-2 md:mt-4">
+            Pricing
+          </h2>
+          <p className="md:text-xl text-muted-foreground md:max-w-[600px] mx-auto mt-2 md:mt-4">
+            One time payments only, not another subscriptions to keep track of.
+          </p>
+        </div>
+        <div className="grid grid-cols-3 gap-4 max-w-[1024px]">
+          <Card>
+            <CardHeader className="md:min-h-80">
+              <CardTitle className="text-lg">Get started</CardTitle>
+              <CardTitle className="text-3xl font-extrabold">€17<span className="text-sm">/month</span></CardTitle>
+              <CardDescription className="text-md">
+              The 21/90 rule states that it takes 21 days to make a habit.
+              </CardDescription>
+            </CardHeader>
+            <CardContent></CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="md:min-h-80">
+              <CardTitle className="text-lg">Create a lifestyle</CardTitle>
+              <CardTitle className="text-3xl font-extrabold">€12<span className="text-sm">/month</span></CardTitle>
+              <CardDescription className="text-md">
+                It takes 90 days to make it a permanent lifestyle change.
+              </CardDescription>
+            </CardHeader>
+            <CardContent></CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="md:min-h-80">
+            <CardTitle className="text-lg">Never look back</CardTitle>
+              <CardTitle className="text-3xl font-extrabold">€7<span className="text-sm">/month</span></CardTitle>
+              <CardDescription className="text-md">
+              Creating a healthy lifestyle is not a sprint, it is a marathon.
+              </CardDescription>
+            </CardHeader>
+            <CardContent></CardContent>
           </Card>
         </div>
       </section>
