@@ -4,7 +4,7 @@ import { useFormStatus } from "react-dom";
 import { Button } from "../ui/button";
 import { LoaderCircleIcon } from "lucide-react";
 
-export default function Page({
+export default function Component({
   content,
   classes,
 }: {

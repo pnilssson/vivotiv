@@ -1,15 +1,14 @@
+import GetStartedButton from "@/components/buttons/get-started-button";
 import GridPattern from "@/components/magicui/grid-pattern";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import ShineBorder from "@/components/magicui/shine-border";
 import { cn } from "@/lib/utils";
-import { ResetIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
+import {
+  Crosshair2Icon,
+  GearIcon,
+  LoopIcon,
+  MagicWandIcon,
+  ResetIcon,
+} from "@radix-ui/react-icons";
 
 export default function Page() {
   return (
@@ -36,125 +35,162 @@ export default function Page() {
           )}
         />
       </header>
-      <section className="flex flex-col container mt-48 md:mt-64 py-12 max-w-[90%] rounded-xl bg-gradient-to-b from-emerald-100 to-white">
-        <div className="text-center mb-8">
-          <p className="flex flex-row font-semibold text-emerald-400 justify-center">
+      <section className="flex flex-col container mt-48 md:mt-64">
+        <div className="mb-8  rounded-xl bg-gradient-to-br from-emerald-100 to-sky-100 px-8 md:px-24 py-12">
+          <p className="flex flex-row font-semibold text-emerald-400">
             Easy as 1, 2, 3, <ResetIcon className="ml-1 mt-1" />
           </p>
           <h2 className="text-4xl md:text-6xl font-semibold mt-2 md:mt-4">
             How it works?
           </h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="border-0 shadow-md">
-            <CardHeader className="md:min-h-80">
-              <Image
-                src="/undraw_switches.svg"
-                alt="Configure"
-                width={100}
-                height={100}
-                className="mb-8 self-center h-20"
-              />
-              <CardTitle>1. Configure</CardTitle>
-              <CardDescription className="text-md">
-                The programs will be tailor-made based on your needs and takes
-                previous experience, injures, available equipment, goals and
-                more in consideration.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="border-0 shadow-md">
-            <CardHeader className="md:min-h-80">
-              <Image
-                src="/undraw_data_processing.svg"
-                alt="Configure"
-                width={100}
-                height={100}
-                className="mb-8 self-center h-20"
-              />
-              <CardTitle>2. Generate</CardTitle>
-              <CardDescription className="text-md">
-                We use AI to generate personalized traning program based on your
-                configuration. We will offer you multiple suggestions to choose
-                from.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="border-0 shadow-md">
-            <CardHeader className="md:min-h-80">
-              <Image
-                src="/undraw_personal_trainer.svg"
-                alt="Configure"
-                width={100}
-                height={100}
-                className="mb-8 self-center h-20"
-              />
-              <CardTitle>3. Execute</CardTitle>
-              <CardDescription className="text-md">
-                The fun part! Execute the program we provide you with and reap
-                the benefits of regular exercise. No need for a gym membership
-                or external equipment.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-          <Card className="border-0 shadow-md">
-            <CardHeader className="md:min-h-80">
-              <Image
-                src="/undraw_set_preferences.svg"
-                alt="Configure"
-                width={100}
-                height={100}
-                className="mb-8 self-center h-20"
-              />
-              <CardTitle>4. Repeat</CardTitle>
-              <CardDescription className="text-md">
-                Fine tune the configuration, repeat the process and stay
-                healthy.
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </div>
-      </section>
-      <section className="flex flex-col justify-center container mt-16 md:mt-32 py-12 ">
-        <div className="text-center mb-8">
-          <h2 className="text-4xl md:text-6xl font-bold mt-2 md:mt-4">
-            Pricing
-          </h2>
-          <p className="md:text-xl text-muted-foreground md:max-w-[600px] mx-auto mt-2 md:mt-4">
-            One time payments only, not another subscriptions to keep track of.
+          <p className="text-muted-foreground mt-4 max-w-[540px]">
+            It will only take a few minutes to prepare your first month of
+            training. Not sure? We offer a week worth of training for free.
           </p>
+          <GetStartedButton
+            content="Try for free"
+            classes="text-xs px-4 py-2 mt-6 bg-slate-800/25 hover:bg-slate-800/35 shadow-lg h-8"
+          />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-24 mt-12">
+            <div className="flex flex-col items-start">
+              <div className="p-2 rounded-lg bg-white">
+                <GearIcon className="w-8 h-8" />
+              </div>
+              <div className="text-start">
+                <h3 className="text-lg font-semibold tracking-tight mt-4">
+                  Configure
+                </h3>
+                <p className="text-muted-foreground mt-4">
+                  The programs will be tailor-made based on your needs and takes
+                  previous experience, injures, available equipment, goals and
+                  more in consideration.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col items-start">
+              <div className="p-2 rounded-lg bg-white">
+                <MagicWandIcon className="w-8 h-8" />
+              </div>
+              <div className="text-start">
+                <h3 className="text-lg font-semibold tracking-tight mt-4">
+                  Generate
+                </h3>
+                <p className="text-muted-foreground mt-4">
+                  We use AI to generate personalized traning program based on
+                  your configuration. We will offer you multiple suggestions to
+                  choose from.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col items-start">
+              <div className="p-2 rounded-lg bg-white">
+                <Crosshair2Icon className="w-8 h-8" />
+              </div>
+              <div className="text-start">
+                <h3 className="text-lg font-semibold tracking-tight mt-4">
+                  Execute
+                </h3>
+                <p className="text-muted-foreground mt-4">
+                  The fun part! Execute the program we provide you with and reap
+                  the benefits of regular exercise. No need for a gym membership
+                  or external equipment.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col items-start">
+              <div className="p-2 rounded-lg bg-white">
+                <LoopIcon className="w-8 h-8" />
+              </div>
+              <div className="text-start">
+                <h3 className="text-lg font-semibold tracking-tight mt-4">
+                  Repeat
+                </h3>
+                <p className="text-muted-foreground mt-4">
+                  Fine tune the configuration, repeat the process and stay
+                  healthy.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="grid grid-cols-3 gap-4 max-w-[1024px]">
-          <Card>
-            <CardHeader className="md:min-h-80">
-              <CardTitle className="text-lg">Get started</CardTitle>
-              <CardTitle className="text-3xl font-extrabold">€17<span className="text-sm">/month</span></CardTitle>
-              <CardDescription className="text-md">
-              The 21/90 rule states that it takes 21 days to make a habit.
-              </CardDescription>
-            </CardHeader>
-            <CardContent></CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="md:min-h-80">
-              <CardTitle className="text-lg">Create a lifestyle</CardTitle>
-              <CardTitle className="text-3xl font-extrabold">€12<span className="text-sm">/month</span></CardTitle>
-              <CardDescription className="text-md">
-                It takes 90 days to make it a permanent lifestyle change.
-              </CardDescription>
-            </CardHeader>
-            <CardContent></CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="md:min-h-80">
-            <CardTitle className="text-lg">Never look back</CardTitle>
-              <CardTitle className="text-3xl font-extrabold">€7<span className="text-sm">/month</span></CardTitle>
-              <CardDescription className="text-md">
-              Creating a healthy lifestyle is not a sprint, it is a marathon.
-              </CardDescription>
-            </CardHeader>
-            <CardContent></CardContent>
-          </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+      </section>
+      <section className="py-10 bg-white sm:py-16 lg:py-24">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-4xl md:text-6xl font-semibold mt-2 md:mt-4">
+              Pricing & Plans
+            </h2>
+            <p className="text-muted-foreground mt-4 max-w-80 md:max-w-xl mx-auto">
+              One time payments only, not another subscriptions to keep track
+              of.
+            </p>
+          </div>
+          <div className="grid max-w-md grid-cols-1 gap-6 mx-auto mt-6 lg:max-w-full lg:mt-16 lg:grid-cols-3">
+            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg">
+              <div className="p-8 xl:px-12">
+                <h3 className="text-base font-semibold text-purple-600">
+                  Get started
+                </h3>
+                <p className="text-5xl font-bold text-black mt-7">
+                  €17<span className="text-sm">/month</span>
+                </p>
+                <p className="mt-2 text-base text-muted-foreground">
+                  One-time payment
+                </p>
+                <p className="mt-4">
+                  The 21/90 rule states that it takes 21 days to make a habit.
+                  Get started with one month worth of training program.
+                </p>
+                <GetStartedButton
+                  content="Get started"
+                  classes="py-4 mt-6 bg-emerald-400 hover:bg-emerald-400/90 shadow-lg w-full"
+                />
+              </div>
+            </div>
+
+            <ShineBorder
+              className="overflow-hidden bg-white rounded-lg shadow-lg"
+              color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}>
+              <div className="p-8 xl:px-12">
+                <h3 className="text-base font-semibold text-purple-600">
+                  Create a lifestyle
+                </h3>
+                <p className="text-5xl font-bold text-black mt-7">
+                  €12<span className="text-sm">/month</span>
+                </p>
+                <p className="mt-2 text-base text-gray-600">One-time payment</p>
+                <p className="mt-4">
+                  It takes 90 days to make it a permanent lifestyle change. Get
+                  the possibility to generate three months of training program.
+                </p>
+                <GetStartedButton
+                  content="Get started"
+                  classes="py-4 mt-6 bg-gradient-to-br from-emerald-400 to-sky-400 hover:from-emerald-400/35 hover:to-sky-400/75 shadow-lg w-full"
+                />
+              </div>
+            </ShineBorder>
+
+            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg">
+              <div className="p-8 xl:px-12">
+                <h3 className="text-base font-semibold text-purple-600">
+                  Never look back
+                </h3>
+                <p className="text-5xl font-bold text-black mt-7">
+                  €7<span className="text-sm">/month</span>
+                </p>
+                <p className="mt-2 text-base text-gray-600">One-time payment</p>
+                <p className="mt-4">
+                  But creating a healthy lifestyle is not a sprint, it is a
+                  marathon. Get 12 months of training program.
+                </p>
+                <GetStartedButton
+                  content="Get started"
+                  classes="py-4 mt-6 bg-emerald-400 hover:bg-emerald-400/90 shadow-lg w-full"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </>

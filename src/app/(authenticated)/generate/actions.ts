@@ -1,16 +1,14 @@
 "use server";
 
 import { openai } from "@ai-sdk/openai";
-import { createGoogleGenerativeAI, google } from '@ai-sdk/google';
-import { generateObject, generateText } from "ai";
+import { generateObject } from "ai";
 import { z } from "zod";
-import { createClient, redirectIfUnauthenticated } from "@/lib/supabase/server";
+import { createClient, getUserOrRedirect } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { ProgramActionResponse } from "@/types/types";
+import { ProgramFormResponse } from "@/types/types";
 import { insertGenerated, insertProgram } from "@/db/commands";
 import { programSchema } from "@/lib/zod/schemas";
 import { redirect } from "next/navigation";
-
 
 const requestSchema = z.object({
   startDate: z.date({
@@ -42,10 +40,9 @@ export async function generateProgram(
   prioritize: string[],
   types: string[],
   equipment: string[]
-): Promise<ProgramActionResponse> {
+): Promise<ProgramFormResponse> {
   const supabase = createClient();
-  await redirectIfUnauthenticated(supabase);
-  const user = await supabase.auth.getUser();
+  const user = await getUserOrRedirect(supabase);
 
   const validated = requestSchema.safeParse({
     startDate: startDate,
@@ -57,12 +54,6 @@ export async function generateProgram(
   });
 
   if (!validated.success) {
-    console.log({
-      success: validated.success,
-      errors: validated.error.issues,
-      program: null,
-    });
-
     return {
       success: validated.success,
       errors: validated.error.issues,
@@ -70,28 +61,19 @@ export async function generateProgram(
     };
   }
 
-  console.log(validated.data);
-
   const prompt = getPromt(validated.data);
-  console.log(prompt);
-    const { object: chatgpt } = await generateObject({
-      model: openai("gpt-4o"),
-      mode: 'json',
-      schema: programSchema,
-      prompt,
-    });
+  const { object: chatgpt } = await generateObject({
+    model: openai("gpt-4o"),
+    mode: "json",
+    schema: programSchema,
+    prompt,
+  });
 
-  // const object = null;
-
-  await insertProgram(chatgpt, user.data.user?.id!);
-  await insertGenerated(prompt, JSON.stringify(
-    chatgpt,
-    null,
-    2
-  ));
+  await insertProgram(chatgpt, user?.id!);
+  await insertGenerated(prompt, JSON.stringify(chatgpt, null, 2), user?.id!);
 
   revalidatePath("/program", "page");
-  redirect("/finalize");
+  redirect("/programs");
 }
 
 function getPromt(data: any): string {

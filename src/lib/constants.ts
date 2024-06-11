@@ -1,11 +1,11 @@
-import { ActionResponse, ProgramActionResponse } from "@/types/types";
+import { FormResponse, ProgramFormResponse } from "@/types/types";
 
-export const initialFormState: ActionResponse = {
+export const initialFormState: FormResponse = {
   success: false,
   errors: [],
 };
 
-export const initialGenerateProgramFormState: ProgramActionResponse = {
+export const initialGenerateProgramFormState: ProgramFormResponse = {
   success: false,
   errors: [],
   program: null,

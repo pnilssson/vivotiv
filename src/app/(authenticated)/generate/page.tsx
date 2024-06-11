@@ -34,7 +34,7 @@ import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { ProgramActionResponse } from "@/types/types";
+import { ProgramFormResponse } from "@/types/types";
 
 const numberOfSessions = [1, 2, 3, 4, 5, 6, 7];
 const prioritizeOptions = ["Conditioning", "Strength", "Flexibility"];
@@ -48,7 +48,7 @@ export default function Page() {
   const [types, setTypes] = useState<string[]>([]);
   const [equipment, setEquipment] = useState<string[]>([]);
   const [formState, formAction] = useFormState(
-    (formState: ProgramActionResponse, formData: any) => {
+    (formState: ProgramFormResponse, formData: any) => {
       return generateProgram(
         formState,
         formData,
@@ -83,160 +83,160 @@ export default function Page() {
   };
 
   return (
-      <form action={formAction}>
-        <Card className="w-full">
-          <CardHeader>
-            <CardTitle className="text-2xl">Personalize your program</CardTitle>
-            <CardDescription>
-              We will tailor your program to your needs based on the information
-              you provide below.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-2">
-            <div className="mb-2">
-              <Label>Start date</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !startDate && "text-muted-foreground"
-                    )}>
-                    <CalendarIcon className="mr-2" />
-                    {startDate ? (
-                      format(startDate, "PPP")
-                    ) : (
-                      <span>Pick a start date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0">
-                  <Calendar
-                    mode="single"
-                    selected={startDate}
-                    onSelect={formatAndSetDate}
-                  />
-                </PopoverContent>
-              </Popover>
-              <ErrorMessages
-                name="startDate"
-                errors={formState && formState.errors}
-              />
-              <p className="text-sm mt-2 ml-2 text-muted-foreground">
-                On what date would you like the start program to start?
-              </p>
-            </div>
-            <div className="flex flex-col md:flex-row w-full gap-2">
-              <div className="mb-2 w-full md:w-1/2">
-                <Label htmlFor="sessions">Sessions per week</Label>
-                <Select defaultValue="3" name="sessions">
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {numberOfSessions.map((sessionNumber) => (
-                      <SelectItem
-                        key={sessionNumber}
-                        value={sessionNumber.toString()}>
-                        {sessionNumber.toString()}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+    <form action={formAction}>
+      <Card className="w-full">
+        <CardHeader>
+          <CardTitle className="text-2xl">Personalize your program</CardTitle>
+          <CardDescription>
+            We will tailor your program to your needs based on the information
+            you provide below.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-2">
+          <div className="mb-2">
+            <Label>Start date</Label>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  variant={"outline"}
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !startDate && "text-muted-foreground"
+                  )}>
+                  <CalendarIcon className="mr-2" />
+                  {startDate ? (
+                    format(startDate, "PPP")
+                  ) : (
+                    <span>Pick a start date</span>
+                  )}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar
+                  mode="single"
+                  selected={startDate}
+                  onSelect={formatAndSetDate}
+                />
+              </PopoverContent>
+            </Popover>
+            <ErrorMessages
+              name="startDate"
+              errors={formState && formState.errors}
+            />
+            <p className="text-sm mt-2 ml-2 text-muted-foreground">
+              On what date would you like the start program to start?
+            </p>
+          </div>
+          <div className="flex flex-col md:flex-row w-full gap-2">
+            <div className="mb-2 w-full md:w-1/2">
+              <Label htmlFor="sessions">Sessions per week</Label>
+              <Select defaultValue="3" name="sessions">
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {numberOfSessions.map((sessionNumber) => (
+                    <SelectItem
+                      key={sessionNumber}
+                      value={sessionNumber.toString()}>
+                      {sessionNumber.toString()}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
-                <ErrorMessages
-                  name="sessions"
-                  errors={formState && formState.errors}
-                />
-              </div>
-              <div className="mb-2 w-full md:w-1/2">
-                <Label htmlFor="time">Session length (min)</Label>
-                <Input
-                  type="number"
-                  name="time"
-                  placeholder="Time"
-                  id="time"
-                  defaultValue="30"
-                />
-                <ErrorMessages
-                  name="time"
-                  errors={formState && formState.errors}
-                />
-              </div>
-            </div>
-            <div className="mb-2">
-              <Label>Prioritize</Label>
-              <ToggleGroup
-                variant="outline"
-                type="multiple"
-                className="justify-start"
-                value={prioritize}
-                onValueChange={(value) => {
-                  if (value) setPrioritize(value);
-                }}>
-                {prioritizeOptions.map((prio) => (
-                  <ToggleGroupItem
-                    key={prio}
-                    value={prio}
-                    aria-label={`Toggle ${prio}`}>
-                    {prio}
-                  </ToggleGroupItem>
-                ))}
-              </ToggleGroup>
               <ErrorMessages
-                name="prioritize"
-                errors={formState && formState.errors}
-              />
-              <p className="text-sm mt-2 ml-2 text-muted-foreground">
-                Leave empty to get an all-round program.
-              </p>
-            </div>
-            <div className="mb-2">
-              <Label>Include</Label>
-              <ToggleGroup
-                variant="outline"
-                type="multiple"
-                className="justify-start"
-                value={types}
-                onValueChange={(value) => {
-                  if (value) setTypes(value);
-                }}>
-                {typeOptions.map((type) => (
-                  <ToggleGroupItem
-                    key={type}
-                    value={type}
-                    aria-label={`Toggle ${type}`}>
-                    {type}
-                  </ToggleGroupItem>
-                ))}
-              </ToggleGroup>
-              <ErrorMessages
-                name="types"
+                name="sessions"
                 errors={formState && formState.errors}
               />
             </div>
-            <div className="mb-2">
-              <Label htmlFor="equipment">Equipment</Label>
+            <div className="mb-2 w-full md:w-1/2">
+              <Label htmlFor="time">Session length (min)</Label>
               <Input
-                id="equipment"
-                name="equipment"
-                placeholder="Kettlebell, dumbbell, etc."
-                type="equipment"
-                onChange={handleEquipmentChange}
+                type="number"
+                name="time"
+                placeholder="Time"
+                id="time"
+                defaultValue="30"
               />
-              <ErrorMessages name="equipment" errors={formState.errors} />
-              <p className="text-sm mt-2 ml-2 text-muted-foreground">
-                Specify any kind of equipment you have available separated by a
-                commas.
-              </p>
+              <ErrorMessages
+                name="time"
+                errors={formState && formState.errors}
+              />
             </div>
-          </CardContent>
-          <CardFooter>
-            <SubmitButton content="Generate" classes="w-full" />
-          </CardFooter>
-        </Card>
-      </form>
+          </div>
+          <div className="mb-2">
+            <Label>Prioritize</Label>
+            <ToggleGroup
+              variant="outline"
+              type="multiple"
+              className="justify-start"
+              value={prioritize}
+              onValueChange={(value) => {
+                if (value) setPrioritize(value);
+              }}>
+              {prioritizeOptions.map((prio) => (
+                <ToggleGroupItem
+                  key={prio}
+                  value={prio}
+                  aria-label={`Toggle ${prio}`}>
+                  {prio}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+            <ErrorMessages
+              name="prioritize"
+              errors={formState && formState.errors}
+            />
+            <p className="text-sm mt-2 ml-2 text-muted-foreground">
+              Leave empty to get an all-round program.
+            </p>
+          </div>
+          <div className="mb-2">
+            <Label>Include</Label>
+            <ToggleGroup
+              variant="outline"
+              type="multiple"
+              className="justify-start"
+              value={types}
+              onValueChange={(value) => {
+                if (value) setTypes(value);
+              }}>
+              {typeOptions.map((type) => (
+                <ToggleGroupItem
+                  key={type}
+                  value={type}
+                  aria-label={`Toggle ${type}`}>
+                  {type}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+            <ErrorMessages
+              name="types"
+              errors={formState && formState.errors}
+            />
+          </div>
+          <div className="mb-2">
+            <Label htmlFor="equipment">Equipment</Label>
+            <Input
+              id="equipment"
+              name="equipment"
+              placeholder="Kettlebell, dumbbell, etc."
+              type="equipment"
+              onChange={handleEquipmentChange}
+            />
+            <ErrorMessages name="equipment" errors={formState.errors} />
+            <p className="text-sm mt-2 ml-2 text-muted-foreground">
+              Specify any kind of equipment you have available separated by a
+              commas.
+            </p>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <SubmitButton content="Generate" classes="w-full" />
+        </CardFooter>
+      </Card>
+    </form>
   );
 }
 

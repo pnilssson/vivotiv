@@ -81,13 +81,11 @@ export async function insertProgram(
 export async function insertGenerated(
   prompt: string,
   chatgpt: any,
-  gemini: any,
   userId: string
 ) {
   await db.insert(generated).values({
     prompt,
     chatgpt,
-    gemini,
     userId,
   });
 }

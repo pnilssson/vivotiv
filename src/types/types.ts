@@ -1,35 +1,40 @@
 import { ZodIssue } from "zod";
 
-export interface ActionResponse {
+export interface FormResponse {
   success: boolean;
   errors: ZodIssue[];
 }
 
-export interface ProgramActionResponse extends ActionResponse {
+export interface ProgramFormResponse extends FormResponse {
   program: Program | null;
 }
 
-interface Exercise {
+export interface Exercise {
+  id: string;
   title: string;
   description: string;
   execution: string;
 }
 
-interface WarmUp {
+export interface WarmUp {
+  id: string;
   description: string;
-  exercises: Exercise[];
+  exercises: Exercise[] | null;
 }
 
-interface Workout {
+export interface Workout {
+  id: string;
   date: string; // ISO 8601 date string
   completed: boolean;
   description: string;
   warmup: WarmUp;
-  exercises: Exercise[];
+  exercises: Exercise[] | null;
 }
 
-interface Program {
+export interface Program {
+  id: string;
   startDate: string; // ISO 8601 date string
   endDate: string; // ISO 8601 date string
-  workouts: Workout[];
+  workouts: Workout[] | null;
+  userId: string;
 }

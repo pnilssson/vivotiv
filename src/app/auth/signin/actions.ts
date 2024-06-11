@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getURL } from "@/lib/utils";
-import { ActionResponse } from "@/types/types";
+import { FormResponse } from "@/types/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -14,10 +14,7 @@ const schema = z.object({
   }),
 });
 
-export async function login(
-  _: any,
-  formData: FormData
-): Promise<ActionResponse> {
+export async function login(_: any, formData: FormData): Promise<FormResponse> {
   const supabase = createClient();
 
   const validated = schema.safeParse({

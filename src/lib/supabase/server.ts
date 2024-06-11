@@ -1,5 +1,5 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
-import { SupabaseClient } from "@supabase/supabase-js";
+import { SupabaseClient, User } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -37,9 +37,16 @@ export function createClient() {
   );
 }
 
-export async function redirectIfUnauthenticated(supabase: SupabaseClient) {
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
+export async function getUserOrRedirect(
+  supabase: SupabaseClient
+): Promise<User> {
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+  if (error || !user) {
     redirect("/auth/signin");
   }
+
+  return user;
 }
