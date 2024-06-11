@@ -1,4 +1,5 @@
 import GetStartedButton from "@/components/buttons/get-started-button";
+import Footer from "@/components/footer";
 import GridPattern from "@/components/magicui/grid-pattern";
 import ShineBorder from "@/components/magicui/shine-border";
 import { cn } from "@/lib/utils";
@@ -36,7 +37,7 @@ export default function Page() {
         />
       </header>
       <section className="flex flex-col container mt-48 md:mt-64">
-        <div className="mb-8  rounded-xl bg-gradient-to-br from-emerald-100 to-sky-100 px-8 md:px-24 py-12">
+        <div className="mb-8 rounded-xl bg-gradient-to-br from-emerald-100 to-sky-100 px-8 md:px-24 py-12">
           <p className="flex flex-row font-semibold text-emerald-400">
             Easy as 1, 2, 3, <ResetIcon className="ml-1 mt-1" />
           </p>
@@ -127,7 +128,7 @@ export default function Page() {
             </p>
           </div>
           <div className="grid max-w-md grid-cols-1 gap-6 mx-auto mt-6 lg:max-w-full lg:mt-16 lg:grid-cols-3">
-            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg">
+            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:h-[90%] md:my-auto">
               <div className="p-8 xl:px-12">
                 <h3 className="text-base font-semibold text-purple-600">
                   Get started
@@ -138,7 +139,7 @@ export default function Page() {
                 <p className="mt-2 text-base text-muted-foreground">
                   One-time payment
                 </p>
-                <p className="mt-4">
+                <p className="my-8">
                   The 21/90 rule states that it takes 21 days to make a habit.
                   Get started with one month worth of training program.
                 </p>
@@ -160,7 +161,7 @@ export default function Page() {
                   €12<span className="text-sm">/month</span>
                 </p>
                 <p className="mt-2 text-base text-gray-600">One-time payment</p>
-                <p className="mt-4">
+                <p className="my-8">
                   It takes 90 days to make it a permanent lifestyle change. Get
                   the possibility to generate three months of training program.
                 </p>
@@ -171,7 +172,7 @@ export default function Page() {
               </div>
             </ShineBorder>
 
-            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg">
+            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:h-[90%] md:my-auto">
               <div className="p-8 xl:px-12">
                 <h3 className="text-base font-semibold text-purple-600">
                   Never look back
@@ -180,7 +181,7 @@ export default function Page() {
                   €7<span className="text-sm">/month</span>
                 </p>
                 <p className="mt-2 text-base text-gray-600">One-time payment</p>
-                <p className="mt-4">
+                <p className="my-8">
                   But creating a healthy lifestyle is not a sprint, it is a
                   marathon. Get 12 months of training program.
                 </p>
@@ -193,6 +194,7 @@ export default function Page() {
           </div>
         </div>
       </section>
+      <Footer />
     </>
   );
 }
