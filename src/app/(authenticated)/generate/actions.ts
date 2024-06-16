@@ -2,66 +2,37 @@
 
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import { z } from "zod";
 import { createClient, getUserOrRedirect } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { ProgramFormResponse } from "@/types/types";
 import { insertGenerated, insertProgram } from "@/db/commands";
-import { programSchema } from "@/lib/zod/schemas";
+import { programRequestSchema, programSchema } from "@/lib/zod/schemas";
 import { redirect } from "next/navigation";
 
-const requestSchema = z.object({
-  startDate: z.date({
-    required_error: "Start date is required.",
-    invalid_type_error: "Invalid start date.",
-  }),
-  sessions: z.coerce
-    .number({
-      required_error: "Sessions is required.",
-    })
-    .positive()
-    .lte(7),
-  time: z.coerce
-    .number({
-      required_error: "Session length is required.",
-    })
-    .positive()
-    .gte(15, "Session length cannot be less than 15 minutes.")
-    .lte(60, "Session length cannot be more than 60 minutes."),
-  prioritize: z.nullable(z.array(z.string())),
-  types: z.nullable(z.array(z.string())),
-  equipment: z.nullable(z.array(z.string())),
-});
-
-export async function generateProgram(
+export async function generateProgramAction(
   _: any,
-  formData: FormData,
-  startDate: Date | undefined,
-  prioritize: string[],
-  types: string[],
-  equipment: string[]
+  data: FormData
 ): Promise<ProgramFormResponse> {
   const supabase = createClient();
   const user = await getUserOrRedirect(supabase);
 
-  const validated = requestSchema.safeParse({
-    startDate: startDate,
-    sessions: formData.get("sessions"),
-    time: formData.get("time"),
-    prioritize: prioritize,
-    types: types,
-    equipment: equipment,
-  });
+  const parsed = programRequestSchema.safeParse(data);
 
-  if (!validated.success) {
+  if (!parsed.success) {
     return {
-      success: validated.success,
-      errors: validated.error.issues,
+      success: parsed.success,
+      errors: parsed.error.issues,
       program: null,
     };
   }
 
-  const prompt = getPromt(validated.data);
+  return {
+    success: parsed.success,
+    errors: [],
+    program: null,
+  };
+
+  const prompt = getPromt(parsed.data);
   const { object: chatgpt } = await generateObject({
     model: openai("gpt-4o"),
     mode: "json",

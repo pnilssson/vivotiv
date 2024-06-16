@@ -8,6 +8,7 @@ import {
 } from "@radix-ui/react-navigation-menu";
 import { navigationMenuTriggerStyle } from "./ui/navigation-menu";
 import { Separator } from "./ui/separator";
+import { cn } from "@/lib/utils";
 
 export default function Component({ children }: { children: React.ReactNode }) {
   return (
@@ -16,9 +17,9 @@ export default function Component({ children }: { children: React.ReactNode }) {
         <NavigationMenuList className="py-2 flex">
           <NavigationMenuItem>
             <NavigationMenuLink
-              className={navigationMenuTriggerStyle()}
+              className={cn(navigationMenuTriggerStyle(), "bg-transparent")}
               href="/">
-              vivotiv
+              Vivotiv
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem className="ml-auto flex items-center">

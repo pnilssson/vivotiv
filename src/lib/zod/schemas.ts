@@ -24,3 +24,26 @@ export const programSchema = z.object({
   endDate: z.string().date(),
   workouts: z.array(workoutSchema),
 });
+
+export const programRequestSchema = z.object({
+  startDate: z.date({
+    required_error: "Start date is required.",
+    invalid_type_error: "Invalid start date.",
+  }),
+  sessions: z.coerce
+    .number({
+      required_error: "Sessions is required.",
+    })
+    .positive()
+    .lte(7),
+  time: z.coerce
+    .number({
+      required_error: "Session length is required.",
+    })
+    .positive()
+    .gte(15, "Session length cannot be less than 15 minutes.")
+    .lte(60, "Session length cannot be more than 60 minutes."),
+  prioritize: z.nullable(z.array(z.string())),
+  types: z.nullable(z.array(z.string())),
+  equipment: z.nullable(z.array(z.string())),
+});

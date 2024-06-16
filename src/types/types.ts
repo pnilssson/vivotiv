@@ -38,3 +38,12 @@ export interface Program {
   workouts: Workout[] | null;
   userId: string;
 }
+
+export interface GenerateFormValues {
+  startDate: Date;
+  sessions: number;
+  time: number;
+  prioritize: string[] | null;
+  types: string[] | null;
+  equipment: string[] | null;
+}

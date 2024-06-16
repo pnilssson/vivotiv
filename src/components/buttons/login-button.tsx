@@ -1,10 +1,4 @@
 import { Button } from "../ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/lib/supabase/actions";
@@ -15,38 +9,20 @@ export default async function Component() {
   const { data } = await supabase.auth.getUser();
 
   return (
-    <TooltipProvider>
+    <>
       {data?.user ? (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <form action={signOut}>
-              <Button
-                type="submit"
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8">
-                <ExitIcon />
-              </Button>
-            </form>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Sign out</p>
-          </TooltipContent>
-        </Tooltip>
+        <form action={signOut}>
+          <Button type="submit" variant="ghost">
+            <ExitIcon className="mr-2" /> Sign out
+          </Button>
+        </form>
       ) : (
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-8 w-8" asChild>
-              <Link href="/auth/signin">
-                <EnterIcon />
-              </Link>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Sign in</p>
-          </TooltipContent>
-        </Tooltip>
+        <Button variant="ghost" asChild>
+          <Link href="/auth/signin">
+            <EnterIcon className="mr-2" /> Sign in
+          </Link>
+        </Button>
       )}
-    </TooltipProvider>
+    </>
   );
 }
