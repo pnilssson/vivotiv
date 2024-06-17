@@ -53,10 +53,10 @@ export default function Component({
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
-                      variant="secondary"
+                      variant="ghost"
                       size="icon"
                       className="rounded-full">
-                      <PersonIcon className="h-5 w-5" />
+                      <PersonIcon className="h-4 w-4" />
                       <span className="sr-only">Toggle user menu</span>
                     </Button>
                   </DropdownMenuTrigger>

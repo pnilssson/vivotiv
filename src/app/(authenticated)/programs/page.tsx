@@ -1,20 +1,9 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardHeader } from "@/components/ui/card";
 import { getPrograms } from "./actions";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 export default async function Page() {
   const programs = await getPrograms();
-  console.log(programs);
-
-  function getProgram(id: string) {}
 
   return (
     <>
