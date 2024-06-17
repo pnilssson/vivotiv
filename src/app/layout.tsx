@@ -6,6 +6,7 @@ import Navbar from "@/components/navbar";
 import LoginButton from "@/components/buttons/login-button";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Vivotiv",
@@ -18,6 +19,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const supabase = createClient();
+  const { data, error } = await supabase.auth.getUser();
   return (
     <html lang="en">
       <body
@@ -26,7 +29,7 @@ export default async function RootLayout({
           GeistSans.variable,
           GeistMono.variable
         )}>
-        <Navbar>
+        <Navbar user={data.user}>
           <LoginButton />
         </Navbar>
         {children}

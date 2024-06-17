@@ -12,14 +12,17 @@ export default async function Component() {
     <>
       {data?.user ? (
         <form action={signOut}>
-          <Button type="submit" variant="ghost">
-            <ExitIcon className="mr-2" /> Sign out
+          <Button
+            type="submit"
+            variant="ghost"
+            className="text-lg md:text-sm text-muted-foreground md:text-zinc-950">
+            <ExitIcon className="mr-2 h-5 w-5 md:h-4 md:w-4" /> Sign out
           </Button>
         </form>
       ) : (
-        <Button variant="ghost" asChild>
+        <Button variant="ghost" asChild className="md:text-sm md:text-zinc-950">
           <Link href="/auth/signin">
-            <EnterIcon className="mr-2" /> Sign in
+            <EnterIcon className="mr-2 h-5 w-5 md:h-4 md:w-4" /> Sign in
           </Link>
         </Button>
       )}

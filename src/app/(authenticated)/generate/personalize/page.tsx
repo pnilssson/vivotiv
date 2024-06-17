@@ -45,7 +45,7 @@ export default function InfoPage() {
               <ToggleGroup
                 variant="outline"
                 type="multiple"
-                className="justify-start"
+                className="justify-start flex-wrap"
                 value={field.value!}
                 onValueChange={(value) => {
                   console.log(value);
@@ -78,7 +78,7 @@ export default function InfoPage() {
               <ToggleGroup
                 variant="outline"
                 type="multiple"
-                className="justify-start"
+                className="justify-start flex-wrap"
                 value={field.value!}
                 onValueChange={(value) => {
                   if (value) setValue("types", value);
@@ -92,9 +92,6 @@ export default function InfoPage() {
                   </ToggleGroupItem>
                 ))}
               </ToggleGroup>
-              <FormDescription>
-                Leave empty to get an all-round program.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}

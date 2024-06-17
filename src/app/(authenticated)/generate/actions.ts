@@ -26,6 +26,11 @@ export async function generateProgramAction(
     };
   }
 
+  console.log({
+    success: parsed.success,
+    errors: [],
+    program: null,
+  });
   return {
     success: parsed.success,
     errors: [],

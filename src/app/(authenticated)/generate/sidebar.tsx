@@ -61,7 +61,7 @@ export default function Sidebar() {
         src={bgSidebarMobile}
         alt=""
         priority
-        className="lg:hidden w-full h-full fixed top-0 inset-x-0 -z-10 max-h-[172px] object-cover object-center"
+        className="lg:hidden w-full h-full fixed top-[57px] inset-x-0 -z-10 max-h-[172px] object-cover object-center"
       />
     </div>
   );

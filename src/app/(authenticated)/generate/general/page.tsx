@@ -57,7 +57,7 @@ export default function InfoPage() {
   return (
     <FormWrapper
       heading="General"
-      description="Please specify start date and session specifications.">
+      description="Specify start date and session specifications.">
       <div className="flex flex-col mt-6">
         <FormField
           control={control}
@@ -136,7 +136,7 @@ export default function InfoPage() {
             name="time"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Session length (min)</FormLabel>
+                <FormLabel>Session length</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -145,6 +145,9 @@ export default function InfoPage() {
                     {...field}
                   />
                 </FormControl>
+                <FormDescription>
+                  Please provide length in minutes.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
