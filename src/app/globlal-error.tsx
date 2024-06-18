@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export default function Page() {
   return (
-    <div className="flex flex-col h-[calc(100vh-56px)]">
+    <div className="flex flex-col h-[calc(100vh-60px)]">
       <div className="h-1/4"></div>
       <Card className="w-full max-w-sm mx-auto">
         <CardHeader>

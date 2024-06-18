@@ -14,15 +14,15 @@ export default async function Component() {
         <form action={signOut}>
           <Button
             type="submit"
-            variant="ghost"
-            className="text-lg md:text-sm text-muted-foreground md:text-zinc-950">
-            <ExitIcon className="mr-2 h-5 w-5 md:h-4 md:w-4" /> Sign out
+            variant="link"
+            className="text-lg px-0 font-medium">
+            <ExitIcon className="mr-4 h-5 w-5" /> Sign out
           </Button>
         </form>
       ) : (
-        <Button variant="ghost" asChild className="md:text-sm md:text-zinc-950">
+        <Button variant="link" asChild className="text-lg px-0 font-medium">
           <Link href="/auth/signin">
-            <EnterIcon className="mr-2 h-5 w-5 md:h-4 md:w-4" /> Sign in
+            <EnterIcon className="mr-2 h-5 w-5" /> Sign in
           </Link>
         </Button>
       )}

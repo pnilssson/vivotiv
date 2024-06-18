@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { cn } from "@/lib/utils";
-import Navbar from "@/components/navbar";
+import Header from "@/components/header";
 import LoginButton from "@/components/buttons/login-button";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
@@ -29,9 +29,9 @@ export default async function RootLayout({
           GeistSans.variable,
           GeistMono.variable
         )}>
-        <Navbar user={data.user}>
+        <Header user={data.user}>
           <LoginButton />
-        </Navbar>
+        </Header>
         {children}
       </body>
     </html>

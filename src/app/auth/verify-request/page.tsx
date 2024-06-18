@@ -7,7 +7,7 @@ import {
 
 export default function Page() {
   return (
-    <div className="flex flex-col justify-center md:h-[calc(100vh-56px)] p-4">
+    <div className="flex flex-col p-4">
       <Card className="w-full max-w-sm mx-auto">
         <CardHeader>
           <CardTitle className="text-2xl">Please check your email</CardTitle>

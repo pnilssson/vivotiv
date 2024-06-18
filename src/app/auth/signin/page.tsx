@@ -19,7 +19,7 @@ import { initialFormState } from "@/lib/constants";
 export default function Page() {
   const [state, formAction] = useFormState(login, initialFormState);
   return (
-    <div className="flex flex-col justify-center md:h-[calc(100vh-56px)] p-4">
+    <div className="flex flex-col p-4">
       <form action={formAction}>
         <Card className="w-full max-w-sm mx-auto">
           <CardHeader>
