@@ -25,10 +25,8 @@ export default function Component({
       <header className="w-full bg-background flex items-center justify-between px-4 md:px-6">
         <NavigationMenu className="">
           <NavigationMenuList className="py-4 w-full">
-            <NavigationMenuItem>
-              <NavigationMenuLink className="text-lg font-medium" href="/">
-                Vivotiv
-              </NavigationMenuLink>
+            <NavigationMenuItem className="text-lg font-medium">
+              Vivotiv
             </NavigationMenuItem>
             {user ? (
               <NavigationMenuItem className="!ml-auto lg:hidden flex">
