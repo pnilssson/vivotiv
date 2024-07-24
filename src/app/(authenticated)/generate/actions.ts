@@ -4,7 +4,7 @@ import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { createClient, getUserOrRedirect } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { ProgramFormResponse } from "@/types/types";
+import { FormResponse } from "@/types/types";
 import { insertProgram } from "@/db/commands";
 import { programRequestSchema, programSchema } from "@/lib/zod/schemas";
 import { redirect } from "next/navigation";
@@ -12,7 +12,7 @@ import { redirect } from "next/navigation";
 export async function generateProgramAction(
   _: any,
   data: FormData
-): Promise<ProgramFormResponse> {
+): Promise<FormResponse> {
   const supabase = createClient();
   const user = await getUserOrRedirect(supabase);
 
@@ -21,12 +21,12 @@ export async function generateProgramAction(
   if (!parsed.success) {
     return {
       success: parsed.success,
-      errors: parsed.error.issues,
-      program: null,
+      errors: parsed.error.issues
     };
   }
 
   console.log({
+    parsed,
     success: parsed.success,
     errors: [],
     program: null,
@@ -34,7 +34,6 @@ export async function generateProgramAction(
   // return {
   //   success: parsed.success,
   //   errors: [],
-  //   program: null,
   // };
 
   const prompt = getPromt(parsed.data);
@@ -45,8 +44,16 @@ export async function generateProgramAction(
     prompt,
   });
 
-  // await insertProgram(chatgpt, user?.id!);
-  await insertProgram(program, prompt, user?.id!);
+  // console.log({
+  //   prompt,
+  //   program
+  // });
+  // return {
+  //   success: parsed.success,
+  //   errors: [],
+  // };
+
+  await insertProgram(program, user?.id!);
 
   revalidatePath("/program", "page");
   redirect("/programs");

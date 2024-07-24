@@ -11,8 +11,7 @@ export const programs = pgTable("programs", {
 	startDate: date("startDate").notNull(),
 	endDate: date("endDate").notNull(),
 	userId: uuid("userId").references(() => profiles.id),
-	prompt: text("prompt").notNull(),
-	program: jsonb("program").notNull(),
+	workouts: jsonb("workouts").notNull(),
 	version: integer("version").notNull(),
-  archived: boolean("archived").notNull().default(false),
+  	archived: boolean("archived").notNull().default(false),
 });

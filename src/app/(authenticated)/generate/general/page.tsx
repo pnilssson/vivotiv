@@ -109,7 +109,7 @@ export default function InfoPage() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Sessions per week</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue="3">
+                <Select onValueChange={field.onChange} defaultValue={field.value.toString()}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue />

@@ -1,17 +1,22 @@
 import { db } from "@/db/db";
+import { programs } from "@/db/schema";
 import { createClient, getUserOrRedirect } from "@/lib/supabase/server";
-import { ProgramResponse } from "@/types/types";
+import { ProgramResponse, ProgramMetadataResponse } from "@/types/types";
+import { eq } from "drizzle-orm";
 
-export async function getPrograms(): Promise<ProgramResponse[]> {
+export async function getPrograms(): Promise<ProgramMetadataResponse[]> {
   const supabase = createClient();
   const user = await getUserOrRedirect(supabase);
 
-  const result = await db.query.programs.findMany({
-    where: (programs, { eq }) => eq(programs.userId, user.id),
-  });
+  const result = await db.select({
+    id: programs.id,
+    startDate: programs.startDate,
+    endDate: programs.endDate,
+  }).from(programs).where(eq(programs.userId, user.id));
+
   console.log(result);
 
-  return result as unknown as ProgramResponse[];
+  return result as ProgramMetadataResponse[];
 }
 
 export async function getProgram(id: string): Promise<ProgramResponse> {

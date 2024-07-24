@@ -4,7 +4,7 @@ import useGenerateForm from "@/lib/hooks/useGenerateForm";
 import { useRouter } from "next/navigation";
 import { formatDate } from "@/lib/utils";
 import { Form } from "@/components/ui/form";
-import { initialGenerateProgramFormState } from "@/lib/constants";
+import { initialFormState } from "@/lib/constants";
 import { useFormState } from "react-dom";
 import { generateProgramAction } from "./actions";
 import { useRef } from "react";
@@ -14,12 +14,12 @@ export default function Provider({ children }: { children: React.ReactNode }) {
 
   const [state, formAction] = useFormState(
     generateProgramAction,
-    initialGenerateProgramFormState
+    initialFormState
   );
 
   const form = useGenerateForm({
     startDate: formatDate(new Date()),
-    sessions: 1,
+    sessions: 3,
     time: 15,
     prioritize: [],
     types: [],

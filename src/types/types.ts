@@ -5,18 +5,19 @@ export interface FormResponse {
   errors: ZodIssue[];
 }
 
-export interface ProgramFormResponse extends FormResponse {
-  program: Program | null;
-}
-
 export interface ProgramResponse {
   id: string,
   startDate: string; // ISO 8601 date string
   endDate: string; // ISO 8601 date string
 	userId: string,
-	prompt: string,
-	program: string,
+	workouts: Workout[] | null;
 	version: number,
+}
+
+export interface ProgramMetadataResponse {
+  id: string;
+  startDate: string;
+  endDate: string;
 }
 
 export interface Exercise {
@@ -39,14 +40,6 @@ export interface Workout {
   description: string;
   warmup: WarmUp;
   exercises: Exercise[] | null;
-}
-
-export interface Program {
-  id: string;
-  startDate: string; // ISO 8601 date string
-  endDate: string; // ISO 8601 date string
-  workouts: Workout[] | null;
-  userId: string;
 }
 
 export interface GenerateFormValues {

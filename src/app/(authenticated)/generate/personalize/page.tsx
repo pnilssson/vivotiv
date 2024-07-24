@@ -48,7 +48,6 @@ export default function InfoPage() {
                 className="justify-start flex-wrap"
                 value={field.value!}
                 onValueChange={(value) => {
-                  console.log(value);
                   if (value) setValue("prioritize", value);
                 }}>
                 {prioritizeOptions.map((prio) => (
