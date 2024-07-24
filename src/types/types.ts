@@ -9,6 +9,16 @@ export interface ProgramFormResponse extends FormResponse {
   program: Program | null;
 }
 
+export interface ProgramResponse {
+  id: string,
+  startDate: string; // ISO 8601 date string
+  endDate: string; // ISO 8601 date string
+	userId: string,
+	prompt: string,
+	program: string,
+	version: number,
+}
+
 export interface Exercise {
   id: string;
   title: string;

@@ -5,7 +5,7 @@ import { generateObject } from "ai";
 import { createClient, getUserOrRedirect } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { ProgramFormResponse } from "@/types/types";
-import { insertGenerated, insertProgram } from "@/db/commands";
+import { insertProgram } from "@/db/commands";
 import { programRequestSchema, programSchema } from "@/lib/zod/schemas";
 import { redirect } from "next/navigation";
 
@@ -31,22 +31,22 @@ export async function generateProgramAction(
     errors: [],
     program: null,
   });
-  return {
-    success: parsed.success,
-    errors: [],
-    program: null,
-  };
+  // return {
+  //   success: parsed.success,
+  //   errors: [],
+  //   program: null,
+  // };
 
   const prompt = getPromt(parsed.data);
-  const { object: chatgpt } = await generateObject({
+  const { object: program } = await generateObject({
     model: openai("gpt-4o"),
     mode: "json",
     schema: programSchema,
     prompt,
   });
 
-  await insertProgram(chatgpt, user?.id!);
-  await insertGenerated(prompt, JSON.stringify(chatgpt, null), user?.id!);
+  // await insertProgram(chatgpt, user?.id!);
+  await insertProgram(program, prompt, user?.id!);
 
   revalidatePath("/program", "page");
   redirect("/programs");
