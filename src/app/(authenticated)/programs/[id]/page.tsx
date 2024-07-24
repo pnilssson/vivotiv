@@ -22,50 +22,56 @@ export default async function Page({ params }: { params: { id: string } }) {
     return (
       <Accordion type="single" collapsible>
         {workouts?.map((workout, index) => (
-          <AccordionItem key={workout.id} value={`workout-${index}`}>
-            <AccordionTrigger>
-              <span className="flex items-center gap-4">
-                <h4 className="font-bold flex items-center text-xl">
+          <>
+            <div className="leading-relaxed text-muted-foreground mt-4">
+              {new Date(workout.date).toDateString()}
+            </div>
+            <AccordionItem key={workout.id} value={`workout-${index}`}>
+              <AccordionTrigger>
+                <h4 className="flex items-center gap-4 font-bold text-sm md:text-xl">
                   <div className="bg-slate-100 p-2 rounded-lg mr-4">
                     <CheckIcon className="h-5 w-5" />
                   </div>
-                  <span className="">{workout.description}</span>
-                  <span className="leading-relaxed text-muted-foreground ml-2">
-                    {new Date(workout.date).toDateString()}
-                  </span>
+                  {workout.description}
                 </h4>
-              </span>
-            </AccordionTrigger>
-            <AccordionContent>
-              <h4 className="font-bold text-2xl mt-4">Warm up</h4>
-              <ul>
-                {workout.warmup?.exercises?.map((exercise) => (
-                  <li key={exercise.id} className="mt-4 leading-relaxed">
-                    <strong className="text-base">
-                      {exercise.title} ({exercise.execution})
-                    </strong>
-                    <div className="text-muted-foreground">
-                      {exercise.description}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <Separator className="mt-4" />
-              <h4 className="font-bold text-2xl mt-4">Workout</h4>
-              <ul>
-                {workout.exercises?.map((exercise) => (
-                  <li key={exercise.id} className="mt-4 leading-relaxed">
-                    <strong>
-                      {exercise.title} ({exercise.execution})
-                    </strong>
-                    <div className="text-muted-foreground">
-                      {exercise.description}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </AccordionContent>
-          </AccordionItem>
+              </AccordionTrigger>
+              <AccordionContent>
+                <h4 className="font-bold text-2xl mt-4">Warm up</h4>
+                <ul>
+                  {workout.warmup?.exercises?.map((exercise) => (
+                    <li key={exercise.id} className="mt-4 leading-relaxed">
+                      <p className="text-base"><strong>
+                        {exercise.title}
+                      </strong></p>
+                      <p className="text-base"><strong>
+                        {exercise.execution}
+                      </strong></p>
+                      <div className="text-muted-foreground mt-2">
+                        {exercise.description}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <Separator className="mt-4" />
+                <h4 className="font-bold text-2xl mt-4">Workout</h4>
+                <ul>
+                  {workout.exercises?.map((exercise) => (
+                    <li key={exercise.id} className="mt-4 leading-relaxed">
+                      <p className="text-base"><strong>
+                        {exercise.title}
+                      </strong></p>
+                      <p className="text-base"><strong>
+                        {exercise.execution}
+                      </strong></p>
+                      <div className="text-muted-foreground mt-2">
+                        {exercise.description}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+          </>
         ))}
       </Accordion>
     );
