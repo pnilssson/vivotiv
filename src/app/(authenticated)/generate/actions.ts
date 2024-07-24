@@ -46,7 +46,7 @@ export async function generateProgramAction(
   });
 
   await insertProgram(chatgpt, user?.id!);
-  await insertGenerated(prompt, JSON.stringify(chatgpt, null, 2), user?.id!);
+  await insertGenerated(prompt, JSON.stringify(chatgpt, null), user?.id!);
 
   revalidatePath("/program", "page");
   redirect("/programs");
