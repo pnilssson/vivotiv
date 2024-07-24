@@ -94,12 +94,8 @@
           "name": "programs_userId_profiles_id_fk",
           "tableFrom": "programs",
           "tableTo": "profiles",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }

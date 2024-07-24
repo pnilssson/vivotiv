@@ -34,7 +34,8 @@ export default function InfoPage() {
   return (
     <FormWrapper
       heading="Personalize"
-      description="Provide additional information about how you would like to train.">
+      description="Provide additional information about how you would like to train."
+    >
       <div className="flex flex-col mt-6">
         <FormField
           control={control}
@@ -49,12 +50,14 @@ export default function InfoPage() {
                 value={field.value!}
                 onValueChange={(value) => {
                   if (value) setValue("prioritize", value);
-                }}>
+                }}
+              >
                 {prioritizeOptions.map((prio) => (
                   <ToggleGroupItem
                     key={prio}
                     value={prio}
-                    aria-label={`Toggle ${prio}`}>
+                    aria-label={`Toggle ${prio}`}
+                  >
                     {prio}
                   </ToggleGroupItem>
                 ))}
@@ -81,12 +84,14 @@ export default function InfoPage() {
                 value={field.value!}
                 onValueChange={(value) => {
                   if (value) setValue("types", value);
-                }}>
+                }}
+              >
                 {typeOptions.map((type) => (
                   <ToggleGroupItem
                     key={type}
                     value={type}
-                    aria-label={`Toggle ${type}`}>
+                    aria-label={`Toggle ${type}`}
+                  >
                     {type}
                   </ToggleGroupItem>
                 ))}
@@ -99,7 +104,8 @@ export default function InfoPage() {
       <FormActions>
         <Link
           href="/generate/general"
-          className={buttonVariants({ variant: "outline" })}>
+          className={buttonVariants({ variant: "outline" })}
+        >
           Go back
         </Link>
         <Button type="button" onClick={validateStep}>

@@ -17,7 +17,8 @@ export default function SummaryPage() {
   return (
     <FormWrapper
       heading="Finishing up"
-      description="Double-check that everything looks correct before we create your personalized training program.">
+      description="Double-check that everything looks correct before we create your personalized training program."
+    >
       <div className="flex flex-col rounded-lg mt-6 w-full shrink-0">
         <div className="mb-4">
           <h4 className="font-bold text-md">Start date</h4>
@@ -65,7 +66,8 @@ export default function SummaryPage() {
       <FormActions>
         <Link
           href="/generate/equipment"
-          className={buttonVariants({ variant: "outline" })}>
+          className={buttonVariants({ variant: "outline" })}
+        >
           Go back
         </Link>
         <SubmitButton content="Confirm" />

@@ -30,9 +30,10 @@ export function DotPattern({
       aria-hidden="true"
       className={cn(
         "pointer-events-none absolute inset-0 h-full w-full fill-gray-500",
-        className
+        className,
       )}
-      {...props}>
+      {...props}
+    >
       <defs>
         <pattern
           id={id}
@@ -41,7 +42,8 @@ export function DotPattern({
           patternUnits="userSpaceOnUse"
           patternContentUnits="userSpaceOnUse"
           x={x}
-          y={y}>
+          y={y}
+        >
           <circle id="pattern-circle" cx={cy} cy={cy} r={cr} />
         </pattern>
       </defs>

@@ -8,11 +8,14 @@ export async function getPrograms(): Promise<ProgramMetadataResponse[]> {
   const supabase = createClient();
   const user = await getUserOrRedirect(supabase);
 
-  const result = await db.select({
-    id: programs.id,
-    startDate: programs.startDate,
-    endDate: programs.endDate,
-  }).from(programs).where(eq(programs.userId, user.id));
+  const result = await db
+    .select({
+      id: programs.id,
+      startDate: programs.startDate,
+      endDate: programs.endDate,
+    })
+    .from(programs)
+    .where(eq(programs.userId, user.id));
 
   console.log(result);
 

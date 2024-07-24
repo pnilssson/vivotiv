@@ -1,4 +1,3 @@
-import { Card, CardDescription, CardHeader } from "@/components/ui/card";
 import { getProgram } from "../actions";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -9,7 +8,6 @@ import {
 } from "@/components/ui/accordion";
 import { Workout } from "@/types/types";
 import { CheckIcon, DrawingPinFilledIcon } from "@radix-ui/react-icons";
-import Workouts from "./workouts";
 import { redirect } from "next/navigation";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -46,7 +44,9 @@ export default async function Page({ params }: { params: { id: string } }) {
                     <strong className="text-base">
                       {exercise.title} ({exercise.execution})
                     </strong>
-                    <div className="text-muted-foreground">{exercise.description}</div>
+                    <div className="text-muted-foreground">
+                      {exercise.description}
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -58,7 +58,9 @@ export default async function Page({ params }: { params: { id: string } }) {
                     <strong>
                       {exercise.title} ({exercise.execution})
                     </strong>
-                    <div className="text-muted-foreground">{exercise.description}</div>
+                    <div className="text-muted-foreground">
+                      {exercise.description}
+                    </div>
                   </li>
                 ))}
               </ul>

@@ -16,11 +16,13 @@ export default function Component({ children }: { children: React.ReactNode }) {
         asChild
         className={cn(
           pathname.startsWith("/programs") ? "text-emerald-400" : "",
-          "text-lg px-0 font-medium"
-        )}>
+          "text-lg px-0 font-medium",
+        )}
+      >
         <Link
           href="/programs"
-          className="mt-6 flex items-center gap-4 !justify-start">
+          className="mt-6 flex items-center gap-4 !justify-start"
+        >
           <FileTextIcon className="h-5 w-5" />
           Programs
         </Link>
@@ -30,11 +32,13 @@ export default function Component({ children }: { children: React.ReactNode }) {
         asChild
         className={cn(
           pathname.startsWith("/generate") ? "text-emerald-400" : "",
-          "text-lg px-0 font-medium"
-        )}>
+          "text-lg px-0 font-medium",
+        )}
+      >
         <Link
           href="/generate/general"
-          className="flex items-center gap-4 !justify-start">
+          className="flex items-center gap-4 !justify-start"
+        >
           <RocketIcon className="h-5 w-5" />
           Generate
         </Link>

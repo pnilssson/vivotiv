@@ -27,8 +27,9 @@ export default async function RootLayout({
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
           GeistSans.variable,
-          GeistMono.variable
-        )}>
+          GeistMono.variable,
+        )}
+      >
         <Header user={data.user}>
           <LoginButton />
         </Header>

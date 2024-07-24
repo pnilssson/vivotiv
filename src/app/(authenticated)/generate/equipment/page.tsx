@@ -38,7 +38,8 @@ export default function InfoPage() {
   return (
     <FormWrapper
       heading="Equipment"
-      description="Do you have any available workout equipment at home? Let us know!">
+      description="Do you have any available workout equipment at home? Let us know!"
+    >
       <div className="flex flex-col mt-6">
         <FormField
           control={control}
@@ -68,7 +69,8 @@ export default function InfoPage() {
       <FormActions>
         <Link
           href="/generate/personalize"
-          className={buttonVariants({ variant: "outline" })}>
+          className={buttonVariants({ variant: "outline" })}
+        >
           Go back
         </Link>
         <Button type="button" onClick={validateStep}>

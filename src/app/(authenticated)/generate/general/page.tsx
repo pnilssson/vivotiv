@@ -57,7 +57,8 @@ export default function InfoPage() {
   return (
     <FormWrapper
       heading="General"
-      description="Specify start date and session specifications.">
+      description="Specify start date and session specifications."
+    >
       <div className="flex flex-col mt-6">
         <FormField
           control={control}
@@ -72,8 +73,9 @@ export default function InfoPage() {
                       variant={"outline"}
                       className={cn(
                         "w-full justify-start text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}>
+                        !field.value && "text-muted-foreground",
+                      )}
+                    >
                       <CalendarIcon className="mr-2" />
                       {field.value ? (
                         format(field.value, "PPP")
@@ -109,7 +111,10 @@ export default function InfoPage() {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Sessions per week</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value.toString()}>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value.toString()}
+                >
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue />
@@ -119,7 +124,8 @@ export default function InfoPage() {
                     {numberOfSessions.map((sessionNumber) => (
                       <SelectItem
                         key={sessionNumber}
-                        value={sessionNumber.toString()}>
+                        value={sessionNumber.toString()}
+                      >
                         {sessionNumber.toString()}
                       </SelectItem>
                     ))}

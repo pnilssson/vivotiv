@@ -32,7 +32,7 @@ export default function Page() {
           width={30}
           height={30}
           className={cn(
-            "[mask-image:linear-gradient(to_bottom,transparent,white,transparent)] h-[440px] md:h-[720px] -z-10 mt-16  "
+            "[mask-image:linear-gradient(to_bottom,transparent,white,transparent)] h-[440px] md:h-[720px] -z-10 mt-16  ",
           )}
         />
       </header>
@@ -152,7 +152,8 @@ export default function Page() {
 
             <ShineBorder
               className="overflow-hidden bg-white rounded-lg shadow-lg"
-              color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}>
+              color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
+            >
               <div className="p-8 xl:px-12">
                 <h3 className="text-base font-semibold text-purple-600">
                   Create a lifestyle

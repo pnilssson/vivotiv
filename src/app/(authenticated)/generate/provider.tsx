@@ -14,7 +14,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
 
   const [state, formAction] = useFormState(
     generateProgramAction,
-    initialFormState
+    initialFormState,
   );
 
   const form = useGenerateForm({
@@ -34,7 +34,8 @@ export default function Provider({ children }: { children: React.ReactNode }) {
           const valid = await form.trigger();
           if (valid) formAction(form.getValues() as any as FormData);
         }}
-        className="flex w-full">
+        className="flex w-full"
+      >
         {children}
       </form>
     </Form>

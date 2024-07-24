@@ -7,7 +7,7 @@ import { GenerateFormValues } from "@/types/types";
 import { programRequestSchema } from "../zod/schemas";
 
 export default function useGenerateForm(
-  defaultValues?: DefaultValues<GenerateFormValues>
+  defaultValues?: DefaultValues<GenerateFormValues>,
 ) {
   const form = useForm<z.infer<typeof programRequestSchema>>({
     resolver: zodResolver(programRequestSchema),

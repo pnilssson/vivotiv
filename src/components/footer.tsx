@@ -20,7 +20,8 @@ export default function Component() {
               <li className="bg-slate-800 p-2 rounded-full">
                 <Link
                   href="https://www.linkedin.com/in/pnilssson/"
-                  target="_blank">
+                  target="_blank"
+                >
                   <LinkedInLogoIcon color="white" />
                 </Link>
               </li>
@@ -37,7 +38,8 @@ export default function Component() {
                 <Link
                   href="#"
                   title=""
-                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
+                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600"
+                >
                   About
                 </Link>
               </li>
@@ -46,7 +48,8 @@ export default function Component() {
                 <Link
                   href="#"
                   title=""
-                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
+                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600"
+                >
                   Contact us
                 </Link>
               </li>
@@ -63,7 +66,8 @@ export default function Component() {
                 <Link
                   href="#"
                   title=""
-                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
+                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600"
+                >
                   Terms & Conditions
                 </Link>
               </li>
@@ -72,7 +76,8 @@ export default function Component() {
                 <Link
                   href="#"
                   title=""
-                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
+                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600"
+                >
                   Privacy Policy
                 </Link>
               </li>

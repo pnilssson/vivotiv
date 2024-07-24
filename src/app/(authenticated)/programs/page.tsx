@@ -8,7 +8,9 @@ import { redirect } from "next/navigation";
 export default async function Page() {
   const programs = await getPrograms();
 
-  function findProgram(programs: ProgramMetadataResponse[]): ProgramMetadataResponse | null {
+  function findProgram(
+    programs: ProgramMetadataResponse[],
+  ): ProgramMetadataResponse | null {
     const today = new Date();
 
     // Filter programs where today's date is between startDate and endDate

@@ -39,8 +39,9 @@ export default function Step({
             step.segment === segment
               ? "text-emerald-400 border-emerald-400"
               : "bg-transparent text-white border-white",
-            "font-bold text-sm"
-          )}>
+            "font-bold text-sm",
+          )}
+        >
           {step.number}
         </button>
         <div className="hidden lg:flex flex-col uppercase">
@@ -50,8 +51,9 @@ export default function Step({
               "font-bold text-sm tracking-wide",
               step.segment === segment
                 ? "text-emerald-400 border-emerald-400"
-                : "text-white"
-            )}>
+                : "text-white",
+            )}
+          >
             {step.heading}
           </h2>
         </div>

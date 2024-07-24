@@ -33,12 +33,12 @@ export function createClient() {
           }
         },
       },
-    }
+    },
   );
 }
 
 export async function getUserOrRedirect(
-  supabase: SupabaseClient
+  supabase: SupabaseClient,
 ): Promise<User> {
   const {
     data: { user },

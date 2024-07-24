@@ -6,12 +6,12 @@ export interface FormResponse {
 }
 
 export interface ProgramResponse {
-  id: string,
+  id: string;
   startDate: string; // ISO 8601 date string
   endDate: string; // ISO 8601 date string
-	userId: string,
-	workouts: Workout[] | null;
-	version: number,
+  userId: string;
+  workouts: Workout[] | null;
+  version: number;
 }
 
 export interface ProgramMetadataResponse {
