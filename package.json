@@ -9,6 +9,7 @@
     "lint": "next lint",
     "format": "prettier --write --ignore-path .gitignore .",
     "generate": "drizzle-kit generate",
+    "introspect": "drizzle-kit introspect",
     "migrate": "drizzle-kit migrate"
   },
   "dependencies": {
