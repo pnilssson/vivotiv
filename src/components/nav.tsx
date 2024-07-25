@@ -10,7 +10,7 @@ export default function Component({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <nav className="flex h-full min-w-[200px] flex-col gap-6 text-lg">
+    <nav className="flex h-[calc(100vh-100px)] min-w-[200px] flex-col gap-6 text-lg">
       <Button
         variant="link"
         asChild

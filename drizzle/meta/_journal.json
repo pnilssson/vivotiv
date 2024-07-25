@@ -15,6 +15,13 @@
       "when": 1721819188957,
       "tag": "0001_yummy_jack_murdock",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1721897624485,
+      "tag": "0002_fast_proteus",
+      "breakpoints": true
     }
   ]
 }

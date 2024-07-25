@@ -1,4 +1,4 @@
-import { getProgram } from "../actions";
+import { archiveProgramAction, getProgram } from "./actions";
 import { Separator } from "@/components/ui/separator";
 import {
   Accordion,
@@ -7,12 +7,26 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Workout } from "@/types/types";
-import { CheckIcon, DrawingPinFilledIcon } from "@radix-ui/react-icons";
+import {
+  ArchiveIcon,
+  CheckIcon,
+  DrawingPinFilledIcon,
+  GearIcon,
+} from "@radix-ui/react-icons";
 import { redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const program = await getProgram(params.id);
-  console.log(program);
 
   if (!program) {
     redirect("/generate/general");
@@ -40,12 +54,12 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <ul>
                   {workout.warmup?.exercises?.map((exercise) => (
                     <li key={exercise.id} className="mt-4 leading-relaxed">
-                      <p className="text-base"><strong>
-                        {exercise.title}
-                      </strong></p>
-                      <p className="text-base"><strong>
-                        {exercise.execution}
-                      </strong></p>
+                      <p className="text-base">
+                        <strong>{exercise.title}</strong>
+                      </p>
+                      <p className="text-base">
+                        <strong>{exercise.execution}</strong>
+                      </p>
                       <div className="text-muted-foreground mt-2">
                         {exercise.description}
                       </div>
@@ -57,12 +71,12 @@ export default async function Page({ params }: { params: { id: string } }) {
                 <ul>
                   {workout.exercises?.map((exercise) => (
                     <li key={exercise.id} className="mt-4 leading-relaxed">
-                      <p className="text-base"><strong>
-                        {exercise.title}
-                      </strong></p>
-                      <p className="text-base"><strong>
-                        {exercise.execution}
-                      </strong></p>
+                      <p className="text-base">
+                        <strong>{exercise.title}</strong>
+                      </p>
+                      <p className="text-base">
+                        <strong>{exercise.execution}</strong>
+                      </p>
                       <div className="text-muted-foreground mt-2">
                         {exercise.description}
                       </div>
@@ -80,12 +94,34 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <div className="mt-4 flex flex-col gap-4">
-        <h4 className="font-bold text-2xl flex gap-4 items-center">
-          <div className="bg-emerald-200 p-2 rounded-lg">
-            <DrawingPinFilledIcon className="h-5 w-5" />
-          </div>
-          Current program
-        </h4>
+        <div className="flex justify-between">
+          <h4 className="font-bold text-2xl flex gap-4 items-center">
+            <div className="bg-emerald-200 p-2 rounded-lg">
+              <DrawingPinFilledIcon className="h-5 w-5" />
+            </div>
+            Current program
+          </h4>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <div className="bg-slate-100 p-2 rounded-lg">
+                <GearIcon className="h-5 w-5" />
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Handle program</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <form className="flex items-center" action={archiveProgramAction}>
+                  <Input type="hidden" name="programId" value={program.id} />
+                  <ArchiveIcon />
+                  <Button type="submit" variant="ghost">
+                    Archive program
+                  </Button>
+                </form>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
         <p className="leading-relaxed text-muted-foreground">
           This program is scheduled to take place over a period starting from{" "}
           {new Date(program.startDate).toDateString()} and ending on{" "}

@@ -23,3 +23,11 @@ export const programs = pgTable("programs", {
   version: integer("version").notNull(),
   archived: boolean("archived").notNull().default(false),
 });
+
+export const programs_metadata = pgTable("programs_metadata", {
+  id: uuid("id").defaultRandom().primaryKey().notNull(),
+  userId: uuid("userId").references(() => profiles.id),
+  prompt: text("prompt").notNull(),
+  programId: uuid("programId").references(() => programs.id),
+  generatedOn: date("generatedOn").notNull().defaultNow(),
+});

@@ -5,7 +5,7 @@ import { generateObject } from "ai";
 import { createClient, getUserOrRedirect } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { FormResponse } from "@/types/types";
-import { insertProgram } from "@/db/commands";
+import { insertProgram, insertProgramMetadata } from "@/db/commands";
 import { programRequestSchema, programSchema } from "@/lib/zod/schemas";
 import { redirect } from "next/navigation";
 
@@ -25,37 +25,19 @@ export async function generateProgramAction(
     };
   }
 
-  console.log({
-    parsed,
-    success: parsed.success,
-    errors: [],
-    program: null,
-  });
-  // return {
-  //   success: parsed.success,
-  //   errors: [],
-  // };
-
   const prompt = getPromt(parsed.data);
   const { object: program } = await generateObject({
     model: openai("gpt-4o"),
     mode: "json",
     schema: programSchema,
     prompt,
+    temperature: 1.1,
   });
 
-  // console.log({
-  //   prompt,
-  //   program
-  // });
-  // return {
-  //   success: parsed.success,
-  //   errors: [],
-  // };
+  const programId = await insertProgram(program, user.id);
+  await insertProgramMetadata(user.id, prompt, programId);
 
-  await insertProgram(program, user?.id!);
-
-  revalidatePath("/program", "page");
+  revalidatePath("/programs", "page");
   redirect("/programs");
 }
 
@@ -80,5 +62,5 @@ function getPromt(data: any): string {
       ? `The available equipment includes ${equipment.join(", ")}`
       : "No additional equipment is available";
 
-  return `Generate a one-week home-training program starting from ${formattedStartDate}. The program should include ${sessions} sessions per week, each lasting around ${time} minutes. Each session should contain 3-8 exercises which takes around ${time} minutes to complete. ${prioritizeText} ${typesText}. ${equipmentText}. Each session should have a warm-up with 2-4 exercises that takes around 5 minutes to complete and is relevant to the session. The execution of the exercises can be of different types like reps and sets, amrap(as many reps as possible within a time domain), EMOM(every minute on the minute). Make sure to include rest periods in the execution. Be creative and make sure the workouts vary! The description of the exercises should explain to the user how to execute the exercise.`;
+  return `Generate a one-week long home-training program starting from ${formattedStartDate}. The program should include ${sessions} sessions per wee. Make sure to calculate that the total time of work and rest takes about ${time} minutes to complete. Each session should contain minimum 4 exercises and maximum 8 excercises, make sure to vary amount of excercises between sessions. ${prioritizeText} ${typesText}. ${equipmentText}. Each session should have a warm-up with 2-4 exercises that takes around 5 minutes to complete and is relevant to the session. The execution of the exercises can be of different types like reps and sets, amrap(as many reps as possible within a time domain), EMOM(every minute on the minute) it is important that the types vary. Make sure to include rest periods in the execution. The description of the exercises should explain to the user how to execute the exercise.`;
 }
