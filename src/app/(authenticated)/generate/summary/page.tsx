@@ -1,4 +1,5 @@
 "use client";
+export const maxDuration = 60;
 
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
