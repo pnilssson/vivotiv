@@ -11,13 +11,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useFormState } from "react-dom";
 import { login } from "./actions";
 import ErrorMessages from "@/components/shared/error-messages";
 import { initialFormState } from "@/lib/constants";
+import { useActionState } from "react";
 
 export default function Page() {
-  const [state, formAction] = useFormState(login, initialFormState);
+  const [state, formAction] = useActionState(login, initialFormState);
   return (
     <div className="flex flex-col p-4">
       <form action={formAction}>

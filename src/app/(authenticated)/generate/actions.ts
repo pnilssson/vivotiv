@@ -11,9 +11,9 @@ import { redirect } from "next/navigation";
 
 export async function generateProgramAction(
   _: any,
-  data: FormData,
+  data: FormData
 ): Promise<FormResponse> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
 
   const parsed = programRequestSchema.safeParse(data);
@@ -48,13 +48,13 @@ function getPromt(data: any): string {
   const prioritizeText =
     prioritize.length > 0
       ? `The program should include strength, conditioning and mobility exercises but prioritize ${prioritize.join(
-          ", ",
+          ", "
         )}`
       : "The training should be allround";
   const typesText =
     types.length > 0
       ? `and include the following types of exercises atleast once a week: ${types.join(
-          ", ",
+          ", "
         )}`
       : "";
   const equipmentText =

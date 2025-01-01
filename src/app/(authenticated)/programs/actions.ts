@@ -5,7 +5,7 @@ import { ProgramMetadataResponse } from "@/types/types";
 import { and, eq } from "drizzle-orm";
 
 export async function getPrograms(): Promise<ProgramMetadataResponse[]> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
 
   const result = await db

@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function getProgram(id: string): Promise<ProgramResponse> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
 
   const result = await db.query.programs.findMany({
@@ -24,7 +24,7 @@ export async function getProgram(id: string): Promise<ProgramResponse> {
 }
 
 export async function archiveProgramAction(data: FormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
 
   const programId = data.get("programId") as string;

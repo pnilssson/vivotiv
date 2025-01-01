@@ -8,10 +8,11 @@ import {
   boolean,
 } from "drizzle-orm/pg-core";
 
+// Foerign key from profiles.id to auth.users.id has been added manually in the supabase UI as it wasn't possible to configure it here
 export const profiles = pgTable("profiles", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  name: text("name"),
-  email: text("email"),
+  id: uuid("id").primaryKey(),
+  email: text("email").notNull(),
+  programTokens: integer("programTokens").notNull().default(0),
 });
 
 export const programs = pgTable("programs", {

@@ -15,8 +15,7 @@ const schema = z.object({
 });
 
 export async function login(_: any, formData: FormData): Promise<FormResponse> {
-  const supabase = createClient();
-
+  const supabase = await createClient();
   const validated = schema.safeParse({
     email: formData.get("email"),
   });

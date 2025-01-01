@@ -12,6 +12,7 @@ import { Button } from "./ui/button";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { User } from "@supabase/auth-js";
 import Nav from "./nav";
+import Link from "next/link";
 
 export default function Component({
   children,
@@ -26,7 +27,7 @@ export default function Component({
         <NavigationMenu className="">
           <NavigationMenuList className="py-4 w-full">
             <NavigationMenuItem className="text-lg font-medium">
-              Vivotiv
+              <Link href="/">Vivotiv</Link>
             </NavigationMenuItem>
             {user ? (
               <NavigationMenuItem className="!ml-auto lg:hidden flex">

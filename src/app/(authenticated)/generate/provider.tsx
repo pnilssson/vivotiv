@@ -1,20 +1,18 @@
 "use client";
 
 import useGenerateForm from "@/lib/hooks/useGenerateForm";
-import { useRouter } from "next/navigation";
 import { formatDate } from "@/lib/utils";
 import { Form } from "@/components/ui/form";
 import { initialFormState } from "@/lib/constants";
-import { useFormState } from "react-dom";
 import { generateProgramAction } from "./actions";
-import { useRef } from "react";
+import { useActionState, useRef } from "react";
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [state, formAction] = useFormState(
+  const [state, formAction] = useActionState(
     generateProgramAction,
-    initialFormState,
+    initialFormState
   );
 
   const form = useGenerateForm({
@@ -34,8 +32,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
           const valid = await form.trigger();
           if (valid) formAction(form.getValues() as any as FormData);
         }}
-        className="flex w-full"
-      >
+        className="flex w-full">
         {children}
       </form>
     </Form>

@@ -25,7 +25,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page(props: { params: Promise<{ id: string }> }) {
+  var params = await props.params;
   const program = await getProgram(params.id);
 
   if (!program) {
@@ -111,7 +112,9 @@ export default async function Page({ params }: { params: { id: string } }) {
               <DropdownMenuLabel>Handle program</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <form className="flex items-center" action={archiveProgramAction}>
+                <form
+                  className="flex items-center"
+                  action={archiveProgramAction}>
                   <Input type="hidden" name="programId" value={program.id} />
                   <ArchiveIcon />
                   <Button type="submit" variant="ghost">

@@ -5,9 +5,9 @@ import { redirectIfAuthenticated } from "@/app/middleware";
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (pathname === "/") {
-    return await redirectIfAuthenticated(request);
-  }
+  // if (pathname === "/") {
+  //   return await redirectIfAuthenticated(request);
+  // }
 
   return await updateSession(request);
 }

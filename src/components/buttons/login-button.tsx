@@ -5,7 +5,7 @@ import { signOut } from "@/lib/supabase/actions";
 import { EnterIcon, ExitIcon } from "@radix-ui/react-icons";
 
 export default async function Component() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
 
   return (
@@ -15,8 +15,7 @@ export default async function Component() {
           <Button
             type="submit"
             variant="link"
-            className="text-lg px-0 font-medium"
-          >
+            className="text-lg px-0 font-medium">
             <ExitIcon className="mr-4 h-5 w-5" /> Sign out
           </Button>
         </form>

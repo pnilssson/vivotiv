@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function redirectIfAuthenticated(request: NextRequest) {
-  const supabase = createClient();
+  const supabase = await createClient();
+
   const { data } = await supabase.auth.getUser();
   const { pathname } = request.nextUrl;
 

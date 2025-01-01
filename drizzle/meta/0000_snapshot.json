@@ -1,7 +1,7 @@
 {
-  "id": "034a1c03-ec90-4503-9fad-a7914bfa13bf",
+  "id": "d2db474f-9716-4a2b-bfa9-bee168966d1d",
   "prevId": "00000000-0000-0000-0000-000000000000",
-  "version": "6",
+  "version": "7",
   "dialect": "postgresql",
   "tables": {
     "public.profiles": {
@@ -12,26 +12,29 @@
           "name": "id",
           "type": "uuid",
           "primaryKey": true,
-          "notNull": true,
-          "default": "gen_random_uuid()"
-        },
-        "name": {
-          "name": "name",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "email": {
           "name": "email",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "programTokens": {
+          "name": "programTokens",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     },
     "public.programs": {
       "name": "programs",
@@ -62,14 +65,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "prompt": {
-          "name": "prompt",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "program": {
-          "name": "program",
+        "workouts": {
+          "name": "workouts",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": true
@@ -94,18 +91,101 @@
           "name": "programs_userId_profiles_id_fk",
           "tableFrom": "programs",
           "tableTo": "profiles",
-          "columnsFrom": ["userId"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.programs_metadata": {
+      "name": "programs_metadata",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "prompt": {
+          "name": "prompt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "programId": {
+          "name": "programId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "generatedOn": {
+          "name": "generatedOn",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "programs_metadata_userId_profiles_id_fk": {
+          "name": "programs_metadata_userId_profiles_id_fk",
+          "tableFrom": "programs_metadata",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "programs_metadata_programId_programs_id_fk": {
+          "name": "programs_metadata_programId_programs_id_fk",
+          "tableFrom": "programs_metadata",
+          "tableTo": "programs",
+          "columnsFrom": [
+            "programId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
     }
   },
   "enums": {},
   "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},

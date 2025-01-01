@@ -19,7 +19,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data } = await supabase.auth.getUser();
   return (
     <html lang="en">
@@ -27,9 +27,8 @@ export default async function RootLayout({
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
           GeistSans.variable,
-          GeistMono.variable,
-        )}
-      >
+          GeistMono.variable
+        )}>
         <Header user={data.user}>
           <LoginButton />
         </Header>
