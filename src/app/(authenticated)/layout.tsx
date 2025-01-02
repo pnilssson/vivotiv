@@ -14,7 +14,7 @@ export default async function Layout({
     redirect("/auth/signin");
   }
   return (
-    <div className="flex">
+    <div className="flex border-t">
       <Sidebar>
         <LoginButton />
       </Sidebar>

@@ -32,7 +32,7 @@ export default function Page() {
           width={30}
           height={30}
           className={cn(
-            "[mask-image:linear-gradient(to_bottom,transparent,white,transparent)] h-[440px] md:h-[720px] -z-10 mt-16  ",
+            "[mask-image:linear-gradient(to_bottom,transparent,white,transparent)] h-[440px] md:h-[720px] -z-10 mt-16  "
           )}
         />
       </header>
@@ -141,7 +141,7 @@ export default function Page() {
                 </p>
                 <p className="my-8">
                   The 21/90 rule states that it takes 21 days to make a habit.
-                  Get started with one month worth of training program.
+                  Get started with three weeks worth of training program.
                 </p>
                 <GetStartedButton
                   content="Get started"
@@ -152,8 +152,7 @@ export default function Page() {
 
             <ShineBorder
               className="overflow-hidden bg-white rounded-lg shadow-lg"
-              color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
-            >
+              color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}>
               <div className="p-8 xl:px-12">
                 <h3 className="text-base font-semibold text-purple-600">
                   Create a lifestyle
@@ -163,8 +162,8 @@ export default function Page() {
                 </p>
                 <p className="mt-2 text-base text-gray-600">One-time payment</p>
                 <p className="my-8">
-                  It takes 90 days to make it a permanent lifestyle change. Get
-                  the possibility to generate three months of training program.
+                  It takes 90 days to make it a permanent lifestyle change. Make
+                  it a lifestyle and get twelve weeks of training program.
                 </p>
                 <GetStartedButton
                   content="Get started"
@@ -184,7 +183,7 @@ export default function Page() {
                 <p className="mt-2 text-base text-gray-600">One-time payment</p>
                 <p className="my-8">
                   But creating a healthy lifestyle is not a sprint, it is a
-                  marathon. Get 12 months of training program.
+                  marathon. Get a whole year of training program.
                 </p>
                 <GetStartedButton
                   content="Get started"

@@ -1,3 +1,4 @@
+import Center from "@/components/shared/center";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,9 +11,8 @@ import Link from "next/link";
 
 export default function Page() {
   return (
-    <div className="flex flex-col h-[calc(100vh-60px)]">
-      <div className="h-1/4"></div>
-      <Card className="w-full max-w-sm mx-auto">
+    <Center>
+      <Card>
         <CardHeader>
           <CardTitle className="text-2xl text-center">404</CardTitle>
           <CardDescription>
@@ -25,6 +25,6 @@ export default function Page() {
           </Button>
         </CardFooter>
       </Card>
-    </div>
+    </Center>
   );
 }

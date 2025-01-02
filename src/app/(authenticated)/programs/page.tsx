@@ -1,15 +1,12 @@
-import { Card, CardDescription, CardHeader } from "@/components/ui/card";
 import { getPrograms } from "./actions";
-import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
-import { ProgramMetadataResponse, ProgramResponse } from "@/types/types";
+import { ProgramMetadataResponse } from "@/types/types";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
   const programs = await getPrograms();
 
   function findProgram(
-    programs: ProgramMetadataResponse[],
+    programs: ProgramMetadataResponse[]
   ): ProgramMetadataResponse | null {
     const today = new Date();
 

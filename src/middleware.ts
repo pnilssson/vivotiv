@@ -1,14 +1,7 @@
 import { type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
-import { redirectIfAuthenticated } from "@/app/middleware";
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  // if (pathname === "/") {
-  //   return await redirectIfAuthenticated(request);
-  // }
-
   return await updateSession(request);
 }
 

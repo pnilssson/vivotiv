@@ -7,7 +7,7 @@ import {
   NavigationMenuLink,
 } from "./ui/navigation-menu";
 import { Separator } from "./ui/separator";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { User } from "@supabase/auth-js";
@@ -27,7 +27,12 @@ export default function Component({
         <NavigationMenu className="">
           <NavigationMenuList className="py-4 w-full">
             <NavigationMenuItem className="text-lg font-medium">
-              <Link href="/">Vivotiv</Link>
+              <Button
+                variant="link"
+                asChild
+                className="text-lg px-0 font-medium">
+                <Link href="/">Vivotiv</Link>
+              </Button>
             </NavigationMenuItem>
             {user ? (
               <NavigationMenuItem className="!ml-auto lg:hidden flex">
@@ -39,6 +44,7 @@ export default function Component({
                     </Button>
                   </SheetTrigger>
                   <SheetContent side="left">
+                    <SheetTitle>Vivotiv</SheetTitle>
                     <Nav>{children}</Nav>
                   </SheetContent>
                 </Sheet>
@@ -49,7 +55,6 @@ export default function Component({
           </NavigationMenuList>
         </NavigationMenu>
       </header>
-      <Separator />
     </>
   );
 }
