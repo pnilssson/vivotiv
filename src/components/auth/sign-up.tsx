@@ -25,7 +25,7 @@ export default function Component() {
       <CardHeader>
         <CardTitle className="text-2xl">Sign up</CardTitle>
         <CardDescription>
-          Glad you're joining! Let's make a change.
+          Glad you&apos;re joining! Let&apos;s make a change.
         </CardDescription>
       </CardHeader>
       <CardContent>

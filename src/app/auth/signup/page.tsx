@@ -1,4 +1,4 @@
-import Register from "@/components/auth/register";
+import Register from "@/components/auth/sign-up";
 import { Card, CardFooter } from "@/components/ui/card";
 import Link from "next/link";
 
