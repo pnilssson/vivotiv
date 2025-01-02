@@ -1,5 +1,6 @@
 import GetStartedButton from "@/components/buttons/get-started-button";
 import Footer from "@/components/footer";
+import Header from "@/components/header";
 import GridPattern from "@/components/magicui/grid-pattern";
 import ShineBorder from "@/components/magicui/shine-border";
 import { cn } from "@/lib/utils";
@@ -11,10 +12,11 @@ import {
   ResetIcon,
 } from "@radix-ui/react-icons";
 
-export default function Page() {
+export default async function Page() {
   return (
     <>
-      <header className="flex flex-col text-center pt-36 md:pt-48 container">
+      <Header />
+      <main className="flex flex-col text-center pt-36 md:pt-48 container">
         <h1 className="text-4xl md:text-8xl font-bold md:max-w-[980px] mx-auto">
           Start training from home{" "}
           <span className="underline decoration-emerald-400 underline-offset-4">
@@ -35,7 +37,7 @@ export default function Page() {
             "[mask-image:linear-gradient(to_bottom,transparent,white,transparent)] h-[440px] md:h-[720px] -z-10 mt-16  "
           )}
         />
-      </header>
+      </main>
       <section className="flex flex-col container mt-48 md:mt-64">
         <div className="mb-8 rounded-xl bg-gradient-to-br from-emerald-100 to-sky-100 px-8 md:px-24 py-12">
           <p className="flex flex-row font-semibold text-emerald-400">

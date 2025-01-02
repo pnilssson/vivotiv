@@ -16,12 +16,9 @@ export default function Component({
     <Button
       type="submit"
       aria-disabled={pending}
-      className={classes ?? classes}
-    >
+      className={classes ?? classes}>
       {content}{" "}
-      {pending ? (
-        <LoaderCircleIcon className="h-4 w-4 animate-spin ml-2" />
-      ) : null}
+      {pending ? <LoaderCircleIcon className="h-4 w-4 animate-spin" /> : null}
     </Button>
   );
 }

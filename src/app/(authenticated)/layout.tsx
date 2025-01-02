@@ -1,5 +1,4 @@
-import LoginButton from "@/components/buttons/login-button";
-import Sidebar from "@/components/sidebar";
+import NavigationWrapper from "@/components/menu/navigation-wrapper";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
@@ -13,12 +12,6 @@ export default async function Layout({
   if (error || !data?.user) {
     redirect("/auth/signin");
   }
-  return (
-    <div className="flex border-t">
-      <Sidebar>
-        <LoginButton />
-      </Sidebar>
-      <div className="py-4 px-4 container max-w-[1024px]">{children}</div>
-    </div>
-  );
+
+  return <NavigationWrapper>{children}</NavigationWrapper>;
 }

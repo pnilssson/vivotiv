@@ -3,16 +3,16 @@
 import { initialFormState } from "@/lib/constants";
 import { signInWithOtp } from "@/lib/supabase/actions";
 import { useActionState } from "react";
-import {
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "../ui/card";
 import { Label } from "@radix-ui/react-label";
 import SubmitButton from "../buttons/submit-button";
 import ErrorMessages from "../shared/error-messages";
 import { Input } from "../ui/input";
+import {
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "../ui/card";
 
 export default function Component() {
   const [state, formAction] = useActionState(signInWithOtp, initialFormState);

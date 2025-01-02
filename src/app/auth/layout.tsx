@@ -1,3 +1,4 @@
+import Header from "@/components/header";
 import Center from "@/components/shared/center";
 
 export default async function Layout({
@@ -5,5 +6,10 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <Center>{children}</Center>;
+  return (
+    <>
+      <Header />
+      <Center>{children}</Center>
+    </>
+  );
 }
