@@ -4,8 +4,8 @@ export default function Component({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex min-h-svh w-full items-center justify-center">
-      <div className="w-full max-w-sm -mt-96">{children}</div>
+    <div className="flex h-[calc(100vh-72px)] w-full items-center justify-center">
+      <div className="w-full max-w-sm -mt-64">{children}</div>
     </div>
   );
 }

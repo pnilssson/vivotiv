@@ -4,15 +4,14 @@ import {
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
-  NavigationMenuLink,
 } from "./ui/navigation-menu";
-import { Separator } from "./ui/separator";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
 import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import { User } from "@supabase/auth-js";
 import Nav from "./nav";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Component({
   children,
@@ -21,6 +20,8 @@ export default function Component({
   children: React.ReactNode;
   user: User | null;
 }) {
+  const pathname = usePathname();
+
   return (
     <>
       <header className="w-full bg-background flex items-center justify-between px-4 md:px-6">
@@ -49,7 +50,7 @@ export default function Component({
                   </SheetContent>
                 </Sheet>
               </NavigationMenuItem>
-            ) : (
+            ) : pathname.startsWith("/auth") ? null : (
               <div className="!ml-auto">{children}</div>
             )}
           </NavigationMenuList>
