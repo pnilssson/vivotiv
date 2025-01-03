@@ -1,4 +1,4 @@
-import NavigationWrapper from "@/components/menu/navigation-wrapper";
+import NavigationWrapper from "@/components/sidebar/sidebar-wrapper";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 

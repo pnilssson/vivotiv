@@ -18,8 +18,6 @@ export default function Component() {
 
   return (
     <header className="flex h-16 w-full shrink-0 items-center gap-2 border-b px-4 md:px-6">
-      <SidebarTrigger />
-      <Separator orientation="vertical" className="mr-2 h-4" />
       <Breadcrumb>
         <BreadcrumbList>
           {pathSegments.map((segment, index) => {
@@ -36,6 +34,7 @@ export default function Component() {
           })}
         </BreadcrumbList>
       </Breadcrumb>
+      <SidebarTrigger className="ml-auto" />
     </header>
   );
 }

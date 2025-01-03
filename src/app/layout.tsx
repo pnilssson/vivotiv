@@ -5,6 +5,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Vivotiv",
@@ -27,6 +28,11 @@ export default async function RootLayout({
           GeistMono.variable
         )}>
         {children}
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="a05af024-2d3c-4773-8b32-bda01e11c20b"
+        />
       </body>
     </html>
   );

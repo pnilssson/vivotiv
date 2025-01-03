@@ -1,8 +1,8 @@
-import AppSidebar from "@/components/menu/app-sidebar";
+import AppSidebar from "@/components/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import Header from "./header";
 import { cookies } from "next/headers";
-import Footer from "./footer";
+import Footer from "./app-sidebar-footer";
 
 export default async function Component({
   children,
