@@ -11,10 +11,10 @@ export async function getProgram(id: string): Promise<ProgramResponse> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
 
-  const result = await db.query.programs.findMany({
+  const result = await db.query.program.findMany({
     where: (program, { eq, and }) =>
       and(
-        eq(program.userId, user.id),
+        eq(program.user_id, user.id),
         eq(program.id, id),
         eq(program.archived, false)
       ),

@@ -1,11 +1,344 @@
 {
-  "id": "d2db474f-9716-4a2b-bfa9-bee168966d1d",
+  "id": "25f40595-1b24-4e92-97e9-e6a755804514",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.profiles": {
-      "name": "profiles",
+    "auth.users": {
+      "name": "users",
+      "schema": "auth",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.available_space": {
+      "name": "available_space",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "Authenticated can handle available space": {
+          "name": "Authenticated can handle available space",
+          "as": "PERMISSIVE",
+          "for": "ALL",
+          "to": [
+            "authenticated"
+          ],
+          "using": "true"
+        }
+      },
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.configuration": {
+      "name": "configuration",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sessions": {
+          "name": "sessions",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "time": {
+          "name": "time",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "equipment": {
+          "name": "equipment",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "configuration_user_id_profile_id_fk": {
+          "name": "configuration_user_id_profile_id_fk",
+          "tableFrom": "configuration",
+          "tableTo": "profile",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "User can handle their own configurations": {
+          "name": "User can handle their own configurations",
+          "as": "PERMISSIVE",
+          "for": "ALL",
+          "to": [
+            "authenticated"
+          ],
+          "using": "(select auth.uid()) = user_id"
+        }
+      },
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.configuration_to_available_space": {
+      "name": "configuration_to_available_space",
+      "schema": "",
+      "columns": {
+        "configuration_id": {
+          "name": "configuration_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "available_space_id": {
+          "name": "available_space_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "configuration_to_available_space_configuration_id_configuration_id_fk": {
+          "name": "configuration_to_available_space_configuration_id_configuration_id_fk",
+          "tableFrom": "configuration_to_available_space",
+          "tableTo": "configuration",
+          "columnsFrom": [
+            "configuration_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "configuration_to_available_space_available_space_id_available_space_id_fk": {
+          "name": "configuration_to_available_space_available_space_id_available_space_id_fk",
+          "tableFrom": "configuration_to_available_space",
+          "tableTo": "available_space",
+          "columnsFrom": [
+            "available_space_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "configuration_to_available_space_configuration_id_available_space_id_pk": {
+          "name": "configuration_to_available_space_configuration_id_available_space_id_pk",
+          "columns": [
+            "configuration_id",
+            "available_space_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {
+        "Authenticated can handle configurationsToAvailableSpace": {
+          "name": "Authenticated can handle configurationsToAvailableSpace",
+          "as": "PERMISSIVE",
+          "for": "ALL",
+          "to": [
+            "authenticated"
+          ],
+          "using": "true"
+        }
+      },
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.configuration_to_workout_focus": {
+      "name": "configuration_to_workout_focus",
+      "schema": "",
+      "columns": {
+        "configuration_id": {
+          "name": "configuration_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workout_focus_id": {
+          "name": "workout_focus_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "configuration_to_workout_focus_configuration_id_configuration_id_fk": {
+          "name": "configuration_to_workout_focus_configuration_id_configuration_id_fk",
+          "tableFrom": "configuration_to_workout_focus",
+          "tableTo": "configuration",
+          "columnsFrom": [
+            "configuration_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "configuration_to_workout_focus_workout_focus_id_workout_focus_id_fk": {
+          "name": "configuration_to_workout_focus_workout_focus_id_workout_focus_id_fk",
+          "tableFrom": "configuration_to_workout_focus",
+          "tableTo": "workout_focus",
+          "columnsFrom": [
+            "workout_focus_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "configuration_to_workout_focus_configuration_id_workout_focus_id_pk": {
+          "name": "configuration_to_workout_focus_configuration_id_workout_focus_id_pk",
+          "columns": [
+            "configuration_id",
+            "workout_focus_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {
+        "Authenticated can handle configurationToWorkoutFocus": {
+          "name": "Authenticated can handle configurationToWorkoutFocus",
+          "as": "PERMISSIVE",
+          "for": "ALL",
+          "to": [
+            "authenticated"
+          ],
+          "using": "true"
+        }
+      },
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.configuration_to_workout_type": {
+      "name": "configuration_to_workout_type",
+      "schema": "",
+      "columns": {
+        "configuration_id": {
+          "name": "configuration_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "workout_type_id": {
+          "name": "workout_type_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "configuration_to_workout_type_configuration_id_configuration_id_fk": {
+          "name": "configuration_to_workout_type_configuration_id_configuration_id_fk",
+          "tableFrom": "configuration_to_workout_type",
+          "tableTo": "configuration",
+          "columnsFrom": [
+            "configuration_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "configuration_to_workout_type_workout_type_id_workout_type_id_fk": {
+          "name": "configuration_to_workout_type_workout_type_id_workout_type_id_fk",
+          "tableFrom": "configuration_to_workout_type",
+          "tableTo": "workout_type",
+          "columnsFrom": [
+            "workout_type_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "configuration_to_workout_type_configuration_id_workout_type_id_pk": {
+          "name": "configuration_to_workout_type_configuration_id_workout_type_id_pk",
+          "columns": [
+            "configuration_id",
+            "workout_type_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {
+        "Authenticated can handle configurationsToWorkoutTypes": {
+          "name": "Authenticated can handle configurationsToWorkoutTypes",
+          "as": "PERMISSIVE",
+          "for": "ALL",
+          "to": [
+            "authenticated"
+          ],
+          "using": "true"
+        }
+      },
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.profile": {
+      "name": "profile",
       "schema": "",
       "columns": {
         "id": {
@@ -20,8 +353,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "programTokens": {
-          "name": "programTokens",
+        "program_tokens": {
+          "name": "program_tokens",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
@@ -29,15 +362,49 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "profile_id_fk": {
+          "name": "profile_id_fk",
+          "tableFrom": "profile",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "policies": {},
+      "policies": {
+        "Authenticated can view all profiles": {
+          "name": "Authenticated can view all profiles",
+          "as": "PERMISSIVE",
+          "for": "SELECT",
+          "to": [
+            "authenticated"
+          ],
+          "using": "true"
+        },
+        "Supabase auth admin can insert profile": {
+          "name": "Supabase auth admin can insert profile",
+          "as": "PERMISSIVE",
+          "for": "INSERT",
+          "to": [
+            "supabase_auth_admin"
+          ],
+          "withCheck": "true"
+        }
+      },
       "checkConstraints": {},
-      "isRLSEnabled": false
+      "isRLSEnabled": true
     },
-    "public.programs": {
-      "name": "programs",
+    "public.program": {
+      "name": "program",
       "schema": "",
       "columns": {
         "id": {
@@ -47,23 +414,23 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "startDate": {
-          "name": "startDate",
+        "start_date": {
+          "name": "start_date",
           "type": "date",
           "primaryKey": false,
           "notNull": true
         },
-        "endDate": {
-          "name": "endDate",
+        "end_date": {
+          "name": "end_date",
           "type": "date",
           "primaryKey": false,
           "notNull": true
         },
-        "userId": {
-          "name": "userId",
+        "user_id": {
+          "name": "user_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "workouts": {
           "name": "workouts",
@@ -87,12 +454,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "programs_userId_profiles_id_fk": {
-          "name": "programs_userId_profiles_id_fk",
-          "tableFrom": "programs",
-          "tableTo": "profiles",
+        "program_user_id_profile_id_fk": {
+          "name": "program_user_id_profile_id_fk",
+          "tableFrom": "program",
+          "tableTo": "profile",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -103,12 +470,22 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "policies": {},
+      "policies": {
+        "User can handle their own programs": {
+          "name": "User can handle their own programs",
+          "as": "PERMISSIVE",
+          "for": "ALL",
+          "to": [
+            "authenticated"
+          ],
+          "using": "(select auth.uid()) = user_id"
+        }
+      },
       "checkConstraints": {},
-      "isRLSEnabled": false
+      "isRLSEnabled": true
     },
-    "public.programs_metadata": {
-      "name": "programs_metadata",
+    "public.program_metadata": {
+      "name": "program_metadata",
       "schema": "",
       "columns": {
         "id": {
@@ -118,11 +495,11 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "userId": {
-          "name": "userId",
+        "user_id": {
+          "name": "user_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "prompt": {
           "name": "prompt",
@@ -130,14 +507,14 @@
           "primaryKey": false,
           "notNull": true
         },
-        "programId": {
-          "name": "programId",
+        "program_id": {
+          "name": "program_id",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
-        "generatedOn": {
-          "name": "generatedOn",
+        "generated_on": {
+          "name": "generated_on",
           "type": "date",
           "primaryKey": false,
           "notNull": true,
@@ -146,12 +523,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "programs_metadata_userId_profiles_id_fk": {
-          "name": "programs_metadata_userId_profiles_id_fk",
-          "tableFrom": "programs_metadata",
-          "tableTo": "profiles",
+        "program_metadata_user_id_profile_id_fk": {
+          "name": "program_metadata_user_id_profile_id_fk",
+          "tableFrom": "program_metadata",
+          "tableTo": "profile",
           "columnsFrom": [
-            "userId"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -159,12 +536,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "programs_metadata_programId_programs_id_fk": {
-          "name": "programs_metadata_programId_programs_id_fk",
-          "tableFrom": "programs_metadata",
-          "tableTo": "programs",
+        "program_metadata_program_id_program_id_fk": {
+          "name": "program_metadata_program_id_program_id_fk",
+          "tableFrom": "program_metadata",
+          "tableTo": "program",
           "columnsFrom": [
-            "programId"
+            "program_id"
           ],
           "columnsTo": [
             "id"
@@ -175,9 +552,91 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
-      "policies": {},
+      "policies": {
+        "User can handle their own programs metadata": {
+          "name": "User can handle their own programs metadata",
+          "as": "PERMISSIVE",
+          "for": "ALL",
+          "to": [
+            "authenticated"
+          ],
+          "using": "(select auth.uid()) = user_id"
+        }
+      },
       "checkConstraints": {},
-      "isRLSEnabled": false
+      "isRLSEnabled": true
+    },
+    "public.workout_focus": {
+      "name": "workout_focus",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "Authenticated can handle workout focus": {
+          "name": "Authenticated can handle workout focus",
+          "as": "PERMISSIVE",
+          "for": "ALL",
+          "to": [
+            "authenticated"
+          ],
+          "using": "true"
+        }
+      },
+      "checkConstraints": {},
+      "isRLSEnabled": true
+    },
+    "public.workout_type": {
+      "name": "workout_type",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {
+        "Authenticated can handle workout types": {
+          "name": "Authenticated can handle workout types",
+          "as": "PERMISSIVE",
+          "for": "ALL",
+          "to": [
+            "authenticated"
+          ],
+          "using": "true"
+        }
+      },
+      "checkConstraints": {},
+      "isRLSEnabled": true
     }
   },
   "enums": {},

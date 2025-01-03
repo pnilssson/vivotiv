@@ -1,5 +1,5 @@
 import { db } from "@/db/db";
-import { programs } from "@/db/schema";
+import { program } from "@/db/schema";
 import { createClient, getUserOrRedirect } from "@/lib/supabase/server";
 import { ProgramMetadataResponse } from "@/types/types";
 import { and, eq } from "drizzle-orm";
@@ -10,12 +10,12 @@ export async function getPrograms(): Promise<ProgramMetadataResponse[]> {
 
   const result = await db
     .select({
-      id: programs.id,
-      startDate: programs.startDate,
-      endDate: programs.endDate,
+      id: program.id,
+      startDate: program.start_date,
+      endDate: program.end_date,
     })
-    .from(programs)
-    .where(and(eq(programs.userId, user.id), eq(programs.archived, false)));
+    .from(program)
+    .where(and(eq(program.user_id, user.id), eq(program.archived, false)));
 
   return result as ProgramMetadataResponse[];
 }

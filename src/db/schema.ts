@@ -1,3 +1,4 @@
+import { relations, sql } from "drizzle-orm";
 import {
   pgTable,
   uuid,
@@ -6,29 +7,309 @@ import {
   jsonb,
   integer,
   boolean,
+  primaryKey,
+  pgRole,
+  pgSchema,
+  foreignKey,
+  pgPolicy,
 } from "drizzle-orm/pg-core";
 
-// Foerign key from profiles.id to auth.users.id has been added manually in the supabase UI as it wasn't possible to configure it here
-export const profiles = pgTable("profiles", {
-  id: uuid("id").primaryKey(),
-  email: text("email").notNull(),
-  programTokens: integer("programTokens").notNull().default(0),
+// drizzle-orm/supabase
+export const anonRole = pgRole("anon").existing();
+export const authenticatedRole = pgRole("authenticated").existing();
+export const serviceRole = pgRole("service_role").existing();
+export const postgresRole = pgRole("postgres_role").existing();
+export const supabaseAuthAdminRole = pgRole("supabase_auth_admin").existing();
+
+export const authUid = sql`(select auth.uid())`;
+const auth = pgSchema("auth");
+export const authUsers = auth.table("users", {
+  id: uuid().primaryKey().notNull(),
 });
 
-export const programs = pgTable("programs", {
-  id: uuid("id").defaultRandom().primaryKey().notNull(),
-  startDate: date("startDate").notNull(),
-  endDate: date("endDate").notNull(),
-  userId: uuid("userId").references(() => profiles.id),
-  workouts: jsonb("workouts").notNull(),
-  version: integer("version").notNull(),
-  archived: boolean("archived").notNull().default(false),
-});
+// Vivotiv
+export const profile = pgTable(
+  "profile",
+  {
+    id: uuid().primaryKey().notNull(),
+    email: text().notNull(),
+    program_tokens: integer().notNull().default(0),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.id],
+      // reference to the auth table from Supabase
+      foreignColumns: [authUsers.id],
+      name: "profile_id_fk",
+    }).onDelete("cascade"),
+    pgPolicy("Authenticated can view all profiles", {
+      for: "select",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+    pgPolicy("Supabase auth admin can insert profile", {
+      for: "insert",
+      to: supabaseAuthAdminRole,
+      withCheck: sql`true`,
+    }),
+  ]
+).enableRLS();
 
-export const programs_metadata = pgTable("programs_metadata", {
-  id: uuid("id").defaultRandom().primaryKey().notNull(),
-  userId: uuid("userId").references(() => profiles.id),
-  prompt: text("prompt").notNull(),
-  programId: uuid("programId").references(() => programs.id),
-  generatedOn: date("generatedOn").notNull().defaultNow(),
-});
+export const profileRelations = relations(profile, ({ many }) => ({
+  programs: many(program),
+  programsMetadata: many(programMetadata),
+  configurations: many(configuration),
+}));
+
+export const program = pgTable(
+  "program",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    start_date: date().notNull(),
+    end_date: date().notNull(),
+    user_id: uuid()
+      .notNull()
+      .references(() => profile.id),
+    workouts: jsonb().notNull(),
+    version: integer().notNull(),
+    archived: boolean().notNull().default(false),
+  },
+  (table) => [
+    pgPolicy("User can handle their own programs", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`${authUid} = user_id`,
+    }),
+  ]
+).enableRLS();
+
+export const programRelations = relations(program, ({ one }) => ({
+  profile: one(profile, {
+    fields: [program.user_id],
+    references: [profile.id],
+  }),
+  metadata: one(programMetadata, {
+    fields: [program.id],
+    references: [programMetadata.id],
+  }),
+}));
+
+export const programMetadata = pgTable(
+  "program_metadata",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    user_id: uuid()
+      .notNull()
+      .references(() => profile.id),
+    prompt: text().notNull(),
+    program_id: uuid().references(() => program.id),
+    generated_on: date().notNull().defaultNow(),
+  },
+  (table) => [
+    pgPolicy("User can handle their own programs metadata", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`${authUid} = user_id`,
+    }),
+  ]
+).enableRLS();
+
+export const programMetadataRelations = relations(
+  programMetadata,
+  ({ one }) => ({
+    profile: one(profile, {
+      fields: [programMetadata.user_id],
+      references: [profile.id],
+    }),
+    program: one(program, {
+      fields: [programMetadata.id],
+      references: [program.id],
+    }),
+  })
+);
+
+export const configuration = pgTable(
+  "configuration",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    user_id: uuid().references(() => profile.id),
+    sessions: integer().notNull(),
+    time: integer().notNull(),
+    equipment: text(),
+  },
+  (table) => [
+    pgPolicy("User can handle their own configurations", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`${authUid} = user_id`,
+    }),
+  ]
+).enableRLS();
+
+export const configurationRelations = relations(configuration, ({ many }) => ({
+  workoutFocuses: many(configurationToWorkoutFocus),
+  workoutTypes: many(configurationToWorkoutType),
+  availableSpaces: many(configurationToAvailableSpace),
+}));
+
+export const workoutFocus = pgTable(
+  "workout_focus",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    name: text(),
+  },
+  (table) => [
+    pgPolicy("Authenticated can handle workout focus", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const workoutFocusRelations = relations(workoutFocus, ({ many }) => ({
+  configurations: many(configurationToWorkoutFocus),
+}));
+
+export const workoutType = pgTable(
+  "workout_type",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    name: text(),
+  },
+  (table) => [
+    pgPolicy("Authenticated can handle workout types", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const workoutTypeRelations = relations(workoutType, ({ many }) => ({
+  configurations: many(configurationToWorkoutType),
+}));
+
+export const availableSpace = pgTable(
+  "available_space",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    name: text(),
+  },
+  (table) => [
+    pgPolicy("Authenticated can handle available space", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const availableSpaceRelations = relations(
+  availableSpace,
+  ({ many }) => ({
+    configurations: many(configuration),
+  })
+);
+
+export const configurationToWorkoutFocus = pgTable(
+  "configuration_to_workout_focus",
+  {
+    configuration_id: uuid()
+      .notNull()
+      .references(() => configuration.id, { onDelete: "cascade" }),
+    workout_focus_id: uuid()
+      .notNull()
+      .references(() => workoutFocus.id, { onDelete: "cascade" }),
+  },
+  (table) => [
+    primaryKey({ columns: [table.configuration_id, table.workout_focus_id] }),
+    pgPolicy("Authenticated can handle configurationToWorkoutFocus", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const configurationToWorkoutFocusRelations = relations(
+  configurationToWorkoutFocus,
+  ({ one }) => ({
+    configuration: one(configuration, {
+      fields: [configurationToWorkoutFocus.configuration_id],
+      references: [configuration.id],
+    }),
+    workoutFocus: one(workoutFocus, {
+      fields: [configurationToWorkoutFocus.workout_focus_id],
+      references: [workoutFocus.id],
+    }),
+  })
+);
+
+export const configurationToWorkoutType = pgTable(
+  "configuration_to_workout_type",
+  {
+    configuration_id: uuid()
+      .notNull()
+      .references(() => configuration.id, { onDelete: "cascade" }),
+    workout_type_id: uuid()
+      .notNull()
+      .references(() => workoutType.id, { onDelete: "cascade" }),
+  },
+  (table) => [
+    primaryKey({ columns: [table.configuration_id, table.workout_type_id] }),
+    pgPolicy("Authenticated can handle configurationsToWorkoutTypes", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const configurationToWorkoutTypeRelations = relations(
+  configurationToWorkoutType,
+  ({ one }) => ({
+    configuration: one(configuration, {
+      fields: [configurationToWorkoutType.configuration_id],
+      references: [configuration.id],
+    }),
+    workoutType: one(workoutType, {
+      fields: [configurationToWorkoutType.workout_type_id],
+      references: [workoutType.id],
+    }),
+  })
+);
+
+export const configurationToAvailableSpace = pgTable(
+  "configuration_to_available_space",
+  {
+    configuration_id: uuid()
+      .notNull()
+      .references(() => configuration.id, { onDelete: "cascade" }),
+    available_space_id: uuid()
+      .notNull()
+      .references(() => availableSpace.id, { onDelete: "cascade" }),
+  },
+  (table) => [
+    primaryKey({ columns: [table.configuration_id, table.available_space_id] }),
+    pgPolicy("Authenticated can handle configurationsToAvailableSpace", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const configurationToAvailableSpaceRelations = relations(
+  configurationToAvailableSpace,
+  ({ one }) => ({
+    configuration: one(configuration, {
+      fields: [configurationToAvailableSpace.configuration_id],
+      references: [configuration.id],
+    }),
+    avialableSpace: one(availableSpace, {
+      fields: [configurationToAvailableSpace.available_space_id],
+      references: [availableSpace.id],
+    }),
+  })
+);
