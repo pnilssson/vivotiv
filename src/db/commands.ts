@@ -4,7 +4,7 @@ import { program, programMetadata } from "./schema";
 import { z } from "zod";
 import { and, eq } from "drizzle-orm";
 
-export async function insertProgram(
+export async function insertProgramCommand(
   programObject: z.infer<typeof programSchema>,
   userId: string
 ) {
@@ -22,7 +22,7 @@ export async function insertProgram(
   return result[0].id;
 }
 
-export async function archiveProgram(programId: string, userId: string) {
+export async function archiveProgramCommand(programId: string, userId: string) {
   await db
     .update(program)
     .set({
@@ -31,7 +31,7 @@ export async function archiveProgram(programId: string, userId: string) {
     .where(and(eq(program.id, programId), eq(program.user_id, userId)));
 }
 
-export async function insertProgramMetadata(
+export async function insertProgramMetadataCommand(
   userId: string,
   prompt: string,
   programId: string

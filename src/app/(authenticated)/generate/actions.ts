@@ -5,7 +5,10 @@ import { generateObject } from "ai";
 import { createClient, getUserOrRedirect } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { FormResponse } from "@/types/types";
-import { insertProgram, insertProgramMetadata } from "@/db/commands";
+import {
+  insertProgramCommand,
+  insertProgramMetadataCommand,
+} from "@/db/commands";
 import { programRequestSchema, programSchema } from "@/lib/zod/schemas";
 import { redirect } from "next/navigation";
 
@@ -34,8 +37,8 @@ export async function generateProgramAction(
     temperature: 1.1,
   });
 
-  const programId = await insertProgram(program, user.id);
-  await insertProgramMetadata(user.id, prompt, programId);
+  const programId = await insertProgramCommand(program, user.id);
+  await insertProgramMetadataCommand(user.id, prompt, programId);
 
   revalidatePath("/programs", "page");
   redirect("/programs");

@@ -20,6 +20,16 @@ export interface ProgramMetadataResponse {
   endDate: string;
 }
 
+export interface ConfigurationResponse {
+  id: string;
+  userId: string;
+  sessions: number;
+  time: number;
+  workoutFocuses: WorkoutFocus[];
+  workoutTypes: WorkoutType[];
+  availableSpaces: AvailableSpace[];
+}
+
 export interface Exercise {
   id: string;
   title: string;
@@ -40,6 +50,21 @@ export interface Workout {
   description: string;
   warmup: WarmUp;
   exercises: Exercise[] | null;
+}
+
+export interface WorkoutFocus {
+  id: string;
+  name: string;
+}
+
+export interface WorkoutType {
+  id: string;
+  name: string;
+}
+
+export interface AvailableSpace {
+  id: string;
+  name: string;
 }
 
 export interface GenerateFormValues {

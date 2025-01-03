@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AxiomWebVitals } from "next-axiom";
 import "./globals.css";
 
 import { cn } from "@/lib/utils";
@@ -18,6 +19,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <AxiomWebVitals />
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",

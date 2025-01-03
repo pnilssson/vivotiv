@@ -1,6 +1,6 @@
 "use server";
 
-import { archiveProgram } from "@/db/commands";
+import { archiveProgramCommand } from "@/db/commands";
 import { db } from "@/db/db";
 import { createClient, getUserOrRedirect } from "@/lib/supabase/server";
 import { ProgramResponse } from "@/types/types";
@@ -11,7 +11,7 @@ export async function getProgram(id: string): Promise<ProgramResponse> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
 
-  const result = await db.query.program.findMany({
+  const result = await db.query.program.findFirst({
     where: (program, { eq, and }) =>
       and(
         eq(program.user_id, user.id),
@@ -20,7 +20,7 @@ export async function getProgram(id: string): Promise<ProgramResponse> {
       ),
   });
 
-  return result[0] as unknown as ProgramResponse;
+  return result as unknown as ProgramResponse;
 }
 
 export async function archiveProgramAction(data: FormData) {
@@ -28,7 +28,7 @@ export async function archiveProgramAction(data: FormData) {
   const user = await getUserOrRedirect(supabase);
 
   const programId = data.get("programId") as string;
-  await archiveProgram(programId, user.id);
+  await archiveProgramCommand(programId, user.id);
 
   revalidatePath("/programs", "page");
   redirect("/programs");
