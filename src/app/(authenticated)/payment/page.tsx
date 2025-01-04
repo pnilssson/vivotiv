@@ -29,9 +29,8 @@ export default async function Page() {
               <h3 className="text-base font-semibold text-purple-600">
                 One week of training
               </h3>
-              <p className="text-4xl font-bold text-black mt-4">
-                $1.99 <span className="text-sm">($1.99/week)</span>
-              </p>
+              <p className="text-4xl font-bold text-black mt-4">$1.99</p>
+              <p className="text-sm">($1.99/week)</p>
               <Button asChild className="mt-4 w-full">
                 <Link
                   href={getLinkWithEmail(
@@ -49,9 +48,8 @@ export default async function Page() {
               <h3 className="text-base font-semibold text-purple-600">
                 Four weeks of training
               </h3>
-              <p className="text-4xl font-bold text-black mt-4">
-                $4.99 <span className="text-sm">($1.25/week)</span>
-              </p>
+              <p className="text-4xl font-bold text-black mt-4">$4.99</p>
+              <p className="text-sm">($1.25/week)</p>
               <Button asChild className="mt-4 w-full">
                 <Link
                   href={getLinkWithEmail(
@@ -69,9 +67,8 @@ export default async function Page() {
               <h3 className="text-base font-semibold text-purple-600">
                 12 weeks of training
               </h3>
-              <p className="text-4xl font-bold text-black mt-4">
-                $11.99 <span className="text-sm">($0.99/week)</span>
-              </p>
+              <p className="text-4xl font-bold text-black mt-4">$11.99</p>
+              <p className="text-sm">($0.99/week)</p>
               <Button asChild className="mt-4 w-full">
                 <Link
                   href={getLinkWithEmail(
@@ -89,9 +86,8 @@ export default async function Page() {
               <h3 className="text-base font-semibold text-purple-600">
                 26 weeks of training
               </h3>
-              <p className="text-4xl font-bold text-black mt-4">
-                $19.99 <span className="text-sm">($0.77/week)</span>
-              </p>
+              <p className="text-4xl font-bold text-black mt-4">$19.99</p>
+              <p className="text-sm">($0.77/week)</p>
               <Button asChild className="mt-4 w-full">
                 <Link
                   href={getLinkWithEmail(

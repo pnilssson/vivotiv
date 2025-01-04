@@ -39,8 +39,8 @@ const items = [
     title: "Settings",
     subItems: [
       {
-        title: "Billing",
-        url: "/billing",
+        title: "Payment",
+        url: "/payment",
         icon: CreditCardIcon,
       },
     ],
