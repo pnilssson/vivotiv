@@ -25,29 +25,6 @@ export const programSchema = z.object({
   workouts: z.array(workoutSchema),
 });
 
-export const programRequestSchema = z.object({
-  startDate: z.date({
-    required_error: "Start date is required.",
-    invalid_type_error: "Invalid start date.",
-  }),
-  sessions: z.coerce
-    .number({
-      required_error: "Sessions is required.",
-    })
-    .positive()
-    .lte(7),
-  time: z.coerce
-    .number({
-      required_error: "Session length is required.",
-    })
-    .positive()
-    .gte(15, "Session length cannot be less than 15 minutes.")
-    .lte(60, "Session length cannot be more than 60 minutes."),
-  prioritize: z.string().array().nullable(),
-  types: z.string().array().nullable(),
-  equipment: z.string().array().nullable(),
-});
-
 export const configurationRequestSchema = z.object({
   id: z.string().nullable(),
   sessions: z.coerce
