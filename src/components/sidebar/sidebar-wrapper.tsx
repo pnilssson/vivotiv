@@ -19,7 +19,7 @@ export default async function Component({
       </AppSidebar>
       <SidebarInset>
         <Header />
-        <main className="py-4 px-4 container max-w-[1024px]">{children}</main>
+        <main className="py-8 px-8 max-w-[1280px] container">{children}</main>
       </SidebarInset>
     </SidebarProvider>
   );

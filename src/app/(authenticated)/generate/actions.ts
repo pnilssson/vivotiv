@@ -2,15 +2,16 @@
 
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import { createClient, getUserOrRedirect } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { FormResponse } from "@/types/types";
 import {
   insertProgramCommand,
   insertProgramMetadataCommand,
 } from "@/db/commands";
-import { programRequestSchema, programSchema } from "@/lib/zod/schemas";
+import { programRequestSchema, programSchema } from "@/lib/zod/schema";
 import { redirect } from "next/navigation";
+import { getUserOrRedirect } from "@/lib/server-utils";
 
 export async function generateProgramAction(
   _: any,

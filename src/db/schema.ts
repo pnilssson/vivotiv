@@ -149,7 +149,7 @@ export const configuration = pgTable(
 export const configurationRelations = relations(configuration, ({ many }) => ({
   workoutFocuses: many(configurationToWorkoutFocus),
   workoutTypes: many(configurationToWorkoutType),
-  availableSpaces: many(configurationToAvailableSpace),
+  environments: many(configurationToEnvironment),
 }));
 
 export const workoutFocus = pgTable(
@@ -190,14 +190,14 @@ export const workoutTypeRelations = relations(workoutType, ({ many }) => ({
   configurations: many(configurationToWorkoutType),
 }));
 
-export const availableSpace = pgTable(
-  "available_space",
+export const environment = pgTable(
+  "environment",
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
     name: text(),
   },
   (table) => [
-    pgPolicy("Authenticated can handle available space", {
+    pgPolicy("Authenticated can handle environment", {
       for: "all",
       to: authenticatedRole,
       using: sql`true`,
@@ -205,12 +205,9 @@ export const availableSpace = pgTable(
   ]
 ).enableRLS();
 
-export const availableSpaceRelations = relations(
-  availableSpace,
-  ({ many }) => ({
-    configurations: many(configuration),
-  })
-);
+export const environmentRelations = relations(environment, ({ many }) => ({
+  configurations: many(configuration),
+}));
 
 export const configurationToWorkoutFocus = pgTable(
   "configuration_to_workout_focus",
@@ -280,19 +277,19 @@ export const configurationToWorkoutTypeRelations = relations(
   })
 );
 
-export const configurationToAvailableSpace = pgTable(
-  "configuration_to_available_space",
+export const configurationToEnvironment = pgTable(
+  "configuration_to_environment",
   {
     configuration_id: uuid()
       .notNull()
       .references(() => configuration.id, { onDelete: "cascade" }),
-    available_space_id: uuid()
+    environment_id: uuid()
       .notNull()
-      .references(() => availableSpace.id, { onDelete: "cascade" }),
+      .references(() => environment.id, { onDelete: "cascade" }),
   },
   (table) => [
-    primaryKey({ columns: [table.configuration_id, table.available_space_id] }),
-    pgPolicy("Authenticated can handle configurationsToAvailableSpace", {
+    primaryKey({ columns: [table.configuration_id, table.environment_id] }),
+    pgPolicy("Authenticated can handle configurationsToEnvironment", {
       for: "all",
       to: authenticatedRole,
       using: sql`true`,
@@ -300,16 +297,16 @@ export const configurationToAvailableSpace = pgTable(
   ]
 ).enableRLS();
 
-export const configurationToAvailableSpaceRelations = relations(
-  configurationToAvailableSpace,
+export const configurationToEnvironmentRelations = relations(
+  configurationToEnvironment,
   ({ one }) => ({
     configuration: one(configuration, {
-      fields: [configurationToAvailableSpace.configuration_id],
+      fields: [configurationToEnvironment.configuration_id],
       references: [configuration.id],
     }),
-    avialableSpace: one(availableSpace, {
-      fields: [configurationToAvailableSpace.available_space_id],
-      references: [availableSpace.id],
+    environment: one(environment, {
+      fields: [configurationToEnvironment.environment_id],
+      references: [environment.id],
     }),
   })
 );

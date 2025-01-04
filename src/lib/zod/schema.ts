@@ -43,7 +43,28 @@ export const programRequestSchema = z.object({
     .positive()
     .gte(15, "Session length cannot be less than 15 minutes.")
     .lte(60, "Session length cannot be more than 60 minutes."),
-  prioritize: z.nullable(z.array(z.string())),
-  types: z.nullable(z.array(z.string())),
-  equipment: z.nullable(z.array(z.string())),
+  prioritize: z.string().array().nullable(),
+  types: z.string().array().nullable(),
+  equipment: z.string().array().nullable(),
+});
+
+export const configurationRequestSchema = z.object({
+  id: z.string().nullable(),
+  sessions: z.coerce
+    .number({
+      required_error: "Sessions is required.",
+    })
+    .positive()
+    .lte(7),
+  time: z.coerce
+    .number({
+      required_error: "Session length is required.",
+    })
+    .positive()
+    .gte(15, "Session length cannot be less than 15 minutes.")
+    .lte(60, "Session length cannot be more than 60 minutes."),
+  workoutFocuses: z.string().array().nullable(),
+  workoutTypes: z.string().array().nullable(),
+  environments: z.string().array().nullable(),
+  equipment: z.string().nullable(),
 });

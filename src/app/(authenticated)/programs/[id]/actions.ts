@@ -2,7 +2,8 @@
 
 import { archiveProgramCommand } from "@/db/commands";
 import { db } from "@/db/db";
-import { createClient, getUserOrRedirect } from "@/lib/supabase/server";
+import { getUserOrRedirect } from "@/lib/server-utils";
+import { createClient } from "@/lib/supabase/server";
 import { ProgramResponse } from "@/types/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";

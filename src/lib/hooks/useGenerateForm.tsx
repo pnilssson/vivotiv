@@ -4,10 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 // Types
 import { GenerateFormValues } from "@/types/types";
-import { programRequestSchema } from "../zod/schemas";
+import { programRequestSchema } from "../zod/schema";
 
 export default function useGenerateForm(
-  defaultValues?: DefaultValues<GenerateFormValues>,
+  defaultValues?: DefaultValues<GenerateFormValues>
 ) {
   const form = useForm<z.infer<typeof programRequestSchema>>({
     resolver: zodResolver(programRequestSchema),

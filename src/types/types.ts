@@ -27,7 +27,8 @@ export interface ConfigurationResponse {
   time: number;
   workoutFocuses: WorkoutFocus[];
   workoutTypes: WorkoutType[];
-  availableSpaces: AvailableSpace[];
+  environments: Environment[];
+  equipment: string;
 }
 
 export interface Exercise {
@@ -62,7 +63,7 @@ export interface WorkoutType {
   name: string;
 }
 
-export interface AvailableSpace {
+export interface Environment {
   id: string;
   name: string;
 }

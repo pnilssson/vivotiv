@@ -1,8 +1,16 @@
-import { programSchema } from "@/lib/zod/schemas";
+import { configurationRequestSchema, programSchema } from "@/lib/zod/schema";
 import { db } from "./db"; // Make sure to import your database connection
-import { program, programMetadata } from "./schema";
+import {
+  configuration,
+  configurationToEnvironment,
+  configurationToWorkoutFocus,
+  configurationToWorkoutType,
+  program,
+  programMetadata,
+} from "./schema";
 import { z } from "zod";
-import { and, eq } from "drizzle-orm";
+import { and, eq, inArray } from "drizzle-orm";
+import { WorkoutFocus } from "@/types/types";
 
 export async function insertProgramCommand(
   programObject: z.infer<typeof programSchema>,
@@ -20,6 +28,90 @@ export async function insertProgramCommand(
     .returning({ id: program.id });
 
   return result[0].id;
+}
+
+export async function insertOrUpdateConfigurationCommand(
+  configurationObject: z.infer<typeof configurationRequestSchema>,
+  userId: string
+) {
+  await db.transaction(async (trx) => {
+    let configurationId = configurationObject.id;
+    // If no configurationId, insert a new configuration
+    if (!configurationId) {
+      const newConfig = await trx
+        .insert(configuration)
+        .values({
+          user_id: userId,
+          sessions: configurationObject.sessions,
+          time: configurationObject.time,
+          equipment: configurationObject.equipment,
+        })
+        .returning({ id: configuration.id });
+
+      configurationId = newConfig[0].id;
+    }
+
+    // If configurationId exists, update the configuration
+    if (configurationId) {
+      const updatedConfig = await trx
+        .update(configuration)
+        .set({
+          user_id: userId,
+          sessions: configurationObject.sessions,
+          time: configurationObject.time,
+          equipment: configurationObject.equipment,
+        })
+        .where(eq(configuration.id, configurationId))
+        .returning({ id: configuration.id });
+
+      configurationId = updatedConfig[0].id;
+    }
+
+    // Update many-to-many relationships
+    const { workoutFocuses, workoutTypes, environments } = configurationObject;
+
+    // Handle workoutFocuses
+    await trx
+      .delete(configurationToWorkoutFocus)
+      .where(eq(configurationToWorkoutFocus.configuration_id, configurationId));
+
+    if (workoutFocuses && workoutFocuses?.length > 0) {
+      await trx.insert(configurationToWorkoutFocus).values(
+        workoutFocuses.map((id) => ({
+          configuration_id: configurationId,
+          workout_focus_id: id,
+        }))
+      );
+    }
+
+    // Handle workoutTypes
+    await trx
+      .delete(configurationToWorkoutType)
+      .where(eq(configurationToWorkoutType.configuration_id, configurationId));
+
+    if (workoutTypes && workoutTypes?.length > 0) {
+      await trx.insert(configurationToWorkoutType).values(
+        workoutTypes.map((id) => ({
+          configuration_id: configurationId,
+          workout_type_id: id,
+        }))
+      );
+    }
+
+    // Handle environments
+    await trx
+      .delete(configurationToEnvironment)
+      .where(eq(configurationToEnvironment.configuration_id, configurationId));
+
+    if (environments && environments?.length > 0) {
+      await trx.insert(configurationToEnvironment).values(
+        environments.map((id) => ({
+          configuration_id: configurationId,
+          environment_id: id,
+        }))
+      );
+    }
+  });
 }
 
 export async function archiveProgramCommand(programId: string, userId: string) {

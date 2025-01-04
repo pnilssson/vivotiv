@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 
 import { z } from "zod";
 import { setPreferredSignInView } from "../server-utils";
+import { log } from "next-axiom";
 
 export async function signOut(_: FormData) {
   const supabase = await createClient();
@@ -46,6 +47,7 @@ export async function signInWithOtp(
   });
 
   if (error) {
+    log.error("Error during signInWithOtp.", error);
     redirect("/error");
   }
 
@@ -87,6 +89,7 @@ export async function signInWithPassword(
   });
 
   if (error) {
+    log.error("Error during signInWithPassword.", error);
     redirect("/error");
   }
 
@@ -119,6 +122,7 @@ export async function signUpWithPassword(
   });
 
   if (error) {
+    log.error("Error during signUpWithPassword.", error);
     redirect("/error");
   }
 

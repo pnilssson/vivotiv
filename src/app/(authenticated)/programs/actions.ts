@@ -1,6 +1,7 @@
 import { db } from "@/db/db";
 import { program } from "@/db/schema";
-import { createClient, getUserOrRedirect } from "@/lib/supabase/server";
+import { getUserOrRedirect } from "@/lib/server-utils";
+import { createClient } from "@/lib/supabase/server";
 import { ProgramMetadataResponse } from "@/types/types";
 import { and, eq } from "drizzle-orm";
 
