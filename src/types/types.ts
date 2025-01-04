@@ -67,12 +67,3 @@ export interface Environment {
   id: string;
   name: string;
 }
-
-export interface GenerateFormValues {
-  startDate: Date;
-  sessions: number;
-  time: number;
-  prioritize: string[] | null;
-  types: string[] | null;
-  equipment: string[] | null;
-}

@@ -40,10 +40,6 @@ export default async function Page() {
 
   // const activeProgram = findProgram(programs);
 
-  // if (!activeProgram) {
-  //   redirect("/generate/general");
-  // }
-
   // redirect(`/programs/${activeProgram?.id}`);
 
   return <div></div>;

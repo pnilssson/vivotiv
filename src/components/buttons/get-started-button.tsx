@@ -12,7 +12,8 @@ export default function Component({
 }) {
   return (
     <Button className={classes ?? classes} asChild>
-      <Link href="/auth/signin">{content}</Link>
+      {/* <Link href="/auth/signin">{content}</Link> */}
+      <Link href="#">{content}</Link>
     </Button>
   );
 }
