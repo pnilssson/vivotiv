@@ -133,7 +133,7 @@ export default async function Page() {
         </div>
       </section>
       <section className="flex flex-col container py-2">
-        <div className="rounded-xl bg-slate-100 px-8 md:px-24 py-12">
+        <div className="rounded-xl bg-slate-100 px-8 md:px-24 2xl:px-12 py-12 flex flex-col">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-4xl md:text-6xl font-semibold">
               Pricing & Plans
@@ -143,71 +143,78 @@ export default async function Page() {
               of.
             </p>
           </div>
-          <div className="grid max-w-md grid-cols-1 gap-6 mx-auto mt-6 xl:max-w-full xl:mt-16 xl:grid-cols-3">
-            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:max-h-96 md:my-auto">
-              <div className="p-8 xl:px-12">
+          <div className="grid max-w-md grid-cols-1 gap-6 mx-auto mt-6 lg:grid-cols-2 lg:max-w-full 2xl:grid-cols-4">
+            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg lg:h-80 2xl:h-96 md:my-auto">
+              <div className="p-8 h-full flex flex-col">
                 <h3 className="text-base font-semibold text-purple-600">
                   Get started
                 </h3>
-                <p className="text-5xl font-bold text-black mt-7">
-                  $17<span className="text-sm">/month</span>
+                <p className="text-3xl font-bold text-black mt-8">
+                  $1.99 <span className="text-sm">($1.99/week)</span>
                 </p>
-                <p className="mt-2 text-base text-muted-foreground">
+                <p className="mt-4 text-base text-muted-foreground">
                   One-time payment
                 </p>
                 <p className="mt-8">
-                  The 21/90 rule states that it takes 21 days to make a habit.
-                  Get started with three weeks worth of training program.
+                  Get started with one week worth of training program.
                 </p>
-                <GetStartedButton
-                  content="Get started"
-                  classes="py-4 mt-6 bg-emerald-400 hover:bg-emerald-400/90 shadow-lg w-full"
-                />
+              </div>
+            </div>
+
+            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg lg:h-80 2xl:h-96 md:my-auto">
+              <div className="p-8 h-full flex flex-col">
+                <h3 className="text-base font-semibold text-purple-600">
+                  Make it a habit
+                </h3>
+                <p className="text-3xl font-bold text-black mt-8">
+                  $4.99 <span className="text-sm">($1.25/week)</span>
+                </p>
+                <p className="mt-4 text-base text-gray-600">One-time payment</p>
+                <p className="mt-8">
+                  The 21/90 rule states that it takes 21 days to make a habit.
+                  Get four weeks of training program.
+                </p>
               </div>
             </div>
 
             <ShineBorder
               className="overflow-hidden rounded-lg shadow-lg"
               color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}>
-              <div className="p-8 xl:px-12">
+              <div className="p-8 h-full flex flex-col 2xl:h-96">
                 <h3 className="text-base font-semibold text-purple-600">
                   Create a lifestyle
                 </h3>
-                <p className="text-5xl font-bold text-black mt-7">
-                  $12<span className="text-sm">/month</span>
+                <p className="text-3xl font-bold text-black mt-8">
+                  $11.99 <span className="text-sm">($0.99/week)</span>
                 </p>
-                <p className="mt-2 text-base text-gray-600">One-time payment</p>
-                <p className="my-8">
-                  It takes 90 days to make it a permanent lifestyle change. Make
-                  it a lifestyle and get twelve weeks of training program.
+                <p className="mt-4 text-base text-gray-600">One-time payment</p>
+                <p className="mt-8">
+                  It takes 90 days to make it a permanent lifestyle change. Get
+                  12 weeks of training program.
                 </p>
-                <GetStartedButton
-                  content="Get started"
-                  classes="py-4 mt-6 bg-gradient-to-br from-emerald-400 to-sky-400 hover:from-emerald-400/35 hover:to-sky-400/75 shadow-lg w-full"
-                />
               </div>
             </ShineBorder>
 
-            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:max-h-96 md:my-auto">
-              <div className="p-8 xl:px-12">
+            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg lg:h-80 2xl:h-96 md:my-auto">
+              <div className="p-8 h-full flex flex-col">
                 <h3 className="text-base font-semibold text-purple-600">
                   Never look back
                 </h3>
-                <p className="text-5xl font-bold text-black mt-7">
-                  $7<span className="text-sm">/month</span>
+                <p className="text-3xl font-bold text-black mt-8">
+                  $19.99 <span className="text-sm">($0.77/week)</span>
                 </p>
-                <p className="mt-2 text-base text-gray-600">One-time payment</p>
+                <p className="mt-4 text-base text-gray-600">One-time payment</p>
                 <p className="mt-8">
                   But creating a healthy lifestyle is not a sprint, it is a
-                  marathon. Get a whole year of training program.
+                  marathon. Get 26 weeks of training program.
                 </p>
-                <GetStartedButton
-                  content="Get started"
-                  classes="py-4 mt-6 bg-emerald-400 hover:bg-emerald-400/90 shadow-lg w-full"
-                />
               </div>
             </div>
           </div>
+          <GetStartedButton
+            content="Join now"
+            classes="py-4 mt-12 sm:w-96 w-full mx-auto bg-gradient-to-br from-emerald-400 to-sky-400 hover:from-emerald-400/35 hover:to-sky-400/75 shadow-lg"
+          />
         </div>
       </section>
       <Footer />
