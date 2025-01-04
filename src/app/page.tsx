@@ -150,7 +150,7 @@ export default async function Page() {
                   Get started
                 </h3>
                 <p className="text-5xl font-bold text-black mt-7">
-                  €17<span className="text-sm">/month</span>
+                  $17<span className="text-sm">/month</span>
                 </p>
                 <p className="mt-2 text-base text-muted-foreground">
                   One-time payment
@@ -174,7 +174,7 @@ export default async function Page() {
                   Create a lifestyle
                 </h3>
                 <p className="text-5xl font-bold text-black mt-7">
-                  €12<span className="text-sm">/month</span>
+                  $12<span className="text-sm">/month</span>
                 </p>
                 <p className="mt-2 text-base text-gray-600">One-time payment</p>
                 <p className="my-8">
@@ -194,7 +194,7 @@ export default async function Page() {
                   Never look back
                 </h3>
                 <p className="text-5xl font-bold text-black mt-7">
-                  €7<span className="text-sm">/month</span>
+                  $7<span className="text-sm">/month</span>
                 </p>
                 <p className="mt-2 text-base text-gray-600">One-time payment</p>
                 <p className="mt-8">
