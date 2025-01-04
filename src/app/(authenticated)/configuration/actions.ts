@@ -21,9 +21,7 @@ import { log } from "next-axiom";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function getConfiguration(): Promise<
-  ConfigurationResponse | undefined
-> {
+export async function getConfiguration(): Promise<ConfigurationResponse | null> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
   return await getConfigurationQuery(user.id);

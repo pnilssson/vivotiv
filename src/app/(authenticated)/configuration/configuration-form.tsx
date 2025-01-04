@@ -10,8 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { startTransition, useActionState, useState } from "react";
-import { Label } from "@/components/ui/label";
+import { useActionState } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { setConfiguration } from "./actions";
 import { initialFormState } from "@/lib/constants";
@@ -35,8 +34,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { configurationRequestSchema } from "@/lib/zod/schema";
 
-const numberOfSessions = [1, 2, 3, 4, 5, 6, 7];
-
 export default function Component({
   configuration,
   workoutFocus,
@@ -52,7 +49,6 @@ export default function Component({
     setConfiguration,
     initialFormState
   );
-  console.log(configuration);
 
   const form = useForm<z.infer<typeof configurationRequestSchema>>({
     resolver: zodResolver(configurationRequestSchema),
@@ -128,7 +124,7 @@ export default function Component({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {numberOfSessions.map((sessionNumber) => (
+                          {[1, 2, 3, 4, 5, 6, 7].map((sessionNumber) => (
                             <SelectItem
                               key={sessionNumber}
                               value={sessionNumber.toString()}>
