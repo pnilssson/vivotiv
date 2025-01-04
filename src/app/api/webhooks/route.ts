@@ -41,15 +41,15 @@ export async function POST(req: Request) {
             );
 
           if (result) {
-            const tokens = getTokens(checkoutSession.amount_total);
+            log.info("Handling completed checkout session: ", checkoutSession);
             await updateProgramTokensCommand(
               result?.id,
               parseInt(result?.program_tokens),
-              tokens
+              parseInt(checkoutSession.metadata!.tokens)
             );
             log.info("Tokens added to user.", {
               email: checkoutSession.customer_details?.email,
-              tokens: tokens,
+              tokens: checkoutSession.metadata!.tokens,
             });
           }
         }
@@ -68,18 +68,4 @@ export async function POST(req: Request) {
   }
 
   return new Response(JSON.stringify({ received: true }));
-}
-
-function getTokens(amountTotal: number | null): number {
-  if (amountTotal === 17) {
-    return 3;
-  }
-  if (amountTotal === 36) {
-    return 12;
-  }
-  if (amountTotal === 84) {
-    return 52;
-  }
-
-  return 0;
 }

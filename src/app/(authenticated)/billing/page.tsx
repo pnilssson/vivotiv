@@ -53,7 +53,7 @@ export default async function Page() {
                 asChild
                 className="py-4 mt-4 bg-emerald-400 hover:bg-emerald-400/90 shadow-lg w-full">
                 <Link
-                  href="https://buy.stripe.com/test_cN24i35CO8zZ2k05kk"
+                  href="https://buy.stripe.com/test_8wM4i31my6rRe2IdQR"
                   target="_blank">
                   Buy now
                 </Link>
@@ -74,7 +74,7 @@ export default async function Page() {
                 asChild
                 className="py-4 mt-4 bg-emerald-400 hover:bg-emerald-400/90 shadow-lg w-full">
                 <Link
-                  href="https://buy.stripe.com/test_cN24i35CO8zZ2k05kk"
+                  href="https://buy.stripe.com/test_4gwbKv3uGg2r7Ek28a"
                   target="_blank">
                   Buy now
                 </Link>
