@@ -4,8 +4,8 @@ import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 
 export default function Component() {
   return (
-    <section className="py-10 sm:pt-16 md:pt-24 container">
-      <div className=" mb-8 rounded-xl bg-gradient-to-br from-emerald-100 to-sky-100 px-8 md:px-24 py-12">
+    <section className="pt-2 pb-4 container">
+      <div className="rounded-xl bg-gradient-to-br from-emerald-100 to-sky-100 px-8 md:px-24 py-12">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-y-16 gap-x-12">
           <div className="col-span-2 lg:pr-8">
             <h4 className="font-bold text-2xl">Vivotiv</h4>
@@ -20,8 +20,7 @@ export default function Component() {
               <li className="bg-slate-800 p-2 rounded-full">
                 <Link
                   href="https://www.linkedin.com/in/pnilssson/"
-                  target="_blank"
-                >
+                  target="_blank">
                   <LinkedInLogoIcon color="white" />
                 </Link>
               </li>
@@ -38,8 +37,7 @@ export default function Component() {
                 <Link
                   href="#"
                   title=""
-                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600"
-                >
+                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
                   About
                 </Link>
               </li>
@@ -48,8 +46,7 @@ export default function Component() {
                 <Link
                   href="#"
                   title=""
-                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600"
-                >
+                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
                   Contact us
                 </Link>
               </li>
@@ -66,8 +63,7 @@ export default function Component() {
                 <Link
                   href="#"
                   title=""
-                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600"
-                >
+                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
                   Terms & Conditions
                 </Link>
               </li>
@@ -76,8 +72,7 @@ export default function Component() {
                 <Link
                   href="#"
                   title=""
-                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600"
-                >
+                  className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
                   Privacy Policy
                 </Link>
               </li>

@@ -3,6 +3,7 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import GridPattern from "@/components/magicui/grid-pattern";
 import ShineBorder from "@/components/magicui/shine-border";
+import WaitingListForm from "@/components/waiting-list-form";
 import { cn } from "@/lib/utils";
 import {
   Crosshair2Icon,
@@ -38,8 +39,8 @@ export default async function Page() {
           )}
         />
       </main>
-      <section className="flex flex-col container mt-48 md:mt-64">
-        <div className="mb-8 rounded-xl bg-gradient-to-br from-emerald-100 to-sky-100 px-8 md:px-24 py-12">
+      <section className="flex flex-col container mt-48 md:mt-64 pb-2">
+        <div className="rounded-xl bg-gradient-to-br from-emerald-100 to-sky-100 px-8 md:px-24 py-12">
           <p className="flex flex-row font-semibold text-emerald-400">
             Easy as 1, 2, 3, <ResetIcon className="ml-1 mt-1" />
           </p>
@@ -65,8 +66,7 @@ export default async function Page() {
                 </h3>
                 <p className="text-muted-foreground mt-4">
                   The programs will be tailor-made based on your needs and takes
-                  previous experience, injures, available equipment, goals and
-                  more in consideration.
+                  available equipment, goals and more in consideration.
                 </p>
               </div>
             </div>
@@ -80,8 +80,7 @@ export default async function Page() {
                 </h3>
                 <p className="text-muted-foreground mt-4">
                   We use AI to generate personalized traning program based on
-                  your configuration. We will offer you multiple suggestions to
-                  choose from.
+                  your configuration.
                 </p>
               </div>
             </div>
@@ -116,10 +115,25 @@ export default async function Page() {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
       </section>
-      <section className="py-10 bg-white sm:py-16 lg:py-24">
-        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <section className="flex flex-col container py-2">
+        <div className="rounded-xl bg-slate-100 px-8 md:px-24 py-12 flex gap-4 md:flex-row">
+          <div className="">
+            <h2 className="text-4xl md:text-6xl font-semibold">Interested?</h2>
+            <p className="text-muted-foreground mt-4 max-w-96">
+              We're delighted that you are checking us in! Our platform is
+              currently in development, and we anticipate being ready by early
+              February 2025. If you would like to be notified when we go live,
+              please share your contact information below.
+            </p>
+          </div>
+          <div className="md:min-w-96 mx-auto my-auto">
+            <WaitingListForm />
+          </div>
+        </div>
+      </section>
+      <section className="flex flex-col container py-2">
+        <div className="rounded-xl bg-slate-100 px-8 md:px-24 py-12">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-4xl md:text-6xl font-semibold mt-2 md:mt-4">
               Pricing & Plans
@@ -153,7 +167,7 @@ export default async function Page() {
             </div>
 
             <ShineBorder
-              className="overflow-hidden bg-white rounded-lg shadow-lg"
+              className="overflow-hidden rounded-lg shadow-lg"
               color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}>
               <div className="p-8 xl:px-12">
                 <h3 className="text-base font-semibold text-purple-600">

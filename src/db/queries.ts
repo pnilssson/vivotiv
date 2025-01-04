@@ -20,8 +20,7 @@ export const getConfigurationQuery = cache(async (userId: string) => {
         with: { environment: true },
       },
     },
-    where: (configuration, { eq, and }) =>
-      and(eq(configuration.user_id, userId)),
+    where: (configuration, { eq }) => eq(configuration.user_id, userId),
   });
 
   if (!result) return null; // Handle case when no configuration is found

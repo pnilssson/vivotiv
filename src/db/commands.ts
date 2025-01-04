@@ -1,5 +1,5 @@
 import { configurationRequestSchema, programSchema } from "@/lib/zod/schema";
-import { db } from "./db"; // Make sure to import your database connection
+import { db } from "./db";
 import {
   configuration,
   configurationToEnvironment,
@@ -9,8 +9,7 @@ import {
   programMetadata,
 } from "./schema";
 import { z } from "zod";
-import { and, eq, inArray } from "drizzle-orm";
-import { WorkoutFocus } from "@/types/types";
+import { and, eq } from "drizzle-orm";
 
 export async function insertProgramCommand(
   programObject: z.infer<typeof programSchema>,

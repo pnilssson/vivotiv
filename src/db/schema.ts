@@ -61,6 +61,21 @@ export const profileRelations = relations(profile, ({ many }) => ({
   configurations: many(configuration),
 }));
 
+export const waitingList = pgTable(
+  "waiting_list",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    email: text().notNull(),
+  },
+  (table) => [
+    pgPolicy("Anyone can insert to waiting list", {
+      for: "insert",
+      to: anonRole,
+      withCheck: sql`true`,
+    }),
+  ]
+).enableRLS();
+
 export const program = pgTable(
   "program",
   {

@@ -73,7 +73,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-#nav > div {
-  width: 100%;
-}

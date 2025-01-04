@@ -15,6 +15,13 @@
       "when": 1735910188414,
       "tag": "0001_living_grey_gargoyle",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1735978376805,
+      "tag": "0002_nappy_morlocks",
+      "breakpoints": true
     }
   ]
 }
