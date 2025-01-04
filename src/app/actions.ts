@@ -3,7 +3,6 @@
 import { db } from "@/db/db";
 import { waitingList } from "@/db/schema";
 import { FormResponse } from "@/types/types";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 
 const emailSchema = z.object({
@@ -25,6 +24,7 @@ export async function addToWaitingList(
     return {
       success: validated.success,
       errors: validated.error.issues,
+      message: null,
     };
   }
 
@@ -33,12 +33,20 @@ export async function addToWaitingList(
   });
 
   if (alreadyInList) {
-    redirect("/");
+    return {
+      success: false,
+      errors: [],
+      message: "This email has already been added to the waiting list!",
+    };
   }
 
   await db.insert(waitingList).values({
     email: validated.data.email,
   });
 
-  redirect("/");
+  return {
+    success: true,
+    errors: [],
+    message: "Happy to hear that you're interested. We'll be in touch soon!",
+  };
 }

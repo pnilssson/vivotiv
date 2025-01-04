@@ -36,6 +36,7 @@ export async function signInWithOtp(
     return {
       success: validated.success,
       errors: validated.error.issues,
+      message: null,
     };
   }
 
@@ -80,6 +81,7 @@ export async function signInWithPassword(
     return {
       success: validated.success,
       errors: validated.error.issues,
+      message: null,
     };
   }
 
@@ -113,6 +115,7 @@ export async function signUpWithPassword(
     return {
       success: validated.success,
       errors: validated.error.issues,
+      message: null,
     };
   }
 

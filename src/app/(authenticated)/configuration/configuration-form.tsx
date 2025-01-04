@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { setConfiguration } from "./actions";
 import { initialFormState } from "@/lib/constants";
@@ -33,6 +33,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { configurationRequestSchema } from "@/lib/zod/schema";
+import { useToast } from "@/lib/hooks/use-toast";
 
 export default function Component({
   configuration,
@@ -45,10 +46,22 @@ export default function Component({
   workoutTypes: WorkoutType[];
   workoutEnvironments: Environment[];
 }) {
+  const { toast } = useToast();
   const [state, formAction] = useActionState(
     setConfiguration,
     initialFormState
   );
+
+  useEffect(() => {
+    if (state) {
+      if (state.message && state.success) {
+        toast({ description: state.message, variant: "success" });
+      }
+      if (state.message && !state.success) {
+        toast({ description: state.message, variant: "destructive" });
+      }
+    }
+  }, [state, state.message]);
 
   const form = useForm<z.infer<typeof configurationRequestSchema>>({
     resolver: zodResolver(configurationRequestSchema),

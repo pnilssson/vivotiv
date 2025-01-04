@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import Script from "next/script";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Vivotiv",
@@ -28,6 +29,7 @@ export default async function RootLayout({
           GeistMono.variable
         )}>
         {children}
+        <Toaster />
         <Script
           defer
           src="https://cloud.umami.is/script.js"

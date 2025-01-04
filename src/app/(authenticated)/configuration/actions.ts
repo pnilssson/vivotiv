@@ -51,6 +51,7 @@ export async function setConfiguration(
     return {
       success: validated.success,
       errors: validated.error.issues,
+      message: null,
     };
   }
 
@@ -58,8 +59,17 @@ export async function setConfiguration(
     await insertOrUpdateConfigurationCommand(validated.data, user.id);
   } catch (error) {
     log.error("Error during setConfiguration.", error as any);
+    return {
+      success: false,
+      errors: [],
+      message: "An error occurred when saving the configuration.",
+    };
   }
 
   revalidatePath("/", "layout");
-  redirect("/configuration");
+  return {
+    success: true,
+    errors: [],
+    message: "Configuration successfully updated.",
+  };
 }

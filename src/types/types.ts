@@ -3,6 +3,7 @@ import { ZodIssue } from "zod";
 export interface FormResponse {
   success: boolean;
   errors: ZodIssue[];
+  message: string | null;
 }
 
 export interface ProgramResponse {

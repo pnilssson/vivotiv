@@ -1,17 +1,27 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import SubmitButton from "./buttons/submit-button";
 import ErrorMessages from "./shared/error-messages";
 import { Input } from "./ui/input";
 import { addToWaitingList } from "@/app/actions";
 import { initialFormState } from "@/lib/constants";
+import { useToast } from "@/lib/hooks/use-toast";
 
 export default function Component() {
+  const { toast } = useToast();
   const [state, formAction] = useActionState(
     addToWaitingList,
     initialFormState
   );
+
+  useEffect(() => {
+    if (state) {
+      if (state.message) {
+        toast({ description: state.message, variant: "success" });
+      }
+    }
+  }, [state, state.message]);
 
   return (
     <form action={formAction}>
