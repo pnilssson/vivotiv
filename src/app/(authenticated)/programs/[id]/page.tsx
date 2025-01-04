@@ -30,7 +30,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const program = await getProgram(params.id);
 
   if (!program) {
-    redirect("/generate/general");
+    redirect("/programs");
   }
 
   const WorkoutsAccordion = ({ workouts }: { workouts: Workout[] | null }) => {
