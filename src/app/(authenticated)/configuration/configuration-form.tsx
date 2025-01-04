@@ -40,7 +40,7 @@ export default function Component({
   workoutTypes,
   workoutEnvironments,
 }: {
-  configuration: ConfigurationResponse | undefined;
+  configuration: ConfigurationResponse | null;
   workoutFocus: WorkoutFocus[];
   workoutTypes: WorkoutType[];
   workoutEnvironments: Environment[];

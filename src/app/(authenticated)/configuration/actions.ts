@@ -48,8 +48,6 @@ export async function setConfiguration(
 
   const validated = configurationRequestSchema.safeParse(formData);
   if (!validated.success) {
-    console.log(validated.error);
-
     return {
       success: validated.success,
       errors: validated.error.issues,
