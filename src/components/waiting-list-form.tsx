@@ -18,7 +18,7 @@ export default function Component() {
       <div className="flex flex-col gap-2">
         <div className="grid gap-2">
           <h3 className="text-lg font-semibold tracking-tight">
-            We'll be in touch
+            We&apos;ll be in touch!
           </h3>
           <Input
             autoComplete="email"

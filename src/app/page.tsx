@@ -121,7 +121,7 @@ export default async function Page() {
           <div className="">
             <h2 className="text-4xl md:text-6xl font-semibold">Interested?</h2>
             <p className="text-muted-foreground mt-4 max-w-96">
-              We're delighted that you are checking us in! Our platform is
+              We&apos;re delighted that you are checking us in! Our platform is
               currently in development, and we anticipate being ready by early
               February 2025. If you would like to be notified when we go live,
               please share your contact information below.
