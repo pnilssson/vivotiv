@@ -10,6 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { FileTextIcon, SettingsIcon } from "lucide-react";
 import Link from "next/link";
@@ -34,6 +35,7 @@ export default function Component({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
+  const { setOpenMobile } = useSidebar();
 
   return (
     <Sidebar>
@@ -57,7 +59,7 @@ export default function Component({
                   <SidebarMenuButton
                     asChild
                     isActive={pathname.startsWith(item.url)}>
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={() => setOpenMobile(false)}>
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>
