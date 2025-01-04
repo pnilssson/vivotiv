@@ -24,8 +24,8 @@ const items = [
     title: "Application",
     subItems: [
       {
-        title: "Programs",
-        url: "/programs",
+        title: "Program",
+        url: "/program",
         icon: FileTextIcon,
       },
       {

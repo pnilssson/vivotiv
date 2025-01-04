@@ -46,9 +46,11 @@ export default async function Page() {
     <>
       <div className="grid gap-2">
         <div className="text-2xl font-semibold leading-none tracking-tight">
-          Programs
+          Program
         </div>
-        <div className="text-sm text-muted-foreground"></div>
+        <div className="text-sm text-muted-foreground">
+          This is your current training program.
+        </div>
       </div>
     </>
   );
