@@ -117,7 +117,7 @@ export default async function Page() {
         </div>
       </section>
       <section className="flex flex-col container py-2">
-        <div className="rounded-xl bg-slate-100 px-8 md:px-24 py-12 flex gap-4 md:flex-row">
+        <div className="rounded-xl bg-slate-100 px-8 md:px-24 py-12 flex flex-col md:flex-row gap-4">
           <div className="">
             <h2 className="text-4xl md:text-6xl font-semibold">Interested?</h2>
             <p className="text-muted-foreground mt-4 max-w-96">
@@ -127,7 +127,7 @@ export default async function Page() {
               please share your contact information below.
             </p>
           </div>
-          <div className="md:min-w-96 mx-auto my-auto">
+          <div className="md:min-w-96 md:mx-auto my-auto">
             <WaitingListForm />
           </div>
         </div>
@@ -135,7 +135,7 @@ export default async function Page() {
       <section className="flex flex-col container py-2">
         <div className="rounded-xl bg-slate-100 px-8 md:px-24 py-12">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-4xl md:text-6xl font-semibold mt-2 md:mt-4">
+            <h2 className="text-4xl md:text-6xl font-semibold">
               Pricing & Plans
             </h2>
             <p className="text-muted-foreground mt-4 max-w-80 md:max-w-xl mx-auto">
