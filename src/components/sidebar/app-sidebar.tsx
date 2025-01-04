@@ -10,22 +10,40 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { FileTextIcon, SettingsIcon } from "lucide-react";
+import { CreditCardIcon, FileTextIcon, SettingsIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const items = [
   {
-    title: "Programs",
-    url: "/programs",
-    icon: FileTextIcon,
+    title: "Application",
+    subItems: [
+      {
+        title: "Programs",
+        url: "/programs",
+        icon: FileTextIcon,
+      },
+      {
+        title: "Configuration",
+        url: "/configuration",
+        icon: SettingsIcon,
+      },
+    ],
   },
   {
-    title: "Configuration",
-    url: "/configuration",
-    icon: SettingsIcon,
+    title: "Settings",
+    subItems: [
+      {
+        title: "Billing",
+        url: "/billing",
+        icon: CreditCardIcon,
+      },
+    ],
   },
 ];
 
@@ -39,7 +57,7 @@ export default function Component({
 
   return (
     <Sidebar>
-      <SidebarHeader>
+      <SidebarHeader className="h-16">
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem className="text-xl font-medium">
@@ -49,27 +67,33 @@ export default function Component({
           </SidebarMenu>
         </SidebarGroup>
       </SidebarHeader>
+      <SidebarSeparator />
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname.startsWith(item.url)}>
-                    <Link href={item.url} onClick={() => setOpenMobile(false)}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        {items.map((group) => (
+          <SidebarGroup key={group.title}>
+            <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenuSub>
+                {group.subItems.map((subItem) => (
+                  <SidebarMenuSubItem key={subItem.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname.startsWith(subItem.url)}>
+                      <Link
+                        href={subItem.url}
+                        onClick={() => setOpenMobile(false)}>
+                        <subItem.icon />
+                        <span>{subItem.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuSubItem>
+                ))}
+              </SidebarMenuSub>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
+      <SidebarSeparator />
       {children}
     </Sidebar>
   );

@@ -117,17 +117,17 @@ export default async function Page() {
         </div>
       </section>
       <section className="flex flex-col container py-2">
-        <div className="rounded-xl bg-slate-100 px-8 md:px-24 py-12 flex flex-col md:flex-row gap-4">
-          <div className="">
+        <div className="rounded-xl bg-slate-100 px-8 md:px-24 py-12 flex flex-col lg:flex-row gap-4">
+          <div className="lg:max-w-96">
             <h2 className="text-4xl md:text-6xl font-semibold">Interested?</h2>
-            <p className="text-muted-foreground mt-4 max-w-96">
+            <p className="text-muted-foreground mt-4">
               We&apos;re delighted that you are checking us in! Our platform is
               currently in development, and we anticipate being ready by early
               February 2025. If you would like to be notified when we go live,
               please share your contact information below.
             </p>
           </div>
-          <div className="md:min-w-96 md:mx-auto my-auto">
+          <div className="lg:min-w-96 lg:mx-auto my-auto">
             <WaitingListForm />
           </div>
         </div>
@@ -143,8 +143,8 @@ export default async function Page() {
               of.
             </p>
           </div>
-          <div className="grid max-w-md grid-cols-1 gap-6 mx-auto mt-6 lg:max-w-full lg:mt-16 lg:grid-cols-3">
-            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:h-[90%] md:my-auto">
+          <div className="grid max-w-md grid-cols-1 gap-6 mx-auto mt-6 xl:max-w-full xl:mt-16 xl:grid-cols-3">
+            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:max-h-96 md:my-auto">
               <div className="p-8 xl:px-12">
                 <h3 className="text-base font-semibold text-purple-600">
                   Get started
@@ -155,7 +155,7 @@ export default async function Page() {
                 <p className="mt-2 text-base text-muted-foreground">
                   One-time payment
                 </p>
-                <p className="my-8">
+                <p className="mt-8">
                   The 21/90 rule states that it takes 21 days to make a habit.
                   Get started with three weeks worth of training program.
                 </p>
@@ -188,7 +188,7 @@ export default async function Page() {
               </div>
             </ShineBorder>
 
-            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:h-[90%] md:my-auto">
+            <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:max-h-96 md:my-auto">
               <div className="p-8 xl:px-12">
                 <h3 className="text-base font-semibold text-purple-600">
                   Never look back
@@ -197,7 +197,7 @@ export default async function Page() {
                   €7<span className="text-sm">/month</span>
                 </p>
                 <p className="mt-2 text-base text-gray-600">One-time payment</p>
-                <p className="my-8">
+                <p className="mt-8">
                   But creating a healthy lifestyle is not a sprint, it is a
                   marathon. Get a whole year of training program.
                 </p>

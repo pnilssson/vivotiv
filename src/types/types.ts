@@ -32,6 +32,12 @@ export interface ConfigurationResponse {
   equipment: string;
 }
 
+export interface ProfileResponse {
+  id: string;
+  email: string;
+  program_tokens: string;
+}
+
 export interface Exercise {
   id: string;
   title: string;

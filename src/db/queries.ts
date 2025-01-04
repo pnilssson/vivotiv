@@ -1,6 +1,7 @@
 import {
   ConfigurationResponse,
   Environment,
+  ProfileResponse,
   WorkoutFocus,
   WorkoutType,
 } from "@/types/types";
@@ -58,4 +59,11 @@ export const getWorkoutTypesQuery = cache(async () => {
 export const getEnvironmentsQuery = cache(async () => {
   const result = await db.query.environment.findMany();
   return result as unknown as Environment[];
+});
+
+export const getProfileByEmailQuery = cache(async (email: string) => {
+  const result = await db.query.profile.findFirst({
+    where: (profile, { eq }) => eq(profile.email, email),
+  });
+  return result as unknown as ProfileResponse | undefined;
 });

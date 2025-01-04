@@ -5,6 +5,7 @@ import {
   configurationToEnvironment,
   configurationToWorkoutFocus,
   configurationToWorkoutType,
+  profile,
   program,
   programMetadata,
 } from "./schema";
@@ -25,6 +26,22 @@ export async function insertProgramCommand(
       version: 1,
     })
     .returning({ id: program.id });
+
+  return result[0].id;
+}
+
+export async function updateProgramTokensCommand(
+  userId: string,
+  currentTokens: number,
+  newTokens: number
+) {
+  const result = await db
+    .update(profile)
+    .set({
+      program_tokens: currentTokens + newTokens,
+    })
+    .where(eq(profile.id, userId))
+    .returning({ id: profile.id });
 
   return result[0].id;
 }
