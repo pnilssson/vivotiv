@@ -1,9 +1,11 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/lib/hooks/use-toast";
 import { getStripe } from "@/lib/stripe/client";
 import { checkoutWithStripe } from "@/lib/stripe/server";
+import { cn } from "@/lib/utils";
 import { LoaderCircleIcon } from "lucide-react";
 import { useState } from "react";
 
@@ -13,12 +15,16 @@ export default function Component({
   priceId,
   price,
   weeklyPrice,
+  discount,
+  className,
 }: {
   title: string;
   description: string;
   priceId: string;
   price: string;
   weeklyPrice: string;
+  discount?: string;
+  className?: string;
 }) {
   const [loading, setLoading] = useState<boolean>();
   const { toast } = useToast();
@@ -50,18 +56,34 @@ export default function Component({
   };
 
   return (
-    <div className="bg-slate-50 border border-slate-100 rounded-lg px-4 py-2 grid grid-cols-12 gap-4">
-      <div className="col-span-5 my-auto">
-        <h3 className="text-xl font-semibold text-emerald-600">{title}</h3>
-        <p className="text-sm text-muted-foreground">{description}</p>
+    <div
+      className={cn(
+        "bg-slate-50 border border-slate-100 rounded-lg px-4 py-4 flex sm:gap-4 items-center sm:flex-row flex-wrap",
+        className
+      )}>
+      <div className="flex gap-4 flex-1">
+        <div className="my-auto">
+          <div className="flex items-center">
+            <h3 className="text-xl">{title}</h3>
+            {discount ? (
+              <Badge
+                className="ml-2 bg-emerald-200 align-middle font-normal"
+                variant="secondary">
+                Save {discount}
+              </Badge>
+            ) : null}
+          </div>
+
+          <p className="text-sm text-muted-foreground">{description}</p>
+        </div>
       </div>
-      <div className="col-span-3 my-auto">
-        <p className="text-xl font-bold mt-2">{price}</p>
-        <p className="text-sm  text-muted-foreground">{weeklyPrice}</p>
+      <div className="my-auto">
+        <p className="text-xl">{price}</p>
+        <p className="text-sm text-muted-foreground">{weeklyPrice}</p>
       </div>
-      <div className="col-span-4 flex">
+      <div className="flex w-full sm:w-auto mt-4 sm:mt-0 justify-end">
         <Button
-          className="my-auto ml-auto"
+          className="w-full sm:w-32"
           aria-disabled={loading}
           onClick={() => handleStripeCheckout(priceId)}>
           Get now
