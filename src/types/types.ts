@@ -26,10 +26,11 @@ export interface ConfigurationResponse {
   user_id: string;
   sessions: number;
   time: number;
-  workoutFocuses: WorkoutFocus[];
-  workoutTypes: WorkoutType[];
+  workout_focuses: WorkoutFocus[];
+  workout_types: WorkoutType[];
   environments: Environment[];
   equipment: string;
+  generate_automatically: boolean;
 }
 
 export interface ProfileResponse {

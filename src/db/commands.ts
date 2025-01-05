@@ -20,8 +20,8 @@ export async function insertProgramCommand(
     .insert(program)
     .values({
       user_id: userId,
-      start_date: programObject.startDate,
-      end_date: programObject.endDate,
+      start_date: programObject.start_date,
+      end_date: programObject.end_date,
       workouts: programObject.workouts,
       version: 1,
     })
@@ -74,20 +74,21 @@ export async function updateProfileStripeCustomerIdCommand(
 }
 
 export async function insertOrUpdateConfigurationCommand(
-  configurationObject: z.infer<typeof configurationRequestSchema>,
+  newConfiguration: z.infer<typeof configurationRequestSchema>,
   userId: string
 ) {
   await db.transaction(async (trx) => {
-    let configurationId = configurationObject.id;
+    let configurationId = newConfiguration.id;
     // If no configurationId, insert a new configuration
     if (!configurationId) {
       const newConfig = await trx
         .insert(configuration)
         .values({
           user_id: userId,
-          sessions: configurationObject.sessions,
-          time: configurationObject.time,
-          equipment: configurationObject.equipment,
+          sessions: newConfiguration.sessions,
+          time: newConfiguration.time,
+          equipment: newConfiguration.equipment,
+          generate_automatically: newConfiguration.generate_automatically,
         })
         .returning({ id: configuration.id });
 
@@ -100,9 +101,10 @@ export async function insertOrUpdateConfigurationCommand(
         .update(configuration)
         .set({
           user_id: userId,
-          sessions: configurationObject.sessions,
-          time: configurationObject.time,
-          equipment: configurationObject.equipment,
+          sessions: newConfiguration.sessions,
+          time: newConfiguration.time,
+          equipment: newConfiguration.equipment,
+          generate_automatically: newConfiguration.generate_automatically,
         })
         .where(eq(configuration.id, configurationId))
         .returning({ id: configuration.id });
@@ -111,16 +113,16 @@ export async function insertOrUpdateConfigurationCommand(
     }
 
     // Update many-to-many relationships
-    const { workoutFocuses, workoutTypes, environments } = configurationObject;
+    const { workout_focuses, workout_types, environments } = newConfiguration;
 
     // Handle workoutFocuses
     await trx
       .delete(configurationToWorkoutFocus)
       .where(eq(configurationToWorkoutFocus.configuration_id, configurationId));
 
-    if (workoutFocuses && workoutFocuses?.length > 0) {
+    if (workout_focuses && workout_focuses?.length > 0) {
       await trx.insert(configurationToWorkoutFocus).values(
-        workoutFocuses.map((id) => ({
+        workout_focuses.map((id) => ({
           configuration_id: configurationId,
           workout_focus_id: id,
         }))
@@ -132,9 +134,9 @@ export async function insertOrUpdateConfigurationCommand(
       .delete(configurationToWorkoutType)
       .where(eq(configurationToWorkoutType.configuration_id, configurationId));
 
-    if (workoutTypes && workoutTypes?.length > 0) {
+    if (workout_types && workout_types?.length > 0) {
       await trx.insert(configurationToWorkoutType).values(
-        workoutTypes.map((id) => ({
+        workout_types.map((id) => ({
           configuration_id: configurationId,
           workout_type_id: id,
         }))

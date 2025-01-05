@@ -20,8 +20,8 @@ export const workoutSchema = z.object({
 });
 
 export const programSchema = z.object({
-  startDate: z.string().date(),
-  endDate: z.string().date(),
+  start_date: z.string().date(),
+  end_date: z.string().date(),
   workouts: z.array(workoutSchema),
 });
 
@@ -40,8 +40,9 @@ export const configurationRequestSchema = z.object({
     .positive()
     .gte(15, "Session length cannot be less than 15 minutes.")
     .lte(60, "Session length cannot be more than 60 minutes."),
-  workoutFocuses: z.string().array().nullable(),
-  workoutTypes: z.string().array().nullable(),
+  workout_focuses: z.string().array().nullable(),
+  workout_types: z.string().array().nullable(),
   environments: z.string().array().nullable(),
   equipment: z.string().nullable(),
+  generate_automatically: z.boolean(),
 });

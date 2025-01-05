@@ -32,15 +32,16 @@ export const getConfigurationQuery = cache(async (userId: string) => {
     sessions: result.sessions,
     time: result.time,
     equipment: result.equipment || "", // Default to empty string if equipment is null
-    workoutFocuses: result.workoutFocuses
+    workout_focuses: result.workoutFocuses
       ? result.workoutFocuses.map((focus) => focus.workoutFocus as WorkoutFocus)
       : [], // Default to empty array if workoutFocuses is null
-    workoutTypes: result.workoutTypes
+    workout_types: result.workoutTypes
       ? result.workoutTypes.map((type) => type.workoutType as WorkoutType)
       : [], // Default to empty array if workoutTypes is null
     environments: result.environments
       ? result.environments.map((env) => env.environment as Environment)
       : [], // Default to empty array if environments is null
+    generate_automatically: result.generate_automatically,
   };
 
   return flattenedResult;

@@ -34,6 +34,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { configurationRequestSchema } from "@/lib/zod/schema";
 import { useToast } from "@/lib/hooks/use-toast";
+import { Switch } from "@/components/ui/switch";
 
 export default function Component({
   configuration,
@@ -69,16 +70,19 @@ export default function Component({
       id: configuration ? configuration.id : "",
       sessions: configuration ? configuration.sessions : 3,
       time: configuration ? configuration.time : 30,
-      workoutFocuses: configuration
-        ? configuration.workoutFocuses.map((focus) => focus.id)
+      workout_focuses: configuration
+        ? configuration.workout_focuses.map((focus) => focus.id)
         : [],
-      workoutTypes: configuration
-        ? configuration.workoutTypes.map((type) => type.id)
+      workout_types: configuration
+        ? configuration.workout_types.map((type) => type.id)
         : [],
       environments: configuration
         ? configuration.environments.map((environment) => environment.id)
         : [],
       equipment: configuration ? configuration.equipment : "",
+      generate_automatically: configuration
+        ? configuration?.generate_automatically
+        : false,
     },
   });
 
@@ -97,10 +101,10 @@ export default function Component({
                 <FormItem>
                   <FormControl>
                     <Input
-                      value={field.value!}
                       id="id"
                       name="id"
                       type="text"
+                      value={field.value!}
                       onChange={field.onChange}
                     />
                   </FormControl>
@@ -172,7 +176,7 @@ export default function Component({
           <div>
             <FormField
               control={form.control}
-              name="workoutFocuses"
+              name="workout_focuses"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Focus</FormLabel>
@@ -182,7 +186,7 @@ export default function Component({
                     className="justify-start flex-wrap"
                     value={field.value!}
                     onValueChange={(value) => {
-                      if (value) form.setValue("workoutFocuses", value);
+                      if (value) form.setValue("workout_focuses", value);
                     }}>
                     {workoutFocus.map((focus) => (
                       <ToggleGroupItem
@@ -204,7 +208,7 @@ export default function Component({
           <div>
             <FormField
               control={form.control}
-              name="workoutTypes"
+              name="workout_types"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <FormLabel>Include</FormLabel>
@@ -214,7 +218,7 @@ export default function Component({
                     className="justify-start flex-wrap"
                     value={field.value!}
                     onValueChange={(value) => {
-                      if (value) form.setValue("workoutTypes", value);
+                      if (value) form.setValue("workout_types", value);
                     }}>
                     {workoutTypes.map((type) => (
                       <ToggleGroupItem
@@ -279,6 +283,28 @@ export default function Component({
                   <FormDescription>
                     Specify any kind of equipment you have available separated
                     by a commas.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div>
+            <FormField
+              control={form.control}
+              name="generate_automatically"
+              render={({ field }) => (
+                <FormItem className="flex flex-col gap-2">
+                  <FormLabel>Generate automatically</FormLabel>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    By checking this we will automatically generate a new
+                    program for you when your current program is completed.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
