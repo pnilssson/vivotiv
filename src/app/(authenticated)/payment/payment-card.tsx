@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/lib/hooks/use-toast";
 import { getStripe } from "@/lib/stripe/client";
 import { checkoutWithStripe } from "@/lib/stripe/server";
+import { LoaderCircleIcon } from "lucide-react";
+import { useState } from "react";
 
 export default function Component({
   title,
@@ -16,11 +18,18 @@ export default function Component({
   price: string;
   weeklyPrice: string;
 }) {
+  const [loading, setLoading] = useState<boolean>();
   const { toast } = useToast();
 
   const handleStripeCheckout = async (priceId: string) => {
+    setLoading(true);
     const checkoutResult = await checkoutWithStripe(priceId);
     if (!checkoutResult || !checkoutResult.sessionId) {
+      toast({
+        description: "Could not create checkout session.",
+        variant: "destructive",
+      });
+      setLoading(false);
       return;
     }
 
@@ -28,12 +37,14 @@ export default function Component({
     const redirectResult = await stripe?.redirectToCheckout({
       sessionId: checkoutResult.sessionId,
     });
-    if (redirectResult) {
+    if (redirectResult && redirectResult.error) {
       toast({
         description: redirectResult.error.message,
         variant: "destructive",
       });
+      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
@@ -46,8 +57,12 @@ export default function Component({
         <p className="text-sm">{weeklyPrice}</p>
         <Button
           className="mt-4 w-full"
+          aria-disabled={loading}
           onClick={() => handleStripeCheckout(priceId)}>
           Get now
+          {loading ? (
+            <LoaderCircleIcon className="h-4 w-4 animate-spin" />
+          ) : null}
         </Button>
       </div>
     </div>

@@ -127,8 +127,8 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         </div>
         <p className="leading-relaxed text-muted-foreground">
           This program is scheduled to take place over a period starting from{" "}
-          {new Date(program.startDate).toDateString()} and ending on{" "}
-          {new Date(program.endDate).toDateString()}. Throughout this duration,
+          {new Date(program.start_date).toDateString()} and ending on{" "}
+          {new Date(program.end_date).toDateString()}. Throughout this duration,
           you will engage in a series of {program.workouts?.length} structured
           workout sessions. Each workout session is carefully designed and
           includes an appropriate warm-up to ensure that you are properly

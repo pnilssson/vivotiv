@@ -13,9 +13,9 @@ const priceIdTokenMap: {
   [key: string]: number;
 } = {
   price_1QdeKSRpZn3h4qfLBhcmNKJY: 1,
-  price_1QdeRCRpZn3h4qfLXsBBwv39: 2,
-  price_1QdeWmRpZn3h4qfLyWCG7f1A: 3,
-  price_1QdeGXRpZn3h4qfLOk4KS5be: 4,
+  price_1QdeRCRpZn3h4qfLXsBBwv39: 4,
+  price_1QdeWmRpZn3h4qfLyWCG7f1A: 12,
+  price_1QdeGXRpZn3h4qfLOk4KS5be: 24,
 };
 
 export async function checkoutWithStripe(
