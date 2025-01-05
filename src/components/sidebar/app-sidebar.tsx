@@ -60,9 +60,8 @@ export default function Component({
       <SidebarHeader className="h-16">
         <SidebarGroup>
           <SidebarMenu>
-            <SidebarMenuItem className="text-xl font-medium">
-              <span className="text-2xl text-emerald-400 font-semibold">V</span>
-              ivotiv
+            <SidebarMenuItem className="text-2xl">
+              <span className="underline decoration-emerald-400">V</span>ivotiv
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>

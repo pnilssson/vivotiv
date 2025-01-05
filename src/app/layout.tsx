@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AxiomWebVitals } from "next-axiom";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 import { cn } from "@/lib/utils";
@@ -21,7 +22,6 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <AxiomWebVitals />
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",
@@ -29,6 +29,8 @@ export default async function RootLayout({
           GeistMono.variable
         )}>
         {children}
+        <AxiomWebVitals />
+        <SpeedInsights />
         <Toaster />
         <Script
           defer
