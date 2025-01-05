@@ -1,4 +1,4 @@
-export default function Component({
+export default async function Component({
   children,
 }: Readonly<{
   children: React.ReactNode;

@@ -1,3 +1,4 @@
+import PageTitle from "@/components/shared/page-title";
 import {
   getConfiguration,
   getEnvironments,
@@ -15,11 +16,19 @@ export default async function Page() {
       getEnvironments(),
     ]);
   return (
-    <ConfigurationForm
-      configuration={configuration}
-      workoutFocus={workoutFocus}
-      workoutTypes={workoutTypes}
-      workoutEnvironments={environments}
-    />
+    <>
+      <PageTitle
+        title={"Configuration"}
+        description={
+          "We will tailor your program to your needs based on the information you provide below."
+        }
+      />
+      <ConfigurationForm
+        configuration={configuration}
+        workoutFocus={workoutFocus}
+        workoutTypes={workoutTypes}
+        workoutEnvironments={environments}
+      />
+    </>
   );
 }

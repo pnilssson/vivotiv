@@ -98,7 +98,7 @@ export async function signInWithPassword(
   await setPreferredSignInView("password");
 
   revalidatePath("/", "layout");
-  redirect("/programs");
+  redirect("/program");
 }
 
 export async function signUpWithPassword(

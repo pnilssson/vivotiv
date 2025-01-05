@@ -1,3 +1,4 @@
+import PageTitle from "@/components/shared/page-title";
 import { getPrograms } from "./actions";
 import { ProgramMetadataResponse } from "@/types/types";
 import { redirect } from "next/navigation";
@@ -40,18 +41,14 @@ export default async function Page() {
 
   // const activeProgram = findProgram(programs);
 
-  // redirect(`/programs/${activeProgram?.id}`);
+  // redirect(`/program/${activeProgram?.id}`);
 
   return (
     <>
-      <div className="grid gap-2">
-        <div className="text-2xl font-semibold leading-none tracking-tight">
-          Program
-        </div>
-        <div className="text-sm text-muted-foreground">
-          This is your current training program.
-        </div>
-      </div>
+      <PageTitle
+        title={"Program"}
+        description={"This is your current training program."}
+      />
     </>
   );
 }

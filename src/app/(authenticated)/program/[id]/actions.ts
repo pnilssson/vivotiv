@@ -31,6 +31,6 @@ export async function archiveProgramAction(data: FormData) {
   const programId = data.get("programId") as string;
   await archiveProgramCommand(programId, user.id);
 
-  revalidatePath("/programs", "page");
-  redirect("/programs");
+  revalidatePath("/program", "page");
+  redirect("/program");
 }

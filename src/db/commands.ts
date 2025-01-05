@@ -16,7 +16,7 @@ export async function insertProgramCommand(
   programObject: z.infer<typeof programSchema>,
   userId: string
 ) {
-  const result = await db
+  const [result] = await db
     .insert(program)
     .values({
       user_id: userId,
@@ -27,15 +27,15 @@ export async function insertProgramCommand(
     })
     .returning({ id: program.id });
 
-  return result[0].id;
+  return result.id;
 }
 
-export async function updateProgramTokensCommand(
+export async function updateProfileProgramTokensCommand(
   userId: string,
   currentTokens: number,
   newTokens: number
 ) {
-  const result = await db
+  const [result] = await db
     .update(profile)
     .set({
       program_tokens: currentTokens + newTokens,
@@ -43,7 +43,34 @@ export async function updateProgramTokensCommand(
     .where(eq(profile.id, userId))
     .returning({ id: profile.id });
 
-  return result[0].id;
+  return result.id;
+}
+
+export async function updateProfileNameCommand(userId: string, name: string) {
+  const [result] = await db
+    .update(profile)
+    .set({
+      name,
+    })
+    .where(eq(profile.id, userId))
+    .returning({ id: profile.id });
+
+  return result.id;
+}
+
+export async function updateProfileStripeCustomerIdCommand(
+  userId: string,
+  customerId: string
+) {
+  const [result] = await db
+    .update(profile)
+    .set({
+      stripe_customer_id: customerId,
+    })
+    .where(eq(profile.id, userId))
+    .returning({ id: profile.id });
+
+  return result.id;
 }
 
 export async function insertOrUpdateConfigurationCommand(

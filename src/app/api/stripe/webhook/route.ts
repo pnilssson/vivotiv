@@ -1,5 +1,8 @@
-import { updateProgramTokensCommand } from "@/db/commands";
-import { getProfileByEmailQuery } from "@/db/queries";
+import {
+  updateProfileNameCommand,
+  updateProfileProgramTokensCommand,
+} from "@/db/commands";
+import { getProfileByIdQuery } from "@/db/queries";
 import { stripe } from "@/lib/stripe/config";
 import { log } from "next-axiom";
 import Stripe from "stripe";
@@ -11,6 +14,7 @@ export async function POST(req: Request): Promise<Response> {
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
     if (!sig || !webhookSecret) {
+      log.warn("Webhook secret not found.");
       return respondWithError("Webhook secret not found.", 400);
     }
 
@@ -50,31 +54,40 @@ async function handleStripeEvent(event: Stripe.Event): Promise<Response> {
 async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   const checkoutSession = event.data.object as Stripe.Checkout.Session;
 
-  if (!checkoutSession.customer_details?.email) {
-    log.warn("Email is missing in checkoutSession.", checkoutSession);
+  if (!checkoutSession.metadata?.userId) {
+    log.warn("User id is missing in checkoutSession.", checkoutSession);
     return;
   }
 
-  const email = checkoutSession.customer_details.email;
-  const profile = await getProfileByEmailQuery(email);
+  const userId = checkoutSession.metadata.userId;
+  const profile = await getProfileByIdQuery(userId);
 
   if (!profile) {
-    log.warn("Email was not found when handling completed checkout session.", {
-      email,
-    });
+    log.warn(
+      "Profile was not found when handling completed checkout session.",
+      {
+        userId,
+      }
+    );
     return;
   }
 
   log.info("Handling completed checkout session.", checkoutSession);
   const tokensToAdd = parseInt(checkoutSession.metadata?.tokens || "0", 10);
-  await updateProgramTokensCommand(
+  await updateProfileProgramTokensCommand(
     profile.id,
     parseInt(profile.program_tokens),
     tokensToAdd
   );
+  if (checkoutSession.customer_details?.name) {
+    await updateProfileNameCommand(
+      profile.id,
+      checkoutSession.customer_details?.name
+    );
+  }
 
-  log.info("Tokens added to user.", {
-    email,
+  log.info("Completed checkout session handled.", {
+    userId,
     tokens: tokensToAdd,
   });
 }

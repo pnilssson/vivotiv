@@ -139,8 +139,8 @@ export default async function Page() {
               Pricing & Plans
             </h2>
             <p className="text-muted-foreground mt-4 max-w-80 md:max-w-xl mx-auto">
-              One time payments only, not another subscriptions to keep track
-              of.
+              One time payments only, no need for another subscription to keep
+              track of.
             </p>
           </div>
           <div className="grid max-w-md grid-cols-1 gap-6 mx-auto mt-6 lg:grid-cols-2 lg:max-w-full 2xl:grid-cols-4">

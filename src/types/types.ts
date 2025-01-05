@@ -8,22 +8,22 @@ export interface FormResponse {
 
 export interface ProgramResponse {
   id: string;
-  startDate: string; // ISO 8601 date string
-  endDate: string; // ISO 8601 date string
-  userId: string;
+  start_date: string; // ISO 8601 date string
+  end_date: string; // ISO 8601 date string
+  user_id: string;
   workouts: Workout[] | null;
   version: number;
 }
 
 export interface ProgramMetadataResponse {
   id: string;
-  startDate: string;
-  endDate: string;
+  start_date: string;
+  end_date: string;
 }
 
 export interface ConfigurationResponse {
   id: string;
-  userId: string;
+  user_id: string;
   sessions: number;
   time: number;
   workoutFocuses: WorkoutFocus[];
@@ -34,8 +34,10 @@ export interface ConfigurationResponse {
 
 export interface ProfileResponse {
   id: string;
+  name: string | null;
   email: string;
   program_tokens: string;
+  stripe_customer_id: string;
 }
 
 export interface Exercise {

@@ -22,6 +22,20 @@
       "when": 1735978376805,
       "tag": "0002_nappy_morlocks",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1736059782470,
+      "tag": "0003_wise_micromax",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1736067389207,
+      "tag": "0004_chilly_the_hunter",
+      "breakpoints": true
     }
   ]
 }

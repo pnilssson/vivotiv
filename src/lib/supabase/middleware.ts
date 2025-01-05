@@ -38,7 +38,7 @@ export async function updateSession(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (data.user && pathname === "/") {
-    return NextResponse.redirect(new URL("/programs", request.url));
+    return NextResponse.redirect(new URL("/program", request.url));
   }
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
   // If you're creating a new response object with NextResponse.next() make sure to:

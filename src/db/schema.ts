@@ -32,7 +32,9 @@ export const profile = pgTable(
   "profile",
   {
     id: uuid().primaryKey().notNull(),
+    name: text(),
     email: text().notNull(),
+    stripe_customer_id: text(),
     program_tokens: integer().notNull().default(0),
   },
   (table) => [
@@ -151,6 +153,7 @@ export const configuration = pgTable(
     sessions: integer().notNull(),
     time: integer().notNull(),
     equipment: text(),
+    generate_automatically: boolean().notNull().default(false),
   },
   (table) => [
     pgPolicy("User can handle their own configurations", {

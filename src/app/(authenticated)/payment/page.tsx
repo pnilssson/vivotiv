@@ -1,104 +1,51 @@
-import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
-import Link from "next/link";
+import PageTitle from "@/components/shared/page-title";
+import PaymentCard from "./payment-card";
+
+const paymentOptions = [
+  {
+    title: "One week of training",
+    priceId: "price_1QdeKSRpZn3h4qfLBhcmNKJY",
+    price: "$1.99",
+    weeklyPrice: "($1.99/week)",
+  },
+  {
+    title: "Four weeks of training",
+    priceId: "price_1QdeRCRpZn3h4qfLXsBBwv39",
+    price: "$4.99",
+    weeklyPrice: "($1.25/week)",
+  },
+  {
+    title: "12 weeks of training",
+    priceId: "price_1QdeWmRpZn3h4qfLyWCG7f1A",
+    price: "$11.99",
+    weeklyPrice: "($0.99/week)",
+  },
+  {
+    title: "26 weeks of training",
+    priceId: "price_1QdeGXRpZn3h4qfLOk4KS5be",
+    price: "$19.99",
+    weeklyPrice: "($0.77/week)",
+  },
+];
 
 export default async function Page() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  function getLinkWithEmail(link: string) {
-    return `${link}?prefilled_email=${user?.email}`;
-  }
-
   return (
     <>
-      <div className="grid gap-2">
-        <div className="text-2xl font-semibold leading-none tracking-tight">
-          Payment options
-        </div>
-        <div className="text-sm text-muted-foreground">
-          All options are one time payments.
-        </div>
-      </div>
+      <PageTitle
+        title={"Payment options"}
+        description={"All options are one time payments."}
+      />
       <div>
         <div className="grid gap-6 mx-auto mt-6 max-w-full grid-cols-2 xl:grid-cols-4">
-          <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:my-auto">
-            <div className="p-8">
-              <h3 className="text-base font-semibold text-purple-600">
-                One week of training
-              </h3>
-              <p className="text-4xl font-bold text-black mt-4">$1.99</p>
-              <p className="text-sm">($1.99/week)</p>
-              <Button asChild className="mt-4 w-full">
-                <Link
-                  href={getLinkWithEmail(
-                    "https://buy.stripe.com/test_28o8yj8P017x0bS14b"
-                  )}
-                  target="_blank">
-                  Get now
-                </Link>
-              </Button>
-            </div>
-          </div>
-
-          <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:my-auto">
-            <div className="p-8">
-              <h3 className="text-base font-semibold text-purple-600">
-                Four weeks of training
-              </h3>
-              <p className="text-4xl font-bold text-black mt-4">$4.99</p>
-              <p className="text-sm">($1.25/week)</p>
-              <Button asChild className="mt-4 w-full">
-                <Link
-                  href={getLinkWithEmail(
-                    "https://buy.stripe.com/test_7sIdSD7KWbMb9Ms5ks"
-                  )}
-                  target="_blank">
-                  Get now
-                </Link>
-              </Button>
-            </div>
-          </div>
-
-          <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:my-auto">
-            <div className="p-8">
-              <h3 className="text-base font-semibold text-purple-600">
-                12 weeks of training
-              </h3>
-              <p className="text-4xl font-bold text-black mt-4">$11.99</p>
-              <p className="text-sm">($0.99/week)</p>
-              <Button asChild className="mt-4 w-full">
-                <Link
-                  href={getLinkWithEmail(
-                    "https://buy.stripe.com/test_8wM3dZ2qC8zZe2I8wF"
-                  )}
-                  target="_blank">
-                  Get now
-                </Link>
-              </Button>
-            </div>
-          </div>
-
-          <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:my-auto">
-            <div className="p-8">
-              <h3 className="text-base font-semibold text-purple-600">
-                26 weeks of training
-              </h3>
-              <p className="text-4xl font-bold text-black mt-4">$19.99</p>
-              <p className="text-sm">($0.77/week)</p>
-              <Button asChild className="mt-4 w-full">
-                <Link
-                  href={getLinkWithEmail(
-                    "https://buy.stripe.com/test_8wMdSD5COcQfaQw6oy"
-                  )}
-                  target="_blank">
-                  Get now
-                </Link>
-              </Button>
-            </div>
-          </div>
+          {paymentOptions.map((option, index) => (
+            <PaymentCard
+              key={index} // Use a unique key; index is used here as a fallback.
+              title={option.title}
+              priceId={option.priceId}
+              price={option.price}
+              weeklyPrice={option.weeklyPrice}
+            />
+          ))}
         </div>
       </div>
     </>

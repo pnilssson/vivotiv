@@ -21,15 +21,12 @@ export async function getPreferredSignInView(): Promise<string> {
 export async function getUserOrRedirect(
   supabase: SupabaseClient
 ): Promise<User> {
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
+  const { data, error } = await supabase.auth.getUser();
 
-  if (error || !user) {
+  if (error || !data.user) {
     log.error("Error during getUserOrRedirect", { error });
     redirect("/auth/signin");
   }
 
-  return user;
+  return data.user;
 }
