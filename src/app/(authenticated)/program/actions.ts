@@ -12,8 +12,8 @@ export async function getPrograms(): Promise<ProgramMetadataResponse[]> {
   const result = await db
     .select({
       id: program.id,
-      startDate: program.start_date,
-      endDate: program.end_date,
+      start_date: program.start_date,
+      end_date: program.end_date,
     })
     .from(program)
     .where(and(eq(program.user_id, user.id), eq(program.archived, false)));
