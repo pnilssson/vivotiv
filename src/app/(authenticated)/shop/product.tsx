@@ -58,11 +58,11 @@ export default function Component({
   return (
     <div
       className={cn(
-        "bg-slate-50 border border-slate-100 rounded-lg px-4 py-4 flex sm:gap-4 items-center sm:flex-row flex-wrap",
+        "bg-slate-50 border border-slate-100 rounded-lg px-4 py-4 flex lg:gap-4 items-center lg:flex-row flex-wrap",
         className
       )}>
       <div className="flex gap-4 flex-1">
-        <div className="my-auto">
+        <div className="my-auto grid gap-2">
           <div className="flex items-center">
             <h3 className="text-xl">{title}</h3>
             {discount ? (
@@ -81,9 +81,9 @@ export default function Component({
         <p className="text-xl">{price}</p>
         <p className="text-sm text-muted-foreground">{weeklyPrice}</p>
       </div>
-      <div className="flex w-full sm:w-auto mt-4 sm:mt-0 justify-end">
+      <div className="flex w-full lg:w-auto mt-4 lg:mt-0 justify-end">
         <Button
-          className="w-full sm:w-32"
+          className="w-full lg:w-32"
           aria-disabled={loading}
           onClick={() => handleStripeCheckout(priceId)}>
           Get now
