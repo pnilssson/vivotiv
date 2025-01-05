@@ -15,7 +15,7 @@ import {
   SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { CreditCardIcon, FileTextIcon, SettingsIcon } from "lucide-react";
+import { FileTextIcon, SettingsIcon, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -36,12 +36,12 @@ const items = [
     ],
   },
   {
-    title: "Settings",
+    title: "Store",
     subItems: [
       {
-        title: "Payment",
-        url: "/payment",
-        icon: CreditCardIcon,
+        title: "Shop",
+        url: "/shop",
+        icon: ShoppingCartIcon,
       },
     ],
   },

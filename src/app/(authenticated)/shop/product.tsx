@@ -9,11 +9,13 @@ import { useState } from "react";
 
 export default function Component({
   title,
+  description,
   priceId,
   price,
   weeklyPrice,
 }: {
   title: string;
+  description: string;
   priceId: string;
   price: string;
   weeklyPrice: string;
@@ -48,15 +50,18 @@ export default function Component({
   };
 
   return (
-    <div className="overflow-hidden bg-white border-2 border-gray-100 rounded-lg shadow-lg md:my-auto">
-      <div className="p-4 sm:p-8">
-        <h3 className="text-base font-semibold text-purple-600">{title}</h3>
-        <p className="text-2xl sm:text-4xl font-bold text-black mt-4">
-          {price}
-        </p>
-        <p className="text-sm">{weeklyPrice}</p>
+    <div className="bg-slate-50 border border-slate-100 rounded-lg px-4 py-2 grid grid-cols-12 gap-4">
+      <div className="col-span-5 my-auto">
+        <h3 className="text-xl font-semibold text-emerald-600">{title}</h3>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </div>
+      <div className="col-span-3 my-auto">
+        <p className="text-xl font-bold mt-2">{price}</p>
+        <p className="text-sm  text-muted-foreground">{weeklyPrice}</p>
+      </div>
+      <div className="col-span-4 flex">
         <Button
-          className="mt-4 w-full"
+          className="my-auto ml-auto"
           aria-disabled={loading}
           onClick={() => handleStripeCheckout(priceId)}>
           Get now
