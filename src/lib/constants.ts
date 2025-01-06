@@ -1,6 +1,6 @@
-import { FormResponse } from "@/types/types";
+import { ActionResponse } from "@/types/types";
 
-export const initialFormState: FormResponse = {
+export const initialFormState: ActionResponse = {
   success: false,
   errors: [],
   message: null,

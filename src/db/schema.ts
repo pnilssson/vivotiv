@@ -119,6 +119,8 @@ export const programMetadata = pgTable(
       .notNull()
       .references(() => profile.id),
     prompt: text().notNull(),
+    prompt_tokens: integer().notNull(),
+    completion_tokens: integer().notNull(),
     program_id: uuid().references(() => program.id),
     generated_on: date().notNull().defaultNow(),
   },

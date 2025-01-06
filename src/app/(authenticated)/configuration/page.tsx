@@ -1,11 +1,7 @@
 import PageTitle from "@/components/shared/page-title";
-import {
-  getConfiguration,
-  getEnvironments,
-  getWorkoutFocus,
-  getWorkoutTypes,
-} from "./actions";
+import { getEnvironments, getWorkoutFocus, getWorkoutTypes } from "./actions";
 import ConfigurationForm from "./configuration-form";
+import { getConfiguration } from "@/lib/actions";
 
 export default async function Page() {
   const [configuration, workoutFocus, workoutTypes, environments] =

@@ -2,7 +2,6 @@
 
 import { insertOrUpdateConfigurationCommand } from "@/db/commands";
 import {
-  getConfigurationQuery,
   getEnvironmentsQuery,
   getWorkoutFocusQuery,
   getWorkoutTypesQuery,
@@ -11,20 +10,13 @@ import { getUserOrRedirect } from "@/lib/server-utils";
 import { createClient } from "@/lib/supabase/server";
 import { configurationRequestSchema } from "@/lib/zod/schema";
 import {
-  ConfigurationResponse,
   Environment,
-  FormResponse,
+  ActionResponse,
   WorkoutFocus,
   WorkoutType,
 } from "@/types/types";
 import { log } from "next-axiom";
 import { revalidatePath } from "next/cache";
-
-export async function getConfiguration(): Promise<ConfigurationResponse | null> {
-  const supabase = await createClient();
-  const user = await getUserOrRedirect(supabase);
-  return await getConfigurationQuery(user.id);
-}
 
 export async function getWorkoutFocus(): Promise<WorkoutFocus[]> {
   return await getWorkoutFocusQuery();
@@ -41,7 +33,7 @@ export async function getEnvironments(): Promise<Environment[]> {
 export async function setConfiguration(
   _: any,
   formData: FormData
-): Promise<FormResponse> {
+): Promise<ActionResponse> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
 

@@ -2,11 +2,40 @@ import {
   ConfigurationResponse,
   Environment,
   ProfileResponse,
+  ProgramResponse,
   WorkoutFocus,
   WorkoutType,
 } from "@/types/types";
 import { db } from "./db";
 import { cache } from "react";
+
+export const getProgramByIdQuery = cache(async (id: string, userId: string) => {
+  const result = await db.query.program.findFirst({
+    where: (program, { eq, and }) =>
+      and(
+        eq(program.user_id, userId),
+        eq(program.id, id),
+        eq(program.archived, false)
+      ),
+  });
+
+  return result as ProgramResponse;
+});
+
+export const getCurrentProgramQuery = cache(async (userId: string) => {
+  const today = new Date().toISOString().split("T")[0];
+  const result = await db.query.program.findFirst({
+    where: (program, { eq, gte, lte, and }) =>
+      and(
+        eq(program.user_id, userId),
+        eq(program.archived, false),
+        lte(program.start_date, today),
+        gte(program.end_date, today)
+      ),
+  });
+
+  return result as ProgramResponse;
+});
 
 export const getConfigurationQuery = cache(async (userId: string) => {
   const result = await db.query.configuration.findFirst({
@@ -49,29 +78,29 @@ export const getConfigurationQuery = cache(async (userId: string) => {
 
 export const getWorkoutFocusQuery = cache(async () => {
   const result = await db.query.workoutFocus.findMany();
-  return result as unknown as WorkoutFocus[];
+  return result as WorkoutFocus[];
 });
 
 export const getWorkoutTypesQuery = cache(async () => {
   const result = await db.query.workoutType.findMany();
-  return result as unknown as WorkoutType[];
+  return result as WorkoutType[];
 });
 
 export const getEnvironmentsQuery = cache(async () => {
   const result = await db.query.environment.findMany();
-  return result as unknown as Environment[];
+  return result as Environment[];
 });
 
 export const getProfileByEmailQuery = cache(async (email: string) => {
   const result = await db.query.profile.findFirst({
     where: (profile, { eq }) => eq(profile.email, email),
   });
-  return result as unknown as ProfileResponse | undefined;
+  return result as ProfileResponse | undefined;
 });
 
 export const getProfileByIdQuery = cache(async (userId: string) => {
   const result = await db.query.profile.findFirst({
     where: (profile, { eq }) => eq(profile.id, userId),
   });
-  return result as unknown as ProfileResponse | undefined;
+  return result as ProfileResponse | undefined;
 });

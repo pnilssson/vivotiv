@@ -13,16 +13,16 @@ import { z } from "zod";
 import { and, eq } from "drizzle-orm";
 
 export async function insertProgramCommand(
-  programObject: z.infer<typeof programSchema>,
+  newProgram: z.infer<typeof programSchema>,
   userId: string
 ) {
   const [result] = await db
     .insert(program)
     .values({
       user_id: userId,
-      start_date: programObject.start_date,
-      end_date: programObject.end_date,
-      workouts: programObject.workouts,
+      start_date: newProgram.start_date,
+      end_date: newProgram.end_date,
+      workouts: newProgram.workouts,
       version: 1,
     })
     .returning({ id: program.id });
@@ -171,11 +171,15 @@ export async function archiveProgramCommand(programId: string, userId: string) {
 export async function insertProgramMetadataCommand(
   userId: string,
   prompt: string,
-  programId: string
+  programId: string,
+  promptTokens: number,
+  completionTokens: number
 ) {
   await db.insert(programMetadata).values({
     user_id: userId,
     prompt: prompt,
     program_id: programId,
+    prompt_tokens: promptTokens,
+    completion_tokens: completionTokens,
   });
 }

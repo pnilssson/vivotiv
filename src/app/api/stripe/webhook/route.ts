@@ -20,7 +20,6 @@ export async function POST(req: Request): Promise<Response> {
 
     // Construct the Stripe event
     const event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
-    console.log(`Webhook received: ${event.type}`);
 
     // Handle the event
     return await handleStripeEvent(event);

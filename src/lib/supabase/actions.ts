@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getURL } from "@/lib/utils";
-import { FormResponse } from "@/types/types";
+import { ActionResponse } from "@/types/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -26,7 +26,7 @@ const otpSchema = z.object({
 export async function signInWithOtp(
   _: any,
   formData: FormData
-): Promise<FormResponse> {
+): Promise<ActionResponse> {
   const supabase = await createClient();
   const validated = otpSchema.safeParse({
     email: formData.get("email"),
@@ -70,7 +70,7 @@ const passwordSchema = z.object({
 export async function signInWithPassword(
   _: any,
   formData: FormData
-): Promise<FormResponse> {
+): Promise<ActionResponse> {
   const supabase = await createClient();
   const validated = passwordSchema.safeParse({
     email: formData.get("email"),
@@ -104,7 +104,7 @@ export async function signInWithPassword(
 export async function signUpWithPassword(
   _: any,
   formData: FormData
-): Promise<FormResponse> {
+): Promise<ActionResponse> {
   const supabase = await createClient();
   const validated = passwordSchema.safeParse({
     email: formData.get("email"),

@@ -1,6 +1,6 @@
 import { ZodIssue } from "zod";
 
-export interface FormResponse {
+export interface ActionResponse {
   success: boolean;
   errors: ZodIssue[];
   message: string | null;
@@ -11,14 +11,8 @@ export interface ProgramResponse {
   start_date: string; // ISO 8601 date string
   end_date: string; // ISO 8601 date string
   user_id: string;
-  workouts: Workout[] | null;
+  workouts: Workout[];
   version: number;
-}
-
-export interface ProgramMetadataResponse {
-  id: string;
-  start_date: string;
-  end_date: string;
 }
 
 export interface ConfigurationResponse {
