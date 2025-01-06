@@ -12,7 +12,6 @@ import {
   ActionResponse,
   ConfigurationResponse,
   ProgramResponse,
-  ProgramTinyResponse,
 } from "@/types/types";
 import { revalidatePath } from "next/cache";
 import { openai } from "@ai-sdk/openai";
