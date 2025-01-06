@@ -20,11 +20,8 @@ export default function Component({ program }: { program: ProgramResponse }) {
   return (
     <>
       <h3 className="text-xl">
-        {new Date().toLocaleDateString("en-US", {
+        {new Date().toLocaleDateString(undefined, {
           weekday: "short",
-        })}
-        {" of "}
-        {new Date().toLocaleDateString("en-US", {
           month: "short",
           day: "numeric",
         })}
@@ -37,7 +34,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
               <div
                 key={date + 1}
                 className={cn(
-                  "bg-slate-50 border border-slate-100 rounded-lg p-2 md:hidden flex flex-col flex-1 items-center hover:bg-slate-100 cursor-pointer",
+                  "bg-slate-50 border border-slate-100 rounded-lg py-2 md:hidden flex flex-col flex-1 items-center hover:bg-slate-100 cursor-pointer",
                   {
                     "bg-violet-200 hover:bg-violet-200": date == selectedDate,
                   }

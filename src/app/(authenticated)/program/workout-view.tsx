@@ -16,7 +16,7 @@ export default function Component({
     <div className="bg-slate-50 border border-slate-100 rounded-lg p-4 flex flex-col mt-4">
       {workout ? (
         <div>
-          <h3 className="text-xl font-semibold leading-none tracking-tight">
+          <h3 className="text-xl font-semibold tracking-tight">
             {workout.description}
           </h3>
           <p className="text-sm text-muted-foreground mt-2">{workout.date}</p>
