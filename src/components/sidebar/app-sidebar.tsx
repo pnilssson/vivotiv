@@ -57,12 +57,10 @@ export default function Component({
 
   return (
     <Sidebar>
-      <SidebarHeader className="h-16">
+      <SidebarHeader className="h-16 gap-0 justify-center">
         <SidebarGroup>
           <SidebarMenu>
-            <SidebarMenuItem className="text-2xl">
-              <span className="underline decoration-emerald-400">V</span>ivotiv
-            </SidebarMenuItem>
+            <SidebarMenuItem className="text-xl">Vivotiv</SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
       </SidebarHeader>
