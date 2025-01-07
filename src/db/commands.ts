@@ -3,6 +3,7 @@ import { db } from "./db";
 import {
   configuration,
   configurationToEnvironment,
+  configurationToPreferredDay,
   configurationToWorkoutFocus,
   configurationToWorkoutType,
   profile,
@@ -113,7 +114,8 @@ export async function insertOrUpdateConfigurationCommand(
     }
 
     // Update many-to-many relationships
-    const { workout_focuses, workout_types, environments } = newConfiguration;
+    const { workout_focuses, workout_types, environments, preferred_days } =
+      newConfiguration;
 
     // Handle workoutFocuses
     await trx
@@ -153,6 +155,20 @@ export async function insertOrUpdateConfigurationCommand(
         environments.map((id) => ({
           configuration_id: configurationId,
           environment_id: id,
+        }))
+      );
+    }
+
+    // Handle preferredDays
+    await trx
+      .delete(configurationToPreferredDay)
+      .where(eq(configurationToPreferredDay.configuration_id, configurationId));
+
+    if (preferred_days && preferred_days?.length > 0) {
+      await trx.insert(configurationToPreferredDay).values(
+        preferred_days.map((id) => ({
+          configuration_id: configurationId,
+          preferred_day_id: id,
         }))
       );
     }

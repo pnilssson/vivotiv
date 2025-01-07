@@ -17,6 +17,7 @@ import { initialFormState } from "@/lib/constants";
 import {
   ConfigurationResponse,
   Environment,
+  PreferredDay,
   WorkoutFocus,
   WorkoutType,
 } from "@/types/types";
@@ -41,11 +42,13 @@ export default function Component({
   workoutFocus,
   workoutTypes,
   workoutEnvironments,
+  preferredDays,
 }: {
   configuration: ConfigurationResponse | null;
   workoutFocus: WorkoutFocus[];
   workoutTypes: WorkoutType[];
   workoutEnvironments: Environment[];
+  preferredDays: PreferredDay[];
 }) {
   const { toast } = useToast();
   const [state, formAction] = useActionState(
@@ -80,6 +83,9 @@ export default function Component({
         ? configuration.environments.map((environment) => environment.id)
         : [],
       equipment: configuration ? configuration.equipment : "",
+      preferred_days: configuration
+        ? configuration.preferred_days.map((day) => day.id)
+        : [],
       generate_automatically: configuration
         ? configuration?.generate_automatically
         : false,
@@ -259,6 +265,38 @@ export default function Component({
                       </ToggleGroupItem>
                     ))}
                   </ToggleGroup>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div>
+            <FormField
+              control={form.control}
+              name="preferred_days"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Preferred days</FormLabel>
+                  <ToggleGroup
+                    variant="outline"
+                    type="multiple"
+                    className="justify-start flex-wrap"
+                    value={field.value!}
+                    onValueChange={(value) => {
+                      if (value) form.setValue("preferred_days", value);
+                    }}>
+                    {preferredDays.map((type) => (
+                      <ToggleGroupItem
+                        key={type.id}
+                        value={type.id}
+                        aria-label={`Toggle ${type.name}`}>
+                        <span className="capitalize">{type.name}</span>
+                      </ToggleGroupItem>
+                    ))}
+                  </ToggleGroup>
+                  <FormDescription>
+                    Select preferred training days.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

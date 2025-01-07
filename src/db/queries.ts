@@ -1,6 +1,7 @@
 import {
   ConfigurationResponse,
   Environment,
+  PreferredDay,
   ProfileResponse,
   ProgramResponse,
   WorkoutFocus,
@@ -49,6 +50,9 @@ export const getConfigurationQuery = cache(async (userId: string) => {
       environments: {
         with: { environment: true },
       },
+      prefferedDays: {
+        with: { preferredDay: true },
+      },
     },
     where: (configuration, { eq }) => eq(configuration.user_id, userId),
   });
@@ -70,6 +74,9 @@ export const getConfigurationQuery = cache(async (userId: string) => {
     environments: result.environments
       ? result.environments.map((env) => env.environment as Environment)
       : [], // Default to empty array if environments is null
+    preferred_days: result.prefferedDays
+      ? result.prefferedDays.map((day) => day.preferredDay as PreferredDay)
+      : [], // Default to empty array if preferredDays is null
     generate_automatically: result.generate_automatically,
   };
 
@@ -89,6 +96,11 @@ export const getWorkoutTypesQuery = cache(async () => {
 export const getEnvironmentsQuery = cache(async () => {
   const result = await db.query.environment.findMany();
   return result as Environment[];
+});
+
+export const getPreferredDaysQuery = cache(async () => {
+  const result = await db.query.preferredDay.findMany();
+  return result as PreferredDay[];
 });
 
 export const getProfileByEmailQuery = cache(async (email: string) => {

@@ -43,6 +43,7 @@ export const configurationRequestSchema = z.object({
   workout_focuses: z.string().array().nullable(),
   workout_types: z.string().array().nullable(),
   environments: z.string().array().nullable(),
+  preferred_days: z.string().array().nullable(),
   equipment: z.string().nullable(),
   generate_automatically: z.boolean(),
 });

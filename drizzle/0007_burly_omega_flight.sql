@@ -1,0 +1,1 @@
+ALTER TABLE "preferred_day" ADD COLUMN "number" integer NOT NULL;

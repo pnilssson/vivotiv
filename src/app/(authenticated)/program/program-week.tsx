@@ -6,6 +6,10 @@ import { useState } from "react";
 import WorkoutView from "./workout-view";
 import { cn } from "@/lib/utils";
 import React from "react";
+import { Button } from "@/components/ui/button";
+import { FolderArchiveIcon } from "lucide-react";
+import ConfirmDialog from "@/components/shared/confirm-dialog";
+import { archiveProgramAction } from "./actions";
 
 export default function Component({ program }: { program: ProgramResponse }) {
   const [selectedDate, setSelectedDate] = useState<string>(
@@ -17,15 +21,31 @@ export default function Component({ program }: { program: ProgramResponse }) {
     return day.toISOString().split("T")[0]; // Format as 'YYYY-MM-DD'
   });
 
+  const handleConfirm = async () => {
+    await archiveProgramAction(program.id);
+  };
+
   return (
     <>
-      <h3 className="text-xl">
-        {new Date().toLocaleDateString(undefined, {
-          weekday: "short",
-          month: "short",
-          day: "numeric",
-        })}
-      </h3>
+      <div className="flex items-center justify-between">
+        <h3 className="text-xl">
+          {new Date().toLocaleDateString("en-US", {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+          })}
+        </h3>
+        <ConfirmDialog
+          title="Are you absolutely sure?"
+          description="This will archive the program and you will have to generate a new."
+          action={handleConfirm}
+          confirmText="Archive"
+          cancelText="Cancel">
+          <Button variant="outline" size="icon">
+            <FolderArchiveIcon />
+          </Button>
+        </ConfirmDialog>
+      </div>
       <div className="flex flex-row gap-2 sm:gap-4 mt-4">
         {daysOfWeek.map((date: string) => {
           const workout = program.workouts.find((w) => w.date === date);
@@ -50,7 +70,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
                     variant="secondary"></Badge>
                 )}
                 <h3 className="mt-2">
-                  {new Date(date).toLocaleDateString(undefined, {
+                  {new Date(date).toLocaleDateString("en-US", {
                     weekday: "short",
                   })}
                 </h3>
@@ -82,7 +102,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
                   </Badge>
                 )}
                 <h3 className="text-xl mt-2">
-                  {new Date(date).toLocaleDateString(undefined, {
+                  {new Date(date).toLocaleDateString("en-US", {
                     weekday: "short",
                   })}
                 </h3>
@@ -114,7 +134,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
                   </Badge>
                 )}
                 <h3 className="text-xl mt-2">
-                  {new Date(date).toLocaleDateString(undefined, {
+                  {new Date(date).toLocaleDateString("en-US", {
                     weekday: "long",
                   })}
                 </h3>

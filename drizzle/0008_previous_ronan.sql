@@ -1,0 +1,1 @@
+ALTER TABLE "program_metadata" ALTER COLUMN "generated_on" SET DATA TYPE timestamp;

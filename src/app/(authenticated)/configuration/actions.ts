@@ -3,6 +3,7 @@
 import { insertOrUpdateConfigurationCommand } from "@/db/commands";
 import {
   getEnvironmentsQuery,
+  getPreferredDaysQuery,
   getWorkoutFocusQuery,
   getWorkoutTypesQuery,
 } from "@/db/queries";
@@ -14,6 +15,7 @@ import {
   ActionResponse,
   WorkoutFocus,
   WorkoutType,
+  PreferredDay,
 } from "@/types/types";
 import { log } from "next-axiom";
 import { revalidatePath } from "next/cache";
@@ -28,6 +30,10 @@ export async function getWorkoutTypes(): Promise<WorkoutType[]> {
 
 export async function getEnvironments(): Promise<Environment[]> {
   return await getEnvironmentsQuery();
+}
+
+export async function getPreferredDays(): Promise<PreferredDay[]> {
+  return await getPreferredDaysQuery();
 }
 
 export async function setConfiguration(

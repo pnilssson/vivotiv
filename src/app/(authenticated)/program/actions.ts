@@ -38,11 +38,10 @@ export async function getCurrentProgram(): Promise<ProgramResponse | null> {
   return await getCurrentProgramQuery(user.id);
 }
 
-export async function archiveProgramAction(data: FormData) {
+export async function archiveProgramAction(programId: string) {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
 
-  const programId = data.get("programId") as string;
   await archiveProgramCommand(programId, user.id);
 
   revalidatePath("/program", "page");
@@ -61,7 +60,7 @@ export async function generateProgram(): Promise<ActionResponse> {
       message: "No configuration found.",
     };
   }
-  const prompt = getPromt(configuration);
+  const prompt = getPrompt(configuration);
 
   try {
     const { object: program, usage } = await generateObject({
@@ -95,7 +94,7 @@ export async function generateProgram(): Promise<ActionResponse> {
   };
 }
 
-function getPromt(data: ConfigurationResponse): string {
+function getPrompt(data: ConfigurationResponse): string {
   const {
     sessions,
     time,
@@ -103,32 +102,175 @@ function getPromt(data: ConfigurationResponse): string {
     workout_types,
     environments,
     equipment,
+    preferred_days,
   } = data;
-  const today = new Date();
 
-  const formattedStartDate = new Date(today).toLocaleDateString();
+  const today = new Date();
+  const { exercises, warmupExercises } = getExercises(time);
+  const formattedStartDate = today.toISOString().split("T")[0]; // Use ISO format for start date
+  const formattedEndDate = new Date(today.setDate(today.getDate() + 6))
+    .toISOString()
+    .split("T")[0]; // Calculate end date as 6 days after start
+  const assignedDates = assignSessionsToDays(
+    sessions,
+    formattedStartDate,
+    preferred_days.map((day) => day.name)
+  );
+  const workoutDatesText = `Workouts will be scheduled on these dates: ${assignedDates.join(", ")}.`;
+
   const prioritizeText =
     workout_focuses.length > 0
-      ? `The program should include strength, conditioning and mobility exercises but prioritize ${workout_focuses.join(
-          ", "
-        )}`
-      : "The program should include strength, conditioning and mobility exercises";
+      ? `The program should include strength, conditioning and mobility exercises but prioritize ${workout_focuses
+          .map((a) => a.name)
+          .join(", ")}`
+      : "The program should include strength, conditioning and mobility exercises.";
+
   const typesText =
     workout_types.length > 0
-      ? `and the following types of exercises atleast once a week: ${workout_types.join(
-          ", "
-        )}`
+      ? `${workout_types
+          .map((a) => a.name)
+          .join(" and ")} must be included in at least one session.`
       : "";
+
   const environmentText =
     environments.length > 0
-      ? `The user has the following environmental possibilities that could be used in the workouts: ${environments.join(
-          ", "
-        )}`
+      ? `${environments
+          .map((a) => a.name)
+          .join(
+            " and "
+          )} is available and can be considered when creating the exercises.`
       : "";
+
   const equipmentText =
     equipment.length > 0
-      ? `The available equipment includes ${equipment}`
-      : "No additional equipment is available";
+      ? `The available equipment includes ${equipment}.`
+      : "No additional equipment is available.";
 
-  return `Generate home-training program starting on ${formattedStartDate} ending six days later. The program should include ${sessions} sessions. Total time of work and rest should take about ${time} minutes to complete. Each session should contain minimum 4 exercises and maximum 8 excercises, make sure to vary amount of excercises between sessions. ${prioritizeText} ${typesText}. ${equipmentText}. ${environmentText}. Each session should have a warm-up with 2-4 exercises that takes around 5 minutes to complete and is relevant to the session. The execution of the exercises can be of different types like reps and sets, amrap(as many reps as possible within a time domain), EMOM(every minute on the minute) it is important that the types vary. Make sure to include rest periods in the execution. The description of the exercises should explain to the user how to execute the exercise.`;
+  return `You are tasked with generating a one-week home-training program that aligns with the following requirements:
+
+1. **Program Details**:
+   - Start date: ${formattedStartDate}
+   - End date: ${formattedEndDate}
+   - Sessions: ${sessions}
+   - ${workoutDatesText}
+
+2. **Workout Structure**:
+   - Each workout should contain:
+     - ${exercises} main exercises. 
+     - ${warmupExercises} warm-up exercises, relevant to the session's focus.
+   - ${prioritizeText}
+   - ${typesText}
+
+3. **Available Equipment and Space**:
+   - ${equipmentText}
+   - ${environmentText}
+
+4. **Exercise Execution**:
+   - Vary execution types across sessions:
+     - Reps and sets (e.g., 3 sets of 10 reps).
+     - AMRAP (as many reps as possible within a time frame).
+     - EMOM (every minute on the minute).
+   - Always include rest periods in the execution of exercises.
+
+5. **Exercise Descriptions**:
+   - Provide clear, user-friendly descriptions of how to perform each exercise.`;
+}
+
+function assignSessionsToDays(
+  sessions: number,
+  startDate: string,
+  prioritizedDays: string[]
+): string[] {
+  const dayMap: { [key: string]: number } = {
+    sunday: 0,
+    monday: 1,
+    tuesday: 2,
+    wednesday: 3,
+    thursday: 4,
+    friday: 5,
+    saturday: 6,
+  };
+
+  const start = new Date(startDate);
+  const allDates: string[] = [];
+
+  // Get all prioritized days' dates in the next week
+  for (let i = 0; i < 7; i++) {
+    const currentDate = new Date(start);
+    currentDate.setDate(start.getDate() + i); // Increment day by i
+
+    const dayOfWeek = currentDate.getDay(); // Get the day of the week (0-6)
+
+    if (
+      prioritizedDays.some((day) => dayMap[day.toLowerCase()] === dayOfWeek)
+    ) {
+      allDates.push(currentDate.toISOString().split("T")[0]);
+    }
+  }
+
+  const assignedDates: string[] = [];
+
+  if (sessions > allDates.length) {
+    // More sessions than prioritized days, assign remaining sessions to any day
+    const remainingSessions = sessions - allDates.length;
+
+    // First, assign one session to each prioritized day
+    assignedDates.push(...allDates);
+
+    // Then, randomly assign remaining sessions to any day (including prioritized days)
+    const remainingDays = getAllDaysInWeek(startDate); // Get all the days of the week
+    const extraSessions = getRandomDays(remainingSessions, remainingDays);
+    assignedDates.push(...extraSessions);
+  } else {
+    // Fewer sessions than prioritized days, randomly assign sessions to the prioritized days
+    const randomPrioritizedDays = getRandomDays(sessions, allDates);
+    assignedDates.push(...randomPrioritizedDays);
+  }
+
+  return assignedDates;
+}
+
+// Helper function to get all days of the week
+function getAllDaysInWeek(startDate: string): string[] {
+  const start = new Date(startDate);
+  const allDays: string[] = [];
+  for (let i = 0; i < 7; i++) {
+    const currentDate = new Date(start);
+    currentDate.setDate(start.getDate() + i);
+    allDays.push(currentDate.toISOString().split("T")[0]);
+  }
+  return allDays;
+}
+
+// Helper function to randomly select 'n' days from an array
+function getRandomDays(n: number, daysArray: string[]): string[] {
+  const selectedDays: string[] = [];
+  const shuffledDays = [...daysArray];
+  for (let i = shuffledDays.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledDays[i], shuffledDays[j]] = [shuffledDays[j], shuffledDays[i]];
+  }
+
+  // Select the first 'n' shuffled days
+  selectedDays.push(...shuffledDays.slice(0, n));
+  return selectedDays;
+}
+
+function getExercises(time: number) {
+  let exercises = "0";
+  let warmupExercises = "0";
+
+  if (time <= 20) {
+    exercises = "3-4";
+    warmupExercises = "1-2";
+  } else if (time > 20 && time <= 40) {
+    exercises = "5-6";
+    warmupExercises = "2-3";
+  } else if (time > 40) {
+    // Adjusted to handle scenarios > 40 correctly
+    exercises = "6-8";
+    warmupExercises = "2-4";
+  }
+
+  return { exercises, warmupExercises };
 }

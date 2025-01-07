@@ -13,7 +13,7 @@ export default async function Page() {
     <>
       <PageTitle
         title={"Program"}
-        description={"This is your current weeks training program."}
+        description={"This is your current active training program."}
       />
       {!configuration ? (
         <NoConfiguration />

@@ -12,6 +12,7 @@ import {
   pgSchema,
   foreignKey,
   pgPolicy,
+  timestamp,
 } from "drizzle-orm/pg-core";
 
 // drizzle-orm/supabase
@@ -122,7 +123,7 @@ export const programMetadata = pgTable(
     prompt_tokens: integer().notNull(),
     completion_tokens: integer().notNull(),
     program_id: uuid().references(() => program.id),
-    generated_on: date().notNull().defaultNow(),
+    generated_on: timestamp().notNull().defaultNow(),
   },
   (table) => [
     pgPolicy("User can handle their own programs metadata", {
@@ -170,6 +171,7 @@ export const configurationRelations = relations(configuration, ({ many }) => ({
   workoutFocuses: many(configurationToWorkoutFocus),
   workoutTypes: many(configurationToWorkoutType),
   environments: many(configurationToEnvironment),
+  prefferedDays: many(configurationToPreferredDay),
 }));
 
 export const workoutFocus = pgTable(
@@ -189,44 +191,6 @@ export const workoutFocus = pgTable(
 
 export const workoutFocusRelations = relations(workoutFocus, ({ many }) => ({
   configurations: many(configurationToWorkoutFocus),
-}));
-
-export const workoutType = pgTable(
-  "workout_type",
-  {
-    id: uuid().defaultRandom().primaryKey().notNull(),
-    name: text(),
-  },
-  (table) => [
-    pgPolicy("Authenticated can handle workout types", {
-      for: "all",
-      to: authenticatedRole,
-      using: sql`true`,
-    }),
-  ]
-).enableRLS();
-
-export const workoutTypeRelations = relations(workoutType, ({ many }) => ({
-  configurations: many(configurationToWorkoutType),
-}));
-
-export const environment = pgTable(
-  "environment",
-  {
-    id: uuid().defaultRandom().primaryKey().notNull(),
-    name: text(),
-  },
-  (table) => [
-    pgPolicy("Authenticated can handle environment", {
-      for: "all",
-      to: authenticatedRole,
-      using: sql`true`,
-    }),
-  ]
-).enableRLS();
-
-export const environmentRelations = relations(environment, ({ many }) => ({
-  configurations: many(configuration),
 }));
 
 export const configurationToWorkoutFocus = pgTable(
@@ -263,6 +227,25 @@ export const configurationToWorkoutFocusRelations = relations(
   })
 );
 
+export const workoutType = pgTable(
+  "workout_type",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    name: text(),
+  },
+  (table) => [
+    pgPolicy("Authenticated can handle workout types", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const workoutTypeRelations = relations(workoutType, ({ many }) => ({
+  configurations: many(configurationToWorkoutType),
+}));
+
 export const configurationToWorkoutType = pgTable(
   "configuration_to_workout_type",
   {
@@ -297,6 +280,25 @@ export const configurationToWorkoutTypeRelations = relations(
   })
 );
 
+export const environment = pgTable(
+  "environment",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    name: text(),
+  },
+  (table) => [
+    pgPolicy("Authenticated can handle environment", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const environmentRelations = relations(environment, ({ many }) => ({
+  configurations: many(configuration),
+}));
+
 export const configurationToEnvironment = pgTable(
   "configuration_to_environment",
   {
@@ -327,6 +329,60 @@ export const configurationToEnvironmentRelations = relations(
     environment: one(environment, {
       fields: [configurationToEnvironment.environment_id],
       references: [environment.id],
+    }),
+  })
+);
+
+export const preferredDay = pgTable(
+  "preferred_day",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    name: text(),
+    number: integer().notNull(),
+  },
+  (table) => [
+    pgPolicy("Authenticated can handle preferredDay", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const preferredDayRelations = relations(preferredDay, ({ many }) => ({
+  configurations: many(configuration),
+}));
+
+export const configurationToPreferredDay = pgTable(
+  "configuration_to_preferred_day",
+  {
+    configuration_id: uuid()
+      .notNull()
+      .references(() => configuration.id, { onDelete: "cascade" }),
+    preferred_day_id: uuid()
+      .notNull()
+      .references(() => preferredDay.id, { onDelete: "cascade" }),
+  },
+  (table) => [
+    primaryKey({ columns: [table.configuration_id, table.preferred_day_id] }),
+    pgPolicy("Authenticated can handle configurationsToPreferredDay", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const configurationToPreferredDayRelations = relations(
+  configurationToPreferredDay,
+  ({ one }) => ({
+    configuration: one(configuration, {
+      fields: [configurationToPreferredDay.configuration_id],
+      references: [configuration.id],
+    }),
+    preferredDay: one(preferredDay, {
+      fields: [configurationToPreferredDay.preferred_day_id],
+      references: [preferredDay.id],
     }),
   })
 );

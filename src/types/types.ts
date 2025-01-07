@@ -23,6 +23,7 @@ export interface ConfigurationResponse {
   workout_focuses: WorkoutFocus[];
   workout_types: WorkoutType[];
   environments: Environment[];
+  preferred_days: Environment[];
   equipment: string;
   generate_automatically: boolean;
 }
@@ -70,4 +71,10 @@ export interface WorkoutType {
 export interface Environment {
   id: string;
   name: string;
+}
+
+export interface PreferredDay {
+  id: string;
+  name: string;
+  number: number;
 }

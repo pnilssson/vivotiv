@@ -48,10 +48,14 @@ export default function Component() {
           className="w-full lg:w-36"
           aria-disabled={loading}
           onClick={() => generate()}>
-          Generate now
           {loading ? (
-            <LoaderCircleIcon className="h-4 w-4 animate-spin" />
-          ) : null}
+            <span className="flex items-center">
+              Generating..
+              <LoaderCircleIcon className="h-4 w-4 animate-spin ml-2" />
+            </span>
+          ) : (
+            "Generate now"
+          )}
         </Button>
       </div>
     </div>
