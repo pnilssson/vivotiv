@@ -35,7 +35,7 @@ export default function Component({
               <Badge
                 className="bg-red-300 align-middle font-normal w-fit"
                 variant="secondary">
-                Incompleted
+                Uncompleted
               </Badge>
             )}
             <div className="flex justify-between items-center min-h-10">
