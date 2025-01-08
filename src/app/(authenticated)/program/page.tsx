@@ -1,4 +1,3 @@
-import PageTitle from "@/components/shared/page-title";
 import { getCurrentProgram } from "./actions";
 import NoProgram from "./no-program";
 import { getConfiguration } from "@/lib/actions";
@@ -11,10 +10,6 @@ export default async function Page() {
 
   return (
     <>
-      <PageTitle
-        title={"Program"}
-        description={"This is your current active training program."}
-      />
       {!configuration ? (
         <NoConfiguration />
       ) : !currentProgram ? (

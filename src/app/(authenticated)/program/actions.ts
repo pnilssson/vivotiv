@@ -1,10 +1,6 @@
 "use server";
 
-import {
-  archiveProgramCommand,
-  insertProgramCommand,
-  insertProgramMetadataCommand,
-} from "@/db/commands";
+import { archiveProgramCommand, handleProgramInserts } from "@/db/commands";
 import { getUserOrRedirect } from "@/lib/server-utils";
 import { createClient } from "@/lib/supabase/server";
 import { programSchema } from "@/lib/zod/schema";
@@ -16,21 +12,9 @@ import {
 import { revalidatePath } from "next/cache";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import {
-  getConfigurationQuery,
-  getCurrentProgramQuery,
-  getProgramByIdQuery,
-} from "@/db/queries";
+import { getConfigurationQuery, getCurrentProgramQuery } from "@/db/queries";
 import { log } from "next-axiom";
 import { redirect } from "next/navigation";
-
-export async function getProgramById(
-  id: string
-): Promise<ProgramResponse | null> {
-  const supabase = await createClient();
-  const user = await getUserOrRedirect(supabase);
-  return await getProgramByIdQuery(id, user.id);
-}
 
 export async function getCurrentProgram(): Promise<ProgramResponse | null> {
   const supabase = await createClient();
@@ -38,7 +22,7 @@ export async function getCurrentProgram(): Promise<ProgramResponse | null> {
   return await getCurrentProgramQuery(user.id);
 }
 
-export async function archiveProgramAction(programId: string) {
+export async function archiveProgram(programId: string) {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
 
@@ -54,6 +38,9 @@ export async function generateProgram(): Promise<ActionResponse> {
   const configuration = await getConfigurationQuery(user.id);
 
   if (!configuration) {
+    log.error("No configuration was found for user when generating program.", {
+      userId: user.id,
+    });
     return {
       success: false,
       errors: [],
@@ -73,11 +60,10 @@ export async function generateProgram(): Promise<ActionResponse> {
       temperature: 1.1,
     });
 
-    const programId = await insertProgramCommand(program, user.id);
-    await insertProgramMetadataCommand(
+    await handleProgramInserts(
+      program,
       user.id,
       prompt,
-      programId,
       usage.promptTokens,
       usage.completionTokens
     );

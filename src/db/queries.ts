@@ -114,5 +114,5 @@ export const getProfileByIdQuery = cache(async (userId: string) => {
   const result = await db.query.profile.findFirst({
     where: (profile, { eq }) => eq(profile.id, userId),
   });
-  return result as ProfileResponse | undefined;
+  return result as ProfileResponse;
 });

@@ -9,7 +9,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { FolderArchiveIcon } from "lucide-react";
 import ConfirmDialog from "@/components/shared/confirm-dialog";
-import { archiveProgramAction } from "./actions";
+import { archiveProgram } from "./actions";
 
 export default function Component({ program }: { program: ProgramResponse }) {
   const [selectedDate, setSelectedDate] = useState<string>(
@@ -22,7 +22,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
   });
 
   const handleConfirm = async () => {
-    await archiveProgramAction(program.id);
+    await archiveProgram(program.id);
   };
 
   return (

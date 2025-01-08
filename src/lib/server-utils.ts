@@ -24,7 +24,7 @@ export async function getUserOrRedirect(
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {
-    log.error("Error during getUserOrRedirect", { error });
+    log.error("Error when getting user: ", { error });
     redirect("/auth/signin");
   }
 

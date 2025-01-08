@@ -12,23 +12,46 @@ import {
 } from "./schema";
 import { z } from "zod";
 import { and, eq } from "drizzle-orm";
+import { getProfileByIdQuery } from "./queries";
 
-export async function insertProgramCommand(
+export async function handleProgramInserts(
   newProgram: z.infer<typeof programSchema>,
-  userId: string
+  userId: string,
+  prompt: string,
+  promptTokens: number,
+  completionTokens: number
 ) {
-  const [result] = await db
-    .insert(program)
-    .values({
-      user_id: userId,
-      start_date: newProgram.start_date,
-      end_date: newProgram.end_date,
-      workouts: newProgram.workouts,
-      version: 1,
-    })
-    .returning({ id: program.id });
+  await db.transaction(async (trx) => {
+    // Insert program
+    const [result] = await trx
+      .insert(program)
+      .values({
+        user_id: userId,
+        start_date: newProgram.start_date,
+        end_date: newProgram.end_date,
+        workouts: newProgram.workouts,
+        version: 1,
+      })
+      .returning({ id: program.id });
 
-  return result.id;
+    // Insert program metadata
+    await trx.insert(programMetadata).values({
+      user_id: userId,
+      prompt: prompt,
+      program_id: result.id,
+      prompt_tokens: promptTokens,
+      completion_tokens: completionTokens,
+    });
+
+    // Remove used token
+    const currentProfile = await getProfileByIdQuery(userId);
+    await trx
+      .update(profile)
+      .set({
+        program_tokens: currentProfile.program_tokens - 1,
+      })
+      .where(eq(profile.id, userId));
+  });
 }
 
 export async function updateProfileProgramTokensCommand(
@@ -182,20 +205,4 @@ export async function archiveProgramCommand(programId: string, userId: string) {
       archived: true,
     })
     .where(and(eq(program.id, programId), eq(program.user_id, userId)));
-}
-
-export async function insertProgramMetadataCommand(
-  userId: string,
-  prompt: string,
-  programId: string,
-  promptTokens: number,
-  completionTokens: number
-) {
-  await db.insert(programMetadata).values({
-    user_id: userId,
-    prompt: prompt,
-    program_id: programId,
-    prompt_tokens: promptTokens,
-    completion_tokens: completionTokens,
-  });
 }
