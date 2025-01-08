@@ -80,7 +80,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
                       variant="secondary"></Badge>
                   )
                 ) : (
-                  <div></div>
+                  <div className="min-h-[6px]"></div>
                 )}
                 <h3 className="mt-2">
                   {new Date(date).toLocaleDateString("en-US", {
@@ -116,7 +116,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
                     </Badge>
                   )
                 ) : (
-                  <div></div>
+                  <div className="min-h-[22px]"></div>
                 )}
                 <h3 className="text-xl mt-2">
                   {new Date(date).toLocaleDateString("en-US", {
@@ -152,7 +152,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
                     </Badge>
                   )
                 ) : (
-                  <div></div>
+                  <div className="min-h-[22px]"></div>
                 )}
                 <h3 className="text-xl mt-2">
                   {new Date(date).toLocaleDateString("en-US", {

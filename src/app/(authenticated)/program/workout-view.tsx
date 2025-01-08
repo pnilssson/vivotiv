@@ -51,7 +51,7 @@ export default function Component({
                 </Button>
               ) : null}
             </div>
-            <p className="text-sm text-muted-foreground mt-2">{workout.date}</p>
+            <p className="text-sm text-muted-foreground">{workout.date}</p>
           </div>
 
           <Separator className="my-4" />
