@@ -13,6 +13,10 @@ export default function Component() {
 
   const generate = async () => {
     setLoading(true);
+    toast({
+      description:
+        "Generating a program may take some time (up to a minute). Please avoid closing or refreshing the page during this process.",
+    });
     const result = await generateProgram();
     handleResult(result);
     setLoading(false);

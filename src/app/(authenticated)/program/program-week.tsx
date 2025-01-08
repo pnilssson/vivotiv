@@ -1,6 +1,6 @@
 "use client";
 
-import { ProgramResponse } from "@/types/types";
+import { ProgramResponse, Workout } from "@/types/types";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import WorkoutView from "./workout-view";
@@ -9,7 +9,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { FolderArchiveIcon } from "lucide-react";
 import ConfirmDialog from "@/components/shared/confirm-dialog";
-import { archiveProgram } from "./actions";
+import { archiveProgram, completeWorkout } from "./actions";
 
 export default function Component({ program }: { program: ProgramResponse }) {
   const [selectedDate, setSelectedDate] = useState<string>(
@@ -23,6 +23,15 @@ export default function Component({ program }: { program: ProgramResponse }) {
 
   const handleConfirm = async () => {
     await archiveProgram(program.id);
+  };
+
+  const handleCompleteWorkout = async (workout: Workout) => {
+    if (workout) {
+      const updatedWorkouts = program.workouts.map((w) =>
+        w.date === workout.date ? { ...w, completed: true } : w
+      );
+      await completeWorkout(program.id, updatedWorkouts);
+    }
   };
 
   return (
@@ -61,12 +70,18 @@ export default function Component({ program }: { program: ProgramResponse }) {
                 )}
                 onClick={() => setSelectedDate(date)}>
                 {workout ? (
-                  <Badge
-                    className="bg-violet-300 align-middle font-normal w-fit"
-                    variant="secondary"></Badge>
+                  workout.completed ? (
+                    <Badge
+                      className="bg-emerald-300 align-middle font-normal w-fit"
+                      variant="secondary"></Badge>
+                  ) : (
+                    <Badge
+                      className="bg-red-300 align-middle font-normal w-fit"
+                      variant="secondary"></Badge>
+                  )
                 ) : (
                   <Badge
-                    className="bg-emerald-200 align-middle font-normal w-fit"
+                    className="bg-sky-300 align-middle font-normal w-fit"
                     variant="secondary"></Badge>
                 )}
                 <h3 className="mt-2">
@@ -89,14 +104,22 @@ export default function Component({ program }: { program: ProgramResponse }) {
                 )}
                 onClick={() => setSelectedDate(date)}>
                 {workout ? (
-                  <Badge
-                    className="bg-violet-300 align-middle font-normal w-fit"
-                    variant="secondary">
-                    Work
-                  </Badge>
+                  workout.completed ? (
+                    <Badge
+                      className="bg-emerald-300 align-middle font-normal w-fit"
+                      variant="secondary">
+                      Workout
+                    </Badge>
+                  ) : (
+                    <Badge
+                      className="bg-red-300 align-middle font-normal w-fit"
+                      variant="secondary">
+                      Workout
+                    </Badge>
+                  )
                 ) : (
                   <Badge
-                    className="bg-emerald-200 align-middle font-normal w-fit"
+                    className="bg-sky-300 align-middle font-normal w-fit"
                     variant="secondary">
                     Rest
                   </Badge>
@@ -121,14 +144,22 @@ export default function Component({ program }: { program: ProgramResponse }) {
                 )}
                 onClick={() => setSelectedDate(date)}>
                 {workout ? (
-                  <Badge
-                    className="bg-violet-300 align-middle font-normal w-fit"
-                    variant="secondary">
-                    Workout
-                  </Badge>
+                  workout.completed ? (
+                    <Badge
+                      className="bg-emerald-300 align-middle font-normal w-fit"
+                      variant="secondary">
+                      Workout
+                    </Badge>
+                  ) : (
+                    <Badge
+                      className="bg-red-300 align-middle font-normal w-fit"
+                      variant="secondary">
+                      Workout
+                    </Badge>
+                  )
                 ) : (
                   <Badge
-                    className="bg-emerald-200 align-middle font-normal w-fit"
+                    className="bg-sky-300 align-middle font-normal w-fit"
                     variant="secondary">
                     Rest
                   </Badge>
@@ -146,6 +177,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
       </div>
       <WorkoutView
         workout={program.workouts.find((w) => w.date == selectedDate)}
+        action={handleCompleteWorkout}
       />
     </>
   );

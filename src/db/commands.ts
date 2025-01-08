@@ -13,6 +13,7 @@ import {
 import { z } from "zod";
 import { and, eq } from "drizzle-orm";
 import { getProfileByIdQuery } from "./queries";
+import { Workout } from "@/types/types";
 
 export async function handleProgramInserts(
   newProgram: z.infer<typeof programSchema>,
@@ -203,6 +204,19 @@ export async function archiveProgramCommand(programId: string, userId: string) {
     .update(program)
     .set({
       archived: true,
+    })
+    .where(and(eq(program.id, programId), eq(program.user_id, userId)));
+}
+
+export async function updateProgramWorkoutsCommand(
+  programId: string,
+  userId: string,
+  workouts: Workout[]
+) {
+  await db
+    .update(program)
+    .set({
+      workouts: workouts,
     })
     .where(and(eq(program.id, programId), eq(program.user_id, userId)));
 }

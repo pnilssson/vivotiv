@@ -1,6 +1,10 @@
 "use server";
 
-import { archiveProgramCommand, handleProgramInserts } from "@/db/commands";
+import {
+  archiveProgramCommand,
+  handleProgramInserts,
+  updateProgramWorkoutsCommand,
+} from "@/db/commands";
 import { getUserOrRedirect } from "@/lib/server-utils";
 import { createClient } from "@/lib/supabase/server";
 import { programSchema } from "@/lib/zod/schema";
@@ -8,6 +12,7 @@ import {
   ActionResponse,
   ConfigurationResponse,
   ProgramResponse,
+  Workout,
 } from "@/types/types";
 import { revalidatePath } from "next/cache";
 import { openai } from "@ai-sdk/openai";
@@ -27,6 +32,16 @@ export async function archiveProgram(programId: string) {
   const user = await getUserOrRedirect(supabase);
 
   await archiveProgramCommand(programId, user.id);
+
+  revalidatePath("/program", "page");
+  redirect("/program");
+}
+
+export async function completeWorkout(programId: string, workouts: Workout[]) {
+  const supabase = await createClient();
+  const user = await getUserOrRedirect(supabase);
+
+  await updateProgramWorkoutsCommand(programId, user.id, workouts);
 
   revalidatePath("/program", "page");
   redirect("/program");
