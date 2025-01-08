@@ -80,9 +80,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
                       variant="secondary"></Badge>
                   )
                 ) : (
-                  <Badge
-                    className="bg-sky-300 align-middle font-normal w-fit"
-                    variant="secondary"></Badge>
+                  <div></div>
                 )}
                 <h3 className="mt-2">
                   {new Date(date).toLocaleDateString("en-US", {
@@ -118,11 +116,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
                     </Badge>
                   )
                 ) : (
-                  <Badge
-                    className="bg-sky-300 align-middle font-normal w-fit"
-                    variant="secondary">
-                    Rest
-                  </Badge>
+                  <div></div>
                 )}
                 <h3 className="text-xl mt-2">
                   {new Date(date).toLocaleDateString("en-US", {
@@ -158,11 +152,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
                     </Badge>
                   )
                 ) : (
-                  <Badge
-                    className="bg-sky-300 align-middle font-normal w-fit"
-                    variant="secondary">
-                    Rest
-                  </Badge>
+                  <div></div>
                 )}
                 <h3 className="text-xl mt-2">
                   {new Date(date).toLocaleDateString("en-US", {

@@ -38,7 +38,7 @@ export default function Component({
                 Incompleted
               </Badge>
             )}
-            <div className="flex justify-between items-center h-10">
+            <div className="flex justify-between items-center min-h-10">
               <h3 className="text-xl font-semibold tracking-tight">
                 {workout.description}
               </h3>
