@@ -25,7 +25,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
     await archiveProgram(program.id);
   };
 
-  const handleCompleteWorkout = async (workout: Workout) => {
+  const handleCompleteWorkout = async (workout: Workout | undefined) => {
     if (workout) {
       const updatedWorkouts = program.workouts.map((w) =>
         w.date === workout.date ? { ...w, completed: true } : w
