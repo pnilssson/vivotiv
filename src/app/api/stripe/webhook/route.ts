@@ -24,8 +24,9 @@ export async function POST(req: Request): Promise<Response> {
     // Handle the event
     return await handleStripeEvent(event);
   } catch (error: any) {
-    console.error(`Error processing webhook: ${error.message}`);
-    log.warn("Error processing webhook.", { error_message: error.message });
+    log.error("Error when processing stripe webhook.", {
+      error_message: error.message,
+    });
     return respondWithError(`Webhook Error: ${error.message}`, 400);
   }
 }
@@ -43,39 +44,40 @@ async function handleStripeEvent(event: Stripe.Event): Promise<Response> {
 
     return new Response(JSON.stringify({ received: true }), { status: 200 });
   } catch (error: any) {
-    console.error(`Error handling event: ${error.message}`);
-    log.warn("Error handling event.", { error_message: error.message });
-    return respondWithError("Webhook handler failed.", 400);
+    log.error("Error handling event stripe.", { error_message: error.message });
+    throw new Error("Error handling event stripe.");
   }
 }
 
 // Processes 'checkout.session.completed' events
 async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   const checkoutSession = event.data.object as Stripe.Checkout.Session;
+  log.info("Handling completed checkout session.", checkoutSession);
 
   if (!checkoutSession.metadata?.userId) {
-    log.warn("User id is missing in checkoutSession.", checkoutSession);
-    return;
+    log.error("User id is missing in stripe event.", checkoutSession);
+    throw new Error("User id is missing in stripe event.");
   }
 
   const userId = checkoutSession.metadata.userId;
   const profile = await getProfileByIdQuery(userId);
 
   if (!profile) {
-    log.warn(
+    log.error(
       "Profile was not found when handling completed checkout session.",
       {
         userId,
       }
     );
-    return;
+    throw new Error(
+      "Profile was not found when handling completed checkout session."
+    );
   }
 
-  log.info("Handling completed checkout session.", checkoutSession);
   const tokensToAdd = parseInt(checkoutSession.metadata?.tokens || "0", 10);
   await updateProfileProgramTokensCommand(
     profile.id,
-    parseInt(profile.program_tokens),
+    profile.program_tokens,
     tokensToAdd
   );
   if (checkoutSession.customer_details?.name) {
@@ -85,7 +87,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     );
   }
 
-  log.info("Completed checkout session handled.", {
+  log.info("Checkout session handled successfully.", {
     userId,
     tokens: tokensToAdd,
   });
