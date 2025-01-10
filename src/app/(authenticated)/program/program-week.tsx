@@ -142,7 +142,8 @@ export default function Component({ program }: { program: ProgramResponse }) {
                 className={cn(
                   "bg-slate-50 border border-slate-100 rounded-lg p-4 hidden xl:flex flex-col flex-1 hover:bg-slate-100 cursor-pointer",
                   {
-                    "bg-violet-200 hover:bg-violet-200": date == selectedDate,
+                    "bg-slate-200/75 hover:bg-slate-200/75":
+                      date == selectedDate,
                   }
                 )}
                 onClick={() => setSelectedDate(date)}>
