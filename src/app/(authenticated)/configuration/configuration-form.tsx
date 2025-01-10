@@ -290,7 +290,12 @@ export default function Component({
                         key={type.id}
                         value={type.id}
                         aria-label={`Toggle ${type.name}`}>
-                        <span className="capitalize">{type.name}</span>
+                        <span className="capitalize sm:hidden">
+                          {type.name.slice(0, 3)}
+                        </span>
+                        <span className="capitalize hidden sm:flex">
+                          {type.name}
+                        </span>
                       </ToggleGroupItem>
                     ))}
                   </ToggleGroup>

@@ -47,6 +47,19 @@ export async function completeWorkout(programId: string, workouts: Workout[]) {
   redirect("/program");
 }
 
+export async function uncompleteWorkout(
+  programId: string,
+  workouts: Workout[]
+) {
+  const supabase = await createClient();
+  const user = await getUserOrRedirect(supabase);
+
+  await updateProgramWorkoutsCommand(programId, user.id, workouts);
+
+  revalidatePath("/program", "page");
+  redirect("/program");
+}
+
 export async function generateProgram(): Promise<ActionResponse> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);

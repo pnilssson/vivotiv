@@ -9,7 +9,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { FolderArchiveIcon } from "lucide-react";
 import ConfirmDialog from "@/components/shared/confirm-dialog";
-import { archiveProgram, completeWorkout } from "./actions";
+import { archiveProgram, completeWorkout, uncompleteWorkout } from "./actions";
 
 export default function Component({ program }: { program: ProgramResponse }) {
   const [selectedDate, setSelectedDate] = useState<string>(
@@ -31,6 +31,15 @@ export default function Component({ program }: { program: ProgramResponse }) {
         w.date === workout.date ? { ...w, completed: true } : w
       );
       await completeWorkout(program.id, updatedWorkouts);
+    }
+  };
+
+  const handleUncompleteWorkout = async (workout: Workout | undefined) => {
+    if (workout) {
+      const updatedWorkouts = program.workouts.map((w) =>
+        w.date === workout.date ? { ...w, completed: false } : w
+      );
+      await uncompleteWorkout(program.id, updatedWorkouts);
     }
   };
 
@@ -167,7 +176,8 @@ export default function Component({ program }: { program: ProgramResponse }) {
       </div>
       <WorkoutView
         workout={program.workouts.find((w) => w.date == selectedDate)}
-        action={handleCompleteWorkout}
+        completeAction={handleCompleteWorkout}
+        uncompleteAction={handleUncompleteWorkout}
       />
     </>
   );
