@@ -29,8 +29,8 @@ export default function Component({
     <div className="bg-slate-50 border border-slate-100 rounded-lg p-4 flex flex-col mt-4">
       {workout ? (
         <div>
-          <div>
-            <div className="flex justify-between items-center min-h-10">
+          <div className="flex gap-4">
+            <div className="flex flex-col flex-grow gap-2">
               {workout.completed ? (
                 <Badge
                   className="bg-emerald-300 align-middle font-normal w-fit"
@@ -44,6 +44,12 @@ export default function Component({
                   Uncompleted
                 </Badge>
               )}
+              <h3 className="text-xl font-semibold tracking-tight">
+                {workout.description}
+              </h3>
+              <p className="text-sm text-muted-foreground">{workout.date}</p>
+            </div>
+            <div>
               {!workout.completed ? (
                 <Button
                   variant="outline"
@@ -60,10 +66,6 @@ export default function Component({
                 </Button>
               )}
             </div>
-            <h3 className="text-xl font-semibold tracking-tight">
-              {workout.description}
-            </h3>
-            <p className="text-sm text-muted-foreground mt-2">{workout.date}</p>
           </div>
 
           <Separator className="my-4" />
