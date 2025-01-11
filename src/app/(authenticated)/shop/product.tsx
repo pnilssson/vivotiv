@@ -27,7 +27,7 @@ export default function Component({
   discount?: string;
   highlight: boolean;
 }) {
-  const [loading, setLoading] = useState<boolean>();
+  const [loading, setLoading] = useState<boolean>(false);
   const { toast } = useToast();
 
   const handleStripeCheckout = async (priceId: string) => {

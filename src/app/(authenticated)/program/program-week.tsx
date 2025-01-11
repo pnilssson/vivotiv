@@ -12,8 +12,9 @@ import ConfirmDialog from "@/components/shared/confirm-dialog";
 import { archiveProgram, completeWorkout, uncompleteWorkout } from "./actions";
 
 export default function Component({ program }: { program: ProgramResponse }) {
-  const [archiveLoading, setArchiveLoading] = useState<boolean>();
-  const [updateWorkoutLoading, setUpdateWorkoutLoading] = useState<boolean>();
+  const [archiveLoading, setArchiveLoading] = useState<boolean>(false);
+  const [updateWorkoutLoading, setUpdateWorkoutLoading] =
+    useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<string>(
     new Date().toISOString().split("T")[0]
   );

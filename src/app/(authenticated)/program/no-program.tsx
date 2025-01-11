@@ -8,7 +8,7 @@ import { generateProgram } from "./actions";
 import { ActionResponse } from "@/types/types";
 
 export default function Component() {
-  const [loading, setLoading] = useState<boolean>();
+  const [loading, setLoading] = useState<boolean>(false);
   const { toast } = useToast();
 
   const generate = async () => {
