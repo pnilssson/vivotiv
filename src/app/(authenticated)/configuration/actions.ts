@@ -2,7 +2,6 @@
 
 import { insertOrUpdateConfigurationCommand } from "@/db/commands";
 import {
-  getEnvironmentsQuery,
   getPreferredDaysQuery,
   getWorkoutFocusQuery,
   getWorkoutTypesQuery,
@@ -11,7 +10,6 @@ import { getUserOrRedirect } from "@/lib/server-utils";
 import { createClient } from "@/lib/supabase/server";
 import { configurationRequestSchema } from "@/lib/zod/schema";
 import {
-  Environment,
   ActionResponse,
   WorkoutFocus,
   WorkoutType,
@@ -26,10 +24,6 @@ export async function getWorkoutFocus(): Promise<WorkoutFocus[]> {
 
 export async function getWorkoutTypes(): Promise<WorkoutType[]> {
   return await getWorkoutTypesQuery();
-}
-
-export async function getEnvironments(): Promise<Environment[]> {
-  return await getEnvironmentsQuery();
 }
 
 export async function getPreferredDays(): Promise<PreferredDay[]> {

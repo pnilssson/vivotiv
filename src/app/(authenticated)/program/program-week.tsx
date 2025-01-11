@@ -81,11 +81,11 @@ export default function Component({ program }: { program: ProgramResponse }) {
                 {workout ? (
                   workout.completed ? (
                     <Badge
-                      className="bg-emerald-300 align-middle font-normal w-fit"
+                      className="bg-emerald-300 align-middle font-normal w-full"
                       variant="secondary"></Badge>
                   ) : (
                     <Badge
-                      className="bg-red-300 align-middle font-normal w-fit"
+                      className="bg-red-300 align-middle font-normal w-full"
                       variant="secondary"></Badge>
                   )
                 ) : (
@@ -113,16 +113,12 @@ export default function Component({ program }: { program: ProgramResponse }) {
                 {workout ? (
                   workout.completed ? (
                     <Badge
-                      className="bg-emerald-300 align-middle font-normal w-fit"
-                      variant="secondary">
-                      Workout
-                    </Badge>
+                      className="bg-emerald-300 align-middle font-normal w-full"
+                      variant="secondary"></Badge>
                   ) : (
                     <Badge
-                      className="bg-red-300 align-middle font-normal w-fit"
-                      variant="secondary">
-                      Workout
-                    </Badge>
+                      className="bg-red-300 align-middle font-normal w-full"
+                      variant="secondary"></Badge>
                   )
                 ) : (
                   <div className="min-h-[22px]"></div>
@@ -149,16 +145,12 @@ export default function Component({ program }: { program: ProgramResponse }) {
                 {workout ? (
                   workout.completed ? (
                     <Badge
-                      className="bg-emerald-300 align-middle font-normal w-fit"
-                      variant="secondary">
-                      Workout
-                    </Badge>
+                      className="bg-emerald-300 align-middle font-normal w-full"
+                      variant="secondary"></Badge>
                   ) : (
                     <Badge
-                      className="bg-red-300 align-middle font-normal w-fit"
-                      variant="secondary">
-                      Workout
-                    </Badge>
+                      className="bg-red-300 align-middle font-normal w-full"
+                      variant="secondary"></Badge>
                   )
                 ) : (
                   <div className="min-h-[22px]"></div>

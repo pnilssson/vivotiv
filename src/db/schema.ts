@@ -170,7 +170,6 @@ export const configuration = pgTable(
 export const configurationRelations = relations(configuration, ({ many }) => ({
   workoutFocuses: many(configurationToWorkoutFocus),
   workoutTypes: many(configurationToWorkoutType),
-  environments: many(configurationToEnvironment),
   prefferedDays: many(configurationToPreferredDay),
 }));
 
@@ -276,59 +275,6 @@ export const configurationToWorkoutTypeRelations = relations(
     workoutType: one(workoutType, {
       fields: [configurationToWorkoutType.workout_type_id],
       references: [workoutType.id],
-    }),
-  })
-);
-
-export const environment = pgTable(
-  "environment",
-  {
-    id: uuid().defaultRandom().primaryKey().notNull(),
-    name: text(),
-  },
-  (table) => [
-    pgPolicy("Authenticated can handle environment", {
-      for: "all",
-      to: authenticatedRole,
-      using: sql`true`,
-    }),
-  ]
-).enableRLS();
-
-export const environmentRelations = relations(environment, ({ many }) => ({
-  configurations: many(configuration),
-}));
-
-export const configurationToEnvironment = pgTable(
-  "configuration_to_environment",
-  {
-    configuration_id: uuid()
-      .notNull()
-      .references(() => configuration.id, { onDelete: "cascade" }),
-    environment_id: uuid()
-      .notNull()
-      .references(() => environment.id, { onDelete: "cascade" }),
-  },
-  (table) => [
-    primaryKey({ columns: [table.configuration_id, table.environment_id] }),
-    pgPolicy("Authenticated can handle configurationsToEnvironment", {
-      for: "all",
-      to: authenticatedRole,
-      using: sql`true`,
-    }),
-  ]
-).enableRLS();
-
-export const configurationToEnvironmentRelations = relations(
-  configurationToEnvironment,
-  ({ one }) => ({
-    configuration: one(configuration, {
-      fields: [configurationToEnvironment.configuration_id],
-      references: [configuration.id],
-    }),
-    environment: one(environment, {
-      fields: [configurationToEnvironment.environment_id],
-      references: [environment.id],
     }),
   })
 );

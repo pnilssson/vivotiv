@@ -85,7 +85,8 @@ export async function generateProgram(): Promise<ActionResponse> {
       schemaDescription: "One week of home training.",
       schema: programSchema,
       prompt,
-      temperature: 1.1,
+      temperature: 0.1,
+      topK: 0.2,
     });
 
     await handleProgramInserts(
@@ -114,13 +115,11 @@ function getPrompt(data: ConfigurationResponse): string {
     time,
     workout_focuses,
     workout_types,
-    environments,
     equipment,
     preferred_days,
   } = data;
 
   const today = new Date();
-  const { exercises, warmupExercises } = getExercises(time);
   const formattedStartDate = today.toISOString().split("T")[0]; // Use ISO format for start date
   const formattedEndDate = new Date(today.setDate(today.getDate() + 6))
     .toISOString()
@@ -132,61 +131,52 @@ function getPrompt(data: ConfigurationResponse): string {
   );
   const workoutDatesText = `Workouts will be scheduled on these dates: ${assignedDates.join(", ")}.`;
 
-  const prioritizeText =
-    workout_focuses.length > 0
-      ? `The program should include strength, conditioning and mobility exercises but prioritize ${workout_focuses
-          .map((a) => a.name)
-          .join(", ")}`
-      : "The program should include strength, conditioning and mobility exercises.";
-
   const typesText =
     workout_types.length > 0
-      ? `${workout_types
+      ? `The workouts should ONLY include ${workout_types
           .map((a) => a.name)
-          .join(" and ")} must be included in at least one session.`
-      : "";
-
-  const environmentText =
-    environments.length > 0
-      ? `${environments
-          .map((a) => a.name)
-          .join(
-            " and "
-          )} is available and can be considered when creating the exercises.`
-      : "";
+          .join(" and ")} exercises.`
+      : "The workouts should include strength, conditioning and mobility exercises.";
 
   const equipmentText =
     equipment.length > 0
       ? `The available equipment includes ${equipment}.`
       : "No additional equipment is available.";
 
+  // Calculate warmup and workout times with rounding
+  const warmupTime = Math.round(time * 0.2);
+  const warmupExercises = Math.ceil(warmupTime / 3);
+  const workoutExerciseTime = Math.round(time * 0.8);
+  const workoutExercises = Math.floor(workoutExerciseTime / 5);
+
   return `You are tasked with generating a one-week home-training program that aligns with the following requirements:
 
-1. **Program Details**:
+1. Program Details:
    - Start date: ${formattedStartDate}
    - End date: ${formattedEndDate}
    - Sessions: ${sessions}
    - ${workoutDatesText}
 
-2. **Workout Structure**:
+2. Workout Structure:
+   - IMPORTANT: ${typesText}
    - Each workout should contain:
-     - ${exercises} main exercises. 
-     - ${warmupExercises} warm-up exercises, relevant to the session's focus.
-   - ${prioritizeText}
-   - ${typesText}
+     - Warm-up exercises: ${warmupExercises}-${warmupExercises + 1}.
+     - Workout exercises: ${workoutExercises}-${workoutExercises + 1}.
+     - IMPORTANT: Vary number of exercises between sessions.
 
-3. **Available Equipment and Space**:
+3. Available Equipment and Space:
    - ${equipmentText}
-   - ${environmentText}
 
-4. **Exercise Execution**:
+4. Exercise Execution:
    - Vary execution types across sessions:
-     - Reps and sets (e.g., 3 sets of 10 reps).
-     - AMRAP (as many reps as possible within a time frame).
-     - EMOM (every minute on the minute).
-   - Always include rest periods in the execution of exercises.
+     - Reps and sets
+     - AMRAP (as many reps as possible within a time frame)
+     - EMOM (every minute on the minute)
+     - Tabata (20 seconds of high-intensity work followed by 10 seconds of rest, repeated for 8 rounds)
+     - For Time (Complete a specific reps of exercises as quickly as possible)
+   - IMPORTANT: If reps and sets is used the execution MUST include rest period.
 
-5. **Exercise Descriptions**:
+5. Exercise Descriptions:
    - Provide clear, user-friendly descriptions of how to perform each exercise.`;
 }
 
@@ -268,23 +258,4 @@ function getRandomDays(n: number, daysArray: string[]): string[] {
   // Select the first 'n' shuffled days
   selectedDays.push(...shuffledDays.slice(0, n));
   return selectedDays;
-}
-
-function getExercises(time: number) {
-  let exercises = "0";
-  let warmupExercises = "0";
-
-  if (time <= 20) {
-    exercises = "3-4";
-    warmupExercises = "1-2";
-  } else if (time > 20 && time <= 40) {
-    exercises = "5-6";
-    warmupExercises = "2-3";
-  } else if (time > 40) {
-    // Adjusted to handle scenarios > 40 correctly
-    exercises = "6-8";
-    warmupExercises = "2-4";
-  }
-
-  return { exercises, warmupExercises };
 }

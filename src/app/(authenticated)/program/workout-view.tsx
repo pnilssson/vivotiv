@@ -26,7 +26,7 @@ export default function Component({
     await uncompleteAction(workout);
   };
   return (
-    <div className="bg-slate-50/50/50 border border-slate-100 rounded-lg p-4 flex flex-col mt-4">
+    <div className="bg-slate-50/50 border border-slate-100 rounded-lg p-4 flex flex-col mt-4">
       {workout ? (
         <div>
           <div className="flex gap-4">

@@ -1,27 +1,16 @@
 import PageTitle from "@/components/shared/page-title";
-import {
-  getEnvironments,
-  getWorkoutFocus,
-  getWorkoutTypes,
-  getPreferredDays,
-} from "./actions";
+import { getWorkoutFocus, getWorkoutTypes, getPreferredDays } from "./actions";
 import ConfigurationForm from "./configuration-form";
 import { getConfiguration } from "@/lib/actions";
 
 export default async function Page() {
-  const [
-    configuration,
-    workoutFocus,
-    workoutTypes,
-    environments,
-    preferredDays,
-  ] = await Promise.all([
-    getConfiguration(),
-    getWorkoutFocus(),
-    getWorkoutTypes(),
-    getEnvironments(),
-    getPreferredDays(),
-  ]);
+  const [configuration, workoutFocus, workoutTypes, preferredDays] =
+    await Promise.all([
+      getConfiguration(),
+      getWorkoutFocus(),
+      getWorkoutTypes(),
+      getPreferredDays(),
+    ]);
   return (
     <>
       <PageTitle
@@ -34,7 +23,6 @@ export default async function Page() {
         configuration={configuration}
         workoutFocus={workoutFocus}
         workoutTypes={workoutTypes}
-        workoutEnvironments={environments}
         preferredDays={preferredDays}
       />
     </>

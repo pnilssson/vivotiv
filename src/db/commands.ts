@@ -2,7 +2,6 @@ import { configurationRequestSchema, programSchema } from "@/lib/zod/schema";
 import { db } from "./db";
 import {
   configuration,
-  configurationToEnvironment,
   configurationToPreferredDay,
   configurationToWorkoutFocus,
   configurationToWorkoutType,
@@ -138,8 +137,7 @@ export async function insertOrUpdateConfigurationCommand(
     }
 
     // Update many-to-many relationships
-    const { workout_focuses, workout_types, environments, preferred_days } =
-      newConfiguration;
+    const { workout_focuses, workout_types, preferred_days } = newConfiguration;
 
     // Handle workoutFocuses
     await trx
@@ -165,20 +163,6 @@ export async function insertOrUpdateConfigurationCommand(
         workout_types.map((id) => ({
           configuration_id: configurationId,
           workout_type_id: id,
-        }))
-      );
-    }
-
-    // Handle environments
-    await trx
-      .delete(configurationToEnvironment)
-      .where(eq(configurationToEnvironment.configuration_id, configurationId));
-
-    if (environments && environments?.length > 0) {
-      await trx.insert(configurationToEnvironment).values(
-        environments.map((id) => ({
-          configuration_id: configurationId,
-          environment_id: id,
         }))
       );
     }

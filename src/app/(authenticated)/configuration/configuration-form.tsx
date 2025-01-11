@@ -16,7 +16,6 @@ import { setConfiguration } from "./actions";
 import { initialFormState } from "@/lib/constants";
 import {
   ConfigurationResponse,
-  Environment,
   PreferredDay,
   WorkoutFocus,
   WorkoutType,
@@ -41,13 +40,11 @@ export default function Component({
   configuration,
   workoutFocus,
   workoutTypes,
-  workoutEnvironments,
   preferredDays,
 }: {
   configuration: ConfigurationResponse | null;
   workoutFocus: WorkoutFocus[];
   workoutTypes: WorkoutType[];
-  workoutEnvironments: Environment[];
   preferredDays: PreferredDay[];
 }) {
   const { toast } = useToast();
@@ -78,9 +75,6 @@ export default function Component({
         : [],
       workout_types: configuration
         ? configuration.workout_types.map((type) => type.id)
-        : [],
-      environments: configuration
-        ? configuration.environments.map((environment) => environment.id)
         : [],
       equipment: configuration ? configuration.equipment : "",
       preferred_days: configuration
@@ -183,96 +177,6 @@ export default function Component({
           <div>
             <FormField
               control={form.control}
-              name="workout_focuses"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Focus</FormLabel>
-                  <ToggleGroup
-                    variant="outline"
-                    type="multiple"
-                    className="justify-start flex-wrap"
-                    value={field.value!}
-                    onValueChange={(value) => {
-                      if (value) form.setValue("workout_focuses", value);
-                    }}>
-                    {workoutFocus.map((focus) => (
-                      <ToggleGroupItem
-                        key={focus.id}
-                        value={focus.id}
-                        aria-label={`Toggle ${focus.name}`}>
-                        <span className="capitalize">{focus.name}</span>
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
-                  <FormDescription>
-                    Leave empty to get an all-round program.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div>
-            <FormField
-              control={form.control}
-              name="workout_types"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Include</FormLabel>
-                  <ToggleGroup
-                    variant="outline"
-                    type="multiple"
-                    className="justify-start flex-wrap"
-                    value={field.value!}
-                    onValueChange={(value) => {
-                      if (value) form.setValue("workout_types", value);
-                    }}>
-                    {workoutTypes.map((type) => (
-                      <ToggleGroupItem
-                        key={type.id}
-                        value={type.id}
-                        aria-label={`Toggle ${type.name}`}>
-                        <span className="capitalize">{type.name}</span>
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div>
-            <FormField
-              control={form.control}
-              name="environments"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Environment</FormLabel>
-                  <ToggleGroup
-                    variant="outline"
-                    type="multiple"
-                    className="justify-start flex-wrap"
-                    value={field.value!}
-                    onValueChange={(value) => {
-                      if (value) form.setValue("environments", value);
-                    }}>
-                    {workoutEnvironments.map((environment) => (
-                      <ToggleGroupItem
-                        key={environment.id}
-                        value={environment.id}
-                        aria-label={`Toggle ${environment.name}`}>
-                        <span className="capitalize">{environment.name}</span>
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div>
-            <FormField
-              control={form.control}
               name="preferred_days"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
@@ -307,6 +211,72 @@ export default function Component({
               )}
             />
           </div>
+          {/* <div>
+            <FormField
+              control={form.control}
+              name="workout_focuses"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Workout Types</FormLabel>
+                  <ToggleGroup
+                    variant="outline"
+                    type="multiple"
+                    className="justify-start flex-wrap"
+                    value={field.value!}
+                    onValueChange={(value) => {
+                      if (value) form.setValue("workout_focuses", value);
+                    }}>
+                    {workoutFocus.map((focus) => (
+                      <ToggleGroupItem
+                        key={focus.id}
+                        value={focus.id}
+                        aria-label={`Toggle ${focus.name}`}>
+                        <span className="capitalize">{focus.name}</span>
+                      </ToggleGroupItem>
+                    ))}
+                  </ToggleGroup>
+                  <FormDescription>
+                    What type of training would you like included in your
+                    program? Leave empty to get an all-round program.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div> */}
+          <div>
+            <FormField
+              control={form.control}
+              name="workout_types"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Workout Types</FormLabel>
+                  <ToggleGroup
+                    variant="outline"
+                    type="multiple"
+                    className="justify-start flex-wrap"
+                    value={field.value!}
+                    onValueChange={(value) => {
+                      if (value) form.setValue("workout_types", value);
+                    }}>
+                    {workoutTypes.map((type) => (
+                      <ToggleGroupItem
+                        key={type.id}
+                        value={type.id}
+                        aria-label={`Toggle ${type.name}`}>
+                        <span className="capitalize">{type.name}</span>
+                      </ToggleGroupItem>
+                    ))}
+                  </ToggleGroup>
+                  <FormDescription>
+                    What type of training would you like included in your
+                    program? Leave empty to get an all-round program.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <div>
             <FormField
               control={form.control}
@@ -325,15 +295,15 @@ export default function Component({
                     />
                   </FormControl>
                   <FormDescription>
-                    Specify any kind of equipment you have available separated
-                    by a commas.
+                    Specify any kind of training equipment you have available
+                    separated by a commas.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          <div>
+          {/* <div>
             <FormField
               control={form.control}
               name="generate_automatically"
@@ -354,7 +324,7 @@ export default function Component({
                 </FormItem>
               )}
             />
-          </div>
+          </div> */}
           <div className="ml-auto">
             <SubmitButton content="Save" />
           </div>
