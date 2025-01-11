@@ -13,11 +13,16 @@ import {
   ConfigurationResponse,
   ProgramResponse,
   Workout,
+  WorkoutType,
 } from "@/types/types";
 import { revalidatePath } from "next/cache";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import { getConfigurationQuery, getCurrentProgramQuery } from "@/db/queries";
+import {
+  getConfigurationQuery,
+  getCurrentProgramQuery,
+  getWorkoutTypesQuery,
+} from "@/db/queries";
 import { log } from "next-axiom";
 import { redirect } from "next/navigation";
 
@@ -75,7 +80,7 @@ export async function generateProgram(): Promise<ActionResponse> {
       message: "No configuration found.",
     };
   }
-  const prompt = getPrompt(configuration);
+  const prompt = await getPrompt(configuration);
 
   try {
     const { object: program, usage } = await generateObject({
@@ -85,7 +90,7 @@ export async function generateProgram(): Promise<ActionResponse> {
       schemaDescription: "One week of home training.",
       schema: programSchema,
       prompt,
-      temperature: 0.7,
+      temperature: 0.2,
     });
 
     await handleProgramInserts(
@@ -108,8 +113,13 @@ export async function generateProgram(): Promise<ActionResponse> {
   };
 }
 
-function getPrompt(data: ConfigurationResponse): string {
+const getPrompt = async (data: ConfigurationResponse): Promise<string> => {
+  const allWorkoutTypes = await getWorkoutTypesQuery();
   const { sessions, time, workout_types, equipment, preferred_days } = data;
+  const excludedWorkoutTypes = getExcludedWorkoutTypes(
+    allWorkoutTypes,
+    workout_types
+  );
 
   const today = new Date();
   const formattedStartDate = today.toISOString().split("T")[0]; // Use ISO format for start date
@@ -125,9 +135,11 @@ function getPrompt(data: ConfigurationResponse): string {
 
   const typesText =
     workout_types.length > 0
-      ? `The workouts should ONLY include ${workout_types
+      ? `The workouts MUST include ${workout_types
           .map((a) => a.name)
-          .join(" and ")} exercises.`
+          .join(
+            " and "
+          )} exercises and CANNOT include ${excludedWorkoutTypes.join(" and ")} exercises.`
       : "The workouts should include strength, conditioning and mobility exercises.";
 
   const equipmentText =
@@ -156,11 +168,11 @@ function getPrompt(data: ConfigurationResponse): string {
      - Workout exercises: ${workoutExercises}-${workoutExercises + 1}.
      - IMPORTANT: Vary number of exercises between sessions.
 
-3. Available Equipment and Space:
+3. Available Equipment:
    - ${equipmentText}
 
-4. Exercise Execution:
-   - Vary execution types across sessions:
+4. Exercise Executions:
+   - Vary execution types across exercises within each workout.
      - Reps and sets
      - AMRAP (as many reps as possible within a time frame)
      - EMOM (every minute on the minute)
@@ -168,9 +180,21 @@ function getPrompt(data: ConfigurationResponse): string {
      - For Time (Complete a specific reps of exercises as quickly as possible)
    - IMPORTANT: If reps and sets is used the execution MUST include rest period.
 
-5. Exercise Descriptions:
-   - Provide clear, user-friendly descriptions of how to perform each exercise.`;
-}
+5. Exercise Description:
+   - Provide clear, user-friendly description of how to perform the exercise.`;
+};
+
+const getExcludedWorkoutTypes = (
+  allWorkoutTypes: WorkoutType[],
+  workout_types: WorkoutType[]
+): string[] => {
+  // Filter out workout types from allWorkoutTypes whose names do not exist in workout_types
+  return allWorkoutTypes
+    .filter(
+      (workoutType) => !workout_types.some((wt) => wt.name === workoutType.name)
+    )
+    .map((workoutType) => workoutType.name);
+};
 
 function assignSessionsToDays(
   sessions: number,
