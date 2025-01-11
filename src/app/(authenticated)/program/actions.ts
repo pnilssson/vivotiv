@@ -85,8 +85,7 @@ export async function generateProgram(): Promise<ActionResponse> {
       schemaDescription: "One week of home training.",
       schema: programSchema,
       prompt,
-      temperature: 0.1,
-      topK: 0.2,
+      temperature: 0.7,
     });
 
     await handleProgramInserts(
