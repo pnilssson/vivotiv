@@ -12,7 +12,8 @@ import ConfirmDialog from "@/components/shared/confirm-dialog";
 import { archiveProgram, completeWorkout, uncompleteWorkout } from "./actions";
 
 export default function Component({ program }: { program: ProgramResponse }) {
-  const [loading, setLoading] = useState<boolean>();
+  const [archiveLoading, setArchiveLoading] = useState<boolean>();
+  const [updateWorkoutLoading, setUpdateWorkoutLoading] = useState<boolean>();
   const [selectedDate, setSelectedDate] = useState<string>(
     new Date().toISOString().split("T")[0]
   );
@@ -23,26 +24,30 @@ export default function Component({ program }: { program: ProgramResponse }) {
   });
 
   const handleConfirm = async () => {
-    setLoading(true);
+    setArchiveLoading(true);
     await archiveProgram(program.id);
-    setLoading(false);
+    setArchiveLoading(false);
   };
 
   const handleCompleteWorkout = async (workout: Workout | undefined) => {
     if (workout) {
+      setUpdateWorkoutLoading(true);
       const updatedWorkouts = program.workouts.map((w) =>
         w.date === workout.date ? { ...w, completed: true } : w
       );
       await completeWorkout(program.id, updatedWorkouts);
+      setUpdateWorkoutLoading(false);
     }
   };
 
   const handleUncompleteWorkout = async (workout: Workout | undefined) => {
     if (workout) {
+      setUpdateWorkoutLoading(true);
       const updatedWorkouts = program.workouts.map((w) =>
         w.date === workout.date ? { ...w, completed: false } : w
       );
       await uncompleteWorkout(program.id, updatedWorkouts);
+      setUpdateWorkoutLoading(false);
     }
   };
 
@@ -63,7 +68,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
           confirmText="Archive"
           cancelText="Cancel">
           <Button variant="secondary" size="icon">
-            {loading ? (
+            {archiveLoading ? (
               <LoaderCircleIcon className="animate-spin" />
             ) : (
               <FolderArchiveIcon />
@@ -175,6 +180,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
       </div>
       <WorkoutView
         workout={program.workouts.find((w) => w.date == selectedDate)}
+        loading={updateWorkoutLoading}
         completeAction={handleCompleteWorkout}
         uncompleteAction={handleUncompleteWorkout}
       />
