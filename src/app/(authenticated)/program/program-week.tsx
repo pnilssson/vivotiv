@@ -7,11 +7,12 @@ import WorkoutView from "./workout-view";
 import { cn } from "@/lib/utils";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { FolderArchiveIcon } from "lucide-react";
+import { FolderArchiveIcon, LoaderCircleIcon } from "lucide-react";
 import ConfirmDialog from "@/components/shared/confirm-dialog";
 import { archiveProgram, completeWorkout, uncompleteWorkout } from "./actions";
 
 export default function Component({ program }: { program: ProgramResponse }) {
+  const [loading, setLoading] = useState<boolean>();
   const [selectedDate, setSelectedDate] = useState<string>(
     new Date().toISOString().split("T")[0]
   );
@@ -22,7 +23,9 @@ export default function Component({ program }: { program: ProgramResponse }) {
   });
 
   const handleConfirm = async () => {
+    setLoading(true);
     await archiveProgram(program.id);
+    setLoading(false);
   };
 
   const handleCompleteWorkout = async (workout: Workout | undefined) => {
@@ -60,7 +63,11 @@ export default function Component({ program }: { program: ProgramResponse }) {
           confirmText="Archive"
           cancelText="Cancel">
           <Button variant="secondary" size="icon">
-            <FolderArchiveIcon />
+            {loading ? (
+              <LoaderCircleIcon className="animate-spin" />
+            ) : (
+              <FolderArchiveIcon />
+            )}
           </Button>
         </ConfirmDialog>
       </div>
