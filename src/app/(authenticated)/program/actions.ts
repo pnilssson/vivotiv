@@ -24,7 +24,6 @@ import {
   getWorkoutTypesQuery,
 } from "@/db/queries";
 import { log } from "next-axiom";
-import { redirect } from "next/navigation";
 
 export async function getCurrentProgram(): Promise<ProgramResponse | null> {
   const supabase = await createClient();
@@ -39,7 +38,6 @@ export async function archiveProgram(programId: string) {
   await archiveProgramCommand(programId, user.id);
 
   revalidatePath("/program", "page");
-  redirect("/program");
 }
 
 export async function completeWorkout(programId: string, workouts: Workout[]) {
@@ -49,7 +47,6 @@ export async function completeWorkout(programId: string, workouts: Workout[]) {
   await updateProgramWorkoutsCommand(programId, user.id, workouts);
 
   revalidatePath("/program", "page");
-  redirect("/program");
 }
 
 export async function uncompleteWorkout(
@@ -62,7 +59,6 @@ export async function uncompleteWorkout(
   await updateProgramWorkoutsCommand(programId, user.id, workouts);
 
   revalidatePath("/program", "page");
-  redirect("/program");
 }
 
 export async function generateProgram(): Promise<ActionResponse> {
