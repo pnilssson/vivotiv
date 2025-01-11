@@ -4,7 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Workout } from "@/types/types";
-import { CheckIcon, Undo2Icon } from "lucide-react";
+import { CheckIcon, LoaderCircleIcon, Undo2Icon } from "lucide-react";
+import { useState } from "react";
 
 export default function Component({
   workout,
@@ -15,15 +16,23 @@ export default function Component({
   completeAction: (workout: Workout | undefined) => Promise<void>;
   uncompleteAction: (workout: Workout | undefined) => Promise<void>;
 }) {
+  const [loading, setLoading] = useState<boolean>();
+
   function numberToLetter(number: number) {
     const letter = String.fromCharCode(97 + number);
     return letter;
   }
   const handleCompleteWorkout = async () => {
+    setLoading(true);
+
     await completeAction(workout);
+    setLoading(false);
   };
   const handleUncompleteWorkout = async () => {
+    setLoading(true);
+
     await uncompleteAction(workout);
+    setLoading(false);
   };
   return (
     <div className="bg-slate-50/50 border border-slate-100 rounded-lg p-4 flex flex-col mt-4">
@@ -55,14 +64,22 @@ export default function Component({
                   variant="secondary"
                   size="icon"
                   onClick={handleCompleteWorkout}>
-                  <CheckIcon />
+                  {loading ? (
+                    <LoaderCircleIcon className="animate-spin" />
+                  ) : (
+                    <CheckIcon />
+                  )}
                 </Button>
               ) : (
                 <Button
                   variant="secondary"
                   size="icon"
                   onClick={handleUncompleteWorkout}>
-                  <Undo2Icon />
+                  {loading ? (
+                    <LoaderCircleIcon className="animate-spin" />
+                  ) : (
+                    <Undo2Icon />
+                  )}
                 </Button>
               )}
             </div>

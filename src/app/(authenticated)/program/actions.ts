@@ -90,7 +90,7 @@ export async function generateProgram(): Promise<ActionResponse> {
       schemaDescription: "One week of home training.",
       schema: programSchema,
       prompt,
-      temperature: 0.2,
+      temperature: 0.3,
     });
 
     await handleProgramInserts(
@@ -181,7 +181,7 @@ const getPrompt = async (data: ConfigurationResponse): Promise<string> => {
    - IMPORTANT: If reps and sets is used the execution MUST include rest period.
 
 5. Exercise Description:
-   - Provide clear, user-friendly description of how to perform the exercise.`;
+   - Provide a clear, user-friendly description of how to perform the exercise.`;
 };
 
 const getExcludedWorkoutTypes = (

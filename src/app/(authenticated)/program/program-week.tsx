@@ -81,11 +81,11 @@ export default function Component({ program }: { program: ProgramResponse }) {
                 {workout ? (
                   workout.completed ? (
                     <Badge
-                      className="bg-emerald-300 align-middle font-normal w-full"
+                      className="bg-emerald-300 align-middle font-normal w-fit"
                       variant="secondary"></Badge>
                   ) : (
                     <Badge
-                      className="bg-red-300 align-middle font-normal w-full"
+                      className="bg-red-300 align-middle font-normal w-fit"
                       variant="secondary"></Badge>
                   )
                 ) : (
