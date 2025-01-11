@@ -110,14 +110,7 @@ export async function generateProgram(): Promise<ActionResponse> {
 }
 
 function getPrompt(data: ConfigurationResponse): string {
-  const {
-    sessions,
-    time,
-    workout_focuses,
-    workout_types,
-    equipment,
-    preferred_days,
-  } = data;
+  const { sessions, time, workout_types, equipment, preferred_days } = data;
 
   const today = new Date();
   const formattedStartDate = today.toISOString().split("T")[0]; // Use ISO format for start date

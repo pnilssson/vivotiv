@@ -20,7 +20,6 @@ export interface ConfigurationResponse {
   user_id: string;
   sessions: number;
   time: number;
-  workout_focuses: WorkoutFocus[];
   workout_types: WorkoutType[];
   preferred_days: PreferredDay[];
   equipment: string;

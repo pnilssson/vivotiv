@@ -21,13 +21,13 @@ export default function Component() {
               <Link href="/">Vivotiv</Link>
             </Button>
           </NavigationMenuItem>
-          {/* {pathname.startsWith("/auth") ? null : (
+          {pathname.startsWith("/auth") ? null : (
             <Button asChild className="!ml-auto">
               <Link href="/auth/signin">
                 <EnterIcon className="h-5 w-5" /> Sign in
               </Link>
             </Button>
-          )} */}
+          )}
         </NavigationMenuList>
       </NavigationMenu>
     </header>

@@ -70,9 +70,6 @@ export default function Component({
       id: configuration ? configuration.id : "",
       sessions: configuration ? configuration.sessions : 3,
       time: configuration ? configuration.time : 30,
-      workout_focuses: configuration
-        ? configuration.workout_focuses.map((focus) => focus.id)
-        : [],
       workout_types: configuration
         ? configuration.workout_types.map((type) => type.id)
         : [],
@@ -211,39 +208,6 @@ export default function Component({
               )}
             />
           </div>
-          {/* <div>
-            <FormField
-              control={form.control}
-              name="workout_focuses"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Workout Types</FormLabel>
-                  <ToggleGroup
-                    variant="outline"
-                    type="multiple"
-                    className="justify-start flex-wrap"
-                    value={field.value!}
-                    onValueChange={(value) => {
-                      if (value) form.setValue("workout_focuses", value);
-                    }}>
-                    {workoutFocus.map((focus) => (
-                      <ToggleGroupItem
-                        key={focus.id}
-                        value={focus.id}
-                        aria-label={`Toggle ${focus.name}`}>
-                        <span className="capitalize">{focus.name}</span>
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
-                  <FormDescription>
-                    What type of training would you like included in your
-                    program? Leave empty to get an all-round program.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div> */}
           <div>
             <FormField
               control={form.control}
@@ -289,7 +253,7 @@ export default function Component({
                       value={field.value!}
                       id="equipment"
                       name="equipment"
-                      placeholder="Kettlebell, dumbbell, etc."
+                      placeholder="Kettlebell, pull up bar, jump rope etc."
                       type="text"
                       onChange={field.onChange}
                     />

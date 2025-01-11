@@ -137,21 +137,7 @@ export async function insertOrUpdateConfigurationCommand(
     }
 
     // Update many-to-many relationships
-    const { workout_focuses, workout_types, preferred_days } = newConfiguration;
-
-    // Handle workoutFocuses
-    await trx
-      .delete(configurationToWorkoutFocus)
-      .where(eq(configurationToWorkoutFocus.configuration_id, configurationId));
-
-    if (workout_focuses && workout_focuses?.length > 0) {
-      await trx.insert(configurationToWorkoutFocus).values(
-        workout_focuses.map((id) => ({
-          configuration_id: configurationId,
-          workout_focus_id: id,
-        }))
-      );
-    }
+    const { workout_types, preferred_days } = newConfiguration;
 
     // Handle workoutTypes
     await trx
