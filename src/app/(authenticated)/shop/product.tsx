@@ -1,5 +1,6 @@
 "use client";
 
+import ShineBorder from "@/components/magicui/shine-border";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/lib/hooks/use-toast";
@@ -16,7 +17,7 @@ export default function Component({
   price,
   weeklyPrice,
   discount,
-  className,
+  highlight,
 }: {
   title: string;
   description: string;
@@ -24,7 +25,7 @@ export default function Component({
   price: string;
   weeklyPrice: string;
   discount?: string;
-  className?: string;
+  highlight: boolean;
 }) {
   const [loading, setLoading] = useState<boolean>();
   const { toast } = useToast();
@@ -55,11 +56,11 @@ export default function Component({
     setLoading(false);
   };
 
-  return (
+  const content = (
     <div
       className={cn(
-        "bg-slate-50 border border-slate-100 rounded-lg p-4 flex md:gap-4 items-center md:flex-row flex-wrap",
-        className
+        " rounded-lg p-4 flex md:gap-4 items-center md:flex-row flex-wrap",
+        { "bg-slate-50/50 border border-slate-100": !highlight }
       )}>
       <div className="flex gap-4 flex-1">
         <div className="my-auto grid gap-2">
@@ -93,5 +94,15 @@ export default function Component({
         </Button>
       </div>
     </div>
+  );
+
+  return highlight ? (
+    <ShineBorder
+      className="overflow-hidden flex w-full bg-slate-50/50"
+      color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}>
+      {content}
+    </ShineBorder>
+  ) : (
+    content
   );
 }

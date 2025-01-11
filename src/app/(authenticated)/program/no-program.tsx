@@ -34,7 +34,7 @@ export default function Component() {
   return (
     <div
       className={
-        "bg-slate-50 border border-slate-100 rounded-lg p-4 flex lg:gap-4 items-center lg:flex-row flex-wrap"
+        "bg-slate-50/50 border border-slate-100 rounded-lg p-4 flex lg:gap-4 items-center lg:flex-row flex-wrap"
       }>
       <div className="flex gap-4 flex-1">
         <div className="my-auto grid gap-2">

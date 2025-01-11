@@ -98,7 +98,7 @@ export default function Component({
         action={() => {
           formAction(form.getValues() as any as FormData);
         }}
-        className="bg-slate-50 border border-slate-100 rounded-lg p-4">
+        className="bg-slate-50/50 border border-slate-100 rounded-lg p-4">
         <div className="grid gap-8">
           <div className="hidden">
             <FormField

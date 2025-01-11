@@ -59,7 +59,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
           action={handleConfirm}
           confirmText="Archive"
           cancelText="Cancel">
-          <Button variant="outline" size="icon">
+          <Button variant="secondary" size="icon">
             <FolderArchiveIcon />
           </Button>
         </ConfirmDialog>
@@ -72,9 +72,9 @@ export default function Component({ program }: { program: ProgramResponse }) {
               <div
                 key={date + 1}
                 className={cn(
-                  "bg-slate-50 border border-slate-100 rounded-lg py-2 md:hidden flex flex-col flex-1 items-center hover:bg-slate-100 cursor-pointer",
+                  "bg-slate-50/50 border border-slate-100 rounded-lg py-2 md:hidden flex flex-col flex-1 items-center hover:bg-slate-100 cursor-pointer",
                   {
-                    "bg-violet-200 hover:bg-violet-200": date == selectedDate,
+                    "bg-slate-100 hover:bg-slate-100": date == selectedDate,
                   }
                 )}
                 onClick={() => setSelectedDate(date)}>
@@ -104,9 +104,9 @@ export default function Component({ program }: { program: ProgramResponse }) {
               <div
                 key={date + 2}
                 className={cn(
-                  "bg-slate-50 border border-slate-100 rounded-lg p-4 hidden xl:hidden md:flex flex-col flex-1 items-center hover:bg-slate-100 cursor-pointer",
+                  "bg-slate-50/50 border border-slate-100 rounded-lg p-4 hidden xl:hidden md:flex flex-col flex-1 items-center hover:bg-slate-100 cursor-pointer",
                   {
-                    "bg-violet-200 hover:bg-violet-200": date == selectedDate,
+                    "bg-slate-100 hover:bg-slate-100": date == selectedDate,
                   }
                 )}
                 onClick={() => setSelectedDate(date)}>
@@ -140,10 +140,9 @@ export default function Component({ program }: { program: ProgramResponse }) {
               <div
                 key={date + 3}
                 className={cn(
-                  "bg-slate-50 border border-slate-100 rounded-lg p-4 hidden xl:flex flex-col flex-1 hover:bg-slate-100 cursor-pointer",
+                  "bg-slate-50/50 border border-slate-100 rounded-lg p-4 hidden xl:flex flex-col flex-1 hover:bg-slate-100 cursor-pointer",
                   {
-                    "bg-slate-200/75 hover:bg-slate-200/75":
-                      date == selectedDate,
+                    "bg-slate-100 hover:bg-slate-100": date == selectedDate,
                   }
                 )}
                 onClick={() => setSelectedDate(date)}>

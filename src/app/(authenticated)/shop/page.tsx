@@ -9,7 +9,7 @@ const paymentOptions = [
     price: "$1.99",
     weeklyPrice: "($1.99/week)",
     discount: "",
-    className: "",
+    highlight: false,
   },
   {
     title: "One weeks",
@@ -18,7 +18,7 @@ const paymentOptions = [
     price: "$4.99",
     weeklyPrice: "($1.25/week)",
     discount: "37%",
-    className: "",
+    highlight: false,
   },
   {
     title: "Twelve weeks",
@@ -27,7 +27,7 @@ const paymentOptions = [
     price: "$11.99",
     weeklyPrice: "($0.99/week)",
     discount: "50%",
-    className: "bg-violet-200",
+    highlight: true,
   },
   {
     title: "26 weeks",
@@ -36,7 +36,7 @@ const paymentOptions = [
     price: "$19.99",
     weeklyPrice: "($0.77/week)",
     discount: "61%",
-    className: "",
+    highlight: false,
   },
 ];
 
@@ -57,7 +57,7 @@ export default async function Page() {
             price={option.price}
             weeklyPrice={option.weeklyPrice}
             discount={option.discount}
-            className={option.className}
+            highlight={option.highlight}
           />
         ))}
       </div>

@@ -57,23 +57,25 @@ export default function Component({
 
   return (
     <Sidebar>
-      <SidebarHeader className="h-16 gap-0 justify-center">
+      <SidebarHeader className="h-20 gap-0 p-4 justify-center">
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem className="text-xl">Vivotiv</SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
       </SidebarHeader>
-      <SidebarSeparator />
-      <SidebarContent>
+      <SidebarContent className="gap-8">
         {items.map((group) => (
-          <SidebarGroup key={group.title}>
-            <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+          <SidebarGroup key={group.title} className="px-4 py-0">
+            <SidebarGroupLabel className="text-sm">
+              {group.title}
+            </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenuSub>
+              <SidebarMenu className="gap-2">
                 {group.subItems.map((subItem) => (
-                  <SidebarMenuSubItem key={subItem.title}>
+                  <SidebarMenuItem key={subItem.title}>
                     <SidebarMenuButton
+                      size={"default"}
                       asChild
                       isActive={pathname.startsWith(subItem.url)}>
                       <Link
@@ -83,14 +85,13 @@ export default function Component({
                         <span>{subItem.title}</span>
                       </Link>
                     </SidebarMenuButton>
-                  </SidebarMenuSubItem>
+                  </SidebarMenuItem>
                 ))}
-              </SidebarMenuSub>
+              </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarSeparator />
       {children}
     </Sidebar>
   );

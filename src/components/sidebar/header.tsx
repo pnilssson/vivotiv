@@ -2,7 +2,6 @@
 
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
-import { Separator } from "@/components/ui/separator";
 import {
   Breadcrumb,
   BreadcrumbList,
@@ -17,14 +16,14 @@ export default function Component() {
   const pathSegments = pathname.split("/").filter((segment) => segment);
 
   return (
-    <header className="flex h-16 w-full shrink-0 items-center gap-2 border-b px-4 md:px-6">
+    <header className="flex h-20 w-full shrink-0 items-center gap-2 border-b px-4 md:px-6">
       <Breadcrumb>
         <BreadcrumbList>
           {pathSegments.map((segment, index) => {
             return (
               <React.Fragment key={index}>
                 <BreadcrumbItem>
-                  <BreadcrumbPage className="capitalize">
+                  <BreadcrumbPage className="capitalize text-xl">
                     {segment}
                   </BreadcrumbPage>
                 </BreadcrumbItem>
