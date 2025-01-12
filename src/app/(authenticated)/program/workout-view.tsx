@@ -14,18 +14,18 @@ export default function Component({
 }: {
   workout: WorkoutResponse | undefined;
   loading: boolean;
-  completeAction: (workout: WorkoutResponse | undefined) => Promise<void>;
-  uncompleteAction: (workout: WorkoutResponse | undefined) => Promise<void>;
+  completeAction: (workoutId: string | undefined) => Promise<void>;
+  uncompleteAction: (workoutId: string | undefined) => Promise<void>;
 }) {
   function numberToLetter(number: number) {
     const letter = String.fromCharCode(97 + number);
     return letter;
   }
   const handleCompleteWorkout = async () => {
-    await completeAction(workout);
+    await completeAction(workout?.id);
   };
   const handleUncompleteWorkout = async () => {
-    await uncompleteAction(workout);
+    await uncompleteAction(workout?.id);
   };
   return (
     <div className="bg-slate-50/50 border border-slate-100 rounded-lg p-4 flex flex-col mt-4">

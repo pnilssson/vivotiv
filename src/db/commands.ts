@@ -18,7 +18,6 @@ import {
 import { z } from "zod";
 import { and, eq } from "drizzle-orm";
 import { getProfileByIdQuery } from "./queries";
-import { WorkoutResponse } from "@/types/types";
 
 export async function handleProgramInserts(
   newProgram: z.infer<typeof programSchema>,
@@ -35,7 +34,6 @@ export async function handleProgramInserts(
         user_id: userId,
         start_date: newProgram.start_date,
         end_date: newProgram.end_date,
-        workouts: newProgram.workouts,
       })
       .returning({ id: program.id });
 
@@ -43,7 +41,6 @@ export async function handleProgramInserts(
 
     // Insert program metadata
     await trx.insert(programMetadata).values({
-      user_id: userId,
       prompt: prompt,
       program_id: programId,
       prompt_tokens: promptTokens,
@@ -251,17 +248,22 @@ export async function archiveProgramCommand(programId: string, userId: string) {
     .where(and(eq(program.id, programId), eq(program.user_id, userId)));
 }
 
-export async function updateProgramWorkoutsCommand(
-  programId: string,
-  userId: string,
-  workouts: WorkoutResponse[]
-) {
+export async function completeWorkoutCommand(workoutId: string) {
   await db
-    .update(program)
+    .update(workout)
     .set({
-      workouts: workouts,
+      completed: true,
     })
-    .where(and(eq(program.id, programId), eq(program.user_id, userId)));
+    .where(and(eq(workout.id, workoutId)));
+}
+
+export async function uncompleteWorkoutCommand(workoutId: string) {
+  await db
+    .update(workout)
+    .set({
+      completed: false,
+    })
+    .where(and(eq(workout.id, workoutId)));
 }
 
 export async function insertFeedbackCommand(

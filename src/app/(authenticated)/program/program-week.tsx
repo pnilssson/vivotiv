@@ -30,28 +30,18 @@ export default function Component({ program }: { program: ProgramResponse }) {
     setArchiveLoading(false);
   };
 
-  const handleCompleteWorkout = async (
-    workout: WorkoutResponse | undefined
-  ) => {
-    if (workout) {
+  const handleCompleteWorkout = async (workoutId: string | undefined) => {
+    if (workoutId) {
       setUpdateWorkoutLoading(true);
-      const updatedWorkouts = program.workouts.map((w) =>
-        w.date === workout.date ? { ...w, completed: true } : w
-      );
-      await completeWorkout(program.id, updatedWorkouts);
+      await completeWorkout(workoutId);
       setUpdateWorkoutLoading(false);
     }
   };
 
-  const handleUncompleteWorkout = async (
-    workout: WorkoutResponse | undefined
-  ) => {
-    if (workout) {
+  const handleUncompleteWorkout = async (workoutId: string | undefined) => {
+    if (workoutId) {
       setUpdateWorkoutLoading(true);
-      const updatedWorkouts = program.workouts.map((w) =>
-        w.date === workout.date ? { ...w, completed: false } : w
-      );
-      await uncompleteWorkout(program.id, updatedWorkouts);
+      await uncompleteWorkout(workoutId);
       setUpdateWorkoutLoading(false);
     }
   };

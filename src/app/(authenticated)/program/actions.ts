@@ -2,8 +2,9 @@
 
 import {
   archiveProgramCommand,
+  completeWorkoutCommand,
   handleProgramInserts,
-  updateProgramWorkoutsCommand,
+  uncompleteWorkoutCommand,
 } from "@/db/commands";
 import { getUserOrRedirect } from "@/lib/server-utils";
 import { createClient } from "@/lib/supabase/server";
@@ -12,7 +13,6 @@ import {
   ActionResponse,
   ConfigurationResponse,
   ProgramResponse,
-  WorkoutResponse,
   WorkoutTypeResponse,
 } from "@/types/types";
 import { revalidatePath } from "next/cache";
@@ -39,25 +39,19 @@ export async function archiveProgram(programId: string) {
   revalidatePath("/program", "page");
 }
 
-export async function completeWorkout(
-  programId: string,
-  workouts: WorkoutResponse[]
-) {
+export async function completeWorkout(workoutId: string) {
   const supabase = await createClient();
-  const user = await getUserOrRedirect(supabase);
+  await getUserOrRedirect(supabase);
 
-  await updateProgramWorkoutsCommand(programId, user.id, workouts);
+  await completeWorkoutCommand(workoutId);
   revalidatePath("/program", "page");
 }
 
-export async function uncompleteWorkout(
-  programId: string,
-  workouts: WorkoutResponse[]
-) {
+export async function uncompleteWorkout(workoutId: string) {
   const supabase = await createClient();
-  const user = await getUserOrRedirect(supabase);
+  await getUserOrRedirect(supabase);
 
-  await updateProgramWorkoutsCommand(programId, user.id, workouts);
+  await uncompleteWorkoutCommand(workoutId);
   revalidatePath("/program", "page");
 }
 
