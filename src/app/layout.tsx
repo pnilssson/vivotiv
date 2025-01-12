@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 import { cn } from "@/lib/utils";
@@ -29,12 +30,8 @@ export default async function RootLayout({
         )}>
         {children}
         <SpeedInsights />
+        <Analytics />
         <Toaster />
-        <Script
-          defer
-          src="https://cloud.umami.is/script.js"
-          data-website-id="a05af024-2d3c-4773-8b32-bda01e11c20b"
-        />
       </body>
     </html>
   );
