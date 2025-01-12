@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AxiomWebVitals } from "next-axiom";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
@@ -29,7 +28,6 @@ export default async function RootLayout({
           GeistMono.variable
         )}>
         {children}
-        <AxiomWebVitals />
         <SpeedInsights />
         <Toaster />
         <Script

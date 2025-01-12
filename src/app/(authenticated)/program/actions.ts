@@ -23,7 +23,7 @@ import {
   getCurrentProgramQuery,
   getWorkoutTypesQuery,
 } from "@/db/queries";
-import { log } from "next-axiom";
+import * as Sentry from "@sentry/nextjs";
 
 export async function getCurrentProgram(): Promise<ProgramResponse | null> {
   const supabase = await createClient();
@@ -36,7 +36,6 @@ export async function archiveProgram(programId: string) {
   const user = await getUserOrRedirect(supabase);
 
   await archiveProgramCommand(programId, user.id);
-
   revalidatePath("/program", "page");
 }
 
@@ -45,7 +44,6 @@ export async function completeWorkout(programId: string, workouts: Workout[]) {
   const user = await getUserOrRedirect(supabase);
 
   await updateProgramWorkoutsCommand(programId, user.id, workouts);
-
   revalidatePath("/program", "page");
 }
 
@@ -57,7 +55,6 @@ export async function uncompleteWorkout(
   const user = await getUserOrRedirect(supabase);
 
   await updateProgramWorkoutsCommand(programId, user.id, workouts);
-
   revalidatePath("/program", "page");
 }
 
@@ -67,9 +64,10 @@ export async function generateProgram(): Promise<ActionResponse> {
   const configuration = await getConfigurationQuery(user.id);
 
   if (!configuration) {
-    log.error("No configuration was found for user when generating program.", {
-      userId: user.id,
-    });
+    Sentry.captureMessage(
+      "No configuration was found for user when generating program.",
+      { user: { id: user.id, email: user.email }, level: "error" }
+    );
     return {
       success: false,
       errors: [],
@@ -97,7 +95,10 @@ export async function generateProgram(): Promise<ActionResponse> {
       usage.completionTokens
     );
   } catch (error) {
-    log.error("Error when generating a program.", { error });
+    Sentry.captureException(error, {
+      user: { id: user.id, email: user.email },
+      extra: { prompt },
+    });
     throw new Error("Error when generating a program.");
   }
 

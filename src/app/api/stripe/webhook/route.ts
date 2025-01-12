@@ -4,7 +4,7 @@ import {
 } from "@/db/commands";
 import { getProfileByIdQuery } from "@/db/queries";
 import { stripe } from "@/lib/stripe/config";
-import { log } from "next-axiom";
+import * as Sentry from "@sentry/nextjs";
 import Stripe from "stripe";
 
 export async function POST(req: Request): Promise<Response> {
@@ -14,7 +14,7 @@ export async function POST(req: Request): Promise<Response> {
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
     if (!sig || !webhookSecret) {
-      log.warn("Webhook secret not found.");
+      Sentry.captureMessage("Webhook secret not found.", { level: "warning" });
       return respondWithError("Webhook secret not found.", 400);
     }
 
@@ -24,9 +24,7 @@ export async function POST(req: Request): Promise<Response> {
     // Handle the event
     return await handleStripeEvent(event);
   } catch (error: any) {
-    log.error("Error when processing stripe webhook.", {
-      error_message: error.message,
-    });
+    Sentry.captureException(error);
     return respondWithError(`Webhook Error: ${error.message}`, 400);
   }
 }
@@ -44,7 +42,7 @@ async function handleStripeEvent(event: Stripe.Event): Promise<Response> {
 
     return new Response(JSON.stringify({ received: true }), { status: 200 });
   } catch (error: any) {
-    log.error("Error handling event stripe.", { error_message: error.message });
+    Sentry.captureException(error);
     throw new Error("Error handling event stripe.");
   }
 }
@@ -52,10 +50,16 @@ async function handleStripeEvent(event: Stripe.Event): Promise<Response> {
 // Processes 'checkout.session.completed' events
 async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   const checkoutSession = event.data.object as Stripe.Checkout.Session;
-  log.info("Handling completed checkout session.", checkoutSession);
+  Sentry.captureMessage("Handling completed checkout session.", {
+    extra: { checkoutSession },
+    level: "info",
+  });
 
   if (!checkoutSession.metadata?.userId) {
-    log.error("User id is missing in stripe event.", checkoutSession);
+    Sentry.captureMessage("User id is missing in stripe event.", {
+      extra: { checkoutSession },
+      level: "error",
+    });
     throw new Error("User id is missing in stripe event.");
   }
 
@@ -63,11 +67,9 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   const profile = await getProfileByIdQuery(userId);
 
   if (!profile) {
-    log.error(
+    Sentry.captureMessage(
       "Profile was not found when handling completed checkout session.",
-      {
-        userId,
-      }
+      { user: { id: userId }, level: "error" }
     );
     throw new Error(
       "Profile was not found when handling completed checkout session."
@@ -87,9 +89,10 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     );
   }
 
-  log.info("Checkout session handled successfully.", {
-    userId,
-    tokens: tokensToAdd,
+  Sentry.captureMessage("Checkout session handled successfully.", {
+    user: { id: userId },
+    extra: { tokensAdded: tokensToAdd },
+    level: "info",
   });
 }
 

@@ -15,7 +15,7 @@ import {
   WorkoutType,
   PreferredDay,
 } from "@/types/types";
-import { log } from "next-axiom";
+import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
 
 export async function getWorkoutFocus(): Promise<WorkoutFocus[]> {
@@ -49,7 +49,7 @@ export async function setConfiguration(
   try {
     await insertOrUpdateConfigurationCommand(validated.data, user.id);
   } catch (error) {
-    log.error("Error during setConfiguration.", error as any);
+    Sentry.captureException(error);
     return {
       success: false,
       errors: [],

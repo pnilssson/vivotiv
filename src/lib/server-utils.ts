@@ -1,7 +1,7 @@
 "use server";
 
 import { SupabaseClient, User } from "@supabase/supabase-js";
-import { log } from "next-axiom";
+import * as Sentry from "@sentry/nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -24,7 +24,7 @@ export async function getUserOrRedirect(
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {
-    log.error("Error when getting user: ", { error });
+    Sentry.captureException(error);
     redirect("/auth/signin");
   }
 

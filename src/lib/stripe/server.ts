@@ -1,8 +1,8 @@
 "use server";
 
+import * as Sentry from "@sentry/nextjs";
 import { getProfileByIdQuery } from "@/db/queries";
 import { stripe } from "./config";
-import { log } from "next-axiom";
 import { createClient } from "../supabase/server";
 import { getUserOrRedirect } from "../server-utils";
 import Stripe from "stripe";
@@ -32,8 +32,8 @@ export async function checkoutWithStripe(
       customer = await createOrRetrieveCustomer({
         userId: user?.id,
       });
-    } catch (err) {
-      log.error("Unable to access customer record.", { error: err });
+    } catch (error) {
+      Sentry.captureException(error);
       throw new Error("Unable to access customer record.");
     }
 
@@ -59,8 +59,8 @@ export async function checkoutWithStripe(
     let session;
     try {
       session = await stripe.checkout.sessions.create(params);
-    } catch (error: any) {
-      log.error("Unable to create checkout session.", { error: error });
+    } catch (error) {
+      Sentry.captureException(error);
       throw new Error("Unable to create checkout session.");
     }
 
@@ -73,28 +73,19 @@ export async function createCustomerInStripe(userId: string, email: string) {
     const customerData = { metadata: { supabaseUUID: userId }, email: email };
     const newCustomer = await stripe.customers.create(customerData);
     if (!newCustomer) {
+      Sentry.captureMessage("Stripe customer creation failed.");
       throw new Error("Stripe customer creation failed.");
     }
 
     return newCustomer.id;
   } catch (error: any) {
-    log.error("Stripe customer creation failed.", {
-      supabaseUUID: userId,
-      email: email,
-    });
+    Sentry.captureException(error, { user: { id: userId, email: email } });
     throw new Error("Stripe customer creation failed.");
   }
 }
 
 export async function createOrRetrieveCustomer({ userId }: { userId: string }) {
   const existingSupabaseCustomer = await getProfileByIdQuery(userId);
-
-  if (!existingSupabaseCustomer?.email) {
-    log.error("Email missing on user.", {
-      userId: existingSupabaseCustomer?.id,
-    });
-    throw new Error("Email missing on user.");
-  }
 
   // Retrieve the Stripe customer ID using the Supabase customer ID, with email fallback
   let stripeCustomerId: string | undefined;
