@@ -77,7 +77,7 @@ export default function Component({
           </Button>
         </SidebarMenuButton>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[425px] top-[25%]">
         <Form {...form}>
           <form
             action={() => {
