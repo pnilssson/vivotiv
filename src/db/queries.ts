@@ -107,6 +107,7 @@ export const getCurrentProgramQuery = cache(async (userId: string) => {
     start_date: result.start_date,
     end_date: result.end_date,
     user_id: result.user_id,
+    created: result.created,
     workouts: result.workouts.map((workout) => ({
       id: workout.id,
       date: workout.date,
@@ -151,6 +152,7 @@ export const getConfigurationQuery = cache(async (userId: string) => {
     sessions: result.sessions,
     time: result.time,
     equipment: result.equipment || "", // Default to empty string if equipment is null
+    created: result.created,
     workout_types: result.workoutTypes
       ? result.workoutTypes.map(
           (type) => type.workoutType as WorkoutTypeResponse

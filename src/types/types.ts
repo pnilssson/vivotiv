@@ -12,7 +12,7 @@ export interface ProgramResponse {
   end_date: string; // ISO 8601 date string
   user_id: string;
   workouts: WorkoutResponse[];
-  created: string;
+  created: Date;
 }
 
 export interface ConfigurationResponse {
@@ -24,7 +24,7 @@ export interface ConfigurationResponse {
   preferred_days: PreferredDayResponse[];
   equipment: string;
   generate_automatically: boolean;
-  created: string;
+  created: Date;
 }
 
 export interface ProfileResponse {
@@ -33,14 +33,14 @@ export interface ProfileResponse {
   email: string;
   program_tokens: number;
   stripe_customer_id: string;
-  created: string;
+  created: Date;
 }
 
 export interface FeedbackResponse {
   id: string;
   user_id: string;
   feedback: string;
-  created: string;
+  created: Date;
 }
 
 export interface ExerciseResponse {
