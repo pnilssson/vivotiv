@@ -10,6 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { FileTextIcon, SettingsIcon, ShoppingCartIcon } from "lucide-react";
@@ -97,7 +98,7 @@ export default function Component({
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
-        <SidebarGroup className="px-4 py-0">
+        <SidebarGroup className="px-4 py-0 mt-auto mb-4">
           <SidebarGroupLabel className="text-sm">Feedback</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu className="gap-2">
@@ -108,6 +109,7 @@ export default function Component({
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarSeparator />
       {children}
     </Sidebar>
   );
