@@ -1,13 +1,15 @@
 import {
   ConfigurationResponse,
+  Feedback,
   PreferredDay,
   ProfileResponse,
   ProgramResponse,
-  WorkoutFocus,
   WorkoutType,
 } from "@/types/types";
 import { db } from "./db";
 import { cache } from "react";
+import { gte } from "drizzle-orm";
+import { subHours, subMinutes } from "date-fns";
 
 export const getProgramByIdQuery = cache(async (id: string, userId: string) => {
   const result = await db.query.program.findFirst({
@@ -73,11 +75,6 @@ export const getConfigurationQuery = cache(async (userId: string) => {
   return flattenedResult;
 });
 
-export const getWorkoutFocusQuery = cache(async () => {
-  const result = await db.query.workoutFocus.findMany();
-  return result as WorkoutFocus[];
-});
-
 export const getWorkoutTypesQuery = cache(async () => {
   const result = await db.query.workoutType.findMany();
   return result as WorkoutType[];
@@ -101,3 +98,14 @@ export const getProfileByIdQuery = cache(async (userId: string) => {
   });
   return result as ProfileResponse;
 });
+
+export const getAnyFeedbackWithinLastMinuteByUserIdQuery = cache(
+  async (userId: string) => {
+    const oneMinuteAgo = subMinutes(new Date(), 1); // Get the date-time one hour ago
+    const result = await db.query.feedback.findFirst({
+      where: (feedback, { eq, and }) =>
+        and(eq(feedback.user_id, userId), gte(feedback.created, oneMinuteAgo)),
+    });
+    return result as Feedback | undefined;
+  }
+);

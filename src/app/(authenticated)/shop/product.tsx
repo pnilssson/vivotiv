@@ -68,7 +68,7 @@ export default function Component({
             <h3 className="text-xl">{title}</h3>
             {discount ? (
               <Badge
-                className="ml-2 bg-emerald-200 align-middle font-normal"
+                className="ml-2 bg-emerald-300 align-middle font-normal"
                 variant="secondary">
                 Save {discount}
               </Badge>

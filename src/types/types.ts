@@ -34,6 +34,13 @@ export interface ProfileResponse {
   stripe_customer_id: string;
 }
 
+export interface Feedback {
+  id: string;
+  user_id: string;
+  feedback: string;
+  created: string;
+}
+
 export interface Exercise {
   id: string;
   title: string;
@@ -54,11 +61,6 @@ export interface Workout {
   description: string;
   warmup: WarmUp;
   exercises: Exercise[] | null;
-}
-
-export interface WorkoutFocus {
-  id: string;
-  name: string;
 }
 
 export interface WorkoutType {

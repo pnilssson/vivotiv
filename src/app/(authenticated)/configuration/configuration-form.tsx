@@ -17,7 +17,6 @@ import { initialFormState } from "@/lib/constants";
 import {
   ConfigurationResponse,
   PreferredDay,
-  WorkoutFocus,
   WorkoutType,
 } from "@/types/types";
 import {
@@ -38,12 +37,10 @@ import { Switch } from "@/components/ui/switch";
 
 export default function Component({
   configuration,
-  workoutFocus,
   workoutTypes,
   preferredDays,
 }: {
   configuration: ConfigurationResponse | null;
-  workoutFocus: WorkoutFocus[];
   workoutTypes: WorkoutType[];
   preferredDays: PreferredDay[];
 }) {

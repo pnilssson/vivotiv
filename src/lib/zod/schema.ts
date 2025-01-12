@@ -45,3 +45,9 @@ export const configurationRequestSchema = z.object({
   equipment: z.string().nullable(),
   generate_automatically: z.boolean(),
 });
+
+export const feedbackRequestSchema = z.object({
+  feedback: z.string().min(1, {
+    message: "Feedback is required.",
+  }),
+});

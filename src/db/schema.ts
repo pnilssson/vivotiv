@@ -173,6 +173,23 @@ export const configurationRelations = relations(configuration, ({ many }) => ({
   prefferedDays: many(configurationToPreferredDay),
 }));
 
+export const feedback = pgTable(
+  "feedback",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    user_id: uuid().references(() => profile.id),
+    feedback: text().notNull(),
+    created: timestamp().notNull().defaultNow(),
+  },
+  (table) => [
+    pgPolicy("Authenticated can insert feedback", {
+      for: "insert",
+      to: authenticatedRole,
+      withCheck: sql`true`,
+    }),
+  ]
+).enableRLS();
+
 export const workoutFocus = pgTable(
   "workout_focus",
   {

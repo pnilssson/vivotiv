@@ -1,26 +1,13 @@
 "use server";
 
 import { insertOrUpdateConfigurationCommand } from "@/db/commands";
-import {
-  getPreferredDaysQuery,
-  getWorkoutFocusQuery,
-  getWorkoutTypesQuery,
-} from "@/db/queries";
+import { getPreferredDaysQuery, getWorkoutTypesQuery } from "@/db/queries";
 import { getUserOrRedirect } from "@/lib/server-utils";
 import { createClient } from "@/lib/supabase/server";
 import { configurationRequestSchema } from "@/lib/zod/schema";
-import {
-  ActionResponse,
-  WorkoutFocus,
-  WorkoutType,
-  PreferredDay,
-} from "@/types/types";
+import { ActionResponse, WorkoutType, PreferredDay } from "@/types/types";
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
-
-export async function getWorkoutFocus(): Promise<WorkoutFocus[]> {
-  return await getWorkoutFocusQuery();
-}
 
 export async function getWorkoutTypes(): Promise<WorkoutType[]> {
   return await getWorkoutTypesQuery();

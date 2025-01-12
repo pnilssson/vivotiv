@@ -3,8 +3,8 @@ import { db } from "./db";
 import {
   configuration,
   configurationToPreferredDay,
-  configurationToWorkoutFocus,
   configurationToWorkoutType,
+  feedback,
   profile,
   program,
   programMetadata,
@@ -189,4 +189,14 @@ export async function updateProgramWorkoutsCommand(
       workouts: workouts,
     })
     .where(and(eq(program.id, programId), eq(program.user_id, userId)));
+}
+
+export async function insertFeedbackCommand(
+  userId: string,
+  feedbackText: string
+) {
+  await db.insert(feedback).values({
+    user_id: userId,
+    feedback: feedbackText,
+  });
 }

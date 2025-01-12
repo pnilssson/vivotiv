@@ -10,14 +10,13 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
-  SidebarSeparator,
   useSidebar,
 } from "@/components/ui/sidebar";
 import { FileTextIcon, SettingsIcon, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import FeedbackDialog from "../feedback-dialog";
+import { toast } from "@/lib/hooks/use-toast";
 
 const items = [
   {
@@ -46,6 +45,13 @@ const items = [
     ],
   },
 ];
+
+function feedbackAction(
+  description: string,
+  variant: "success" | "destructive"
+) {
+  toast({ description, variant });
+}
 
 export default function Component({
   children,
@@ -91,6 +97,16 @@ export default function Component({
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
+        <SidebarGroup className="px-4 py-0">
+          <SidebarGroupLabel className="text-sm">Feedback</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu className="gap-2">
+              <SidebarMenuItem>
+                <FeedbackDialog toastAction={feedbackAction} />
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
       {children}
     </Sidebar>
