@@ -4,7 +4,6 @@ import {
   uuid,
   text,
   date,
-  jsonb,
   integer,
   boolean,
   primaryKey,
@@ -28,7 +27,15 @@ export const authUsers = auth.table("users", {
   id: uuid().primaryKey().notNull(),
 });
 
+export const exercise = {
+  id: uuid().primaryKey().defaultRandom(),
+  title: text().notNull(),
+  description: text().notNull(),
+  execution: text().notNull(),
+};
+
 // Vivotiv
+// Profile
 export const profile = pgTable(
   "profile",
   {
@@ -37,6 +44,7 @@ export const profile = pgTable(
     email: text().notNull(),
     stripe_customer_id: text(),
     program_tokens: integer().notNull().default(0),
+    created: timestamp().notNull().defaultNow(),
   },
   (table) => [
     foreignKey({
@@ -49,6 +57,11 @@ export const profile = pgTable(
       for: "select",
       to: authenticatedRole,
       using: sql`true`,
+    }),
+    pgPolicy("User can handle their own programs", {
+      for: "update",
+      to: authenticatedRole,
+      using: sql`${authUid} = id`,
     }),
     pgPolicy("Supabase auth admin can insert profile", {
       for: "insert",
@@ -64,11 +77,13 @@ export const profileRelations = relations(profile, ({ many }) => ({
   configurations: many(configuration),
 }));
 
+// Waiting list
 export const waitingList = pgTable(
   "waiting_list",
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
     email: text().notNull(),
+    created: timestamp().notNull().defaultNow(),
   },
   (table) => [
     pgPolicy("Anyone can insert to waiting list", {
@@ -79,6 +94,7 @@ export const waitingList = pgTable(
   ]
 ).enableRLS();
 
+// Program
 export const program = pgTable(
   "program",
   {
@@ -88,9 +104,8 @@ export const program = pgTable(
     user_id: uuid()
       .notNull()
       .references(() => profile.id),
-    workouts: jsonb().notNull(),
-    version: integer().notNull(),
     archived: boolean().notNull().default(false),
+    created: timestamp().notNull().defaultNow(),
   },
   (table) => [
     pgPolicy("User can handle their own programs", {
@@ -101,7 +116,7 @@ export const program = pgTable(
   ]
 ).enableRLS();
 
-export const programRelations = relations(program, ({ one }) => ({
+export const programRelations = relations(program, ({ one, many }) => ({
   profile: one(profile, {
     fields: [program.user_id],
     references: [profile.id],
@@ -110,26 +125,194 @@ export const programRelations = relations(program, ({ one }) => ({
     fields: [program.id],
     references: [programMetadata.id],
   }),
+  workouts: many(workout),
 }));
 
+// Warm-up
+export const warmup = pgTable(
+  "warmup",
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    description: text().notNull(),
+    workout_id: uuid()
+      .references(() => workout.id, {
+        onDelete: "cascade",
+      })
+      .unique(),
+  },
+  (table) => [
+    pgPolicy("Authenticated can handle warmup", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const warmUpRelations = relations(warmup, ({ many }) => ({
+  exercises: many(warmupToWarmupExercise),
+}));
+
+// Workout
+export const workout = pgTable(
+  "workout",
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    date: date().notNull(),
+    completed: boolean().notNull(),
+    description: text().notNull(),
+    program_id: uuid().references(() => program.id, {
+      onDelete: "cascade",
+    }),
+  },
+  (table) => [
+    pgPolicy("Authenticated can handle workout", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const workoutRelations = relations(workout, ({ one, many }) => ({
+  program: one(program, {
+    fields: [workout.program_id],
+    references: [program.id],
+  }),
+  warmup: one(warmup, {
+    fields: [workout.id],
+    references: [warmup.workout_id],
+  }),
+  exercises: many(workoutToWorkoutExercise),
+}));
+
+// Warm-up exercises
+export const warmupExercise = pgTable(
+  "warmup_exercise",
+  {
+    ...exercise,
+  },
+  (table) => [
+    pgPolicy("Authenticated can handle warmupExercise", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const warmupToWarmupExercise = pgTable(
+  "warmup_to_warmup_exercise",
+  {
+    warmup_id: uuid().references(() => warmup.id, {
+      onDelete: "cascade",
+    }),
+    exercise_id: uuid().references(() => warmupExercise.id, {
+      onDelete: "cascade",
+    }),
+  },
+  (table) => [
+    primaryKey({ columns: [table.warmup_id, table.exercise_id] }),
+    pgPolicy("Authenticated can handle warmupToExercise", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const warmupExerciseRelations = relations(
+  warmupExercise,
+  ({ many }) => ({
+    warmUps: many(warmupToWarmupExercise),
+  })
+);
+
+export const warmupToExerciseRelations = relations(
+  warmupToWarmupExercise,
+  ({ one }) => ({
+    warmup: one(warmup, {
+      fields: [warmupToWarmupExercise.warmup_id],
+      references: [warmup.id],
+    }),
+    exercise: one(warmupExercise, {
+      fields: [warmupToWarmupExercise.exercise_id],
+      references: [warmupExercise.id],
+    }),
+  })
+);
+
+// Workout exercises
+export const workoutExercise = pgTable(
+  "workout_exercise",
+  {
+    ...exercise,
+  },
+  (table) => [
+    pgPolicy("Authenticated can handle workoutExercise", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const workoutToWorkoutExercise = pgTable(
+  "workout_to_workout_exercise",
+  {
+    workout_id: uuid().references(() => workout.id, {
+      onDelete: "cascade",
+    }),
+    exercise_id: uuid().references(() => workoutExercise.id, {
+      onDelete: "cascade",
+    }),
+  },
+  (table) => [
+    primaryKey({ columns: [table.workout_id, table.exercise_id] }),
+    pgPolicy("Authenticated can handle workoutToExercise", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const workoutExerciseRelations = relations(
+  workoutExercise,
+  ({ many }) => ({
+    workouts: many(workoutToWorkoutExercise),
+  })
+);
+
+export const workoutToExerciseRelations = relations(
+  workoutToWorkoutExercise,
+  ({ one }) => ({
+    workout: one(workout, {
+      fields: [workoutToWorkoutExercise.workout_id],
+      references: [workout.id],
+    }),
+    exercise: one(workoutExercise, {
+      fields: [workoutToWorkoutExercise.exercise_id],
+      references: [workoutExercise.id],
+    }),
+  })
+);
+
+// Program metadata
 export const programMetadata = pgTable(
   "program_metadata",
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
-    user_id: uuid()
-      .notNull()
-      .references(() => profile.id),
     prompt: text().notNull(),
     prompt_tokens: integer().notNull(),
     completion_tokens: integer().notNull(),
     program_id: uuid().references(() => program.id),
-    generated_on: timestamp().notNull().defaultNow(),
   },
   (table) => [
-    pgPolicy("User can handle their own programs metadata", {
+    pgPolicy("Authenticated can handle program metadata", {
       for: "all",
       to: authenticatedRole,
-      using: sql`${authUid} = user_id`,
+      using: sql`true`,
     }),
   ]
 ).enableRLS();
@@ -137,10 +320,6 @@ export const programMetadata = pgTable(
 export const programMetadataRelations = relations(
   programMetadata,
   ({ one }) => ({
-    profile: one(profile, {
-      fields: [programMetadata.user_id],
-      references: [profile.id],
-    }),
     program: one(program, {
       fields: [programMetadata.id],
       references: [program.id],
@@ -148,6 +327,7 @@ export const programMetadataRelations = relations(
   })
 );
 
+// Configuration
 export const configuration = pgTable(
   "configuration",
   {
@@ -157,6 +337,7 @@ export const configuration = pgTable(
     time: integer().notNull(),
     equipment: text(),
     generate_automatically: boolean().notNull().default(false),
+    created: timestamp().notNull().defaultNow(),
   },
   (table) => [
     pgPolicy("User can handle their own configurations", {
@@ -168,11 +349,11 @@ export const configuration = pgTable(
 ).enableRLS();
 
 export const configurationRelations = relations(configuration, ({ many }) => ({
-  workoutFocuses: many(configurationToWorkoutFocus),
   workoutTypes: many(configurationToWorkoutType),
   prefferedDays: many(configurationToPreferredDay),
 }));
 
+// Feedback
 export const feedback = pgTable(
   "feedback",
   {
@@ -190,59 +371,7 @@ export const feedback = pgTable(
   ]
 ).enableRLS();
 
-export const workoutFocus = pgTable(
-  "workout_focus",
-  {
-    id: uuid().defaultRandom().primaryKey().notNull(),
-    name: text(),
-  },
-  (table) => [
-    pgPolicy("Authenticated can handle workout focus", {
-      for: "all",
-      to: authenticatedRole,
-      using: sql`true`,
-    }),
-  ]
-).enableRLS();
-
-export const workoutFocusRelations = relations(workoutFocus, ({ many }) => ({
-  configurations: many(configurationToWorkoutFocus),
-}));
-
-export const configurationToWorkoutFocus = pgTable(
-  "configuration_to_workout_focus",
-  {
-    configuration_id: uuid()
-      .notNull()
-      .references(() => configuration.id, { onDelete: "cascade" }),
-    workout_focus_id: uuid()
-      .notNull()
-      .references(() => workoutFocus.id, { onDelete: "cascade" }),
-  },
-  (table) => [
-    primaryKey({ columns: [table.configuration_id, table.workout_focus_id] }),
-    pgPolicy("Authenticated can handle configurationToWorkoutFocus", {
-      for: "all",
-      to: authenticatedRole,
-      using: sql`true`,
-    }),
-  ]
-).enableRLS();
-
-export const configurationToWorkoutFocusRelations = relations(
-  configurationToWorkoutFocus,
-  ({ one }) => ({
-    configuration: one(configuration, {
-      fields: [configurationToWorkoutFocus.configuration_id],
-      references: [configuration.id],
-    }),
-    workoutFocus: one(workoutFocus, {
-      fields: [configurationToWorkoutFocus.workout_focus_id],
-      references: [workoutFocus.id],
-    }),
-  })
-);
-
+// Workout type
 export const workoutType = pgTable(
   "workout_type",
   {
@@ -296,6 +425,7 @@ export const configurationToWorkoutTypeRelations = relations(
   })
 );
 
+// Preferred day
 export const preferredDay = pgTable(
   "preferred_day",
   {

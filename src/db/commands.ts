@@ -8,11 +8,17 @@ import {
   profile,
   program,
   programMetadata,
+  warmup,
+  warmupExercise,
+  warmupToWarmupExercise,
+  workout,
+  workoutExercise,
+  workoutToWorkoutExercise,
 } from "./schema";
 import { z } from "zod";
 import { and, eq } from "drizzle-orm";
 import { getProfileByIdQuery } from "./queries";
-import { Workout } from "@/types/types";
+import { WorkoutResponse } from "@/types/types";
 
 export async function handleProgramInserts(
   newProgram: z.infer<typeof programSchema>,
@@ -23,25 +29,92 @@ export async function handleProgramInserts(
 ) {
   await db.transaction(async (trx) => {
     // Insert program
-    const [result] = await trx
+    const [programResult] = await trx
       .insert(program)
       .values({
         user_id: userId,
         start_date: newProgram.start_date,
         end_date: newProgram.end_date,
         workouts: newProgram.workouts,
-        version: 1,
       })
       .returning({ id: program.id });
+
+    const programId = programResult.id;
 
     // Insert program metadata
     await trx.insert(programMetadata).values({
       user_id: userId,
       prompt: prompt,
-      program_id: result.id,
+      program_id: programId,
       prompt_tokens: promptTokens,
       completion_tokens: completionTokens,
     });
+
+    // Insert workouts
+    for (const workoutData of newProgram.workouts) {
+      const [workoutResult] = await trx
+        .insert(workout)
+        .values({
+          date: workoutData.date,
+          completed: workoutData.completed,
+          description: workoutData.description,
+          program_id: programId,
+        })
+        .returning({ id: workout.id });
+
+      const workoutId = workoutResult.id;
+
+      // Insert warmup
+      if (workoutData.warmup) {
+        const [warmupResult] = await trx
+          .insert(warmup)
+          .values({
+            description: workoutData.warmup.description,
+            workout_id: workoutId,
+          })
+          .returning({ id: warmup.id });
+
+        const warmupId = warmupResult.id;
+
+        // Insert warmup exercises and relations
+        if (workoutData.warmup.exercises) {
+          for (const exerciseData of workoutData.warmup.exercises) {
+            const [exerciseResult] = await trx
+              .insert(warmupExercise)
+              .values({
+                title: exerciseData.title,
+                description: exerciseData.description,
+                execution: exerciseData.execution,
+              })
+              .returning({ id: warmupExercise.id });
+
+            await trx.insert(warmupToWarmupExercise).values({
+              warmup_id: warmupId,
+              exercise_id: exerciseResult.id,
+            });
+          }
+        }
+      }
+
+      // Insert workout exercises and relations
+      if (workoutData.exercises) {
+        for (const exerciseData of workoutData.exercises) {
+          const [exerciseResult] = await trx
+            .insert(workoutExercise)
+            .values({
+              title: exerciseData.title,
+              description: exerciseData.description,
+              execution: exerciseData.execution,
+            })
+            .returning({ id: workoutExercise.id });
+
+          await trx.insert(workoutToWorkoutExercise).values({
+            workout_id: workoutId,
+            exercise_id: exerciseResult.id,
+          });
+        }
+      }
+    }
 
     // Remove used token
     const currentProfile = await getProfileByIdQuery(userId);
@@ -181,7 +254,7 @@ export async function archiveProgramCommand(programId: string, userId: string) {
 export async function updateProgramWorkoutsCommand(
   programId: string,
   userId: string,
-  workouts: Workout[]
+  workouts: WorkoutResponse[]
 ) {
   await db
     .update(program)

@@ -5,15 +5,19 @@ import { getPreferredDaysQuery, getWorkoutTypesQuery } from "@/db/queries";
 import { getUserOrRedirect } from "@/lib/server-utils";
 import { createClient } from "@/lib/supabase/server";
 import { configurationRequestSchema } from "@/lib/zod/schema";
-import { ActionResponse, WorkoutType, PreferredDay } from "@/types/types";
+import {
+  ActionResponse,
+  WorkoutTypeResponse,
+  PreferredDayResponse,
+} from "@/types/types";
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
 
-export async function getWorkoutTypes(): Promise<WorkoutType[]> {
+export async function getWorkoutTypes(): Promise<WorkoutTypeResponse[]> {
   return await getWorkoutTypesQuery();
 }
 
-export async function getPreferredDays(): Promise<PreferredDay[]> {
+export async function getPreferredDays(): Promise<PreferredDayResponse[]> {
   return await getPreferredDaysQuery();
 }
 

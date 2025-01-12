@@ -1,0 +1,1 @@
+ALTER TABLE "warmup" ADD CONSTRAINT "warmup_workout_id_unique" UNIQUE("workout_id");

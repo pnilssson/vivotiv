@@ -1,15 +1,15 @@
 import {
   ConfigurationResponse,
-  Feedback,
-  PreferredDay,
+  FeedbackResponse,
+  PreferredDayResponse,
   ProfileResponse,
   ProgramResponse,
-  WorkoutType,
+  WorkoutTypeResponse,
 } from "@/types/types";
 import { db } from "./db";
 import { cache } from "react";
 import { gte } from "drizzle-orm";
-import { subHours, subMinutes } from "date-fns";
+import { subMinutes } from "date-fns";
 
 export const getProgramByIdQuery = cache(async (id: string, userId: string) => {
   const result = await db.query.program.findFirst({
@@ -21,11 +21,12 @@ export const getProgramByIdQuery = cache(async (id: string, userId: string) => {
       ),
   });
 
-  return result as ProgramResponse;
+  return result as unknown as ProgramResponse;
 });
 
 export const getCurrentProgramQuery = cache(async (userId: string) => {
   const today = new Date().toISOString().split("T")[0];
+
   const result = await db.query.program.findFirst({
     where: (program, { eq, gte, lte, and }) =>
       and(
@@ -34,17 +35,104 @@ export const getCurrentProgramQuery = cache(async (userId: string) => {
         lte(program.start_date, today),
         gte(program.end_date, today)
       ),
+    with: {
+      workouts: {
+        with: {
+          warmup: {
+            with: {
+              exercises: true,
+            },
+          },
+          exercises: true,
+        },
+      },
+    },
   });
 
-  return result as ProgramResponse;
+  if (!result) return null; // Handle case where no program is found
+
+  // Extract exercise IDs from warmup and workout relations
+  const warmupExerciseIds = new Set<string>();
+  const workoutExerciseIds = new Set<string>();
+
+  result.workouts.forEach((workout) => {
+    workout.exercises.forEach((relation) => {
+      if (relation.exercise_id) workoutExerciseIds.add(relation.exercise_id);
+    });
+    workout.warmup?.exercises.forEach((relation) => {
+      if (relation.exercise_id) warmupExerciseIds.add(relation.exercise_id);
+    });
+  });
+
+  // Fetch detailed warmup exercises
+  const warmupExerciseDetails = await db.query.warmupExercise.findMany({
+    where: (exercise, { inArray }) =>
+      inArray(exercise.id, Array.from(warmupExerciseIds)),
+  });
+
+  // Fetch detailed workout exercises
+  const workoutExerciseDetails = await db.query.workoutExercise.findMany({
+    where: (exercise, { inArray }) =>
+      inArray(exercise.id, Array.from(workoutExerciseIds)),
+  });
+
+  // Create maps for quick lookup
+  const warmupExerciseMap = Object.fromEntries(
+    warmupExerciseDetails.map((exercise) => [
+      exercise.id,
+      {
+        id: exercise.id,
+        title: exercise.title,
+        description: exercise.description,
+        execution: exercise.execution,
+      },
+    ])
+  );
+
+  const workoutExerciseMap = Object.fromEntries(
+    workoutExerciseDetails.map((exercise) => [
+      exercise.id,
+      {
+        id: exercise.id,
+        title: exercise.title,
+        description: exercise.description,
+        execution: exercise.execution,
+      },
+    ])
+  );
+
+  // Build the final ProgramResponse
+  const programResponse: ProgramResponse = {
+    id: result.id,
+    start_date: result.start_date,
+    end_date: result.end_date,
+    user_id: result.user_id,
+    workouts: result.workouts.map((workout) => ({
+      id: workout.id,
+      date: workout.date,
+      completed: workout.completed,
+      description: workout.description,
+      warmup: workout.warmup
+        ? {
+            id: workout.warmup.id,
+            description: workout.warmup.description,
+            exercises: workout.warmup.exercises
+              .map((relation) => warmupExerciseMap[relation.exercise_id || ""])
+              .filter(Boolean), // Filter out null values if exercise_id is missing
+          }
+        : null,
+      exercises: workout.exercises
+        .map((relation) => workoutExerciseMap[relation.exercise_id || ""])
+        .filter(Boolean), // Filter out null values if exercise_id is missing
+    })),
+  };
+
+  return programResponse;
 });
 
 export const getConfigurationQuery = cache(async (userId: string) => {
   const result = await db.query.configuration.findFirst({
     with: {
-      workoutFocuses: {
-        with: { workoutFocus: true },
-      },
       workoutTypes: {
         with: { workoutType: true },
       },
@@ -64,10 +152,14 @@ export const getConfigurationQuery = cache(async (userId: string) => {
     time: result.time,
     equipment: result.equipment || "", // Default to empty string if equipment is null
     workout_types: result.workoutTypes
-      ? result.workoutTypes.map((type) => type.workoutType as WorkoutType)
+      ? result.workoutTypes.map(
+          (type) => type.workoutType as WorkoutTypeResponse
+        )
       : [], // Default to empty array if workoutTypes is null
     preferred_days: result.prefferedDays
-      ? result.prefferedDays.map((day) => day.preferredDay as PreferredDay)
+      ? result.prefferedDays.map(
+          (day) => day.preferredDay as PreferredDayResponse
+        )
       : [], // Default to empty array if preferredDays is null
     generate_automatically: result.generate_automatically,
   };
@@ -77,12 +169,12 @@ export const getConfigurationQuery = cache(async (userId: string) => {
 
 export const getWorkoutTypesQuery = cache(async () => {
   const result = await db.query.workoutType.findMany();
-  return result as WorkoutType[];
+  return result as WorkoutTypeResponse[];
 });
 
 export const getPreferredDaysQuery = cache(async () => {
   const result = await db.query.preferredDay.findMany();
-  return result as PreferredDay[];
+  return result as PreferredDayResponse[];
 });
 
 export const getProfileByEmailQuery = cache(async (email: string) => {
@@ -106,6 +198,6 @@ export const getAnyFeedbackWithinLastMinuteByUserIdQuery = cache(
       where: (feedback, { eq, and }) =>
         and(eq(feedback.user_id, userId), gte(feedback.created, oneMinuteAgo)),
     });
-    return result as Feedback | undefined;
+    return result as FeedbackResponse | undefined;
   }
 );

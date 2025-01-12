@@ -1,6 +1,6 @@
 "use client";
 
-import { ProgramResponse, Workout } from "@/types/types";
+import { ProgramResponse, WorkoutResponse } from "@/types/types";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import WorkoutView from "./workout-view";
@@ -30,7 +30,9 @@ export default function Component({ program }: { program: ProgramResponse }) {
     setArchiveLoading(false);
   };
 
-  const handleCompleteWorkout = async (workout: Workout | undefined) => {
+  const handleCompleteWorkout = async (
+    workout: WorkoutResponse | undefined
+  ) => {
     if (workout) {
       setUpdateWorkoutLoading(true);
       const updatedWorkouts = program.workouts.map((w) =>
@@ -41,7 +43,9 @@ export default function Component({ program }: { program: ProgramResponse }) {
     }
   };
 
-  const handleUncompleteWorkout = async (workout: Workout | undefined) => {
+  const handleUncompleteWorkout = async (
+    workout: WorkoutResponse | undefined
+  ) => {
     if (workout) {
       setUpdateWorkoutLoading(true);
       const updatedWorkouts = program.workouts.map((w) =>

@@ -11,8 +11,8 @@ export interface ProgramResponse {
   start_date: string; // ISO 8601 date string
   end_date: string; // ISO 8601 date string
   user_id: string;
-  workouts: Workout[];
-  version: number;
+  workouts: WorkoutResponse[];
+  created: string;
 }
 
 export interface ConfigurationResponse {
@@ -20,10 +20,11 @@ export interface ConfigurationResponse {
   user_id: string;
   sessions: number;
   time: number;
-  workout_types: WorkoutType[];
-  preferred_days: PreferredDay[];
+  workout_types: WorkoutTypeResponse[];
+  preferred_days: PreferredDayResponse[];
   equipment: string;
   generate_automatically: boolean;
+  created: string;
 }
 
 export interface ProfileResponse {
@@ -32,43 +33,44 @@ export interface ProfileResponse {
   email: string;
   program_tokens: number;
   stripe_customer_id: string;
+  created: string;
 }
 
-export interface Feedback {
+export interface FeedbackResponse {
   id: string;
   user_id: string;
   feedback: string;
   created: string;
 }
 
-export interface Exercise {
+export interface ExerciseResponse {
   id: string;
   title: string;
   description: string;
   execution: string;
 }
 
-export interface WarmUp {
+export interface WarmUpResponse {
   id: string;
   description: string;
-  exercises: Exercise[] | null;
+  exercises: ExerciseResponse[] | null;
 }
 
-export interface Workout {
+export interface WorkoutResponse {
   id: string;
   date: string; // ISO 8601 date string
   completed: boolean;
   description: string;
-  warmup: WarmUp;
-  exercises: Exercise[] | null;
+  warmup: WarmUpResponse | null;
+  exercises: ExerciseResponse[] | null;
 }
 
-export interface WorkoutType {
+export interface WorkoutTypeResponse {
   id: string;
   name: string;
 }
 
-export interface PreferredDay {
+export interface PreferredDayResponse {
   id: string;
   name: string;
   number: number;

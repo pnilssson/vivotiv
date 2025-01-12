@@ -16,8 +16,8 @@ import { setConfiguration } from "./actions";
 import { initialFormState } from "@/lib/constants";
 import {
   ConfigurationResponse,
-  PreferredDay,
-  WorkoutType,
+  PreferredDayResponse,
+  WorkoutTypeResponse,
 } from "@/types/types";
 import {
   Form,
@@ -41,8 +41,8 @@ export default function Component({
   preferredDays,
 }: {
   configuration: ConfigurationResponse | null;
-  workoutTypes: WorkoutType[];
-  preferredDays: PreferredDay[];
+  workoutTypes: WorkoutTypeResponse[];
+  preferredDays: PreferredDayResponse[];
 }) {
   const { toast } = useToast();
   const [state, formAction] = useActionState(

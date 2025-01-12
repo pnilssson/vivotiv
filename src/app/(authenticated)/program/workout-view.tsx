@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Workout } from "@/types/types";
+import { WorkoutResponse } from "@/types/types";
 import { CheckIcon, LoaderCircleIcon, Undo2Icon } from "lucide-react";
 
 export default function Component({
@@ -12,10 +12,10 @@ export default function Component({
   completeAction,
   uncompleteAction,
 }: {
-  workout: Workout | undefined;
+  workout: WorkoutResponse | undefined;
   loading: boolean;
-  completeAction: (workout: Workout | undefined) => Promise<void>;
-  uncompleteAction: (workout: Workout | undefined) => Promise<void>;
+  completeAction: (workout: WorkoutResponse | undefined) => Promise<void>;
+  uncompleteAction: (workout: WorkoutResponse | undefined) => Promise<void>;
 }) {
   function numberToLetter(number: number) {
     const letter = String.fromCharCode(97 + number);

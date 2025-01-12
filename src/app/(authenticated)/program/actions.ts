@@ -12,8 +12,8 @@ import {
   ActionResponse,
   ConfigurationResponse,
   ProgramResponse,
-  Workout,
-  WorkoutType,
+  WorkoutResponse,
+  WorkoutTypeResponse,
 } from "@/types/types";
 import { revalidatePath } from "next/cache";
 import { openai } from "@ai-sdk/openai";
@@ -39,7 +39,10 @@ export async function archiveProgram(programId: string) {
   revalidatePath("/program", "page");
 }
 
-export async function completeWorkout(programId: string, workouts: Workout[]) {
+export async function completeWorkout(
+  programId: string,
+  workouts: WorkoutResponse[]
+) {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
 
@@ -49,7 +52,7 @@ export async function completeWorkout(programId: string, workouts: Workout[]) {
 
 export async function uncompleteWorkout(
   programId: string,
-  workouts: Workout[]
+  workouts: WorkoutResponse[]
 ) {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
@@ -182,8 +185,8 @@ const getPrompt = async (data: ConfigurationResponse): Promise<string> => {
 };
 
 const getExcludedWorkoutTypes = (
-  allWorkoutTypes: WorkoutType[],
-  workout_types: WorkoutType[]
+  allWorkoutTypes: WorkoutTypeResponse[],
+  workout_types: WorkoutTypeResponse[]
 ): string[] => {
   // Filter out workout types from allWorkoutTypes whose names do not exist in workout_types
   return allWorkoutTypes
