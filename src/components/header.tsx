@@ -13,7 +13,7 @@ export default function Component() {
         <Link href="/">Vivotiv</Link>
       </Button>
       {pathname.startsWith("/auth") ? null : (
-        <Button asChild className="!ml-auto">
+        <Button asChild className="!ml-auto" size="sm">
           <Link href="/auth/signin">
             <EnterIcon className="h-5 w-5" /> Sign in
           </Link>

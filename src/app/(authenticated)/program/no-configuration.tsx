@@ -19,7 +19,7 @@ export default async function Component() {
         </div>
       </div>
       <div className="flex w-full lg:w-auto mt-4 lg:mt-0 justify-end">
-        <Button className="w-full lg:w-36" asChild>
+        <Button className="w-full lg:w-36" size="sm" asChild>
           <Link href={"/configuration"}>Configure now</Link>
         </Button>
       </div>

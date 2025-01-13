@@ -113,7 +113,7 @@ export default function Component({
             </div>
             <DialogFooter className="flex flex-row gap-2 justify-end">
               <DialogClose asChild>
-                <Button type="button" variant="secondary">
+                <Button type="button" variant="secondary" size="sm">
                   Close
                 </Button>
               </DialogClose>

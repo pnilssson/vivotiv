@@ -50,6 +50,7 @@ export default function Component() {
       <div className="flex w-full lg:w-auto mt-4 lg:mt-0 justify-end">
         <Button
           className="w-full lg:w-36"
+          size="sm"
           aria-disabled={loading}
           onClick={() => generate()}>
           {loading ? (

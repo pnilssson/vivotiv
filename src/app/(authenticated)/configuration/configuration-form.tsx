@@ -187,6 +187,7 @@ export default function Component({
                       <ToggleGroupItem
                         key={type.id}
                         value={type.id}
+                        size="sm"
                         aria-label={`Toggle ${type.name}`}>
                         <span className="capitalize sm:hidden">
                           {type.name.slice(0, 3)}
@@ -224,6 +225,7 @@ export default function Component({
                       <ToggleGroupItem
                         key={type.id}
                         value={type.id}
+                        size="sm"
                         aria-label={`Toggle ${type.name}`}>
                         <span className="capitalize">{type.name}</span>
                       </ToggleGroupItem>

@@ -85,6 +85,7 @@ export default function Component({
       <div className="flex w-full md:w-auto mt-4 md:mt-0 justify-end">
         <Button
           className="w-full md:w-32"
+          size="sm"
           aria-disabled={loading}
           onClick={() => handleStripeCheckout(priceId)}>
           Get now
