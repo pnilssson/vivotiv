@@ -15,7 +15,9 @@ export async function addToWaitingList(
   _: any,
   formData: FormData
 ): Promise<ActionResponse> {
-  const validated = emailSchema.safeParse(formData);
+  const validated = emailSchema.safeParse({
+    email: formData.get("email"),
+  });
 
   if (!validated.success) {
     return {

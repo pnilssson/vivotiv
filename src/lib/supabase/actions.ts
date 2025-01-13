@@ -28,7 +28,9 @@ export async function signInWithOtp(
   formData: FormData
 ): Promise<ActionResponse> {
   const supabase = await createClient();
-  const validated = otpSchema.safeParse(formData);
+  const validated = otpSchema.safeParse({
+    email: formData.get("email"),
+  });
 
   if (!validated.success) {
     return {
@@ -70,7 +72,10 @@ export async function signInWithPassword(
   formData: FormData
 ): Promise<ActionResponse> {
   const supabase = await createClient();
-  const validated = passwordSchema.safeParse(formData);
+  const validated = passwordSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
 
   if (!validated.success) {
     return {
@@ -101,7 +106,10 @@ export async function signUpWithPassword(
   formData: FormData
 ): Promise<ActionResponse> {
   const supabase = await createClient();
-  const validated = passwordSchema.safeParse(formData);
+  const validated = passwordSchema.safeParse({
+    email: formData.get("email"),
+    password: formData.get("password"),
+  });
 
   if (!validated.success) {
     return {
