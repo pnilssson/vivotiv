@@ -2,7 +2,7 @@
 
 import { db } from "@/db/db";
 import { waitingList } from "@/db/schema";
-import { ActionResponse } from "@/types/types";
+import { ActionResponse } from "@/lib/types";
 import { z } from "zod";
 
 const emailSchema = z.object({
@@ -15,10 +15,7 @@ export async function addToWaitingList(
   _: any,
   formData: FormData
 ): Promise<ActionResponse> {
-  const validated = emailSchema.safeParse({
-    email: formData.get("email"),
-    password: formData.get("password"),
-  });
+  const validated = emailSchema.safeParse(formData);
 
   if (!validated.success) {
     return {

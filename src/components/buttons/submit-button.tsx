@@ -6,9 +6,11 @@ import { LoaderCircleIcon } from "lucide-react";
 
 export default function Component({
   content,
+  loadingContent,
   classes,
 }: {
   content: string;
+  loadingContent?: string;
   classes?: string;
 }) {
   const { pending } = useFormStatus();
@@ -16,9 +18,9 @@ export default function Component({
     <Button
       type="submit"
       aria-disabled={pending}
-      className={classes ?? classes}
-      size="sm">
-      {content}
+      className={classes ?? classes}>
+      {pending && loadingContent ? null : content}
+      {pending && loadingContent ? loadingContent : null}
       {pending ? <LoaderCircleIcon className="animate-spin" /> : null}
     </Button>
   );

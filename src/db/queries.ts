@@ -5,7 +5,7 @@ import {
   ProfileResponse,
   ProgramResponse,
   WorkoutTypeResponse,
-} from "@/types/types";
+} from "@/lib/types";
 import { db } from "./db";
 import { cache } from "react";
 import { gte } from "drizzle-orm";
@@ -51,56 +51,6 @@ export const getCurrentProgramQuery = cache(async (userId: string) => {
 
   if (!result) return null; // Handle case where no program is found
 
-  // Extract exercise IDs from warmup and workout relations
-  const warmupExerciseIds = new Set<string>();
-  const workoutExerciseIds = new Set<string>();
-
-  result.workouts.forEach((workout) => {
-    workout.exercises.forEach((relation) => {
-      if (relation.exercise_id) workoutExerciseIds.add(relation.exercise_id);
-    });
-    workout.warmup?.exercises.forEach((relation) => {
-      if (relation.exercise_id) warmupExerciseIds.add(relation.exercise_id);
-    });
-  });
-
-  // Fetch detailed warmup exercises
-  const warmupExerciseDetails = await db.query.warmupExercise.findMany({
-    where: (exercise, { inArray }) =>
-      inArray(exercise.id, Array.from(warmupExerciseIds)),
-  });
-
-  // Fetch detailed workout exercises
-  const workoutExerciseDetails = await db.query.workoutExercise.findMany({
-    where: (exercise, { inArray }) =>
-      inArray(exercise.id, Array.from(workoutExerciseIds)),
-  });
-
-  // Create maps for quick lookup
-  const warmupExerciseMap = Object.fromEntries(
-    warmupExerciseDetails.map((exercise) => [
-      exercise.id,
-      {
-        id: exercise.id,
-        title: exercise.title,
-        description: exercise.description,
-        execution: exercise.execution,
-      },
-    ])
-  );
-
-  const workoutExerciseMap = Object.fromEntries(
-    workoutExerciseDetails.map((exercise) => [
-      exercise.id,
-      {
-        id: exercise.id,
-        title: exercise.title,
-        description: exercise.description,
-        execution: exercise.execution,
-      },
-    ])
-  );
-
   // Build the final ProgramResponse
   const programResponse: ProgramResponse = {
     id: result.id,
@@ -117,14 +67,20 @@ export const getCurrentProgramQuery = cache(async (userId: string) => {
         ? {
             id: workout.warmup.id,
             description: workout.warmup.description,
-            exercises: workout.warmup.exercises
-              .map((relation) => warmupExerciseMap[relation.exercise_id || ""])
-              .filter(Boolean), // Filter out null values if exercise_id is missing
+            exercises: workout.warmup.exercises.map((exercise) => ({
+              id: exercise.id,
+              title: exercise.title,
+              description: exercise.description,
+              execution: exercise.execution,
+            })),
           }
         : null,
-      exercises: workout.exercises
-        .map((relation) => workoutExerciseMap[relation.exercise_id || ""])
-        .filter(Boolean), // Filter out null values if exercise_id is missing
+      exercises: workout.exercises.map((exercise) => ({
+        id: exercise.id,
+        title: exercise.title,
+        description: exercise.description,
+        execution: exercise.execution,
+      })),
     })),
   };
 

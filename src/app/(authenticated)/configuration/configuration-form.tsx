@@ -18,7 +18,7 @@ import {
   ConfigurationResponse,
   PreferredDayResponse,
   WorkoutTypeResponse,
-} from "@/types/types";
+} from "@/lib/types";
 import {
   Form,
   FormControl,
@@ -289,7 +289,11 @@ export default function Component({
             />
           </div> */}
           <div className="ml-auto">
-            <SubmitButton content="Save" />
+            <SubmitButton
+              content="Save"
+              loadingContent="Saving.."
+              classes="md:w-36"
+            />
           </div>
         </div>
       </form>

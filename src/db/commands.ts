@@ -10,10 +10,8 @@ import {
   programMetadata,
   warmup,
   warmupExercise,
-  warmupToWarmupExercise,
   workout,
   workoutExercise,
-  workoutToWorkoutExercise,
 } from "./schema";
 import { z } from "zod";
 import { and, eq } from "drizzle-orm";
@@ -73,41 +71,27 @@ export async function handleProgramInserts(
 
         const warmupId = warmupResult.id;
 
-        // Insert warmup exercises and relations
+        // Insert warmup exercises
         if (workoutData.warmup.exercises) {
           for (const exerciseData of workoutData.warmup.exercises) {
-            const [exerciseResult] = await trx
-              .insert(warmupExercise)
-              .values({
-                title: exerciseData.title,
-                description: exerciseData.description,
-                execution: exerciseData.execution,
-              })
-              .returning({ id: warmupExercise.id });
-
-            await trx.insert(warmupToWarmupExercise).values({
+            await trx.insert(warmupExercise).values({
+              title: exerciseData.title,
+              description: exerciseData.description,
+              execution: exerciseData.execution,
               warmup_id: warmupId,
-              exercise_id: exerciseResult.id,
             });
           }
         }
       }
 
-      // Insert workout exercises and relations
+      // Insert workout exercises
       if (workoutData.exercises) {
         for (const exerciseData of workoutData.exercises) {
-          const [exerciseResult] = await trx
-            .insert(workoutExercise)
-            .values({
-              title: exerciseData.title,
-              description: exerciseData.description,
-              execution: exerciseData.execution,
-            })
-            .returning({ id: workoutExercise.id });
-
-          await trx.insert(workoutToWorkoutExercise).values({
+          await trx.insert(workoutExercise).values({
+            title: exerciseData.title,
+            description: exerciseData.description,
+            execution: exerciseData.execution,
             workout_id: workoutId,
-            exercise_id: exerciseResult.id,
           });
         }
       }

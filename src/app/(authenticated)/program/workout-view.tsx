@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { WorkoutResponse } from "@/types/types";
+import { WorkoutResponse } from "@/lib/types";
 import { CheckIcon, LoaderCircleIcon, Undo2Icon } from "lucide-react";
 
 export default function Component({

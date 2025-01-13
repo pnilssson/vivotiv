@@ -1,4 +1,4 @@
-import { ActionResponse } from "@/types/types";
+import { ActionResponse } from "@/lib/types";
 
 export const initialFormState: ActionResponse = {
   success: false,

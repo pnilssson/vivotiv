@@ -7,7 +7,7 @@ import {
 } from "@/db/queries";
 import { getUserOrRedirect } from "@/lib/server-utils";
 import { createClient } from "@/lib/supabase/server";
-import { ActionResponse, ConfigurationResponse } from "@/types/types";
+import { ActionResponse, ConfigurationResponse } from "@/lib/types";
 import { feedbackRequestSchema } from "./zod/schema";
 import { insertFeedbackCommand } from "@/db/commands";
 import { revalidatePath } from "next/cache";

@@ -1,6 +1,6 @@
 "use client";
 
-import { ProgramResponse, WorkoutResponse } from "@/types/types";
+import { ProgramResponse, WorkoutResponse } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import WorkoutView from "./workout-view";

@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { getURL } from "@/lib/utils";
-import { ActionResponse } from "@/types/types";
+import { ActionResponse } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -28,9 +28,7 @@ export async function signInWithOtp(
   formData: FormData
 ): Promise<ActionResponse> {
   const supabase = await createClient();
-  const validated = otpSchema.safeParse({
-    email: formData.get("email"),
-  });
+  const validated = otpSchema.safeParse(formData);
 
   if (!validated.success) {
     return {
@@ -72,10 +70,7 @@ export async function signInWithPassword(
   formData: FormData
 ): Promise<ActionResponse> {
   const supabase = await createClient();
-  const validated = passwordSchema.safeParse({
-    email: formData.get("email"),
-    password: formData.get("password"),
-  });
+  const validated = passwordSchema.safeParse(formData);
 
   if (!validated.success) {
     return {
@@ -106,10 +101,7 @@ export async function signUpWithPassword(
   formData: FormData
 ): Promise<ActionResponse> {
   const supabase = await createClient();
-  const validated = passwordSchema.safeParse({
-    email: formData.get("email"),
-    password: formData.get("password"),
-  });
+  const validated = passwordSchema.safeParse(formData);
 
   if (!validated.success) {
     return {

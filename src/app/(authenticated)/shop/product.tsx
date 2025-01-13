@@ -84,14 +84,17 @@ export default function Component({
       </div>
       <div className="flex w-full md:w-auto mt-4 md:mt-0 justify-end">
         <Button
-          className="w-full md:w-32"
-          size="sm"
+          className="w-full md:w-36"
           aria-disabled={loading}
           onClick={() => handleStripeCheckout(priceId)}>
-          Get now
           {loading ? (
-            <LoaderCircleIcon className="h-4 w-4 animate-spin" />
-          ) : null}
+            <span className="flex items-center">
+              Redirecting..
+              <LoaderCircleIcon className="animate-spin ml-2" />
+            </span>
+          ) : (
+            "Get now"
+          )}
         </Button>
       </div>
     </div>

@@ -111,13 +111,13 @@ export default function Component({
               />
               <ErrorMessages name="feedback" errors={state.errors} />
             </div>
-            <DialogFooter className="flex flex-row gap-2 justify-end">
+            <DialogFooter>
               <DialogClose asChild>
-                <Button type="button" variant="secondary" size="sm">
+                <Button type="button" variant="secondary">
                   Close
                 </Button>
               </DialogClose>
-              <SubmitButton content="Submit" />
+              <SubmitButton content="Submit" loadingContent="Submitting.." />
             </DialogFooter>
           </form>
         </Form>

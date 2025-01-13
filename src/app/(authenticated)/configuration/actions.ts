@@ -9,7 +9,7 @@ import {
   ActionResponse,
   WorkoutTypeResponse,
   PreferredDayResponse,
-} from "@/types/types";
+} from "@/lib/types";
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
 
@@ -30,6 +30,17 @@ export async function setConfiguration(
 
   const validated = configurationRequestSchema.safeParse(formData);
   if (!validated.success) {
+    const equipmentString = formData.get("equipment")?.toString();
+    if (equipmentString && equipmentString.length > 1000) {
+      Sentry.captureMessage(
+        "User tried to add equipment list with over 1000 characters.",
+        {
+          user: { id: user.id, email: user.email },
+          extra: { equipment: equipmentString },
+          level: "warning",
+        }
+      );
+    }
     return {
       success: validated.success,
       errors: validated.error.issues,

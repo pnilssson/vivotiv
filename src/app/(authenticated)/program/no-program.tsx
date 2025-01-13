@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useToast } from "@/lib/hooks/use-toast";
 import { LoaderCircleIcon } from "lucide-react";
 import { generateProgram } from "./actions";
-import { ActionResponse } from "@/types/types";
+import { ActionResponse } from "@/lib/types";
 
 export default function Component() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -50,13 +50,12 @@ export default function Component() {
       <div className="flex w-full lg:w-auto mt-4 lg:mt-0 justify-end">
         <Button
           className="w-full lg:w-36"
-          size="sm"
           aria-disabled={loading}
           onClick={() => generate()}>
           {loading ? (
             <span className="flex items-center">
               Generating..
-              <LoaderCircleIcon className="h-4 w-4 animate-spin ml-2" />
+              <LoaderCircleIcon className="animate-spin ml-2" />
             </span>
           ) : (
             "Generate now"

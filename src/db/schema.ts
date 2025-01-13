@@ -150,7 +150,33 @@ export const warmup = pgTable(
 ).enableRLS();
 
 export const warmUpRelations = relations(warmup, ({ many }) => ({
-  exercises: many(warmupToWarmupExercise),
+  exercises: many(warmupExercise),
+}));
+
+export const warmupExercise = pgTable(
+  "warmup_exercise",
+  {
+    ...exercise,
+    warmup_id: uuid()
+      .references(() => warmup.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
+  },
+  (table) => [
+    pgPolicy("Authenticated can handle warmupExercise", {
+      for: "all",
+      to: authenticatedRole,
+      using: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const warmupExerciseRelations = relations(warmupExercise, ({ one }) => ({
+  warmup: one(warmup, {
+    fields: [warmupExercise.warmup_id],
+    references: [warmup.id],
+  }),
 }));
 
 // Workout
@@ -183,70 +209,18 @@ export const workoutRelations = relations(workout, ({ one, many }) => ({
     fields: [workout.id],
     references: [warmup.workout_id],
   }),
-  exercises: many(workoutToWorkoutExercise),
+  exercises: many(workoutExercise),
 }));
 
-// Warm-up exercises
-export const warmupExercise = pgTable(
-  "warmup_exercise",
-  {
-    ...exercise,
-  },
-  (table) => [
-    pgPolicy("Authenticated can handle warmupExercise", {
-      for: "all",
-      to: authenticatedRole,
-      using: sql`true`,
-    }),
-  ]
-).enableRLS();
-
-export const warmupToWarmupExercise = pgTable(
-  "warmup_to_warmup_exercise",
-  {
-    warmup_id: uuid().references(() => warmup.id, {
-      onDelete: "cascade",
-    }),
-    exercise_id: uuid().references(() => warmupExercise.id, {
-      onDelete: "cascade",
-    }),
-  },
-  (table) => [
-    primaryKey({ columns: [table.warmup_id, table.exercise_id] }),
-    pgPolicy("Authenticated can handle warmupToExercise", {
-      for: "all",
-      to: authenticatedRole,
-      using: sql`true`,
-    }),
-  ]
-).enableRLS();
-
-export const warmupExerciseRelations = relations(
-  warmupExercise,
-  ({ many }) => ({
-    warmUps: many(warmupToWarmupExercise),
-  })
-);
-
-export const warmupToExerciseRelations = relations(
-  warmupToWarmupExercise,
-  ({ one }) => ({
-    warmup: one(warmup, {
-      fields: [warmupToWarmupExercise.warmup_id],
-      references: [warmup.id],
-    }),
-    exercise: one(warmupExercise, {
-      fields: [warmupToWarmupExercise.exercise_id],
-      references: [warmupExercise.id],
-    }),
-  })
-);
-
-// Workout exercises
 export const workoutExercise = pgTable(
   "workout_exercise",
   {
     ...exercise,
+    workout_id: uuid()
+      .references(() => workout.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
   },
   (table) => [
     pgPolicy("Authenticated can handle workoutExercise", {
@@ -257,43 +231,12 @@ export const workoutExercise = pgTable(
   ]
 ).enableRLS();
 
-export const workoutToWorkoutExercise = pgTable(
-  "workout_to_workout_exercise",
-  {
-    workout_id: uuid().references(() => workout.id, {
-      onDelete: "cascade",
-    }),
-    exercise_id: uuid().references(() => workoutExercise.id, {
-      onDelete: "cascade",
-    }),
-  },
-  (table) => [
-    primaryKey({ columns: [table.workout_id, table.exercise_id] }),
-    pgPolicy("Authenticated can handle workoutToExercise", {
-      for: "all",
-      to: authenticatedRole,
-      using: sql`true`,
-    }),
-  ]
-).enableRLS();
-
 export const workoutExerciseRelations = relations(
   workoutExercise,
-  ({ many }) => ({
-    workouts: many(workoutToWorkoutExercise),
-  })
-);
-
-export const workoutToExerciseRelations = relations(
-  workoutToWorkoutExercise,
   ({ one }) => ({
     workout: one(workout, {
-      fields: [workoutToWorkoutExercise.workout_id],
+      fields: [workoutExercise.workout_id],
       references: [workout.id],
-    }),
-    exercise: one(workoutExercise, {
-      fields: [workoutToWorkoutExercise.exercise_id],
-      references: [workoutExercise.id],
     }),
   })
 );
@@ -306,7 +249,9 @@ export const programMetadata = pgTable(
     prompt: text().notNull(),
     prompt_tokens: integer().notNull(),
     completion_tokens: integer().notNull(),
-    program_id: uuid().references(() => program.id),
+    program_id: uuid().references(() => program.id, {
+      onDelete: "cascade",
+    }),
   },
   (table) => [
     pgPolicy("Authenticated can handle program metadata", {
