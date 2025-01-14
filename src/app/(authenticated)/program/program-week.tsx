@@ -1,6 +1,6 @@
 "use client";
 
-import { ProgramResponse, WorkoutResponse } from "@/lib/types";
+import { ProgramResponse } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import WorkoutView from "./workout-view";
@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { FolderArchiveIcon, LoaderCircleIcon } from "lucide-react";
 import ConfirmDialog from "@/components/shared/confirm-dialog";
 import { archiveProgram, completeWorkout, uncompleteWorkout } from "./actions";
+import ContentBox from "@/components/shared/content-box";
+import PageTitle from "@/components/shared/page-title";
 
 export default function Component({ program }: { program: ProgramResponse }) {
   const [archiveLoading, setArchiveLoading] = useState<boolean>(false);
@@ -47,134 +49,73 @@ export default function Component({ program }: { program: ProgramResponse }) {
   };
 
   return (
-    <>
-      <div className="flex items-center justify-between">
-        <h3 className="text-xl">
-          {new Date().toLocaleDateString("en-US", {
-            weekday: "short",
-            month: "short",
-            day: "numeric",
-          })}
-        </h3>
-        <ConfirmDialog
-          title="Are you absolutely sure?"
-          description="This will archive the program and you will have to generate a new."
-          action={handleConfirm}
-          confirmText="Archive"
-          cancelText="Cancel">
-          <Button variant="secondary" size="icon">
-            {archiveLoading ? (
-              <LoaderCircleIcon className="animate-spin" />
-            ) : (
-              <FolderArchiveIcon />
-            )}
-          </Button>
-        </ConfirmDialog>
+    <React.Fragment>
+      <div className="flex justify-between">
+        <PageTitle
+          className="mb-0 pr-4"
+          title={`“80% of success is showing up” — Woody Allen`}
+          description={`Your current active program is shown below, which starts on ${program.start_date}, ends on ${program.end_date}, and contains ${program.workouts.length} sessions. If you would like to generate a new program, first archive the existing program by clicking the archive button to the right.`}
+        />
+        <div>
+          <ConfirmDialog
+            title="Are you absolutely sure?"
+            description="This will archive the program and you will have to generate a new."
+            action={handleConfirm}
+            confirmText="Archive"
+            cancelText="Cancel">
+            <Button variant="secondary" size="icon">
+              {archiveLoading ? (
+                <LoaderCircleIcon className="animate-spin" />
+              ) : (
+                <FolderArchiveIcon />
+              )}
+            </Button>
+          </ConfirmDialog>
+        </div>
       </div>
-      <div className="flex flex-row gap-2 sm:gap-4 mt-4">
+      <div className="flex flex-row gap-2 sm:gap-4 mt-8">
         {daysOfWeek.map((date: string) => {
           const workout = program.workouts.find((w) => w.date === date);
           return (
             <React.Fragment key={date}>
-              <div
+              <ContentBox
                 key={date + 1}
                 className={cn(
-                  "bg-slate-50/50 border border-slate-100 rounded-lg py-2 md:hidden flex flex-col flex-1 items-center hover:bg-slate-100 cursor-pointer",
+                  "px-0 py-2 md:p-4 flex flex-col flex-1 items-center hover:bg-slate-100 cursor-pointer",
                   {
-                    "bg-slate-100 hover:bg-slate-100": date == selectedDate,
+                    "bg-slate-100": date == selectedDate,
                   }
                 )}
                 onClick={() => setSelectedDate(date)}>
                 {workout ? (
                   workout.completed ? (
                     <Badge
-                      className="bg-emerald-300 align-middle font-normal w-fit"
+                      className="bg-emerald-300 align-middle font-normal w-fit md:w-8 lg:w-10"
                       variant="secondary"></Badge>
                   ) : (
                     <Badge
-                      className="bg-red-300 align-middle font-normal w-fit"
+                      className="bg-red-300 align-middle font-normal w-fit md:w-8 lg:w-10"
                       variant="secondary"></Badge>
                   )
                 ) : (
                   <Badge
-                    className="bg-slate-200 align-middle font-normal w-fit"
+                    className="bg-slate-200 align-middle font-normal w-fit md:w-8 lg:w-10"
                     variant="secondary"></Badge>
                 )}
-                <h3 className="mt-2">
+                <h3 className="mt-2 xl:hidden flex sm:text-xl">
                   {new Date(date).toLocaleDateString("en-US", {
                     weekday: "short",
                   })}
                 </h3>
-                <p className="text-sm text-muted-foreground">
-                  {date.split("-")[2]}
-                </p>
-              </div>
-
-              <div
-                key={date + 2}
-                className={cn(
-                  "bg-slate-50/50 border border-slate-100 rounded-lg p-4 hidden xl:hidden md:flex flex-col flex-1 items-center hover:bg-slate-100 cursor-pointer",
-                  {
-                    "bg-slate-100 hover:bg-slate-100": date == selectedDate,
-                  }
-                )}
-                onClick={() => setSelectedDate(date)}>
-                {workout ? (
-                  workout.completed ? (
-                    <Badge
-                      className="bg-emerald-300 align-middle font-normal w-full"
-                      variant="secondary"></Badge>
-                  ) : (
-                    <Badge
-                      className="bg-red-300 align-middle font-normal w-full"
-                      variant="secondary"></Badge>
-                  )
-                ) : (
-                  <Badge
-                    className="bg-slate-200 align-middle font-normal w-full"
-                    variant="secondary"></Badge>
-                )}
-                <h3 className="text-xl mt-2">
-                  {new Date(date).toLocaleDateString("en-US", {
-                    weekday: "short",
-                  })}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {date.split("-")[2]}
-                </p>
-              </div>
-
-              <div
-                key={date + 3}
-                className={cn(
-                  "bg-slate-50/50 border border-slate-100 rounded-lg p-4 hidden xl:flex flex-col flex-1 hover:bg-slate-100 cursor-pointer",
-                  {
-                    "bg-slate-100 hover:bg-slate-100": date == selectedDate,
-                  }
-                )}
-                onClick={() => setSelectedDate(date)}>
-                {workout ? (
-                  workout.completed ? (
-                    <Badge
-                      className="bg-emerald-300 align-middle font-normal w-full"
-                      variant="secondary"></Badge>
-                  ) : (
-                    <Badge
-                      className="bg-red-300 align-middle font-normal w-full"
-                      variant="secondary"></Badge>
-                  )
-                ) : (
-                  <Badge
-                    className="bg-slate-200 align-middle font-normal w-full"
-                    variant="secondary"></Badge>
-                )}
-                <h3 className="text-xl mt-2">
+                <h3 className="text-xl mt-2 hidden xl:flex">
                   {new Date(date).toLocaleDateString("en-US", {
                     weekday: "long",
                   })}
                 </h3>
-                <p className="text-sm text-muted-foreground">{date}</p>
-              </div>
+                <p className="text-sm text-muted-foreground">
+                  {date.split("-")[2]}
+                </p>
+              </ContentBox>
             </React.Fragment>
           );
         })}
@@ -185,6 +126,6 @@ export default function Component({ program }: { program: ProgramResponse }) {
         completeAction={handleCompleteWorkout}
         uncompleteAction={handleUncompleteWorkout}
       />
-    </>
+    </React.Fragment>
   );
 }

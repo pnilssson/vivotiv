@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import Title from "./title";
+import Heading from "./heading";
 import TextMuted from "./text-muted";
 
 export default function Component({
@@ -12,8 +12,8 @@ export default function Component({
   className?: string;
 }) {
   return (
-    <div className={cn("grid gap-2 mb-8", className)}>
-      <Title>{title}</Title>
+    <div className={cn("grid gap-2 mb-4", className)}>
+      <Heading>{title}</Heading>
       <TextMuted className="max-w-[768px]">{description}</TextMuted>
     </div>
   );

@@ -48,6 +48,7 @@ export interface ExerciseResponse {
   title: string;
   description: string;
   execution: string;
+  completed: boolean;
 }
 
 export interface WarmUpResponse {

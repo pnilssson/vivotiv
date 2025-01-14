@@ -1,5 +1,6 @@
 import PageTitle from "@/components/shared/page-title";
 import Product from "./product";
+import React from "react";
 
 const paymentOptions = [
   {
@@ -12,7 +13,7 @@ const paymentOptions = [
     highlight: false,
   },
   {
-    title: "One weeks",
+    title: "Four weeks",
     description: "Get yourself four weeks worth of training.",
     priceId: "price_1QdeRCRpZn3h4qfLXsBBwv39",
     price: "$4.99",
@@ -42,12 +43,12 @@ const paymentOptions = [
 
 export default async function Page() {
   return (
-    <>
+    <React.Fragment>
       <PageTitle
         title={"Shop"}
         description={"All options are one time payments."}
       />
-      <div className="flex flex-col gap-4">
+      <div className="grid grid-col-1 md:grid-cols-2 gap-4">
         {paymentOptions.map((option, index) => (
           <Product
             key={index} // Use a unique key; index is used here as a fallback.
@@ -61,6 +62,6 @@ export default async function Page() {
           />
         ))}
       </div>
-    </>
+    </React.Fragment>
   );
 }

@@ -8,8 +8,9 @@ import {
 } from "@/lib/types";
 import { db } from "./db";
 import { cache } from "react";
-import { gte } from "drizzle-orm";
+import { asc, gte } from "drizzle-orm";
 import { subMinutes } from "date-fns";
+import { preferredDay, workoutType } from "./schema";
 
 export const getProgramByIdQuery = cache(async (id: string, userId: string) => {
   const result = await db.query.program.findFirst({
@@ -72,6 +73,7 @@ export const getCurrentProgramQuery = cache(async (userId: string) => {
               title: exercise.title,
               description: exercise.description,
               execution: exercise.execution,
+              completed: exercise.completed,
             })),
           }
         : null,
@@ -80,6 +82,7 @@ export const getCurrentProgramQuery = cache(async (userId: string) => {
         title: exercise.title,
         description: exercise.description,
         execution: exercise.execution,
+        completed: exercise.completed,
       })),
     })),
   };
@@ -126,12 +129,16 @@ export const getConfigurationQuery = cache(async (userId: string) => {
 });
 
 export const getWorkoutTypesQuery = cache(async () => {
-  const result = await db.query.workoutType.findMany();
+  const result = await db.query.workoutType.findMany({
+    orderBy: [asc(workoutType.name)],
+  });
   return result as WorkoutTypeResponse[];
 });
 
 export const getPreferredDaysQuery = cache(async () => {
-  const result = await db.query.preferredDay.findMany();
+  const result = await db.query.preferredDay.findMany({
+    orderBy: [asc(preferredDay.number)],
+  });
   return result as PreferredDayResponse[];
 });
 

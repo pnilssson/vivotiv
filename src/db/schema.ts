@@ -32,6 +32,7 @@ export const exercise = {
   title: text().notNull(),
   description: text().notNull(),
   execution: text().notNull(),
+  completed: boolean().notNull().default(false),
 };
 
 // Vivotiv

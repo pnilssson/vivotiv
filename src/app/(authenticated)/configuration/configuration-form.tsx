@@ -33,7 +33,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { configurationRequestSchema } from "@/lib/zod/schema";
 import { useToast } from "@/lib/hooks/use-toast";
-import { Switch } from "@/components/ui/switch";
+import ContentBox from "@/components/shared/content-box";
 
 export default function Component({
   configuration,
@@ -85,9 +85,8 @@ export default function Component({
       <form
         action={() => {
           formAction(form.getValues() as any as FormData);
-        }}
-        className="bg-slate-50/50 border border-slate-100 rounded-lg p-4">
-        <div className="grid gap-8">
+        }}>
+        <div className="grid gap-4">
           <div className="hidden">
             <FormField
               control={form.control}
@@ -108,7 +107,7 @@ export default function Component({
               )}
             />
           </div>
-          <div className="flex flex-col md:flex-row w-full gap-4">
+          <ContentBox className="flex flex-col md:flex-row w-full gap-4">
             <div className="mb-2 w-full md:w-1/2">
               <FormField
                 control={form.control}
@@ -167,8 +166,8 @@ export default function Component({
               />
               <ErrorMessages name="time" errors={state.errors} />
             </div>
-          </div>
-          <div>
+          </ContentBox>
+          <ContentBox>
             <FormField
               control={form.control}
               name="preferred_days"
@@ -188,7 +187,8 @@ export default function Component({
                         key={type.id}
                         value={type.id}
                         size="sm"
-                        aria-label={`Toggle ${type.name}`}>
+                        aria-label={`Toggle ${type.name}`}
+                        className="flex-1 px-0 sm:px-2.5">
                         <span className="capitalize sm:hidden">
                           {type.name.slice(0, 3)}
                         </span>
@@ -205,8 +205,8 @@ export default function Component({
                 </FormItem>
               )}
             />
-          </div>
-          <div>
+          </ContentBox>
+          <ContentBox>
             <FormField
               control={form.control}
               name="workout_types"
@@ -226,7 +226,8 @@ export default function Component({
                         key={type.id}
                         value={type.id}
                         size="sm"
-                        aria-label={`Toggle ${type.name}`}>
+                        aria-label={`Toggle ${type.name}`}
+                        className="flex-1 px-0 sm:px-2.5">
                         <span className="capitalize">{type.name}</span>
                       </ToggleGroupItem>
                     ))}
@@ -239,8 +240,8 @@ export default function Component({
                 </FormItem>
               )}
             />
-          </div>
-          <div>
+          </ContentBox>
+          <ContentBox>
             <FormField
               control={form.control}
               name="equipment"
@@ -265,7 +266,7 @@ export default function Component({
                 </FormItem>
               )}
             />
-          </div>
+          </ContentBox>
           {/* <div>
             <FormField
               control={form.control}

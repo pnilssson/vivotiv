@@ -1,6 +1,7 @@
 "use client";
 
 import ShineBorder from "@/components/magicui/shine-border";
+import ContentBox from "@/components/shared/content-box";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/lib/hooks/use-toast";
@@ -57,47 +58,40 @@ export default function Component({
   };
 
   const content = (
-    <div
-      className={cn(
-        " rounded-lg p-4 flex md:gap-4 items-center md:flex-row flex-wrap",
-        { "bg-slate-50/50 border border-slate-100": !highlight }
-      )}>
-      <div className="flex gap-4 flex-1">
-        <div className="my-auto grid gap-2">
-          <div className="flex items-center">
-            <h3 className="text-xl">{title}</h3>
-            {discount ? (
-              <Badge
-                className="ml-2 bg-emerald-300 align-middle font-normal"
-                variant="secondary">
-                Save {discount}
-              </Badge>
-            ) : null}
-          </div>
-
-          <p className="text-sm text-muted-foreground">{description}</p>
-        </div>
-      </div>
-      <div className="my-auto">
+    <ContentBox
+      className={cn("flex flex-col gap-2", {
+        "border-0": highlight,
+      })}>
+      <div className="flex items-baseline">
         <p className="text-xl">{price}</p>
-        <p className="text-sm text-muted-foreground">{weeklyPrice}</p>
+        <p className="text-sm text-muted-foreground ml-1">{weeklyPrice}</p>
+        {discount ? (
+          <Badge
+            className="bg-emerald-300 self-center font-normal ml-auto"
+            variant="secondary">
+            Save {discount}
+          </Badge>
+        ) : null}
       </div>
-      <div className="flex w-full md:w-auto mt-4 md:mt-0 justify-end">
-        <Button
-          className="w-full md:w-36"
-          aria-disabled={loading}
-          onClick={() => handleStripeCheckout(priceId)}>
-          {loading ? (
-            <span className="flex items-center">
-              Redirecting..
-              <LoaderCircleIcon className="animate-spin ml-2" />
-            </span>
-          ) : (
-            "Get now"
-          )}
-        </Button>
+      <div className="flex items-center">
+        <h3 className="text-2xl">{title}</h3>
       </div>
-    </div>
+      <p className="text-sm text-muted-foreground">{description}</p>
+
+      <Button
+        className="w-full mt-2"
+        aria-disabled={loading}
+        onClick={() => handleStripeCheckout(priceId)}>
+        {loading ? (
+          <span className="flex items-center">
+            Redirecting..
+            <LoaderCircleIcon className="animate-spin ml-2" />
+          </span>
+        ) : (
+          "Get now"
+        )}
+      </Button>
+    </ContentBox>
   );
 
   return highlight ? (

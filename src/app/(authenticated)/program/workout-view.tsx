@@ -1,10 +1,15 @@
 "use client";
 
+import ContentBox from "@/components/shared/content-box";
+import Heading from "@/components/shared/heading";
+import SubPageTitle from "@/components/shared/sub-page-title";
+import TextMuted from "@/components/shared/text-muted";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { WorkoutResponse } from "@/lib/types";
-import { CheckIcon, LoaderCircleIcon, Undo2Icon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { BanIcon, CheckIcon, LoaderCircleIcon, Undo2Icon } from "lucide-react";
+import React from "react";
 
 export default function Component({
   workout,
@@ -28,107 +33,81 @@ export default function Component({
     await uncompleteAction(workout?.id);
   };
   return (
-    <div className="bg-slate-50/50 border border-slate-100 rounded-lg p-4 flex flex-col mt-4">
+    <React.Fragment>
       {workout ? (
-        <div>
-          <div className="flex gap-4">
-            <div className="flex flex-col flex-grow gap-2">
-              {workout.completed ? (
-                <Badge
-                  className="bg-emerald-300 align-middle font-normal w-fit"
-                  variant="secondary">
-                  Completed
-                </Badge>
-              ) : (
-                <Badge
-                  className="bg-red-300 align-middle font-normal w-fit"
-                  variant="secondary">
-                  Uncompleted
-                </Badge>
-              )}
-              <h3 className="text-xl font-semibold tracking-tight">
-                {workout.description}
-              </h3>
-              <p className="text-sm text-muted-foreground">{workout.date}</p>
-            </div>
-            <div>
-              {!workout.completed ? (
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  onClick={handleCompleteWorkout}>
-                  {loading ? (
-                    <LoaderCircleIcon className="animate-spin" />
-                  ) : (
-                    <CheckIcon />
-                  )}
-                </Button>
-              ) : (
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  onClick={handleUncompleteWorkout}>
-                  {loading ? (
-                    <LoaderCircleIcon className="animate-spin" />
-                  ) : (
-                    <Undo2Icon />
-                  )}
-                </Button>
-              )}
-            </div>
-          </div>
-
-          <Separator className="my-4" />
-          <h4 className="text-xl font-semibold leading-none tracking-tight">
-            Warm up
-          </h4>
-          <div className="text-sm text-muted-foreground mt-2">
-            {workout.warmup?.description}
-          </div>
-          <ul>
+        <div className="flex flex-col gap-8 mt-4">
+          <ContentBox className={cn("flex flex-row justify-between")}>
+            <Heading className="self-center">{`Workout of ${new Date().toLocaleDateString(
+              "en-US",
+              {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+              }
+            )}`}</Heading>{" "}
+            {!workout.completed ? (
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={handleCompleteWorkout}>
+                {loading ? (
+                  <LoaderCircleIcon className="animate-spin" />
+                ) : (
+                  <CheckIcon />
+                )}
+              </Button>
+            ) : (
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={handleUncompleteWorkout}>
+                {loading ? (
+                  <LoaderCircleIcon className="animate-spin" />
+                ) : (
+                  <BanIcon />
+                )}
+              </Button>
+            )}
+          </ContentBox>
+          <div className="">
+            <SubPageTitle
+              title="Warm up"
+              description={workout.warmup?.description ?? ""}
+            />
             {workout.warmup?.exercises?.map((exercise, i) => (
-              <li key={exercise.title} className="mt-4">
-                <p className="">
-                  <span className="capitalize font-semibold">
-                    {numberToLetter(i)}.{" "}
-                  </span>
+              <ContentBox key={exercise.title} className="mt-4">
+                <p className="font-medium">
+                  <span className="capitalize">{numberToLetter(i)}. </span>
                   {exercise.title}
                 </p>
-                <p className="">{exercise.execution}</p>
+                <p className="font-light">{exercise.execution}</p>
                 <div className="text-sm text-muted-foreground">
                   {exercise.description}
                 </div>
-              </li>
+              </ContentBox>
             ))}
-          </ul>
-          <Separator className="my-4" />
-          <h4 className="text-xl font-semibold leading-none tracking-tight">
-            Workout
-          </h4>
-          <ul>
+          </div>
+          <div className="">
+            <SubPageTitle title="Workout" description={workout.description} />
             {workout.exercises?.map((exercise, i) => (
-              <li key={exercise.title} className="mt-4">
-                <p className="">
-                  <span className="capitalize font-semibold">
-                    {numberToLetter(i)}.{" "}
-                  </span>
+              <ContentBox key={exercise.title} className="mt-4">
+                <p className="font-medium">
+                  <span className="capitalize">{numberToLetter(i)}. </span>
                   {exercise.title}
                 </p>
-                <p className="">{exercise.execution}</p>
+                <p className="font-light">{exercise.execution}</p>
                 <div className="text-sm text-muted-foreground">
                   {exercise.description}
                 </div>
-              </li>
+              </ContentBox>
             ))}
-          </ul>
+          </div>
         </div>
       ) : (
-        <div>
-          <p className="ml-2 text-sm text-muted-foreground">
-            No workout today.
-          </p>
-        </div>
+        <ContentBox className="mt-4">
+          <TextMuted>No workout today</TextMuted>
+        </ContentBox>
       )}
-    </div>
+    </React.Fragment>
   );
 }
