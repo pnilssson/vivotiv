@@ -1,3 +1,4 @@
+import exp from "constants";
 import { relations, sql } from "drizzle-orm";
 import {
   pgTable,
@@ -255,10 +256,10 @@ export const programMetadata = pgTable(
     }),
   },
   (table) => [
-    pgPolicy("Authenticated can handle program metadata", {
+    pgPolicy("Supabase auth admin can handle program metadata", {
       for: "all",
-      to: authenticatedRole,
-      using: sql`true`,
+      to: supabaseAuthAdminRole,
+      withCheck: sql`true`,
     }),
   ]
 ).enableRLS();
@@ -282,6 +283,9 @@ export const configuration = pgTable(
     sessions: integer().notNull(),
     time: integer().notNull(),
     equipment: text(),
+    experience_id: uuid().references(() => experience.id, {
+      onDelete: "set null",
+    }),
     generate_automatically: boolean().notNull().default(false),
     created: timestamp().notNull().defaultNow(),
   },
@@ -297,6 +301,28 @@ export const configuration = pgTable(
 export const configurationRelations = relations(configuration, ({ many }) => ({
   workoutTypes: many(configurationToWorkoutType),
   prefferedDays: many(configurationToPreferredDay),
+}));
+
+// Experience
+export const experience = pgTable(
+  "experience",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    name: text().notNull(),
+    description: text(),
+    level: integer().notNull(),
+  },
+  (table) => [
+    pgPolicy("Supabase auth admin can handle experience", {
+      for: "all",
+      to: supabaseAuthAdminRole,
+      withCheck: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const experienceRelations = relations(experience, ({ many }) => ({
+  configurations: many(configuration),
 }));
 
 // Feedback
@@ -325,10 +351,10 @@ export const workoutType = pgTable(
     name: text(),
   },
   (table) => [
-    pgPolicy("Authenticated can handle workout types", {
+    pgPolicy("Supabase auth admin can handle workout types", {
       for: "all",
-      to: authenticatedRole,
-      using: sql`true`,
+      to: supabaseAuthAdminRole,
+      withCheck: sql`true`,
     }),
   ]
 ).enableRLS();
@@ -380,10 +406,10 @@ export const preferredDay = pgTable(
     number: integer().notNull(),
   },
   (table) => [
-    pgPolicy("Authenticated can handle preferredDay", {
+    pgPolicy("Supabase auth admin can handle preferred day", {
       for: "all",
-      to: authenticatedRole,
-      using: sql`true`,
+      to: supabaseAuthAdminRole,
+      withCheck: sql`true`,
     }),
   ]
 ).enableRLS();

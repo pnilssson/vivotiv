@@ -76,3 +76,10 @@ export interface PreferredDayResponse {
   name: string;
   number: number;
 }
+
+export interface ExperienceResponse {
+  id: string;
+  name: string;
+  description: string;
+  level: number;
+}
