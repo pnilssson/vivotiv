@@ -68,7 +68,7 @@ export default function Component({
                 )}
               </Button>
             )}
-          </ContentBox>
+          </div>
           <div className="">
             <SubPageTitle
               title="Warm up"
