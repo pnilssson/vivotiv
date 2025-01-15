@@ -59,8 +59,8 @@ export default function Component({ program }: { program: ProgramResponse }) {
         </div>
         <div>
           <ConfirmDialog
-            title="Are you absolutely sure?"
-            description="This will archive the program and you will have to generate a new."
+            title="Are you sure?"
+            description="This will archive the program and you will need to generate a new."
             action={handleConfirm}
             confirmText="Archive"
             cancelText="Cancel">
