@@ -52,7 +52,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
 
   return (
     <React.Fragment>
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-2">
         <Title
           className="pr-4"
         >
@@ -60,8 +60,8 @@ export default function Component({ program }: { program: ProgramResponse }) {
         </Title>
         <div>
           <ConfirmDialog
-            title="Are you absolutely sure?"
-            description="This will archive the program and you will have to generate a new."
+            title="Are you sure?"
+            description="This will archive the program and you will need to generate a new."
             action={handleConfirm}
             confirmText="Archive"
             cancelText="Cancel">
@@ -75,7 +75,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
           </ConfirmDialog>
         </div>
       </div>
-      <TextMuted>Your current active program is shown below. It starts on ${program.start_date}, ends on ${program.end_date} and contains ${program.workouts.length} sessions. If you would like to generate a new program, archive the existing one by clicking the button to the right.</TextMuted>
+      <TextMuted>Your current active program is shown below. It starts on {program.start_date}, ends on {program.end_date} and contains {program.workouts.length} sessions. If you would like to generate a new program, archive the existing one by clicking the button to the right.</TextMuted>
       <div className="flex flex-row gap-2 sm:gap-4 mt-8">
         {daysOfWeek.map((date: string) => {
           const workout = program.workouts.find((w) => w.date === date);
