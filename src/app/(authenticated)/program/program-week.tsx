@@ -11,9 +11,11 @@ import { FolderArchiveIcon, LoaderCircleIcon } from "lucide-react";
 import ConfirmDialog from "@/components/shared/confirm-dialog";
 import { archiveProgram, completeWorkout, uncompleteWorkout } from "./actions";
 import ContentBox from "@/components/shared/content-box";
-import PageTitle from "@/components/shared/page-title";
-import MotivationalTitle from "./motivational-title";
+const MotivationalTitle = dynamic(() => import("./motivational-title"), {
+  ssr: false,
+});
 import TextMuted from "@/components/shared/text-muted";
+import dynamic from "next/dynamic";
 
 export default function Component({ program }: { program: ProgramResponse }) {
   const [archiveLoading, setArchiveLoading] = useState<boolean>(false);
