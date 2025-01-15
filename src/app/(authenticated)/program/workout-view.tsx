@@ -36,7 +36,7 @@ export default function Component({
     <React.Fragment>
       {workout ? (
         <div className="flex flex-col gap-8 mt-4">
-          <ContentBox className={cn("flex flex-row justify-between")}>
+          <div className={cn("flex flex-row justify-between")}>
             <Heading className="self-center">{`Workout of ${new Date().toLocaleDateString(
               "en-US",
               {

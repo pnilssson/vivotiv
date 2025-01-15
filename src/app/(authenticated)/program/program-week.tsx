@@ -12,6 +12,8 @@ import ConfirmDialog from "@/components/shared/confirm-dialog";
 import { archiveProgram, completeWorkout, uncompleteWorkout } from "./actions";
 import ContentBox from "@/components/shared/content-box";
 import PageTitle from "@/components/shared/page-title";
+import Title from "@/components/shared/title";
+import TextMuted from "@/components/shared/text-muted";
 
 export default function Component({ program }: { program: ProgramResponse }) {
   const [archiveLoading, setArchiveLoading] = useState<boolean>(false);
@@ -51,11 +53,11 @@ export default function Component({ program }: { program: ProgramResponse }) {
   return (
     <React.Fragment>
       <div className="flex justify-between">
-        <PageTitle
-          className="mb-0 pr-4"
-          title={`“80% of success is showing up” — Woody Allen`}
-          description={`Your current active program is shown below, which starts on ${program.start_date}, ends on ${program.end_date}, and contains ${program.workouts.length} sessions. If you would like to generate a new program, first archive the existing program by clicking the archive button to the right.`}
-        />
+        <Title
+          className="pr-4"
+        >
+        {`“80% of success is showing up” — Woody Allen`}
+        </Title>
         <div>
           <ConfirmDialog
             title="Are you absolutely sure?"
@@ -73,6 +75,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
           </ConfirmDialog>
         </div>
       </div>
+      <TextMuted>Your current active program is shown below. It starts on ${program.start_date}, ends on ${program.end_date} and contains ${program.workouts.length} sessions. If you would like to generate a new program, archive the existing one by clicking the button to the right.</TextMuted>
       <div className="flex flex-row gap-2 sm:gap-4 mt-8">
         {daysOfWeek.map((date: string) => {
           const workout = program.workouts.find((w) => w.date === date);

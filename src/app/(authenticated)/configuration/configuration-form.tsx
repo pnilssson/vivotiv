@@ -216,7 +216,7 @@ export default function Component({
                   <ToggleGroup
                     variant="outline"
                     type="multiple"
-                    className="justify-start flex-wrap"
+                    className="grid grid-cols-2 md:grid-cols-4"
                     value={field.value!}
                     onValueChange={(value) => {
                       if (value) form.setValue("workout_types", value);
