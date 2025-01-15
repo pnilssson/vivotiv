@@ -21,7 +21,7 @@ export default function Component() {
         toast({ description: state.message, variant: "success" });
       }
     }
-  }, [state, state.message]);
+  }, [state, state.message, toast]);
 
   return (
     <form action={formAction}>

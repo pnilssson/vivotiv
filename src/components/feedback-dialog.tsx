@@ -63,7 +63,7 @@ export default function Component({
         toastAction(state.message, "destructive");
       }
     }
-  }, [state, state.message]);
+  }, [state, state.message, form, toastAction]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -59,7 +59,7 @@ export default function Component({
         toast({ description: state.message, variant: "destructive" });
       }
     }
-  }, [state, state.message]);
+  }, [state, state.message, toast]);
 
   const form = useForm<z.infer<typeof configurationRequestSchema>>({
     resolver: zodResolver(configurationRequestSchema),
