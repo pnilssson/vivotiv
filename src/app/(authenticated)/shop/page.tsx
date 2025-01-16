@@ -1,4 +1,4 @@
-import PageTitle from "@/components/shared/page-title";
+import PageTitle from "@/components/shared/typography/page-title";
 import Product from "./product";
 import React from "react";
 
