@@ -12,7 +12,12 @@ import * as Sentry from "@sentry/nextjs";
 
 export async function signOut(_: FormData) {
   const supabase = await createClient();
-  await supabase.auth.signOut();
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    Sentry.captureException(error);
+    redirect("/error");
+  }
 
   redirect("/");
 }
@@ -54,7 +59,7 @@ export async function signInWithOtp(
 
   await setPreferredSignInView("otp");
 
-  revalidatePath("/", "layout");
+  revalidatePath("/");
   redirect("/auth/verify-request");
 }
 
@@ -97,7 +102,7 @@ export async function signInWithPassword(
 
   await setPreferredSignInView("password");
 
-  revalidatePath("/", "layout");
+  revalidatePath("/");
   redirect("/program");
 }
 
@@ -129,6 +134,6 @@ export async function signUpWithPassword(
     redirect("/error");
   }
 
-  revalidatePath("/", "layout");
+  revalidatePath("/");
   redirect("/auth/verify-request");
 }

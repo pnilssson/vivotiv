@@ -8,14 +8,15 @@ import { getUserOrRedirect } from "../server-utils";
 import Stripe from "stripe";
 import { getURL } from "../utils";
 import { updateProfileStripeCustomerIdCommand } from "@/db/commands";
+import { log } from "next-axiom";
 
 const priceIdTokenMap: {
-  [key: string]: { tokens: number; days: number };
+  [key: string]: { days: number };
 } = {
-  price_1QdeKSRpZn3h4qfLBhcmNKJY: { tokens: 1, days: 7 },
-  price_1QdeRCRpZn3h4qfLXsBBwv39: { tokens: 4, days: 28 },
-  price_1QdeWmRpZn3h4qfLyWCG7f1A: { tokens: 12, days: 84 },
-  price_1QdeGXRpZn3h4qfLOk4KS5be: { tokens: 24, days: 182 },
+  price_1QdeKSRpZn3h4qfLBhcmNKJY: { days: 7 },
+  price_1QdeRCRpZn3h4qfLXsBBwv39: { days: 28 },
+  price_1QdeWmRpZn3h4qfLyWCG7f1A: { days: 84 },
+  price_1QdeGXRpZn3h4qfLOk4KS5be: { days: 182 },
 };
 
 export async function checkoutWithStripe(
@@ -48,7 +49,6 @@ export async function checkoutWithStripe(
       ],
       metadata: {
         userId: user?.id,
-        tokens: priceIdTokenMap[priceId].tokens,
         days: priceIdTokenMap[priceId].days,
       },
       mode: "payment",
@@ -59,6 +59,9 @@ export async function checkoutWithStripe(
     // Create a checkout session in Stripe
     let session;
     try {
+      log.info("Creating new stripe checkout session.", {
+        params,
+      });
       session = await stripe.checkout.sessions.create(params);
     } catch (error) {
       Sentry.captureException(error);
@@ -74,6 +77,9 @@ export async function checkoutWithStripe(
 export async function createCustomerInStripe(userId: string, email: string) {
   try {
     const customerData = { metadata: { supabaseUUID: userId }, email: email };
+    log.info("Creating new customer in stripe.", {
+      customerData,
+    });
     const newCustomer = await stripe.customers.create(customerData);
     if (!newCustomer) {
       Sentry.captureMessage("Stripe customer creation failed.");
@@ -113,6 +119,10 @@ export async function createOrRetrieveCustomer({ userId }: { userId: string }) {
 
   // If Supabase has a record but doesn't match Stripe, update Supabase record
   if (existingSupabaseCustomer.stripe_customer_id !== stripeCustomerId) {
+    log.info("Updating supabase customer with stripe customer id.", {
+      userId,
+      stripeIdToInsert,
+    });
     await updateProfileStripeCustomerIdCommand(userId, stripeIdToInsert);
   }
 

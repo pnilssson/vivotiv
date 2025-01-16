@@ -111,22 +111,6 @@ export async function handleProgramInserts(
   });
 }
 
-export async function updateProfileProgramTokensCommand(
-  userId: string,
-  currentTokens: number,
-  newTokens: number
-) {
-  const [result] = await db
-    .update(profile)
-    .set({
-      program_tokens: currentTokens + newTokens,
-    })
-    .where(eq(profile.id, userId))
-    .returning({ id: profile.id });
-
-  return result.id;
-}
-
 export async function updateProfileMembershipCommand(
   userProfile: ProfileResponse,
   days: number

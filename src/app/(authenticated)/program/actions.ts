@@ -61,7 +61,7 @@ export async function validateAvailableTokens(): Promise<ActionResponse> {
       "User tried generating a program without active membership.",
       {
         user: { id: user.id, email: user.email },
-        level: "info",
+        level: "warning",
       }
     );
     return {

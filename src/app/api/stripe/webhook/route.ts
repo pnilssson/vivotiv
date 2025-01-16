@@ -7,31 +7,40 @@ import { getProfileByIdQuery } from "@/db/queries";
 import { stripe } from "@/lib/stripe/config";
 import * as Sentry from "@sentry/nextjs";
 import Stripe from "stripe";
+import { log } from "next-axiom";
 
-export async function POST(req: Request): Promise<Response> {
+export async function POST(req: Request): Promise<void> {
   try {
     const body = await req.text();
     const sig = req.headers.get("stripe-signature") as string;
     const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-    if (!sig || !webhookSecret) {
-      Sentry.captureMessage("Webhook secret not found.", { level: "warning" });
-      return respondWithError("Webhook secret not found.", 400);
+    if (!sig) {
+      Sentry.captureMessage("Stripe signature missing.", { level: "warning" });
+      return;
+    }
+
+    if (!webhookSecret) {
+      Sentry.captureMessage(
+        "Missing STRIPE_WEBHOOK_SECRET environment variable.",
+        { level: "warning" }
+      );
+      return;
     }
 
     // Construct the Stripe event
     const event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
+    log.info("New stripe event recieved in from webhook.", { event });
 
     // Handle the event
-    return await handleStripeEvent(event);
+    await handleStripeEvent(event);
   } catch (error: any) {
     Sentry.captureException(error);
-    return respondWithError(`Webhook Error: ${error.message}`, 400);
   }
 }
 
 // Handles different event types
-async function handleStripeEvent(event: Stripe.Event): Promise<Response> {
+async function handleStripeEvent(event: Stripe.Event): Promise<void> {
   try {
     switch (event.type) {
       case "checkout.session.completed":
@@ -40,8 +49,6 @@ async function handleStripeEvent(event: Stripe.Event): Promise<Response> {
       default:
         break;
     }
-
-    return new Response(JSON.stringify({ received: true }), { status: 200 });
   } catch (error: any) {
     Sentry.captureException(error);
     throw new Error("Error handling event stripe.");
@@ -53,11 +60,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   const checkoutSession = event.data.object as Stripe.Checkout.Session;
   const userId = checkoutSession.metadata?.userId;
 
-  Sentry.captureMessage("Handling completed checkout session.", {
-    extra: { checkoutSession },
-    level: "info",
-  });
-
+  log.info("Handling completed checkout session.", { checkoutSession });
   if (!userId) {
     Sentry.captureMessage("User id is missing in stripe event.", {
       extra: { checkoutSession },
@@ -71,7 +74,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     Sentry.captureMessage(
       "Profile was not found when handling completed checkout session.",
       {
-        extra: { stripe_email: checkoutSession.customer_email },
+        extra: { checkoutSession },
         level: "error",
       }
     );
@@ -80,37 +83,14 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     );
   }
 
-  const tokensToAdd = parseInt(checkoutSession.metadata?.tokens || "0", 10);
   const boughtMembershipDays = parseInt(
     checkoutSession.metadata?.days || "0",
     10
   );
 
   await updateProfileMembershipCommand(profile, boughtMembershipDays);
-  // Remove
-  await updateProfileProgramTokensCommand(
-    profile.id,
-    profile.program_tokens,
-    tokensToAdd
-  );
-  if (checkoutSession.customer_details?.name) {
-    await updateProfileNameCommand(
-      profile.id,
-      checkoutSession.customer_details?.name
-    );
-  }
 
-  Sentry.captureMessage("Checkout session handled successfully.", {
-    user: { id: userId },
-    extra: { tokensAdded: tokensToAdd },
-    level: "info",
-  });
-}
-
-// Utility function for consistent error responses
-function respondWithError(message: string, status: number): Response {
-  return new Response(JSON.stringify({ error: message }), {
-    status,
-    headers: { "Content-Type": "application/json" },
+  log.info("Completed checkout session handled successfully.", {
+    checkoutSessionId: checkoutSession.id,
   });
 }
