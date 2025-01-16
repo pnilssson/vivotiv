@@ -38,8 +38,8 @@ const items = [
     title: "Store",
     subItems: [
       {
-        title: "Shop",
-        url: "/shop",
+        title: "Membership",
+        url: "/membership",
         icon: ShoppingCartIcon,
       },
     ],

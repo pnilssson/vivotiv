@@ -19,15 +19,15 @@ export default async function Component({
             title="No active membership"
             description={
               membershipEndDate.getTime() == MIN_DATE.getTime()
-                ? "You haven’t purchased your first membership yet. Visit the shop to do so and come back to generate your first training program!"
-                : `Your membership ended on ${shortDate(membershipEndDate)}. Visit the shop to renew your membership!`
+                ? "You haven’t purchased your first membership yet. Visit the membership shop to do so and come back to generate your first training program!"
+                : `Your membership ended on ${shortDate(membershipEndDate)}. Visit the membership shop to renew your membership!`
             }
           />
         </div>
       </div>
       <div className="flex w-full lg:w-auto mt-4 lg:mt-0 justify-end">
         <Button className="w-full lg:w-36" asChild>
-          <Link href={"/shop"}>Get membership</Link>
+          <Link href={"/membership"}>Get membership</Link>
         </Button>
       </div>
     </ContentBox>
