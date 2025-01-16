@@ -1,7 +1,6 @@
 import {
   updateProfileMembershipCommand,
   updateProfileNameCommand,
-  updateProfileProgramTokensCommand,
 } from "@/db/commands";
 import { getProfileByIdQuery } from "@/db/queries";
 import { stripe } from "@/lib/stripe/config";
@@ -89,6 +88,13 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   );
 
   await updateProfileMembershipCommand(profile, boughtMembershipDays);
+
+  if (checkoutSession.customer_details?.name) {
+    await updateProfileNameCommand(
+      profile.id,
+      checkoutSession.customer_details?.name
+    );
+  }
 
   log.info("Completed checkout session handled successfully.", {
     checkoutSessionId: checkoutSession.id,
