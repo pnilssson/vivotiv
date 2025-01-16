@@ -51,33 +51,6 @@ export async function uncompleteWorkout(workoutId: string) {
   revalidatePath("/program", "page");
 }
 
-export async function validateActiveMembership(): Promise<ActionResponse> {
-  const supabase = await createClient();
-  const user = await getUserOrRedirect(supabase);
-
-  const profile = await getProfileByIdQuery(user.id);
-  if (profile.membership_end_date < new Date()) {
-    Sentry.captureMessage(
-      "User tried generating a program without active membership.",
-      {
-        user: { id: user.id, email: user.email },
-        level: "warning",
-      }
-    );
-    return {
-      success: false,
-      errors: [],
-      message: "No active membership. Visit the shop to renew it!",
-    };
-  }
-
-  return {
-    success: true,
-    errors: [],
-    message: null,
-  };
-}
-
 export async function generateProgram(): Promise<ActionResponse> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
