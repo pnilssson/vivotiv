@@ -17,6 +17,7 @@ import {
 } from "@/lib/types";
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function getWorkoutTypes(): Promise<WorkoutTypeResponse[]> {
   return await getWorkoutTypesQuery();
@@ -69,9 +70,5 @@ export async function setConfiguration(
   }
 
   revalidatePath("/");
-  return {
-    success: true,
-    errors: [],
-    message: "Configuration successfully updated.",
-  };
+  redirect("/configuration");
 }
