@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/lib/hooks/use-toast";
 import { LoaderCircleIcon } from "lucide-react";
-import { generateProgram, validateActiveMembership } from "./actions";
+import { generateProgram } from "./actions";
 import { ActionResponse } from "@/lib/types";
 import PageTitle from "@/components/shared/typography/page-title";
 import ContentBox from "@/components/shared/content-box";
