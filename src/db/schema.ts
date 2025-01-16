@@ -45,7 +45,6 @@ export const profile = pgTable(
     name: text(),
     email: text().notNull(),
     stripe_customer_id: text(),
-    program_tokens: integer().notNull().default(0),
     membership_end_date: date(),
     created: timestamp().notNull().defaultNow(),
   },

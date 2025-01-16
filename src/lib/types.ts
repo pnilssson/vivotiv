@@ -32,7 +32,6 @@ export interface ProfileResponse {
   id: string;
   name: string | null;
   email: string;
-  program_tokens: number;
   stripe_customer_id: string;
   membership_end_date: string;
   created: Date;

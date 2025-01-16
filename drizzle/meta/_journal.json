@@ -183,6 +183,13 @@
       "when": 1737047279856,
       "tag": "0025_strong_quentin_quire",
       "breakpoints": true
+    },
+    {
+      "idx": 26,
+      "version": "7",
+      "when": 1737065755611,
+      "tag": "0026_brief_boomerang",
+      "breakpoints": true
     }
   ]
 }

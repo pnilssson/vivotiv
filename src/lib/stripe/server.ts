@@ -10,7 +10,7 @@ import { getURL } from "../utils";
 import { updateProfileStripeCustomerIdCommand } from "@/db/commands";
 import { log } from "next-axiom";
 
-const priceIdTokenMap: {
+const priceIdMap: {
   [key: string]: { days: number };
 } = {
   price_1QdeKSRpZn3h4qfLBhcmNKJY: { days: 7 },
@@ -49,7 +49,7 @@ export async function checkoutWithStripe(
       ],
       metadata: {
         userId: user?.id,
-        days: priceIdTokenMap[priceId].days,
+        days: priceIdMap[priceId].days,
       },
       mode: "payment",
       cancel_url: getURL(),

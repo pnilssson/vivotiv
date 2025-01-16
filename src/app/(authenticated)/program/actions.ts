@@ -51,12 +51,12 @@ export async function uncompleteWorkout(workoutId: string) {
   revalidatePath("/program", "page");
 }
 
-export async function validateAvailableTokens(): Promise<ActionResponse> {
+export async function validateActiveMembership(): Promise<ActionResponse> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
 
   const profile = await getProfileByIdQuery(user.id);
-  if (profile.program_tokens == 0) {
+  if (profile.membership_end_date < new Date()) {
     Sentry.captureMessage(
       "User tried generating a program without active membership.",
       {

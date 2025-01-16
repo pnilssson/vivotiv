@@ -99,15 +99,6 @@ export async function handleProgramInserts(
         }
       }
     }
-
-    // Remove used token
-    const currentProfile = await getProfileByIdQuery(userId);
-    await trx
-      .update(profile)
-      .set({
-        program_tokens: currentProfile.program_tokens - 1,
-      })
-      .where(eq(profile.id, userId));
   });
 }
 
