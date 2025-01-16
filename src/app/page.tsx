@@ -116,7 +116,7 @@ export default async function Page() {
           </div>
         </div>
       </section>
-      <section className="flex flex-col container py-2">
+      {/* <section className="flex flex-col container py-2">
         <div className="rounded-xl bg-slate-100 px-8 md:px-24 py-12 flex flex-col lg:flex-row gap-4">
           <div className="lg:max-w-96">
             <h2 className="text-4xl md:text-6xl font-semibold">Interested?</h2>
@@ -131,7 +131,7 @@ export default async function Page() {
             <WaitingListForm />
           </div>
         </div>
-      </section>
+      </section> */}
       <section className="flex flex-col container py-2">
         <div className="rounded-xl bg-slate-100 px-8 md:px-24 2xl:px-12 py-12 flex flex-col">
           <div className="max-w-2xl mx-auto text-center">

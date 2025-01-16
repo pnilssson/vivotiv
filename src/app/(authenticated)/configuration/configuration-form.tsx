@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { useActionState, useEffect } from "react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { setConfiguration } from "./actions";
-import { initialFormState } from "@/lib/constants";
+import { INITIAL_FORM_STATE } from "@/lib/constants";
 import {
   ConfigurationResponse,
   ExperienceResponse,
@@ -50,7 +50,7 @@ export default function Component({
   const { toast } = useToast();
   const [state, formAction] = useActionState(
     setConfiguration,
-    initialFormState
+    INITIAL_FORM_STATE
   );
 
   useEffect(() => {
@@ -300,8 +300,8 @@ export default function Component({
                     />
                   </FormControl>
                   <FormDescription>
-                    Specify your available training equipment separated by a
-                    commas.
+                    Specify available training equipment related to selected
+                    workout types separated by commas.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

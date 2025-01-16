@@ -1,12 +1,12 @@
 import { ActionResponse } from "@/lib/types";
 
-export const initialFormState: ActionResponse = {
+export const INITIAL_FORM_STATE: ActionResponse = {
   success: false,
   errors: [],
   message: null,
 };
 
-export const motivationalTitles = [
+export const MOTIVATIONAL_TITLES = [
   "You got this",
   "You are doing great",
   "Let's do this",
@@ -18,3 +18,5 @@ export const motivationalTitles = [
   "Commit to you",
   "Strive for progress",
 ];
+
+export const MIN_DATE = new Date(0);

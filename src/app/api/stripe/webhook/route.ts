@@ -1,4 +1,5 @@
 import {
+  updateProfileMembershipCommand,
   updateProfileNameCommand,
   updateProfileProgramTokensCommand,
 } from "@/db/commands";
@@ -50,12 +51,14 @@ async function handleStripeEvent(event: Stripe.Event): Promise<Response> {
 // Processes 'checkout.session.completed' events
 async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   const checkoutSession = event.data.object as Stripe.Checkout.Session;
+  const userId = checkoutSession.metadata?.userId;
+
   Sentry.captureMessage("Handling completed checkout session.", {
     extra: { checkoutSession },
     level: "info",
   });
 
-  if (!checkoutSession.metadata?.userId) {
+  if (!userId) {
     Sentry.captureMessage("User id is missing in stripe event.", {
       extra: { checkoutSession },
       level: "error",
@@ -63,13 +66,14 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
     throw new Error("User id is missing in stripe event.");
   }
 
-  const userId = checkoutSession.metadata.userId;
   const profile = await getProfileByIdQuery(userId);
-
   if (!profile) {
     Sentry.captureMessage(
       "Profile was not found when handling completed checkout session.",
-      { user: { id: userId }, level: "error" }
+      {
+        extra: { stripe_email: checkoutSession.customer_email },
+        level: "error",
+      }
     );
     throw new Error(
       "Profile was not found when handling completed checkout session."
@@ -77,6 +81,13 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   }
 
   const tokensToAdd = parseInt(checkoutSession.metadata?.tokens || "0", 10);
+  const boughtMembershipDays = parseInt(
+    checkoutSession.metadata?.days || "0",
+    10
+  );
+
+  await updateProfileMembershipCommand(profile, boughtMembershipDays);
+  // Remove
   await updateProfileProgramTokensCommand(
     profile.id,
     profile.program_tokens,

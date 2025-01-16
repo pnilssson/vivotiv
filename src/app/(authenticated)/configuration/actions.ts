@@ -68,7 +68,7 @@ export async function setConfiguration(
     };
   }
 
-  revalidatePath("/", "layout");
+  revalidatePath("/");
   return {
     success: true,
     errors: [],

@@ -4,7 +4,7 @@ import { ProgramResponse } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import WorkoutView from "./workout-view";
-import { cn } from "@/lib/utils";
+import { cn, shortDate } from "@/lib/utils";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { FolderArchiveIcon, LoaderCircleIcon } from "lucide-react";
@@ -21,13 +21,11 @@ export default function Component({ program }: { program: ProgramResponse }) {
   const [archiveLoading, setArchiveLoading] = useState<boolean>(false);
   const [updateWorkoutLoading, setUpdateWorkoutLoading] =
     useState<boolean>(false);
-  const [selectedDate, setSelectedDate] = useState<string>(
-    new Date().toISOString().split("T")[0]
-  );
+  const [selectedDate, setSelectedDate] = useState<string>(shortDate());
   const daysOfWeek = Array.from({ length: 7 }, (_, i) => {
     const day = new Date(program.start_date);
     day.setDate(day.getDate() + i); // Add i days to the week start
-    return day.toISOString().split("T")[0]; // Format as 'YYYY-MM-DD'
+    return shortDate(day); // Format as 'YYYY-MM-DD'
   });
 
   const handleConfirm = async () => {
@@ -57,7 +55,11 @@ export default function Component({ program }: { program: ProgramResponse }) {
       <div className="flex justify-between">
         <div>
           <MotivationalTitle />
-          <TextMuted className="mt-2 max-w-[768px]">{`Your current active program is shown below, it consists of ${program.workouts.length} sessions. If you would like to generate a new program, archive existing program by clicking the archive button.`}</TextMuted>
+          <TextMuted className="mt-2 max-w-[768px]">
+            This is your current active program. If you would like to generate a
+            new program, archive existing program by clicking the archive button
+            in the corner.
+          </TextMuted>
         </div>
         <div>
           <ConfirmDialog

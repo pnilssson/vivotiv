@@ -13,7 +13,7 @@ import {
 import { Button } from "./ui/button";
 import { MessageCircleIcon } from "lucide-react";
 import { SidebarMenuButton } from "./ui/sidebar";
-import { initialFormState } from "@/lib/constants";
+import { INITIAL_FORM_STATE } from "@/lib/constants";
 import { useActionState, useEffect, useState } from "react";
 import { addFeedback } from "@/lib/actions";
 import SubmitButton from "./buttons/submit-button";
@@ -41,7 +41,7 @@ export default function Component({
   ) => void;
 }) {
   const [open, setOpen] = useState<boolean>(false);
-  const [state, formAction] = useActionState(addFeedback, initialFormState);
+  const [state, formAction] = useActionState(addFeedback, INITIAL_FORM_STATE);
 
   const form = useForm<z.infer<typeof feedbackRequestSchema>>({
     resolver: zodResolver(feedbackRequestSchema),

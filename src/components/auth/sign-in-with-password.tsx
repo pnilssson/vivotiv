@@ -1,6 +1,6 @@
 "use client";
 
-import { initialFormState } from "@/lib/constants";
+import { INITIAL_FORM_STATE } from "@/lib/constants";
 import { signInWithPassword } from "@/lib/supabase/actions";
 import { useActionState } from "react";
 import {
@@ -17,7 +17,7 @@ import { Input } from "../ui/input";
 export default function Component() {
   const [state, formAction] = useActionState(
     signInWithPassword,
-    initialFormState
+    INITIAL_FORM_STATE
   );
 
   return (

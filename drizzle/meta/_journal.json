@@ -176,6 +176,13 @@
       "when": 1737043265533,
       "tag": "0024_wooden_rattler",
       "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1737047279856,
+      "tag": "0025_strong_quentin_quire",
+      "breakpoints": true
     }
   ]
 }

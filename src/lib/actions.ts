@@ -4,6 +4,7 @@ import * as Sentry from "@sentry/nextjs";
 import {
   getAnyFeedbackWithinLastMinuteByUserIdQuery,
   getConfigurationQuery,
+  getProfileByIdQuery,
 } from "@/db/queries";
 import { getUserOrRedirect } from "@/lib/server-utils";
 import { createClient } from "@/lib/supabase/server";
@@ -16,6 +17,13 @@ export async function getConfiguration(): Promise<ConfigurationResponse | null> 
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
   return await getConfigurationQuery(user.id);
+}
+
+export async function getMemberShipEndDate(): Promise<Date> {
+  const supabase = await createClient();
+  const user = await getUserOrRedirect(supabase);
+  var result = await getProfileByIdQuery(user.id);
+  return new Date(result.membership_end_date);
 }
 
 export async function addFeedback(

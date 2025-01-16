@@ -12,6 +12,7 @@ import { cache } from "react";
 import { asc, gte } from "drizzle-orm";
 import { subMinutes } from "date-fns";
 import { experience, preferredDay, workoutType } from "./schema";
+import { shortDate } from "@/lib/utils";
 
 export const getProgramByIdQuery = cache(async (id: string, userId: string) => {
   const result = await db.query.program.findFirst({
@@ -27,7 +28,7 @@ export const getProgramByIdQuery = cache(async (id: string, userId: string) => {
 });
 
 export const getCurrentProgramQuery = cache(async (userId: string) => {
-  const today = new Date().toISOString().split("T")[0];
+  const today = shortDate();
 
   const result = await db.query.program.findFirst({
     where: (program, { eq, gte, lte, and }) =>

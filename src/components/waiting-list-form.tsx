@@ -5,14 +5,14 @@ import SubmitButton from "./buttons/submit-button";
 import ErrorMessages from "./shared/error-messages";
 import { Input } from "./ui/input";
 import { addToWaitingList } from "@/app/actions";
-import { initialFormState } from "@/lib/constants";
+import { INITIAL_FORM_STATE } from "@/lib/constants";
 import { useToast } from "@/lib/hooks/use-toast";
 
 export default function Component() {
   const { toast } = useToast();
   const [state, formAction] = useActionState(
     addToWaitingList,
-    initialFormState
+    INITIAL_FORM_STATE
   );
 
   useEffect(() => {

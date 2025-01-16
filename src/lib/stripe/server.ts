@@ -10,12 +10,12 @@ import { getURL } from "../utils";
 import { updateProfileStripeCustomerIdCommand } from "@/db/commands";
 
 const priceIdTokenMap: {
-  [key: string]: number;
+  [key: string]: { tokens: number; days: number };
 } = {
-  price_1QdeKSRpZn3h4qfLBhcmNKJY: 1,
-  price_1QdeRCRpZn3h4qfLXsBBwv39: 4,
-  price_1QdeWmRpZn3h4qfLyWCG7f1A: 12,
-  price_1QdeGXRpZn3h4qfLOk4KS5be: 24,
+  price_1QdeKSRpZn3h4qfLBhcmNKJY: { tokens: 1, days: 7 },
+  price_1QdeRCRpZn3h4qfLXsBBwv39: { tokens: 4, days: 28 },
+  price_1QdeWmRpZn3h4qfLyWCG7f1A: { tokens: 12, days: 84 },
+  price_1QdeGXRpZn3h4qfLOk4KS5be: { tokens: 24, days: 182 },
 };
 
 export async function checkoutWithStripe(
@@ -48,7 +48,8 @@ export async function checkoutWithStripe(
       ],
       metadata: {
         userId: user?.id,
-        tokens: priceIdTokenMap[priceId],
+        tokens: priceIdTokenMap[priceId].tokens,
+        days: priceIdTokenMap[priceId].days,
       },
       mode: "payment",
       cancel_url: getURL(),
@@ -65,7 +66,9 @@ export async function checkoutWithStripe(
     }
 
     return { sessionId: session.id };
-  } catch (error) {}
+  } catch (error) {
+    Sentry.captureException(error);
+  }
 }
 
 export async function createCustomerInStripe(userId: string, email: string) {

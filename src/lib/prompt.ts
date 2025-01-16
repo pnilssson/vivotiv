@@ -2,6 +2,7 @@
 
 import { getWorkoutTypesQuery } from "@/db/queries";
 import { ConfigurationResponse, WorkoutTypeResponse } from "./types";
+import { shortDate } from "./utils";
 
 export const getPrompt = async (
   data: ConfigurationResponse
@@ -21,10 +22,8 @@ export const getPrompt = async (
   );
 
   const today = new Date();
-  const formattedStartDate = today.toISOString().split("T")[0]; // Use ISO format for start date
-  const formattedEndDate = new Date(today.setDate(today.getDate() + 6))
-    .toISOString()
-    .split("T")[0]; // Calculate end date as 6 days after start
+  const formattedStartDate = shortDate(today); // Use ISO format for start date
+  const formattedEndDate = shortDate(today.setDate(today.getDate() + 6)); // Calculate end date as 6 days after start
   const assignedDates = assignSessionsToDays(
     sessions,
     formattedStartDate,
@@ -55,39 +54,39 @@ export const getPrompt = async (
   return `You are tasked with generating a one-week home-training program that aligns with the following requirements:
   
   1. Program Details:
-     - Start date: ${formattedStartDate}
-     - End date: ${formattedEndDate}
-     - Sessions: ${sessions}
-     - ${workoutDatesText}
+    - Start date: ${formattedStartDate}
+    - End date: ${formattedEndDate}
+    - Sessions: ${sessions}
+    - ${workoutDatesText}
   
   2. Workout Structure:
-     - IMPORTANT: ${typesText}
-     - Each workout should contain:
-       - Warm-up exercises: ${warmupExercises}-${warmupExercises + 1}.
-       - Workout exercises: ${workoutExercises}-${workoutExercises + 1}.
-       - IMPORTANT: Vary number of exercises between sessions.
+    - IMPORTANT: ${typesText}
+    - Each workout should contain:
+      - Warm-up exercises: ${warmupExercises}-${warmupExercises + 1}.
+      - Workout exercises: ${workoutExercises}-${workoutExercises + 1}.
+      - IMPORTANT: Vary number of exercises between sessions.
   
   3. Available Equipment:
-     - ${equipmentText}
+    - ${equipmentText}
 
   4. Training experience
-     - The user can select their training experience level: beginner, intermediate, or expert.
-     - IMPORTANT: The user has chosen ${experience.name}. Adjust the exercises to align with this level, including intensity, complexity, and volume.
+    - The user can select their training experience level: beginner, intermediate, or expert.
+    - IMPORTANT: The user has chosen ${experience.name}. Adjust the exercises to align with this level, including intensity, complexity, and volume.
   
   5. Exercise Executions:
-     - Vary execution types across exercises within each workout.
-       - Reps and sets
-       - AMRAP (as many reps as possible within a time frame)
-       - EMOM (every minute on the minute) ALWAYS needs specified amount of reps to complete every minute
-       - Tabata (20 seconds of high-intensity work followed by 10 seconds of rest, repeated for 8 rounds)
-       - For Time (Complete a specific reps of exercises as quickly as possible)
-     - IMPORTANT: If reps and sets is used the execution MUST include rest period.
+    - Vary execution types across exercises within each workout.
+      - Reps and sets
+      - AMRAP (as many reps as possible within a time frame)
+      - EMOM (every minute on the minute) ALWAYS needs specified amount of reps to complete every minute
+      - Tabata (20 seconds of high-intensity work followed by 10 seconds of rest, repeated for 8 rounds)
+      - For Time (Complete a specific reps of exercises as quickly as possible)
+    - IMPORTANT: If reps and sets is used the execution MUST include rest period.
   
   6. Exercise Description:
-     - Provide a clear, user-friendly description of how to perform the exercise.
+    - Provide a clear, user-friendly description of how to perform the exercise.
      
   6. Workout Description:
-      - A short description of the workout without mentioning users choosen training experience.`;
+    - A short description of the workout without mentioning users choosen training experience.`;
 };
 
 const getExcludedWorkoutTypes = (
@@ -130,7 +129,7 @@ function assignSessionsToDays(
     if (
       prioritizedDays.some((day) => dayMap[day.toLowerCase()] === dayOfWeek)
     ) {
-      allDates.push(currentDate.toISOString().split("T")[0]);
+      allDates.push(shortDate(currentDate));
     }
   }
 
@@ -163,7 +162,7 @@ function getAllDaysInWeek(startDate: string): string[] {
   for (let i = 0; i < 7; i++) {
     const currentDate = new Date(start);
     currentDate.setDate(start.getDate() + i);
-    allDays.push(currentDate.toISOString().split("T")[0]);
+    allDays.push(shortDate(currentDate));
   }
   return allDays;
 }

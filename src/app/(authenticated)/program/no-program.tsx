@@ -6,6 +6,8 @@ import { useToast } from "@/lib/hooks/use-toast";
 import { LoaderCircleIcon } from "lucide-react";
 import { generateProgram, validateAvailableTokens } from "./actions";
 import { ActionResponse } from "@/lib/types";
+import PageTitle from "@/components/shared/typography/page-title";
+import ContentBox from "@/components/shared/content-box";
 
 export default function Component() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,19 +43,14 @@ export default function Component() {
   }
 
   return (
-    <div
-      className={
-        "bg-slate-50/50 border border-slate-100 rounded-lg p-4 flex lg:gap-4 items-center lg:flex-row flex-wrap"
-      }>
+    <ContentBox className={"flex lg:gap-4 items-center lg:flex-row flex-wrap"}>
       <div className="flex gap-4 flex-1">
-        <div className="my-auto grid gap-2">
-          <div className="flex items-center">
-            <h3 className="text-xl">No active programs</h3>
-          </div>
-
-          <p className="text-sm text-muted-foreground">
-            Generate a new program to get started.
-          </p>
+        <div className="flex items-center">
+          <PageTitle
+            className="mb-0"
+            title="No active programs"
+            description="Generate a new program to get started."
+          />
         </div>
       </div>
       <div className="flex w-full lg:w-auto mt-4 lg:mt-0 justify-end">
@@ -71,6 +68,6 @@ export default function Component() {
           )}
         </Button>
       </div>
-    </div>
+    </ContentBox>
   );
 }

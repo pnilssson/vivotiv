@@ -34,3 +34,9 @@ export function formatDate(date: Date) {
   date = new Date(date.getTime() - offset * 60 * 1000);
   return date;
 }
+
+export function shortDate(date: string | number | Date | null = null) {
+  return date
+    ? new Date(date).toISOString().split("T")[0]
+    : new Date().toISOString().split("T")[0];
+}

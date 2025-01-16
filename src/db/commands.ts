@@ -16,6 +16,9 @@ import {
 import { z } from "zod";
 import { and, eq } from "drizzle-orm";
 import { getProfileByIdQuery } from "./queries";
+import { ProfileResponse } from "@/lib/types";
+import { shortDate } from "@/lib/utils";
+import { addDays, isBefore } from "date-fns";
 
 export async function handleProgramInserts(
   newProgram: z.infer<typeof programSchema>,
@@ -119,6 +122,31 @@ export async function updateProfileProgramTokensCommand(
       program_tokens: currentTokens + newTokens,
     })
     .where(eq(profile.id, userId))
+    .returning({ id: profile.id });
+
+  return result.id;
+}
+
+export async function updateProfileMembershipCommand(
+  userProfile: ProfileResponse,
+  days: number
+) {
+  const today = new Date();
+  const membershipEndDate = new Date(userProfile.membership_end_date);
+
+  const dateToAddNewDaysTo = isBefore(membershipEndDate, today)
+    ? today
+    : membershipEndDate;
+
+  // Add one extra day to prevent time zone issues.
+  const updatedMembershipEndDate = addDays(dateToAddNewDaysTo, days + 1);
+
+  const [result] = await db
+    .update(profile)
+    .set({
+      membership_end_date: shortDate(updatedMembershipEndDate),
+    })
+    .where(eq(profile.id, userProfile.id))
     .returning({ id: profile.id });
 
   return result.id;

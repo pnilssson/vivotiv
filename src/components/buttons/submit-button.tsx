@@ -18,6 +18,7 @@ export default function Component({
     <Button
       type="submit"
       aria-disabled={pending}
+      disabled={pending}
       className={classes ?? classes}>
       {pending && loadingContent ? null : content}
       {pending && loadingContent ? loadingContent : null}

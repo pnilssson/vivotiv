@@ -1,0 +1,1 @@
+ALTER TABLE "profile" ADD COLUMN "membership_end_date" date;

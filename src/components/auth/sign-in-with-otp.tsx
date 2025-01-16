@@ -1,6 +1,6 @@
 "use client";
 
-import { initialFormState } from "@/lib/constants";
+import { INITIAL_FORM_STATE } from "@/lib/constants";
 import { signInWithOtp } from "@/lib/supabase/actions";
 import { useActionState } from "react";
 import { Label } from "@radix-ui/react-label";
@@ -15,7 +15,7 @@ import {
 } from "../ui/card";
 
 export default function Component() {
-  const [state, formAction] = useActionState(signInWithOtp, initialFormState);
+  const [state, formAction] = useActionState(signInWithOtp, INITIAL_FORM_STATE);
 
   return (
     <>
