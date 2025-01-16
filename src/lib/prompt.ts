@@ -6,8 +6,15 @@ import { ConfigurationResponse, WorkoutTypeResponse } from "./types";
 export const getPrompt = async (
   data: ConfigurationResponse
 ): Promise<string> => {
+  const {
+    sessions,
+    time,
+    workout_types,
+    equipment,
+    preferred_days,
+    experience,
+  } = data;
   const allWorkoutTypes = await getWorkoutTypesQuery();
-  const { sessions, time, workout_types, equipment, preferred_days } = data;
   const excludedWorkoutTypes = getExcludedWorkoutTypes(
     allWorkoutTypes,
     workout_types
@@ -27,16 +34,16 @@ export const getPrompt = async (
 
   const typesText =
     workout_types.length > 0
-      ? `The workouts MUST include ${workout_types
+      ? `The workouts MUST include a mix of ${workout_types
           .map((a) => a.name)
           .join(
             " and "
-          )} exercises and CANNOT include ${excludedWorkoutTypes.join(" and ")} exercises.`
-      : "The workouts should include strength, conditioning and mobility exercises.";
+          )} exercises. The workouts CANNOT include ${excludedWorkoutTypes.join(" and ")} exercises.`
+      : "The workouts should include a mix of strength, endurance, flexibility and balance exercises.";
 
   const equipmentText =
     equipment.length > 0
-      ? `The available equipment includes ${equipment}.`
+      ? `The available equipment is ${equipment}. No other equipment can be used.`
       : "No additional equipment is available.";
 
   // Calculate warmup and workout times with rounding
@@ -62,8 +69,12 @@ export const getPrompt = async (
   
   3. Available Equipment:
      - ${equipmentText}
+
+  4. Training experience
+     - The user can select their training experience level: beginner, intermediate, or expert.
+     - IMPORTANT: The user has chosen ${experience.name}. Adjust the exercises to align with this level, including intensity, complexity, and volume.
   
-  4. Exercise Executions:
+  5. Exercise Executions:
      - Vary execution types across exercises within each workout.
        - Reps and sets
        - AMRAP (as many reps as possible within a time frame)
@@ -72,8 +83,11 @@ export const getPrompt = async (
        - For Time (Complete a specific reps of exercises as quickly as possible)
      - IMPORTANT: If reps and sets is used the execution MUST include rest period.
   
-  5. Exercise Description:
-     - Provide a clear, user-friendly description of how to perform the exercise.`;
+  6. Exercise Description:
+     - Provide a clear, user-friendly description of how to perform the exercise.
+     
+  6. Workout Description:
+      - A short description of the workout without mentioning users choosen training experience.`;
 };
 
 const getExcludedWorkoutTypes = (

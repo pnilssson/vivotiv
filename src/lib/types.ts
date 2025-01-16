@@ -22,6 +22,7 @@ export interface ConfigurationResponse {
   time: number;
   workout_types: WorkoutTypeResponse[];
   preferred_days: PreferredDayResponse[];
+  experience: ExperienceResponse;
   equipment: string;
   generate_automatically: boolean;
   created: Date;
@@ -80,6 +81,6 @@ export interface PreferredDayResponse {
 export interface ExperienceResponse {
   id: string;
   name: string;
-  description: string;
+  description: string | null;
   level: number;
 }

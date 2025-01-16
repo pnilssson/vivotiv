@@ -51,6 +51,33 @@ export async function uncompleteWorkout(workoutId: string) {
   revalidatePath("/program", "page");
 }
 
+export async function validateAvailableTokens(): Promise<ActionResponse> {
+  const supabase = await createClient();
+  const user = await getUserOrRedirect(supabase);
+
+  const profile = await getProfileByIdQuery(user.id);
+  if (profile.program_tokens == 0) {
+    Sentry.captureMessage(
+      "User tried generating a program without active membership.",
+      {
+        user: { id: user.id, email: user.email },
+        level: "info",
+      }
+    );
+    return {
+      success: false,
+      errors: [],
+      message: "No active membership. Visit the shop to renew it!",
+    };
+  }
+
+  return {
+    success: true,
+    errors: [],
+    message: null,
+  };
+}
+
 export async function generateProgram(): Promise<ActionResponse> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
@@ -65,19 +92,6 @@ export async function generateProgram(): Promise<ActionResponse> {
       success: false,
       errors: [],
       message: "No configuration found.",
-    };
-  }
-
-  const profile = await getProfileByIdQuery(user.id);
-  if (profile.program_tokens == 0) {
-    Sentry.captureMessage("Not enough tokens to generate program.", {
-      user: { id: user.id, email: user.email },
-      level: "info",
-    });
-    return {
-      success: false,
-      errors: [],
-      message: "Not enough tokens, visit the shop to get some more!",
     };
   }
 
@@ -113,6 +127,6 @@ export async function generateProgram(): Promise<ActionResponse> {
   return {
     success: true,
     errors: [],
-    message: "A new program is ready for you!",
+    message: "Your new program is ready!",
   };
 }

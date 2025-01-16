@@ -14,8 +14,8 @@ import ContentBox from "@/components/shared/content-box";
 const MotivationalTitle = dynamic(() => import("./motivational-title"), {
   ssr: false,
 });
-import TextMuted from "@/components/shared/text-muted";
 import dynamic from "next/dynamic";
+import TextMuted from "@/components/shared/typography/text-muted";
 
 export default function Component({ program }: { program: ProgramResponse }) {
   const [archiveLoading, setArchiveLoading] = useState<boolean>(false);

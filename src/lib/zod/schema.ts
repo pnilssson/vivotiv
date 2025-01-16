@@ -42,6 +42,9 @@ export const configurationRequestSchema = z.object({
     .lte(60, "Session length cannot be more than 60 minutes."),
   workout_types: z.string().array().nullable(),
   preferred_days: z.string().array().nullable(),
+  experience_id: z.string({
+    required_error: "Experience is required.",
+  }),
   equipment: z.string().max(1000, "Maximum 1000 characters.").nullable(),
   generate_automatically: z.boolean(),
 });

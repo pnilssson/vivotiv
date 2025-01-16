@@ -1,5 +1,6 @@
 import {
   ConfigurationResponse,
+  ExperienceResponse,
   FeedbackResponse,
   PreferredDayResponse,
   ProfileResponse,
@@ -10,7 +11,7 @@ import { db } from "./db";
 import { cache } from "react";
 import { asc, gte } from "drizzle-orm";
 import { subMinutes } from "date-fns";
-import { preferredDay, workoutType } from "./schema";
+import { experience, preferredDay, workoutType } from "./schema";
 
 export const getProgramByIdQuery = cache(async (id: string, userId: string) => {
   const result = await db.query.program.findFirst({
@@ -99,6 +100,7 @@ export const getConfigurationQuery = cache(async (userId: string) => {
       prefferedDays: {
         with: { preferredDay: true },
       },
+      experience: true,
     },
     where: (configuration, { eq }) => eq(configuration.user_id, userId),
   });
@@ -122,6 +124,7 @@ export const getConfigurationQuery = cache(async (userId: string) => {
           (day) => day.preferredDay as PreferredDayResponse
         )
       : [], // Default to empty array if preferredDays is null
+    experience: result.experience,
     generate_automatically: result.generate_automatically,
   };
 
@@ -140,6 +143,13 @@ export const getPreferredDaysQuery = cache(async () => {
     orderBy: [asc(preferredDay.number)],
   });
   return result as PreferredDayResponse[];
+});
+
+export const getExperiencesQuery = cache(async () => {
+  const result = await db.query.experience.findMany({
+    orderBy: [asc(experience.level)],
+  });
+  return result as ExperienceResponse[];
 });
 
 export const getProfileByEmailQuery = cache(async (email: string) => {

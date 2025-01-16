@@ -1,14 +1,13 @@
 "use client";
 
 import ContentBox from "@/components/shared/content-box";
-import Heading from "@/components/shared/heading";
-import SubPageTitle from "@/components/shared/sub-page-title";
-import TextMuted from "@/components/shared/text-muted";
-import { Badge } from "@/components/ui/badge";
+import Heading from "@/components/shared/typography/heading";
+import SubPageTitle from "@/components/shared/typography/sub-page-title";
+import TextMuted from "@/components/shared/typography/text-muted";
 import { Button } from "@/components/ui/button";
 import { WorkoutResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { BanIcon, CheckIcon, LoaderCircleIcon, Undo2Icon } from "lucide-react";
+import { BanIcon, CheckIcon, LoaderCircleIcon } from "lucide-react";
 import React from "react";
 
 export default function Component({
@@ -37,14 +36,13 @@ export default function Component({
       {workout ? (
         <div className="flex flex-col gap-4 mt-4">
           <div className={cn("flex flex-row justify-between")}>
-            <Heading className="self-center">{`Workout of ${new Date().toLocaleDateString(
-              "en-US",
-              {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-              }
-            )}`}</Heading>{" "}
+            <Heading className="self-center">{`Workout of ${new Date(
+              workout.date
+            ).toLocaleDateString("en-US", {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+            })}`}</Heading>{" "}
             {!workout.completed ? (
               <Button
                 variant="secondary"

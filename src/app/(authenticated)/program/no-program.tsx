@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useToast } from "@/lib/hooks/use-toast";
 import { LoaderCircleIcon } from "lucide-react";
-import { generateProgram } from "./actions";
+import { generateProgram, validateAvailableTokens } from "./actions";
 import { ActionResponse } from "@/lib/types";
 
 export default function Component() {
@@ -13,20 +13,29 @@ export default function Component() {
 
   const generate = async () => {
     setLoading(true);
-    toast({
-      description:
-        "Generating a program may take some time (up to a minute). Please avoid closing or refreshing the page during this process.",
-    });
-    const result = await generateProgram();
-    handleResult(result);
+    const availableTokens = await validateAvailableTokens();
+    if (!availableTokens.success) {
+      toast({
+        description: availableTokens.message,
+        variant: "destructive",
+      });
+    }
+    if (availableTokens.success) {
+      toast({
+        description:
+          "Generating your training program may take a minute or two. Please avoid closing or refreshing the page during this process.",
+      });
+      const result = await generateProgram();
+      handleResult(result);
+    }
     setLoading(false);
   };
 
   function handleResult(response: ActionResponse) {
-    if (response.success) {
+    if (response.success && response.message) {
       toast({ description: response.message, variant: "success" });
     }
-    if (!response.success) {
+    if (!response.success && response.message) {
       toast({ description: response.message, variant: "destructive" });
     }
   }

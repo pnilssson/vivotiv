@@ -16,6 +16,7 @@ import { setConfiguration } from "./actions";
 import { initialFormState } from "@/lib/constants";
 import {
   ConfigurationResponse,
+  ExperienceResponse,
   PreferredDayResponse,
   WorkoutTypeResponse,
 } from "@/lib/types";
@@ -39,10 +40,12 @@ export default function Component({
   configuration,
   workoutTypes,
   preferredDays,
+  experiences,
 }: {
   configuration: ConfigurationResponse | null;
   workoutTypes: WorkoutTypeResponse[];
   preferredDays: PreferredDayResponse[];
+  experiences: ExperienceResponse[];
 }) {
   const { toast } = useToast();
   const [state, formAction] = useActionState(
@@ -74,6 +77,9 @@ export default function Component({
       preferred_days: configuration
         ? configuration.preferred_days.map((day) => day.id)
         : [],
+      experience_id: configuration
+        ? configuration.experience.id
+        : experiences.find((e) => e.level == 2)?.id,
       generate_automatically: configuration
         ? configuration?.generate_automatically
         : false,
@@ -158,7 +164,7 @@ export default function Component({
                       />
                     </FormControl>
                     <FormDescription>
-                      Please provide length in minutes.
+                      Length of sessions in minutes.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -199,7 +205,7 @@ export default function Component({
                     ))}
                   </ToggleGroup>
                   <FormDescription>
-                    Select preferred training days.
+                    Any preferred training days?
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -244,6 +250,41 @@ export default function Component({
           <ContentBox>
             <FormField
               control={form.control}
+              name="experience_id"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>Experience</FormLabel>
+                  <ToggleGroup
+                    variant="outline"
+                    type="single"
+                    className=""
+                    value={field.value!}
+                    onValueChange={(value) => {
+                      if (value) form.setValue("experience_id", value);
+                    }}>
+                    {experiences.map((type) => (
+                      <ToggleGroupItem
+                        key={type.id}
+                        value={type.id}
+                        size="sm"
+                        aria-label={`Toggle ${type.name}`}
+                        className="flex-1 px-0 sm:px-2.5">
+                        <span className="capitalize">{type.name}</span>
+                      </ToggleGroupItem>
+                    ))}
+                  </ToggleGroup>
+                  <FormDescription>
+                    What level of training experience do you consider yourself
+                    to have?
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </ContentBox>
+          <ContentBox>
+            <FormField
+              control={form.control}
               name="equipment"
               render={({ field }) => (
                 <FormItem>
@@ -259,8 +300,8 @@ export default function Component({
                     />
                   </FormControl>
                   <FormDescription>
-                    Specify any kind of training equipment you have available
-                    separated by a commas.
+                    Specify your available training equipment separated by a
+                    commas.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

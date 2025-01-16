@@ -1,7 +1,11 @@
 "use server";
 
 import { insertOrUpdateConfigurationCommand } from "@/db/commands";
-import { getPreferredDaysQuery, getWorkoutTypesQuery } from "@/db/queries";
+import {
+  getExperiencesQuery,
+  getPreferredDaysQuery,
+  getWorkoutTypesQuery,
+} from "@/db/queries";
 import { getUserOrRedirect } from "@/lib/server-utils";
 import { createClient } from "@/lib/supabase/server";
 import { configurationRequestSchema } from "@/lib/zod/schema";
@@ -9,6 +13,7 @@ import {
   ActionResponse,
   WorkoutTypeResponse,
   PreferredDayResponse,
+  ExperienceResponse,
 } from "@/lib/types";
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
@@ -19,6 +24,10 @@ export async function getWorkoutTypes(): Promise<WorkoutTypeResponse[]> {
 
 export async function getPreferredDays(): Promise<PreferredDayResponse[]> {
   return await getPreferredDaysQuery();
+}
+
+export async function getExperiences(): Promise<ExperienceResponse[]> {
+  return await getExperiencesQuery();
 }
 
 export async function setConfiguration(

@@ -166,6 +166,7 @@ export async function insertOrUpdateConfigurationCommand(
           sessions: newConfiguration.sessions,
           time: newConfiguration.time,
           equipment: newConfiguration.equipment,
+          experience_id: newConfiguration.experience_id,
           generate_automatically: newConfiguration.generate_automatically,
         })
         .returning({ id: configuration.id });
@@ -182,6 +183,7 @@ export async function insertOrUpdateConfigurationCommand(
           sessions: newConfiguration.sessions,
           time: newConfiguration.time,
           equipment: newConfiguration.equipment,
+          experience_id: newConfiguration.experience_id,
           generate_automatically: newConfiguration.generate_automatically,
         })
         .where(eq(configuration.id, configurationId))

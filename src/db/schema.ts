@@ -105,7 +105,9 @@ export const program = pgTable(
     end_date: date().notNull(),
     user_id: uuid()
       .notNull()
-      .references(() => profile.id),
+      .references(() => profile.id, {
+        onDelete: "cascade",
+      }),
     archived: boolean().notNull().default(false),
     created: timestamp().notNull().defaultNow(),
   },
@@ -279,13 +281,15 @@ export const configuration = pgTable(
   "configuration",
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
-    user_id: uuid().references(() => profile.id),
+    user_id: uuid().references(() => profile.id, {
+      onDelete: "cascade",
+    }),
     sessions: integer().notNull(),
     time: integer().notNull(),
     equipment: text(),
-    experience_id: uuid().references(() => experience.id, {
-      onDelete: "set null",
-    }),
+    experience_id: uuid()
+      .references(() => experience.id)
+      .notNull(),
     generate_automatically: boolean().notNull().default(false),
     created: timestamp().notNull().defaultNow(),
   },
@@ -298,10 +302,21 @@ export const configuration = pgTable(
   ]
 ).enableRLS();
 
-export const configurationRelations = relations(configuration, ({ many }) => ({
-  workoutTypes: many(configurationToWorkoutType),
-  prefferedDays: many(configurationToPreferredDay),
-}));
+export const configurationRelations = relations(
+  configuration,
+  ({ one, many }) => ({
+    profile: one(profile, {
+      fields: [configuration.user_id],
+      references: [profile.id],
+    }),
+    workoutTypes: many(configurationToWorkoutType),
+    prefferedDays: many(configurationToPreferredDay),
+    experience: one(experience, {
+      fields: [configuration.experience_id],
+      references: [experience.id],
+    }),
+  })
+);
 
 // Experience
 export const experience = pgTable(
@@ -330,7 +345,9 @@ export const feedback = pgTable(
   "feedback",
   {
     id: uuid().defaultRandom().primaryKey().notNull(),
-    user_id: uuid().references(() => profile.id),
+    user_id: uuid().references(() => profile.id, {
+      onDelete: "set null",
+    }),
     feedback: text().notNull(),
     created: timestamp().notNull().defaultNow(),
   },
