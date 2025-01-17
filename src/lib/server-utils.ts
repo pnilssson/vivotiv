@@ -1,7 +1,6 @@
 "use server";
 
 import { SupabaseClient, User } from "@supabase/supabase-js";
-import * as Sentry from "@sentry/nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
