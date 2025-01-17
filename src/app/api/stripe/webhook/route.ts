@@ -6,9 +6,9 @@ import { getProfileByIdQuery } from "@/db/queries";
 import { stripe } from "@/lib/stripe/config";
 import * as Sentry from "@sentry/nextjs";
 import Stripe from "stripe";
-import { AxiomRequest, withAxiom } from "next-axiom";
+import { log } from "next-axiom";
 
-export const POST = withAxiom(async (req: AxiomRequest) => {
+export async function POST(req: Request): Promise<void> {
   try {
     const body = await req.text();
     const sig = req.headers.get("stripe-signature") as string;
@@ -29,21 +29,21 @@ export const POST = withAxiom(async (req: AxiomRequest) => {
 
     // Construct the Stripe event
     const event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
-    req.log.info("New stripe event recieved in from webhook.", { event });
+    log.info("New stripe event recieved in from webhook.", { event });
 
     // Handle the event
-    await handleStripeEvent(event, req);
+    await handleStripeEvent(event);
   } catch (error: any) {
     Sentry.captureException(error);
   }
-});
+}
 
 // Handles different event types
-async function handleStripeEvent(event: Stripe.Event, req: AxiomRequest) {
+async function handleStripeEvent(event: Stripe.Event): Promise<void> {
   try {
     switch (event.type) {
       case "checkout.session.completed":
-        await handleCheckoutSessionCompleted(event, req);
+        await handleCheckoutSessionCompleted(event);
         break;
       default:
         break;
@@ -55,11 +55,11 @@ async function handleStripeEvent(event: Stripe.Event, req: AxiomRequest) {
 }
 
 // Processes 'checkout.session.completed' events
-async function handleCheckoutSessionCompleted(event: Stripe.Event, req: AxiomRequest) {
+async function handleCheckoutSessionCompleted(event: Stripe.Event) {
   const checkoutSession = event.data.object as Stripe.Checkout.Session;
   const userId = checkoutSession.metadata?.userId;
 
-  req.log.info("Handling completed checkout session.", { checkoutSession });
+  log.info("Handling completed checkout session.", { checkoutSession });
   if (!userId) {
     Sentry.captureMessage("User id is missing in stripe event.", {
       extra: { checkoutSession },
@@ -96,7 +96,7 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event, req: AxiomReq
     );
   }
 
-  req.log.info("Completed checkout session handled successfully.", {
+  log.info("Completed checkout session handled successfully.", {
     checkoutSessionId: checkoutSession.id,
   });
 }

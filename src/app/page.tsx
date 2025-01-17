@@ -48,8 +48,8 @@ export default async function Page() {
             How it works?
           </h2>
           <p className="text-muted-foreground mt-4 max-w-[540px]">
-            It will only take a few minutes to prepare your first month of
-            training. Not sure? We offer a week worth of training for free.
+            It will only take a few minutes to prepare your first week of
+            training. Not sure? We currently offer a 25% discount for our first 100 members!
           </p>
           <GetStartedButton
             content="Try for free"
@@ -66,7 +66,7 @@ export default async function Page() {
                 </h3>
                 <p className="text-muted-foreground mt-4">
                   The programs will be tailor-made based on your needs and takes
-                  available equipment, goals and more in consideration.
+                  available equipment, preferred training days, experience and more in consideration.
                 </p>
               </div>
             </div>
@@ -139,8 +139,7 @@ export default async function Page() {
               Pricing & Plans
             </h2>
             <p className="text-muted-foreground mt-4 max-w-80 md:max-w-xl mx-auto">
-              One time payments only, no need for another subscription to keep
-              track of.
+            We always offer one-time payment options for our services, ensuring you don&apos;t have to deal with another subscription.”
             </p>
           </div>
           <div className="grid max-w-md grid-cols-1 gap-6 mx-auto mt-6 lg:grid-cols-2 lg:max-w-full 2xl:grid-cols-4">
