@@ -139,7 +139,7 @@ export default async function Page() {
               Pricing & Plans
             </h2>
             <p className="text-muted-foreground mt-4 max-w-80 md:max-w-xl mx-auto">
-            We always offer one-time payment options for our services, ensuring you don&apos;t have to deal with another subscription.”
+            We will always offer one-time payment options for our services, ensuring you don&apos;t have to deal with another subscription.
             </p>
           </div>
           <div className="grid max-w-md grid-cols-1 gap-6 mx-auto mt-6 lg:grid-cols-2 lg:max-w-full 2xl:grid-cols-4">
@@ -155,7 +155,7 @@ export default async function Page() {
                   One-time payment
                 </p>
                 <p className="mt-8">
-                  Get started with one week worth of training program.
+                  Get started with one week of membership to access personalized training.
                 </p>
               </div>
             </div>
@@ -171,7 +171,7 @@ export default async function Page() {
                 <p className="mt-4 text-base text-gray-600">One-time payment</p>
                 <p className="mt-8">
                   The 21/90 rule states that it takes 21 days to make a habit.
-                  Get four weeks of training program.
+                  Get four weeks of membership to access personalized training.
                 </p>
               </div>
             </div>
@@ -189,7 +189,7 @@ export default async function Page() {
                 <p className="mt-4 text-base text-gray-600">One-time payment</p>
                 <p className="mt-8">
                   It takes 90 days to make it a permanent lifestyle change. Get
-                  12 weeks of training program.
+                  12 weeks of membership to access personalized training..
                 </p>
               </div>
             </ShineBorder>
@@ -205,7 +205,7 @@ export default async function Page() {
                 <p className="mt-4 text-base text-gray-600">One-time payment</p>
                 <p className="mt-8">
                   But creating a healthy lifestyle is not a sprint, it is a
-                  marathon. Get 26 weeks of training program.
+                  marathon. Get 26 weeks of membership to access personalized training..
                 </p>
               </div>
             </div>
