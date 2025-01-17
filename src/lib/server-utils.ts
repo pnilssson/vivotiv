@@ -24,7 +24,6 @@ export async function getUserOrRedirect(
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {
-    Sentry.captureException(error);
     redirect("/auth/signin");
   }
 
