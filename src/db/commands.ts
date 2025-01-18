@@ -15,10 +15,10 @@ import {
 } from "./schema";
 import { z } from "zod";
 import { and, eq } from "drizzle-orm";
-import { getProfileByIdQuery } from "./queries";
 import { ProfileResponse } from "@/lib/types";
 import { shortDate } from "@/lib/utils";
 import { addDays, isBefore } from "date-fns";
+import * as Sentry from "@sentry/nextjs";
 
 export async function handleProgramInserts(
   newProgram: z.infer<typeof programSchema>,
@@ -161,7 +161,7 @@ export async function insertOrUpdateConfigurationCommand(
   await db.transaction(async (trx) => {
     let configurationId = newConfiguration.id;
     // If no configurationId, insert a new configuration
-    if (!configurationId) {
+    if (!newConfiguration.id) {
       const newConfig = await trx
         .insert(configuration)
         .values({
@@ -178,7 +178,7 @@ export async function insertOrUpdateConfigurationCommand(
     }
 
     // If configurationId exists, update the configuration
-    if (configurationId) {
+    if (newConfiguration.id) {
       const updatedConfig = await trx
         .update(configuration)
         .set({
@@ -189,40 +189,55 @@ export async function insertOrUpdateConfigurationCommand(
           experience_id: newConfiguration.experience_id,
           generate_automatically: newConfiguration.generate_automatically,
         })
-        .where(eq(configuration.id, configurationId))
+        .where(eq(configuration.id, newConfiguration.id))
         .returning({ id: configuration.id });
 
       configurationId = updatedConfig[0].id;
     }
 
-    // Update many-to-many relationships
-    const { workout_types, preferred_days } = newConfiguration;
+    if (configurationId) {
+      // Update many-to-many relationships
+      const { workout_types, preferred_days } = newConfiguration;
 
-    // Handle workoutTypes
-    await trx
-      .delete(configurationToWorkoutType)
-      .where(eq(configurationToWorkoutType.configuration_id, configurationId));
+      // Handle workoutTypes
+      await trx
+        .delete(configurationToWorkoutType)
+        .where(
+          eq(configurationToWorkoutType.configuration_id, configurationId)
+        );
 
-    if (workout_types && workout_types?.length > 0) {
-      await trx.insert(configurationToWorkoutType).values(
-        workout_types.map((id) => ({
-          configuration_id: configurationId,
-          workout_type_id: id,
-        }))
-      );
+      if (workout_types && workout_types?.length > 0) {
+        await trx.insert(configurationToWorkoutType).values(
+          workout_types.map((id) => ({
+            configuration_id: configurationId,
+            workout_type_id: id,
+          }))
+        );
+      }
+
+      // Handle preferredDays
+      await trx
+        .delete(configurationToPreferredDay)
+        .where(
+          eq(configurationToPreferredDay.configuration_id, configurationId)
+        );
+
+      if (preferred_days && preferred_days?.length > 0) {
+        await trx.insert(configurationToPreferredDay).values(
+          preferred_days.map((id) => ({
+            configuration_id: configurationId,
+            preferred_day_id: id,
+          }))
+        );
+      }
     }
-
-    // Handle preferredDays
-    await trx
-      .delete(configurationToPreferredDay)
-      .where(eq(configurationToPreferredDay.configuration_id, configurationId));
-
-    if (preferred_days && preferred_days?.length > 0) {
-      await trx.insert(configurationToPreferredDay).values(
-        preferred_days.map((id) => ({
-          configuration_id: configurationId,
-          preferred_day_id: id,
-        }))
+    if (!configurationId) {
+      Sentry.captureMessage(
+        "Configuration id was missing when trying to insert or update configuration. This should not be possible.",
+        {
+          extra: { newConfiguration, userId },
+          level: "warning",
+        }
       );
     }
   });
