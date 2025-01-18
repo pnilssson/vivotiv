@@ -3,6 +3,8 @@ import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import FadeIn from "../shared/fade-in";
 import Section from "./section";
 import SectionContent from "./section-content";
+import PrivacyPolicy from "../shared/privacy-policy";
+import TermsAndConditions from "../shared/terms-and-conditions";
 
 export default function Component() {
   return (
@@ -63,21 +65,11 @@ export default function Component() {
 
               <ul className="mt-6 space-y-4">
                 <li>
-                  <Link
-                    href="#"
-                    title=""
-                    className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
-                    Terms & Conditions
-                  </Link>
+                  <TermsAndConditions className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
                 </li>
 
                 <li>
-                  <Link
-                    href="#"
-                    title=""
-                    className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
-                    Privacy Policy
-                  </Link>
+                  <PrivacyPolicy className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
                 </li>
               </ul>
             </div>

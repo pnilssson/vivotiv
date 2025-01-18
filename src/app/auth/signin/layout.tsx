@@ -1,6 +1,8 @@
 import { Card, CardFooter } from "@/components/ui/card";
 import Link from "next/link";
 import SignInOptions from "@/app/auth/signin/sign-in-options";
+import PrivacyPolicy from "@/components/shared/privacy-policy";
+import TermsAndConditions from "@/components/shared/terms-and-conditions";
 
 export default async function Layout({
   children,
@@ -27,8 +29,8 @@ export default async function Layout({
         </CardFooter>
       </Card>
       <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-primary  ">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        By clicking continue, you agree to our{" "}
+        <TermsAndConditions className="" /> and <PrivacyPolicy className="" />.
       </div>
     </div>
   );
