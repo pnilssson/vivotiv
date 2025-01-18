@@ -42,7 +42,7 @@ export const getPrompt = async (
 
   const equipmentText =
     equipment.length > 0
-      ? `The available equipment is ${equipment}. No other equipment can be used.`
+      ? `The available equipment is ${equipment}. No other external equipment can be used, body weight exercises and things usually available at home may still be used.`
       : "No additional equipment is available.";
 
   // Calculate warmup and workout times with rounding
