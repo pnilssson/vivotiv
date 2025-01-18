@@ -1,7 +1,4 @@
-import {
-  updateProfileMembershipCommand,
-  updateProfileNameCommand,
-} from "@/db/commands";
+import { updateProfileMembershipCommand } from "@/db/commands";
 import { getProfileByIdQuery } from "@/db/queries";
 import { stripe } from "@/lib/stripe/config";
 import * as Sentry from "@sentry/nextjs";
