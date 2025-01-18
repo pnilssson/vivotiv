@@ -3,6 +3,7 @@
 import SubmitButton from "@/components/buttons/submit-button";
 import ErrorMessages from "@/components/shared/error-messages";
 import {
+  Card,
   CardContent,
   CardDescription,
   CardHeader,
@@ -10,39 +11,29 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signInWithPassword } from "@/lib/actions/authActions";
+import { updatePassword } from "@/lib/actions/authActions";
 import { INITIAL_FORM_STATE } from "@/lib/constants";
-import Link from "next/link";
 import React from "react";
 import { useActionState } from "react";
 
 export default function Page() {
   const [state, formAction] = useActionState(
-    signInWithPassword,
+    updatePassword,
     INITIAL_FORM_STATE
   );
 
   return (
-    <React.Fragment>
+    <Card>
       <CardHeader>
-        <CardTitle className="text-2xl">Sign in with password</CardTitle>
+        <CardTitle className="text-2xl">Update password</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account.
+          Enter your new password to get back on track.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction}>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                autoComplete="email"
-                id="email"
-                name="email"
-                placeholder="name@example.com"
-                type="email"
-              />
-              <ErrorMessages name="email" errors={state.errors} />
               <Label htmlFor="email">Password</Label>
               <Input
                 autoComplete="password"
@@ -51,16 +42,11 @@ export default function Page() {
                 type="password"
               />
               <ErrorMessages name="password" errors={state.errors} />
-              <Link
-                className="text-sm ml-auto font-semibold"
-                href="/auth/signin/forgot-password">
-                Forgot password?
-              </Link>
             </div>
-            <SubmitButton content="Sign in" classes="w-full" />
+            <SubmitButton content="Reset" classes="w-full" />
           </div>
         </form>
       </CardContent>
-    </React.Fragment>
+    </Card>
   );
 }

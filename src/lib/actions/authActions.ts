@@ -141,3 +141,76 @@ export async function signUpWithPassword(
   revalidatePath("/");
   redirect("/auth/verify-request");
 }
+
+const resetPasswordSchema = z.object({
+  email: z.string().email({
+    message: "Provided email is invalid.",
+  }),
+});
+
+export async function resetPassword(
+  _: any,
+  formData: FormData
+): Promise<ActionResponse> {
+  const supabase = await createClient();
+  const validated = resetPasswordSchema.safeParse({
+    email: formData.get("email"),
+  });
+
+  if (!validated.success) {
+    return {
+      success: validated.success,
+      errors: validated.error.issues,
+      message: null,
+    };
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(
+    validated.data.email,
+    { redirectTo: getURL() }
+  );
+
+  if (error) {
+    Sentry.captureException(error);
+    redirect("/error");
+  }
+
+  revalidatePath("/");
+  redirect("/auth/verify-request");
+}
+
+const updatePasswordSchema = z.object({
+  password: z.string().min(6, {
+    message: "Password must be at least 6 characters long.",
+  }),
+});
+
+export async function updatePassword(
+  _: any,
+  formData: FormData
+): Promise<ActionResponse> {
+  const supabase = await createClient();
+  const validated = updatePasswordSchema.safeParse({
+    password: formData.get("password"),
+  });
+
+  if (!validated.success) {
+    return {
+      success: validated.success,
+      errors: validated.error.issues,
+      message: null,
+    };
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: validated.data.password,
+  });
+
+  if (error) {
+    Sentry.captureException(error);
+    redirect("/error");
+  }
+
+  revalidatePath("/");
+  redirect("/program");
+}

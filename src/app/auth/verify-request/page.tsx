@@ -11,8 +11,8 @@ export default async function Page() {
       <CardHeader>
         <CardTitle className="text-2xl">Please check your email</CardTitle>
         <CardDescription>
-          We have sent you an email to confirm that the provided email is yours.
-          Clicking the link in the email will confirm your email and log you in.
+          We have sent you an email with further instructions. No email? Please
+          have a look at your spam folder.
         </CardDescription>
       </CardHeader>
     </Card>

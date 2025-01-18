@@ -3,6 +3,7 @@
 import SubmitButton from "@/components/buttons/submit-button";
 import ErrorMessages from "@/components/shared/error-messages";
 import {
+  Card,
   CardContent,
   CardDescription,
   CardHeader,
@@ -10,24 +11,20 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { signInWithPassword } from "@/lib/actions/authActions";
+import { resetPassword } from "@/lib/actions/authActions";
 import { INITIAL_FORM_STATE } from "@/lib/constants";
-import Link from "next/link";
 import React from "react";
 import { useActionState } from "react";
 
 export default function Page() {
-  const [state, formAction] = useActionState(
-    signInWithPassword,
-    INITIAL_FORM_STATE
-  );
+  const [state, formAction] = useActionState(resetPassword, INITIAL_FORM_STATE);
 
   return (
     <React.Fragment>
       <CardHeader>
-        <CardTitle className="text-2xl">Sign in with password</CardTitle>
+        <CardTitle className="text-2xl">Forgot password?</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account.
+          No worries, we will send you reset intstructions.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -43,21 +40,8 @@ export default function Page() {
                 type="email"
               />
               <ErrorMessages name="email" errors={state.errors} />
-              <Label htmlFor="email">Password</Label>
-              <Input
-                autoComplete="password"
-                id="password"
-                name="password"
-                type="password"
-              />
-              <ErrorMessages name="password" errors={state.errors} />
-              <Link
-                className="text-sm ml-auto font-semibold"
-                href="/auth/signin/forgot-password">
-                Forgot password?
-              </Link>
             </div>
-            <SubmitButton content="Sign in" classes="w-full" />
+            <SubmitButton content="Reset" classes="w-full" />
           </div>
         </form>
       </CardContent>
