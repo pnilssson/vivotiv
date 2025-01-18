@@ -1,7 +1,6 @@
 "use server";
 
 import { SupabaseClient, User } from "@supabase/supabase-js";
-import * as Sentry from "@sentry/nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -24,7 +23,6 @@ export async function getUserOrRedirect(
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {
-    Sentry.captureException(error);
     redirect("/auth/signin");
   }
 

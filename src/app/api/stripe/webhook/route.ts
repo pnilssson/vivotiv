@@ -8,7 +8,7 @@ import * as Sentry from "@sentry/nextjs";
 import Stripe from "stripe";
 import { log } from "next-axiom";
 
-export async function POST(req: Request): Promise<void> {
+export async function POST(req: Request): Promise<Response> {
   try {
     const body = await req.text();
     const sig = req.headers.get("stripe-signature") as string;
@@ -16,7 +16,7 @@ export async function POST(req: Request): Promise<void> {
 
     if (!sig) {
       Sentry.captureMessage("Stripe signature missing.", { level: "warning" });
-      return;
+      return respondWithError("Stripe signature missing.", 400);
     }
 
     if (!webhookSecret) {
@@ -24,7 +24,7 @@ export async function POST(req: Request): Promise<void> {
         "Missing STRIPE_WEBHOOK_SECRET environment variable.",
         { level: "warning" }
       );
-      return;
+      return respondWithError("Stripe secret missing.", 400);
     }
 
     // Construct the Stripe event
@@ -32,14 +32,15 @@ export async function POST(req: Request): Promise<void> {
     log.info("New stripe event recieved in from webhook.", { event });
 
     // Handle the event
-    await handleStripeEvent(event);
+    return await handleStripeEvent(event);
   } catch (error: any) {
     Sentry.captureException(error);
+    return respondWithError(`Webhook Error: ${error.message}`, 400);
   }
 }
 
 // Handles different event types
-async function handleStripeEvent(event: Stripe.Event): Promise<void> {
+async function handleStripeEvent(event: Stripe.Event): Promise<Response> {
   try {
     switch (event.type) {
       case "checkout.session.completed":
@@ -48,6 +49,7 @@ async function handleStripeEvent(event: Stripe.Event): Promise<void> {
       default:
         break;
     }
+    return new Response(JSON.stringify({ received: true }), { status: 200 });
   } catch (error: any) {
     Sentry.captureException(error);
     throw new Error("Error handling event stripe.");
@@ -98,5 +100,13 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
 
   log.info("Completed checkout session handled successfully.", {
     checkoutSessionId: checkoutSession.id,
+  });
+}
+
+// Utility function for consistent error responses
+function respondWithError(message: string, status: number): Response {
+  return new Response(JSON.stringify({ error: message }), {
+    status,
+    headers: { "Content-Type": "application/json" },
   });
 }
