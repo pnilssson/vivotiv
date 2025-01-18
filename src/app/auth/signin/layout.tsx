@@ -1,6 +1,6 @@
 import { Card, CardFooter } from "@/components/ui/card";
 import Link from "next/link";
-import SignInOptions from "@/components/auth/sign-in-options";
+import SignInOptions from "@/app/auth/signin/sign-in-options";
 
 export default async function Layout({
   children,

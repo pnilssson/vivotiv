@@ -1,6 +1,6 @@
-import Register from "@/components/auth/sign-up";
 import { Card, CardFooter } from "@/components/ui/card";
 import Link from "next/link";
+import Register from "./register";
 
 export default async function Page() {
   return (

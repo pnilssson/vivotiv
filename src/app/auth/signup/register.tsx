@@ -8,11 +8,12 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card";
-import { Label } from "@radix-ui/react-label";
-import SubmitButton from "../buttons/submit-button";
-import ErrorMessages from "../shared/error-messages";
-import { Input } from "../ui/input";
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import ErrorMessages from "@/components/shared/error-messages";
+import SubmitButton from "@/components/buttons/submit-button";
+import React from "react";
 
 export default function Component() {
   const [state, formAction] = useActionState(
@@ -21,7 +22,7 @@ export default function Component() {
   );
 
   return (
-    <>
+    <React.Fragment>
       <CardHeader>
         <CardTitle className="text-2xl">Sign up</CardTitle>
         <CardDescription>
@@ -54,6 +55,6 @@ export default function Component() {
           </div>
         </form>
       </CardContent>
-    </>
+    </React.Fragment>
   );
 }
