@@ -2,6 +2,9 @@
 
 import ShineBorder from "@/components/magicui/shine-border";
 import ContentBox from "@/components/shared/content-box";
+import Heading from "@/components/shared/typography/heading";
+import TextMuted from "@/components/shared/typography/text-muted";
+import Title from "@/components/shared/typography/title";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/lib/hooks/use-toast";
@@ -16,7 +19,6 @@ export default function Component({
   description,
   priceId,
   price,
-  weeklyPrice,
   discount,
   highlight,
 }: {
@@ -24,7 +26,6 @@ export default function Component({
   description: string;
   priceId: string;
   price: string;
-  weeklyPrice: string;
   discount?: string;
   highlight: boolean;
 }) {
@@ -59,12 +60,11 @@ export default function Component({
 
   const content = (
     <ContentBox
-      className={cn("flex flex-col gap-2", {
+      className={cn("flex flex-col gap-4", {
         "border-0": highlight,
       })}>
       <div className="flex items-baseline">
-        <p className="text-xl">{price}</p>
-        <p className="text-sm text-muted-foreground ml-1">{weeklyPrice}</p>
+        <Heading>{price}</Heading>
         {discount ? (
           <Badge
             className="bg-emerald-300 self-center font-normal ml-auto"
@@ -74,12 +74,12 @@ export default function Component({
         ) : null}
       </div>
       <div className="flex items-center">
-        <h3 className="text-2xl">{title}</h3>
+        <Title>{title}</Title>
       </div>
-      <p className="text-sm text-muted-foreground">{description}</p>
+      <TextMuted className="min-h-10">{description}</TextMuted>
 
       <Button
-        className="w-full mt-2"
+        className="w-full"
         aria-disabled={loading}
         onClick={() => handleStripeCheckout(priceId)}>
         {loading ? (

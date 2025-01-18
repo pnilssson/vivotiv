@@ -6,30 +6,27 @@ const MEMBERSHIP_OPTIONS = [
   {
     title: "26 weeks",
     description:
-      "Enjoy 26 weeks of membership to access personalized training.",
+      "Enjoy 26 weeks of membership to access personalized training for as little as $0.77/week.",
     priceId: "price_1QdeGXRpZn3h4qfLOk4KS5be",
     price: "$19.99",
-    weeklyPrice: "($0.77/week)",
     discount: "61%",
     highlight: false,
   },
   {
     title: "Twelve weeks",
     description:
-      "Enjoy twelve weeks of membership to access personalized training.",
+      "Enjoy twelve weeks of membership to access personalized training for as little as $0.99/week.",
     priceId: "price_1QdeWmRpZn3h4qfLyWCG7f1A",
     price: "$11.99",
-    weeklyPrice: "($0.99/week)",
     discount: "50%",
     highlight: true,
   },
   {
     title: "Four weeks",
     description:
-      "Enjoy four weeks of membership to access personalized training.",
+      "Enjoy four weeks of membership to access personalized training for as little as $1.25/week.",
     priceId: "price_1QdeRCRpZn3h4qfLXsBBwv39",
     price: "$4.99",
-    weeklyPrice: "($1.25/week)",
     discount: "37%",
     highlight: false,
   },
@@ -49,7 +46,7 @@ export default async function Page() {
   return (
     <React.Fragment>
       <PageTitle
-        title={"Shop"}
+        title={"Membership store"}
         description={"All options are one time payments."}
       />
       <div className="grid grid-col-1 md:grid-cols-2 gap-4">
@@ -60,7 +57,6 @@ export default async function Page() {
             description={option.description}
             priceId={option.priceId}
             price={option.price}
-            weeklyPrice={option.weeklyPrice}
             discount={option.discount}
             highlight={option.highlight}
           />
