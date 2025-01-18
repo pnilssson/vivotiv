@@ -1,6 +1,9 @@
 import { getCurrentProgram } from "./actions";
 import NoProgram from "./no-program";
-import { getConfiguration, getMemberShipEndDate } from "@/lib/actions";
+import {
+  getConfiguration,
+  getMemberShipEndDate,
+} from "@/lib/actions/sharedActions";
 import NoConfiguration from "./no-configuration";
 import ProgramWeek from "./program-week";
 import NoMembership from "./no-membership";

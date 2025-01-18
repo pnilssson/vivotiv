@@ -15,7 +15,7 @@ import { MessageCircleIcon } from "lucide-react";
 import { SidebarMenuButton } from "./ui/sidebar";
 import { INITIAL_FORM_STATE } from "@/lib/constants";
 import { useActionState, useEffect, useState } from "react";
-import { addFeedback } from "@/lib/actions";
+import { addFeedback } from "@/lib/actions/sharedActions";
 import SubmitButton from "./buttons/submit-button";
 import { Textarea } from "./ui/textarea";
 import ErrorMessages from "./shared/error-messages";
