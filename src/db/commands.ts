@@ -127,18 +127,6 @@ export async function updateProfileMembershipCommand(
   return result.id;
 }
 
-export async function updateProfileNameCommand(userId: string, name: string) {
-  const [result] = await db
-    .update(profile)
-    .set({
-      name,
-    })
-    .where(eq(profile.id, userId))
-    .returning({ id: profile.id });
-
-  return result.id;
-}
-
 export async function updateProfileStripeCustomerIdCommand(
   userId: string,
   customerId: string

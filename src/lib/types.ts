@@ -30,7 +30,6 @@ export interface ConfigurationResponse {
 
 export interface ProfileResponse {
   id: string;
-  name: string | null;
   email: string;
   stripe_customer_id: string;
   membership_end_date: string;

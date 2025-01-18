@@ -190,6 +190,13 @@
       "when": 1737065755611,
       "tag": "0026_brief_boomerang",
       "breakpoints": true
+    },
+    {
+      "idx": 27,
+      "version": "7",
+      "when": 1737238576718,
+      "tag": "0027_oval_hydra",
+      "breakpoints": true
     }
   ]
 }

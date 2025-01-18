@@ -42,7 +42,6 @@ export const profile = pgTable(
   "profile",
   {
     id: uuid().primaryKey().notNull(),
-    name: text(),
     email: text().notNull(),
     stripe_customer_id: text(),
     membership_end_date: date(),

@@ -91,13 +91,6 @@ async function handleCheckoutSessionCompleted(event: Stripe.Event) {
 
   await updateProfileMembershipCommand(profile, boughtMembershipDays);
 
-  if (checkoutSession.customer_details?.name) {
-    await updateProfileNameCommand(
-      profile.id,
-      checkoutSession.customer_details?.name
-    );
-  }
-
   log.info("Completed checkout session handled successfully.", {
     checkoutSessionId: checkoutSession.id,
   });

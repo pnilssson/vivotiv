@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import { Toaster } from "@/components/ui/toaster";
+import Termly from "@/components/shared/termly";
 
 export const metadata: Metadata = {
   applicationName: "Vivotiv",
@@ -52,6 +53,11 @@ export default async function RootLayout({
         <SpeedInsights />
         <Analytics />
         <Toaster />
+        <Termly
+          websiteUUID={process.env.TERMLY_WEBSITE_UUID}
+          autoBlock={null}
+          masterConsentsOrigin={null}
+        />
       </body>
     </html>
   );
