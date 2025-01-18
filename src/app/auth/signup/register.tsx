@@ -25,8 +25,9 @@ export default function Component() {
     <React.Fragment>
       <CardHeader>
         <CardTitle className="text-2xl">Sign up</CardTitle>
-        <CardDescription>
-          Glad you&apos;re joining! Let&apos;s make a change.
+        <CardDescription className="w-full">
+          Glad you&apos;re joining! Let&apos;s make a change. Please provide
+          your details below to sign up.
         </CardDescription>
       </CardHeader>
       <CardContent>

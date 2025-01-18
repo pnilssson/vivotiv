@@ -13,14 +13,14 @@ export default function Component() {
       {pathname.endsWith("password") ? (
         <Button variant="outline" asChild className="w-full">
           <Link href="/auth/signin/otp">
-            <MailIcon className="h-5 w-5" />
+            <MailIcon />
             Login with Magic link
           </Link>
         </Button>
       ) : (
         <Button variant="outline" asChild className="w-full">
           <Link href="/auth/signin/password">
-            <KeySquareIcon className="h-5 w-5" />
+            <KeySquareIcon />
             Login with Password
           </Link>
         </Button>

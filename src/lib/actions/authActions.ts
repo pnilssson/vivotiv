@@ -95,6 +95,10 @@ export async function signInWithPassword(
     password: validated.data.password,
   });
 
+  if (error?.code == "invalid_credentials") {
+    redirect("/auth/signup");
+  }
+
   if (error) {
     Sentry.captureException(error);
     redirect("/error");
