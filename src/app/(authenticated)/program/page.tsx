@@ -7,6 +7,7 @@ import {
 import NoConfiguration from "./no-configuration";
 import ProgramWeek from "./program-week";
 import NoMembership from "./no-membership";
+import React from "react";
 
 export default async function Page() {
   const currentProgram = await getCurrentProgram();
@@ -15,7 +16,7 @@ export default async function Page() {
   const today = new Date();
 
   return (
-    <>
+    <React.Fragment>
       {!configuration ? (
         <NoConfiguration />
       ) : membershipEndDate < today ? (
@@ -25,6 +26,6 @@ export default async function Page() {
       ) : (
         <ProgramWeek program={currentProgram} />
       )}
-    </>
+    </React.Fragment>
   );
 }

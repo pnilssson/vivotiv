@@ -1,3 +1,4 @@
+import React from "react";
 import { ZodIssue } from "zod";
 
 export default function Component({
@@ -18,12 +19,12 @@ export default function Component({
   if (issues.length === 0) return null;
 
   return (
-    <>
+    <React.Fragment>
       {issues.map((error, index) => (
         <p className="text-sm text-destructive" key={index}>
           {error}
         </p>
       ))}
-    </>
+    </React.Fragment>
   );
 }

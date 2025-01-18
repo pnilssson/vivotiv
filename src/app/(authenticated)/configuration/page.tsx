@@ -2,6 +2,7 @@ import PageTitle from "@/components/shared/typography/page-title";
 import { getWorkoutTypes, getPreferredDays, getExperiences } from "./actions";
 import ConfigurationForm from "./configuration-form";
 import { getConfiguration } from "@/lib/actions/sharedActions";
+import React from "react";
 
 export default async function Page() {
   const [configuration, workoutTypes, preferredDays, experiences] =
@@ -12,7 +13,7 @@ export default async function Page() {
       getExperiences(),
     ]);
   return (
-    <>
+    <React.Fragment>
       <PageTitle
         title={"Configuration"}
         description={
@@ -25,6 +26,6 @@ export default async function Page() {
         preferredDays={preferredDays}
         experiences={experiences}
       />
-    </>
+    </React.Fragment>
   );
 }

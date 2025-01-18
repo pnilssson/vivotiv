@@ -2,7 +2,7 @@ import PageTitle from "@/components/shared/typography/page-title";
 import Product from "./product";
 import React from "react";
 
-const paymentOptions = [
+const MEMBERSHIP_OPTIONS = [
   {
     title: "26 weeks",
     description:
@@ -53,7 +53,7 @@ export default async function Page() {
         description={"All options are one time payments."}
       />
       <div className="grid grid-col-1 md:grid-cols-2 gap-4">
-        {paymentOptions.map((option, index) => (
+        {MEMBERSHIP_OPTIONS.map((option, index) => (
           <Product
             key={index} // Use a unique key; index is used here as a fallback.
             title={option.title}

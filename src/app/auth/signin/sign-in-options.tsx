@@ -4,12 +4,13 @@ import Link from "next/link";
 import { Button } from "../../../components/ui/button";
 import { KeySquareIcon, MailIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
+import React from "react";
 
 export default function Component() {
   const pathname = usePathname();
 
   return (
-    <>
+    <React.Fragment>
       {pathname.endsWith("password") ? (
         <Button variant="outline" asChild className="w-full">
           <Link href="/auth/signin/otp">
@@ -25,6 +26,6 @@ export default function Component() {
           </Link>
         </Button>
       )}
-    </>
+    </React.Fragment>
   );
 }
