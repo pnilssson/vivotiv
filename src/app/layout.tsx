@@ -53,11 +53,7 @@ export default async function RootLayout({
         <SpeedInsights />
         <Analytics />
         <Toaster />
-        <Termly
-          websiteUUID={process.env.TERMLY_WEBSITE_UUID}
-          autoBlock={null}
-          masterConsentsOrigin={null}
-        />
+        <Termly websiteUUID={process.env.TERMLY_WEBSITE_UUID!} />
       </body>
     </html>
   );
