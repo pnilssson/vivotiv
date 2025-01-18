@@ -4,7 +4,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import React from "react";
-import { signOut } from "@/lib/supabase/actions";
+import { signOut } from "@/lib/actions/authActions";
 import { ExitIcon } from "@radix-ui/react-icons";
 import { Button } from "../ui/button";
 

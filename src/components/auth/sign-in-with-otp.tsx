@@ -1,7 +1,7 @@
 "use client";
 
 import { INITIAL_FORM_STATE } from "@/lib/constants";
-import { signInWithOtp } from "@/lib/supabase/actions";
+import { signInWithOtp } from "@/lib/actions/authActions";
 import { useActionState } from "react";
 import { Label } from "@radix-ui/react-label";
 import SubmitButton from "../buttons/submit-button";

@@ -1,7 +1,7 @@
 "use client";
 
 import { INITIAL_FORM_STATE } from "@/lib/constants";
-import { signInWithPassword } from "@/lib/supabase/actions";
+import { signInWithPassword } from "@/lib/actions/authActions";
 import { useActionState } from "react";
 import {
   CardContent,
