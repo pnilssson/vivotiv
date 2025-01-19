@@ -1,17 +1,14 @@
-"use client";
-
 import ContentBox from "@/components/shared/content-box";
 import PageTitle from "@/components/shared/typography/page-title";
 import { Button } from "@/components/ui/button";
 import { MIN_DATE } from "@/lib/constants";
 import { shortDate } from "@/lib/utils";
 import Link from "next/link";
+import { getMemberShipEndDate } from "../actions";
 
-export default function Component({
-  membershipEndDate,
-}: {
-  membershipEndDate: Date;
-}) {
+export default async function Component() {
+  const membershipEndDate = await getMemberShipEndDate();
+
   return (
     <ContentBox className={"flex lg:gap-4 items-center lg:flex-row flex-wrap"}>
       <div className="flex gap-4 flex-1">
@@ -21,8 +18,8 @@ export default function Component({
             title="No active membership"
             description={
               membershipEndDate.getTime() == MIN_DATE.getTime()
-                ? "You haven’t purchased your first membership yet. Visit the membership shop to do so and come back to generate your first training program!"
-                : `Your membership ended on ${shortDate(membershipEndDate)}. Visit the membership shop to renew your membership!`
+                ? "You haven’t purchased your first membership yet. Visit the membership store to do so and come back to generate your first training program!"
+                : `Your membership ended on ${shortDate(membershipEndDate)}. Visit the membership store to renew your membership!`
             }
           />
         </div>

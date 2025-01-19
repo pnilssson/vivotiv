@@ -18,16 +18,47 @@ import {
   getConfigurationQuery,
   getCurrentProgramQuery,
   getCurrentGeneratedProgramsCountByUserIdQuery,
+  getConfigurationExistQuery,
+  getProfileByIdQuery,
 } from "@/db/queries";
 import * as Sentry from "@sentry/nextjs";
 import { getPrompt } from "@/lib/prompt";
 import { log } from "next-axiom";
 import { PROGRAM_GENERATION_LIMIT } from "@/lib/constants";
+import { redirect } from "next/navigation";
+import { shortDate } from "@/lib/utils";
 
-export async function getCurrentProgram(): Promise<ProgramResponse | null> {
+export async function getMemberShipEndDate(): Promise<Date> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
-  return await getCurrentProgramQuery(user.id);
+  var result = await getProfileByIdQuery(user.id);
+  return new Date(result.membership_end_date);
+}
+
+async function validateConfigurationExist(): Promise<void> {
+  const supabase = await createClient();
+  const user = await getUserOrRedirect(supabase);
+  const result = await getConfigurationExistQuery(user.id);
+  if (!result) redirect("/program/no-configuration");
+}
+
+async function validateMembership(): Promise<void> {
+  const result = await getMemberShipEndDate();
+  if (shortDate(result) >= shortDate()) return;
+
+  redirect("/program/no-membership");
+}
+
+export async function getCurrentProgram(): Promise<ProgramResponse | null> {
+  await validateConfigurationExist();
+  await validateMembership();
+
+  const supabase = await createClient();
+  const user = await getUserOrRedirect(supabase);
+  const result = await getCurrentProgramQuery(user.id);
+  if (!result) redirect("/program/no-program");
+
+  return result;
 }
 
 export async function archiveProgram(programId: string) {
@@ -133,9 +164,5 @@ export async function generateProgram(): Promise<ActionResponse> {
 
   await deleteOldProgramsByUserIdCommand(user.id);
   revalidatePath("/program", "page");
-  return {
-    success: true,
-    errors: [],
-    message: "Your new program is ready!",
-  };
+  redirect("/program");
 }

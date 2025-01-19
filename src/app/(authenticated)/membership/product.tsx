@@ -88,7 +88,7 @@ export default function Component({
             <LoaderCircleIcon className="animate-spin ml-2" />
           </span>
         ) : (
-          "Get now"
+          <span>Get now</span>
         )}
       </Button>
     </ContentBox>

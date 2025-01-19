@@ -1,7 +1,11 @@
 import PageTitle from "@/components/shared/typography/page-title";
-import { getWorkoutTypes, getPreferredDays, getExperiences } from "./actions";
+import {
+  getWorkoutTypes,
+  getPreferredDays,
+  getExperiences,
+  getConfiguration,
+} from "./actions";
 import ConfigurationForm from "./configuration-form";
-import { getConfiguration } from "@/lib/actions/sharedActions";
 import React from "react";
 
 export default async function Page() {

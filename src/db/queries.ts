@@ -89,6 +89,15 @@ export const getCurrentGeneratedProgramsCountByUserIdQuery = cache(
   }
 );
 
+export const getConfigurationExistQuery = cache(async (userId: string) => {
+  const exists = await db.query.configuration.findFirst({
+    columns: { id: true },
+    where: (configuration, { eq }) => eq(configuration.user_id, userId),
+  });
+
+  return !!exists; // Return true if a record exists, false otherwise
+});
+
 export const getConfigurationQuery = cache(async (userId: string) => {
   const result = await db.query.configuration.findFirst({
     with: {

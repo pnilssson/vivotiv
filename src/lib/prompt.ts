@@ -76,11 +76,13 @@ export const getPrompt = async (
   5. Exercise Executions:
     - Vary execution types across exercises within each workout.
       - Reps and sets
+        - IMPORTANT: If reps and sets is used the execution MUST include rest period.
       - AMRAP (as many reps as possible within a time frame)
-      - EMOM (every minute on the minute) ALWAYS needs specified amount of reps to complete every minute
+      - EMOM (every minute on the minute) 
+        - IMPORTANT: EMOM ALWAYS needs specified repetitions to complete every minute and can not consists of exercises where there is no clear start and end of the exercise i.e balance on one leg
       - Tabata (20 seconds of high-intensity work followed by 10 seconds of rest, repeated for 8 rounds)
       - For Time (Complete a specific reps of exercises as quickly as possible)
-    - IMPORTANT: If reps and sets is used the execution MUST include rest period.
+      - Supersets (performing two exercises back to back with no rest in between. These can be either antagonist supersets (working opposite muscle groups) or agonist supersets (working the same muscle group)).
   
   6. Exercise Description:
     - Provide a clear, user-friendly description of how to perform the exercise.

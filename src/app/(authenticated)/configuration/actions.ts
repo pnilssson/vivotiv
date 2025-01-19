@@ -3,6 +3,7 @@
 import { insertOrUpdateConfigurationCommand } from "@/db/commands";
 import {
   getConfigurationIdByUserIdQuery,
+  getConfigurationQuery,
   getExperiencesQuery,
   getPreferredDaysQuery,
   getWorkoutTypesQuery,
@@ -15,10 +16,17 @@ import {
   WorkoutTypeResponse,
   PreferredDayResponse,
   ExperienceResponse,
+  ConfigurationResponse,
 } from "@/lib/types";
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
 import { log } from "next-axiom";
+
+export async function getConfiguration(): Promise<ConfigurationResponse | null> {
+  const supabase = await createClient();
+  const user = await getUserOrRedirect(supabase);
+  return await getConfigurationQuery(user.id);
+}
 
 export async function getWorkoutTypes(): Promise<WorkoutTypeResponse[]> {
   return await getWorkoutTypesQuery();
