@@ -26,11 +26,18 @@ export default function Component({
         "border-2 border-gray-100 bg-white": !highlight,
       })}>
       <div className="p-8 h-full flex flex-col">
+        {discount ? (
+          <Badge
+            className="bg-emerald-300 self-start font-normal hidden 2xl:flex mb-2"
+            variant="secondary">
+            Save {discount}
+          </Badge>
+        ) : null}
         <div className="flex flex-row justify-between">
           <h3 className="text-base font-semibold text-purple-600">{title}</h3>
           {discount ? (
             <Badge
-              className="bg-emerald-300 self-center font-normal ml-auto"
+              className="bg-emerald-300 self-center font-normal ml-auto 2xl:hidden flex"
               variant="secondary">
               Save {discount}
             </Badge>

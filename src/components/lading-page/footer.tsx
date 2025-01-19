@@ -43,7 +43,7 @@ export default function Component() {
                   <Link
                     href="/about"
                     className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
-                    About
+                    About us
                   </Link>
                 </li>
 

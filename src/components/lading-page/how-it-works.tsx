@@ -24,8 +24,8 @@ export default async function Component() {
               </h2>
               <p className="text-muted-foreground max-w-[540px]">
                 It will only take a few minutes to prepare your first week of
-                training. Not sure? Try now with 50% off on your first one-week
-                memebership purchase.
+                training personalized for you. Not sure? Try now with 50% off on
+                your first one-week memebership purchase.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

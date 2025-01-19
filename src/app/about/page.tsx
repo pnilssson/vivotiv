@@ -6,7 +6,6 @@ import Header from "@/components/header";
 import Link from "next/link";
 import { LinkedInLogoIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
-import Footer from "@/components/lading-page/footer";
 
 export default async function Component() {
   return (
