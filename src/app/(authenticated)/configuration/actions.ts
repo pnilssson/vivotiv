@@ -38,23 +38,32 @@ export async function setConfiguration(
 ): Promise<ActionResponse> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
-
-  const validated = configurationRequestSchema.safeParse(formData);
-  if (!validated.success) {
-    const equipmentError = validated.error.errors.filter((e) =>
-      e.path.includes("equipment")
-    );
-    if (equipmentError.length > 0) {
-      Sentry.captureMessage("Equipment error during configuration update.", {
-        user: { id: user.id, email: user.email },
-        extra: { errors: validated.error.issues },
-        level: "warning",
-      });
+  let validated;
+  try {
+    validated = configurationRequestSchema.safeParse(formData);
+    if (!validated.success) {
+      const equipmentError = validated.error.errors.filter((e) =>
+        e.path.includes("equipment")
+      );
+      if (equipmentError.length > 0) {
+        Sentry.captureMessage("Equipment error during configuration update.", {
+          user: { id: user.id, email: user.email },
+          extra: { errors: validated.error.issues },
+          level: "warning",
+        });
+      }
+      return {
+        success: validated.success,
+        errors: validated.error.issues,
+        message: null,
+      };
     }
+  } catch (error) {
+    Sentry.captureException(error);
     return {
-      success: validated.success,
-      errors: validated.error.issues,
-      message: null,
+      success: false,
+      errors: [],
+      message: "An error occurred when validating the configuration.",
     };
   }
 
