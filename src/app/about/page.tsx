@@ -61,7 +61,7 @@ export default async function Component() {
             <SectionContent>
               <Image
                 className="lg:mt-24 rounded-lg"
-                src="/img/me.jpeg"
+                src="/img/me.JPEG"
                 width={1491}
                 height={1863}
                 alt="Picture of the creator of Vivotiv"
