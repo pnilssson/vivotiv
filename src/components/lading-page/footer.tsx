@@ -5,6 +5,7 @@ import Section from "./section";
 import SectionContent from "./section-content";
 import PrivacyPolicy from "../shared/privacy-policy";
 import TermsAndConditions from "../shared/terms-and-conditions";
+import CookiePolicy from "../shared/cookie-policy";
 
 export default function Component() {
   return (
@@ -40,8 +41,7 @@ export default function Component() {
               <ul className="mt-6 space-y-4">
                 <li>
                   <Link
-                    href="#"
-                    title=""
+                    href="/about"
                     className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
                     About
                   </Link>
@@ -49,8 +49,8 @@ export default function Component() {
 
                 <li>
                   <Link
-                    href="#"
-                    title=""
+                    href="mailto:info@vivotiv.com"
+                    title="Mail us"
                     className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
                     Contact us
                   </Link>
@@ -70,6 +70,10 @@ export default function Component() {
 
                 <li>
                   <PrivacyPolicy className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
+                </li>
+
+                <li>
+                  <CookiePolicy className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
                 </li>
               </ul>
             </div>
