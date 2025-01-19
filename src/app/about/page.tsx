@@ -50,7 +50,7 @@ export default async function Component() {
                     to transform lives. I&apos;m certain that movement can
                     improve both physical and mental well-being, and I want to
                     share that with as many people as possible. That&apos;s why
-                    I'm building Vivotiv.
+                    I&apos;m building Vivotiv.
                   </p>
                 </div>
               </div>
