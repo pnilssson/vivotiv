@@ -52,6 +52,7 @@ export default async function RootLayout({
           GeistSans.variable,
           GeistMono.variable
         )}>
+        <link rel="icon" type="image/svg+xml" href="favicon.svg" />
         {children}
         <SpeedInsights />
         <Analytics />
