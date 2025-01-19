@@ -26,7 +26,6 @@ export const programSchema = z.object({
 });
 
 export const configurationRequestSchema = z.object({
-  id: z.string().nullable(),
   sessions: z.coerce
     .number({
       required_error: "Sessions is required.",

@@ -9,6 +9,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { setPreferredSignInView } from "../server-utils";
 import * as Sentry from "@sentry/nextjs";
+import { log } from "next-axiom";
 
 export async function signOut(_: FormData) {
   const supabase = await createClient();
@@ -138,6 +139,9 @@ export async function signUpWithPassword(
     redirect("/error");
   }
 
+  log.info("New user signed up using password.", {
+    email: validated.data.email,
+  });
   revalidatePath("/");
   redirect("/auth/verify-request");
 }
@@ -175,6 +179,9 @@ export async function resetPassword(
     redirect("/error");
   }
 
+  log.info("User requested reset of their password.", {
+    email: validated.data.email,
+  });
   revalidatePath("/");
   redirect("/auth/verify-request");
 }
@@ -211,6 +218,7 @@ export async function updatePassword(
     redirect("/error");
   }
 
+  log.info("User updated their password.");
   revalidatePath("/");
   redirect("/program");
 }

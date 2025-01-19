@@ -12,32 +12,11 @@ import { cache } from "react";
 import { asc, gte } from "drizzle-orm";
 import { subMinutes } from "date-fns";
 import { experience, preferredDay, workoutType } from "./schema";
-import { shortDate } from "@/lib/utils";
-
-export const getProgramByIdQuery = cache(async (id: string, userId: string) => {
-  const result = await db.query.program.findFirst({
-    where: (program, { eq, and }) =>
-      and(
-        eq(program.user_id, userId),
-        eq(program.id, id),
-        eq(program.archived, false)
-      ),
-  });
-
-  return result as unknown as ProgramResponse;
-});
 
 export const getCurrentProgramQuery = cache(async (userId: string) => {
-  const today = shortDate();
-
   const result = await db.query.program.findFirst({
-    where: (program, { eq, gte, lte, and }) =>
-      and(
-        eq(program.user_id, userId),
-        eq(program.archived, false),
-        lte(program.start_date, today),
-        gte(program.end_date, today)
-      ),
+    where: (program, { eq, and }) =>
+      and(eq(program.user_id, userId), eq(program.archived, false)),
     with: {
       workouts: {
         with: {
@@ -106,31 +85,44 @@ export const getConfigurationQuery = cache(async (userId: string) => {
     where: (configuration, { eq }) => eq(configuration.user_id, userId),
   });
 
-  if (!result) return null; // Handle case when no configuration is found
+  if (!result) return null;
 
   const flattenedResult: ConfigurationResponse = {
     id: result.id,
-    user_id: result.user_id || "", // Default to empty string if user_id is null
+    user_id: result.user_id || "",
     sessions: result.sessions,
     time: result.time,
-    equipment: result.equipment || "", // Default to empty string if equipment is null
+    equipment: result.equipment || "",
     created: result.created,
     workout_types: result.workoutTypes
       ? result.workoutTypes.map(
           (type) => type.workoutType as WorkoutTypeResponse
         )
-      : [], // Default to empty array if workoutTypes is null
+      : [],
     preferred_days: result.prefferedDays
       ? result.prefferedDays.map(
           (day) => day.preferredDay as PreferredDayResponse
         )
-      : [], // Default to empty array if preferredDays is null
+      : [],
     experience: result.experience,
     generate_automatically: result.generate_automatically,
   };
 
   return flattenedResult;
 });
+
+export const getConfigurationIdByUserIdQuery = async (userId: string) => {
+  const result = await db.query.configuration.findFirst({
+    columns: {
+      id: true,
+    },
+    where: (configuration, { eq }) => eq(configuration.user_id, userId),
+  });
+
+  if (!result) return null;
+
+  return result.id;
+};
 
 export const getWorkoutTypesQuery = cache(async () => {
   const result = await db.query.workoutType.findMany({

@@ -67,7 +67,6 @@ export default function Component({
   const form = useForm<z.infer<typeof configurationRequestSchema>>({
     resolver: zodResolver(configurationRequestSchema),
     defaultValues: {
-      id: configuration ? configuration.id : "",
       sessions: configuration ? configuration.sessions : 3,
       time: configuration ? configuration.time : 30,
       workout_types: configuration
@@ -93,26 +92,6 @@ export default function Component({
           formAction(form.getValues() as any as FormData);
         }}>
         <div className="grid gap-4">
-          <div className="hidden">
-            <FormField
-              control={form.control}
-              name="id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      id="id"
-                      name="id"
-                      type="text"
-                      value={field.value!}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
           <ContentBox className="flex flex-col md:flex-row w-full gap-4">
             <div className="mb-2 w-full md:w-1/2">
               <FormField

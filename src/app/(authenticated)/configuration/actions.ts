@@ -2,6 +2,7 @@
 
 import { insertOrUpdateConfigurationCommand } from "@/db/commands";
 import {
+  getConfigurationIdByUserIdQuery,
   getExperiencesQuery,
   getPreferredDaysQuery,
   getWorkoutTypesQuery,
@@ -18,6 +19,7 @@ import {
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { log } from "next-axiom";
 
 export async function getWorkoutTypes(): Promise<WorkoutTypeResponse[]> {
   return await getWorkoutTypesQuery();
@@ -59,7 +61,25 @@ export async function setConfiguration(
   }
 
   try {
-    await insertOrUpdateConfigurationCommand(validated.data, user.id);
+    const configurationId = await getConfigurationIdByUserIdQuery(user.id);
+    if (configurationId) {
+      log.info("Updating user configuration.", {
+        userId: user.id,
+        email: user.email,
+        configurationId,
+      });
+    }
+    if (!configurationId) {
+      log.info("Adding new user configuration.", {
+        userId: user.id,
+        email: user.email,
+      });
+    }
+    await insertOrUpdateConfigurationCommand(
+      validated.data,
+      configurationId,
+      user.id
+    );
   } catch (error) {
     Sentry.captureException(error);
     return {
@@ -70,5 +90,9 @@ export async function setConfiguration(
   }
 
   revalidatePath("/");
-  redirect("/configuration");
+  return {
+    success: true,
+    errors: [],
+    message: "Configuration successfully updated.",
+  };
 }

@@ -13,11 +13,7 @@ import { ActionResponse, ProgramResponse } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import {
-  getConfigurationQuery,
-  getCurrentProgramQuery,
-  getProfileByIdQuery,
-} from "@/db/queries";
+import { getConfigurationQuery, getCurrentProgramQuery } from "@/db/queries";
 import * as Sentry from "@sentry/nextjs";
 import { getPrompt } from "@/lib/prompt";
 

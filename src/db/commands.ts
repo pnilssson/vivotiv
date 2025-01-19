@@ -144,12 +144,13 @@ export async function updateProfileStripeCustomerIdCommand(
 
 export async function insertOrUpdateConfigurationCommand(
   newConfiguration: z.infer<typeof configurationRequestSchema>,
+  configurationId: string | null,
   userId: string
 ) {
   await db.transaction(async (trx) => {
-    let configurationId = newConfiguration.id;
+    const isNewConfiguration = configurationId == null;
     // If no configurationId, insert a new configuration
-    if (!newConfiguration.id) {
+    if (isNewConfiguration) {
       const newConfig = await trx
         .insert(configuration)
         .values({
@@ -166,7 +167,7 @@ export async function insertOrUpdateConfigurationCommand(
     }
 
     // If configurationId exists, update the configuration
-    if (newConfiguration.id) {
+    if (!isNewConfiguration && configurationId) {
       const updatedConfig = await trx
         .update(configuration)
         .set({
@@ -177,7 +178,7 @@ export async function insertOrUpdateConfigurationCommand(
           experience_id: newConfiguration.experience_id,
           generate_automatically: newConfiguration.generate_automatically,
         })
-        .where(eq(configuration.id, newConfiguration.id))
+        .where(eq(configuration.id, configurationId))
         .returning({ id: configuration.id });
 
       configurationId = updatedConfig[0].id;
@@ -197,7 +198,7 @@ export async function insertOrUpdateConfigurationCommand(
       if (workout_types && workout_types?.length > 0) {
         await trx.insert(configurationToWorkoutType).values(
           workout_types.map((id) => ({
-            configuration_id: configurationId,
+            configuration_id: configurationId!,
             workout_type_id: id,
           }))
         );
@@ -213,7 +214,7 @@ export async function insertOrUpdateConfigurationCommand(
       if (preferred_days && preferred_days?.length > 0) {
         await trx.insert(configurationToPreferredDay).values(
           preferred_days.map((id) => ({
-            configuration_id: configurationId,
+            configuration_id: configurationId!,
             preferred_day_id: id,
           }))
         );
