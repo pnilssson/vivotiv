@@ -16,7 +16,7 @@ import { FileTextIcon, SettingsIcon, ShoppingCartIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import FeedbackDialog from "../feedback-dialog";
-import { toast } from "@/lib/hooks/use-toast";
+import { toast } from "@/lib/hooks/useToast";
 
 const items = [
   {

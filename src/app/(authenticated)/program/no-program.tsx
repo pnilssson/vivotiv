@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useToast } from "@/lib/hooks/use-toast";
+import { useToast } from "@/lib/hooks/useToast";
 import { LoaderCircleIcon } from "lucide-react";
 import { generateProgram } from "./actions";
 import { ActionResponse } from "@/lib/types";

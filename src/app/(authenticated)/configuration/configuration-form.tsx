@@ -33,7 +33,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { configurationRequestSchema } from "@/lib/zod/schema";
-import { useToast } from "@/lib/hooks/use-toast";
+import { useToast } from "@/lib/hooks/useToast";
 import ContentBox from "@/components/shared/content-box";
 
 export default function Component({

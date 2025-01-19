@@ -7,7 +7,7 @@ import TextMuted from "@/components/shared/typography/text-muted";
 import Title from "@/components/shared/typography/title";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/lib/hooks/use-toast";
+import { useToast } from "@/lib/hooks/useToast";
 import { getStripe } from "@/lib/stripe/client";
 import { checkoutWithStripe } from "@/lib/stripe/server";
 import { cn } from "@/lib/utils";
