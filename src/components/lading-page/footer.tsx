@@ -23,7 +23,7 @@ export default function Component() {
               </p>
 
               <ul className="flex items-center space-x-3 mt-9">
-                <li className="bg-slate-800 p-2 rounded-full">
+                <li>
                   <Link
                     href="https://www.linkedin.com/in/pnilssson/"
                     target="_blank">
