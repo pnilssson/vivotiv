@@ -1,7 +1,7 @@
 import TextReveal from "../ui/text-reveal";
 import SectionContent from "./section-content";
 
-export async function Benefits() {
+export default async function Component() {
   return (
     <SectionContent>
       <div className="z-10 flex min-h-64 items-center justify-center">

@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import Title from "./title";
 import TextMuted from "./text-muted";

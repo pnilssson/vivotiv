@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 
-export default function Page() {
+export default async function Page() {
   return (
     <Center>
       <Card>

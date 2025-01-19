@@ -1,4 +1,6 @@
-export default async function Component({
+"use client";
+
+export default function Component({
   children,
 }: Readonly<{
   children: React.ReactNode;

@@ -7,7 +7,7 @@ import PrivacyPolicy from "../shared/privacy-policy";
 import TermsAndConditions from "../shared/terms-and-conditions";
 import CookiePolicy from "../shared/cookie-policy";
 
-export default function Component() {
+export default async function Component() {
   return (
     <FadeIn>
       <Section className="mb-8 md:mb-8">

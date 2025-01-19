@@ -1,10 +1,8 @@
-"use client";
-
 import ShineBorder from "@/components/magicui/shine-border";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-export default function Component({
+export default async function Component({
   title,
   subtitle,
   description,

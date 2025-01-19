@@ -1,4 +1,4 @@
-export async function Banner() {
+export default async function Component() {
   return (
     <div className="p-4 bg-gradient-to-b from-emerald-50">
       <p className="text-center tracking-tight font-regular">

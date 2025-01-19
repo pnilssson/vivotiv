@@ -1,9 +1,11 @@
+"use client";
+
 import ContentBox from "@/components/shared/content-box";
 import PageTitle from "@/components/shared/typography/page-title";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-export default async function Component() {
+export default function Component() {
   return (
     <ContentBox className={"flex lg:gap-4 items-center lg:flex-row flex-wrap"}>
       <div className="flex gap-4 flex-1">
