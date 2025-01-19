@@ -20,6 +20,7 @@ import {
   getCurrentGeneratedProgramsCountByUserIdQuery,
   getConfigurationExistQuery,
   getProfileByIdQuery,
+  getActiveProgramExistQuery,
 } from "@/db/queries";
 import * as Sentry from "@sentry/nextjs";
 import { getPrompt } from "@/lib/prompt";
@@ -39,14 +40,14 @@ async function validateConfigurationExist(): Promise<void> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
   const result = await getConfigurationExistQuery(user.id);
-  if (!result) redirect("/program/no-configuration");
+  if (!result) redirect("/program/configuration-missing");
 }
 
 async function validateMembership(): Promise<void> {
   const result = await getMemberShipEndDate();
   if (shortDate(result) >= shortDate()) return;
 
-  redirect("/program/no-membership");
+  redirect("/program/no-active-membership");
 }
 
 export async function getCurrentProgram(): Promise<ProgramResponse | null> {
@@ -56,7 +57,7 @@ export async function getCurrentProgram(): Promise<ProgramResponse | null> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
   const result = await getCurrentProgramQuery(user.id);
-  if (!result) redirect("/program/no-program");
+  if (!result) redirect("/program/no-active-program");
 
   return result;
 }
@@ -100,6 +101,16 @@ export async function getCurrentGeneratedProgramsCount() {
 export async function generateProgram(): Promise<ActionResponse> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
+  const activeProgramExists = await getActiveProgramExistQuery(user.id);
+
+  if (activeProgramExists) {
+    return {
+      success: false,
+      errors: [],
+      message:
+        "An active program already exists. Archive the current active program if you want to generate a new one.",
+    };
+  }
 
   const currentGeneratedProgramsCount =
     await getCurrentGeneratedProgramsCount();

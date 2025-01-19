@@ -15,6 +15,16 @@ import { asc, gte } from "drizzle-orm";
 import { subDays, subMinutes } from "date-fns";
 import { experience, preferredDay, workoutType } from "./schema";
 
+export const getActiveProgramExistQuery = cache(async (userId: string) => {
+  const exists = await db.query.program.findFirst({
+    columns: { id: true },
+    where: (program, { and, eq }) =>
+      and(eq(program.user_id, userId), eq(program.archived, false)),
+  });
+
+  return !!exists; // Return true if a record exists, false otherwise
+});
+
 export const getCurrentProgramQuery = cache(async (userId: string) => {
   const result = await db.query.program.findFirst({
     where: (program, { eq, and }) =>
