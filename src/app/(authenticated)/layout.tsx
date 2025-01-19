@@ -1,6 +1,7 @@
 import NavigationWrapper from "@/components/sidebar/sidebar-wrapper";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import React from "react";
 
 export default async function Layout({
   children,
@@ -13,5 +14,9 @@ export default async function Layout({
     redirect("/auth/signin");
   }
 
-  return <NavigationWrapper>{children}</NavigationWrapper>;
+  return (
+    <React.Fragment>
+      <NavigationWrapper>{children}</NavigationWrapper>
+    </React.Fragment>
+  );
 }
