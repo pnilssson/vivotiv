@@ -44,7 +44,11 @@ export const configurationRequestSchema = z.object({
   experience_id: z.string({
     required_error: "Experience is required.",
   }),
-  equipment: z.string().max(1000, "Maximum 1000 characters.").nullable(),
+  equipment: z
+    .string()
+    .max(1000, "Maximum 1000 characters.")
+    .regex(/^[\w,\s]*$/, "Please provide equipment in English.")
+    .nullable(),
   generate_automatically: z.boolean(),
 });
 

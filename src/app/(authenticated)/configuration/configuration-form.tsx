@@ -278,6 +278,7 @@ export default function Component({
                       onChange={field.onChange}
                     />
                   </FormControl>
+                  <ErrorMessages name="equipment" errors={state.errors} />
                   <FormDescription>
                     Specify available training equipment related to selected
                     workout types separated by commas.

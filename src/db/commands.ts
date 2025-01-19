@@ -1,3 +1,5 @@
+"use server";
+
 import { configurationRequestSchema, programSchema } from "@/lib/zod/schema";
 import { db } from "./db";
 import {

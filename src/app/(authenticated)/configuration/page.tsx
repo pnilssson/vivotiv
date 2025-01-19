@@ -20,12 +20,14 @@ export default async function Page() {
           "We will tailor your program to your needs based on the information you provide below."
         }
       />
-      <ConfigurationForm
-        configuration={configuration}
-        workoutTypes={workoutTypes}
-        preferredDays={preferredDays}
-        experiences={experiences}
-      />
+      {configuration && workoutTypes && preferredDays && experiences ? (
+        <ConfigurationForm
+          configuration={configuration}
+          workoutTypes={workoutTypes}
+          preferredDays={preferredDays}
+          experiences={experiences}
+        />
+      ) : null}
     </React.Fragment>
   );
 }

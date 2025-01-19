@@ -47,9 +47,9 @@ export const getPrompt = async (
 
   // Calculate warmup and workout times with rounding
   const warmupTime = Math.round(time * 0.2);
-  const warmupExercises = Math.ceil(warmupTime / 3);
+  const warmupExercises = Math.ceil(warmupTime / 2);
   const workoutExerciseTime = Math.round(time * 0.8);
-  const workoutExercises = Math.floor(workoutExerciseTime / 5);
+  const workoutExercises = Math.floor(workoutExerciseTime / 4);
 
   return `You are tasked with generating a one-week home-training program that aligns with the following requirements:
   
@@ -85,7 +85,7 @@ export const getPrompt = async (
   6. Exercise Description:
     - Provide a clear, user-friendly description of how to perform the exercise.
      
-  6. Workout Description:
+  7. Workout Description:
     - A short description of the workout without mentioning users choosen training experience.`;
 };
 
