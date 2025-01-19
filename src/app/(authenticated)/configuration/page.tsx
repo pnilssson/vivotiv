@@ -20,7 +20,7 @@ export default async function Page() {
           "We will tailor your program to your needs based on the information you provide below."
         }
       />
-      {configuration && workoutTypes && preferredDays && experiences ? (
+      {workoutTypes && preferredDays && experiences ? (
         <ConfigurationForm
           configuration={configuration}
           workoutTypes={workoutTypes}
