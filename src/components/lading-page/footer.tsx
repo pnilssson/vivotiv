@@ -27,7 +27,7 @@ export default function Component() {
                   <Link
                     href="https://www.linkedin.com/in/pnilssson/"
                     target="_blank">
-                    <LinkedInLogoIcon color="white" />
+                    <LinkedInLogoIcon color="black" className="h-8 w-8" />
                   </Link>
                 </li>
               </ul>
