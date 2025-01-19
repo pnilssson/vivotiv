@@ -16,6 +16,7 @@ import { generateObject } from "ai";
 import { getConfigurationQuery, getCurrentProgramQuery } from "@/db/queries";
 import * as Sentry from "@sentry/nextjs";
 import { getPrompt } from "@/lib/prompt";
+import { log } from "next-axiom";
 
 export async function getCurrentProgram(): Promise<ProgramResponse | null> {
   const supabase = await createClient();
@@ -27,6 +28,11 @@ export async function archiveProgram(programId: string) {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
 
+  log.info("User archived program.", {
+    userId: user.id,
+    email: user.email,
+    programId,
+  });
   await archiveProgramCommand(programId, user.id);
   revalidatePath("/program", "page");
 }
@@ -77,13 +83,18 @@ export async function generateProgram(): Promise<ActionResponse> {
       temperature: 0.3,
     });
 
-    await handleProgramInserts(
+    const programId = await handleProgramInserts(
       program,
       user.id,
       prompt,
       usage.promptTokens,
       usage.completionTokens
     );
+    log.info("User generated a new program.", {
+      userId: user.id,
+      email: user.email,
+      programId,
+    });
   } catch (error) {
     Sentry.captureException(error, {
       user: { id: user.id, email: user.email },

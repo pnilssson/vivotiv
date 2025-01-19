@@ -18,7 +18,6 @@ import {
 } from "@/lib/types";
 import * as Sentry from "@sentry/nextjs";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { log } from "next-axiom";
 
 export async function getWorkoutTypes(): Promise<WorkoutTypeResponse[]> {

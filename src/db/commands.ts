@@ -27,6 +27,7 @@ export async function handleProgramInserts(
   promptTokens: number,
   completionTokens: number
 ) {
+  let programId = "";
   await db.transaction(async (trx) => {
     // Insert program
     const [programResult] = await trx
@@ -38,7 +39,7 @@ export async function handleProgramInserts(
       })
       .returning({ id: program.id });
 
-    const programId = programResult.id;
+    programId = programResult.id;
 
     // Insert program metadata
     await trx.insert(programMetadata).values({
@@ -100,6 +101,7 @@ export async function handleProgramInserts(
       }
     }
   });
+  return programId;
 }
 
 export async function updateProfileMembershipCommand(
