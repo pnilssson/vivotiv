@@ -8,7 +8,6 @@ import { cn, shortDate } from "@/lib/utils";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { FolderArchiveIcon, LoaderCircleIcon } from "lucide-react";
-import ConfirmDialog from "@/components/shared/confirm-dialog";
 import { archiveProgram, completeWorkout, uncompleteWorkout } from "./actions";
 import ContentBox from "@/components/shared/content-box";
 const MotivationalTitle = dynamic(() => import("./motivational-title"), {
@@ -16,8 +15,15 @@ const MotivationalTitle = dynamic(() => import("./motivational-title"), {
 });
 import dynamic from "next/dynamic";
 import TextMuted from "@/components/shared/typography/text-muted";
+import ConfirmArchiveDialog from "./confirm-archive-dialog";
 
-export default function Component({ program }: { program: ProgramResponse }) {
+export default function Component({
+  program,
+  currentGeneratedProgramsCount,
+}: {
+  program: ProgramResponse;
+  currentGeneratedProgramsCount: number;
+}) {
   const [archiveLoading, setArchiveLoading] = useState<boolean>(false);
   const [updateWorkoutLoading, setUpdateWorkoutLoading] =
     useState<boolean>(false);
@@ -62,12 +68,9 @@ export default function Component({ program }: { program: ProgramResponse }) {
           </TextMuted>
         </div>
         <div>
-          <ConfirmDialog
-            title="Are you sure?"
-            description="This will archive the program and you will need to generate a new."
+          <ConfirmArchiveDialog
             action={handleConfirm}
-            confirmText="Archive"
-            cancelText="Cancel">
+            currentGeneratedProgramsCount={currentGeneratedProgramsCount}>
             <Button variant="secondary" size="icon">
               {archiveLoading ? (
                 <LoaderCircleIcon className="animate-spin" />
@@ -75,7 +78,7 @@ export default function Component({ program }: { program: ProgramResponse }) {
                 <FolderArchiveIcon />
               )}
             </Button>
-          </ConfirmDialog>
+          </ConfirmArchiveDialog>
         </div>
       </div>
       <div className="flex flex-row gap-2 sm:gap-4 mt-8">

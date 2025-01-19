@@ -3,6 +3,7 @@
 import {
   archiveProgramCommand,
   completeWorkoutCommand,
+  deleteOldProgramsByUserIdCommand,
   handleProgramInserts,
   uncompleteWorkoutCommand,
 } from "@/db/commands";
@@ -13,10 +14,15 @@ import { ActionResponse, ProgramResponse } from "@/lib/types";
 import { revalidatePath } from "next/cache";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
-import { getConfigurationQuery, getCurrentProgramQuery } from "@/db/queries";
+import {
+  getConfigurationQuery,
+  getCurrentProgramQuery,
+  getCurrentGeneratedProgramsCountByUserIdQuery,
+} from "@/db/queries";
 import * as Sentry from "@sentry/nextjs";
 import { getPrompt } from "@/lib/prompt";
 import { log } from "next-axiom";
+import { PROGRAM_GENERATION_LIMIT } from "@/lib/constants";
 
 export async function getCurrentProgram(): Promise<ProgramResponse | null> {
   const supabase = await createClient();
@@ -53,9 +59,31 @@ export async function uncompleteWorkout(workoutId: string) {
   revalidatePath("/program", "page");
 }
 
+export async function getCurrentGeneratedProgramsCount() {
+  const supabase = await createClient();
+  const user = await getUserOrRedirect(supabase);
+  await getUserOrRedirect(supabase);
+  return await getCurrentGeneratedProgramsCountByUserIdQuery(user.id);
+}
+
 export async function generateProgram(): Promise<ActionResponse> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
+
+  const currentGeneratedProgramsCount =
+    await getCurrentGeneratedProgramsCount();
+  if (currentGeneratedProgramsCount >= PROGRAM_GENERATION_LIMIT) {
+    Sentry.captureMessage(
+      "User reached max number of program generations during the last 7 days and should not have been able to generate a new program.",
+      { user: { id: user.id, email: user.email }, level: "error" }
+    );
+    return {
+      success: false,
+      errors: [],
+      message:
+        "You have reached your weekly limit of five program generations.",
+    };
+  }
 
   const configuration = await getConfigurationQuery(user.id);
   if (!configuration) {
@@ -103,6 +131,7 @@ export async function generateProgram(): Promise<ActionResponse> {
     throw new Error("Error when generating a program.");
   }
 
+  await deleteOldProgramsByUserIdCommand(user.id);
   revalidatePath("/program", "page");
   return {
     success: true,

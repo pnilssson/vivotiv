@@ -8,20 +8,26 @@ import { generateProgram } from "./actions";
 import { ActionResponse } from "@/lib/types";
 import PageTitle from "@/components/shared/typography/page-title";
 import ContentBox from "@/components/shared/content-box";
+import { PROGRAM_GENERATION_LIMIT } from "@/lib/constants";
 
-export default function Component() {
+export default function Component({
+  currentGeneratedProgramsCount,
+}: {
+  currentGeneratedProgramsCount: number;
+}) {
   const [loading, setLoading] = useState<boolean>(false);
   const { toast } = useToast();
 
   const generate = async () => {
     setLoading(true);
-    toast({
-      description:
-        "Generating your training program may take a minute or two. Please avoid closing or refreshing the page during this process.",
-    });
+    if (currentGeneratedProgramsCount < PROGRAM_GENERATION_LIMIT) {
+      toast({
+        description:
+          "Generating your training program may take a minute or two. Please avoid closing or refreshing the page during this process.",
+      });
+    }
     const result = await generateProgram();
     handleResult(result);
-
     setLoading(false);
   };
 

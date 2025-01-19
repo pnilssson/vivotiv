@@ -20,3 +20,6 @@ export const MOTIVATIONAL_TITLES = [
 ];
 
 export const MIN_DATE = new Date(0);
+
+export const PROGRAM_GENERATION_LIMIT = 5;
+export const PROGRAM_ARCHIVED_LIMIT = 5;

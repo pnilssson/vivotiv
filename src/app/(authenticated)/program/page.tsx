@@ -1,4 +1,4 @@
-import { getCurrentProgram } from "./actions";
+import { getCurrentGeneratedProgramsCount, getCurrentProgram } from "./actions";
 import NoProgram from "./no-program";
 import {
   getConfiguration,
@@ -11,10 +11,11 @@ import React from "react";
 
 export default async function Page() {
   const currentProgram = await getCurrentProgram();
-  const configuration = await getConfiguration();
   const membershipEndDate = await getMemberShipEndDate();
+  const configuration = await getConfiguration();
+  const currentGeneratedProgramsCount =
+    await getCurrentGeneratedProgramsCount();
   const today = new Date();
-
   return (
     <React.Fragment>
       {!configuration ? (
@@ -22,9 +23,14 @@ export default async function Page() {
       ) : membershipEndDate < today ? (
         <NoMembership membershipEndDate={membershipEndDate} />
       ) : !currentProgram ? (
-        <NoProgram />
+        <NoProgram
+          currentGeneratedProgramsCount={currentGeneratedProgramsCount}
+        />
       ) : (
-        <ProgramWeek program={currentProgram} />
+        <ProgramWeek
+          program={currentProgram}
+          currentGeneratedProgramsCount={currentGeneratedProgramsCount}
+        />
       )}
     </React.Fragment>
   );

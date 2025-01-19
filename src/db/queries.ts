@@ -12,7 +12,7 @@ import {
 import { db } from "./db";
 import { cache } from "react";
 import { asc, gte } from "drizzle-orm";
-import { subMinutes } from "date-fns";
+import { subDays, subMinutes } from "date-fns";
 import { experience, preferredDay, workoutType } from "./schema";
 
 export const getCurrentProgramQuery = cache(async (userId: string) => {
@@ -72,6 +72,22 @@ export const getCurrentProgramQuery = cache(async (userId: string) => {
 
   return programResponse;
 });
+
+export const getCurrentGeneratedProgramsCountByUserIdQuery = cache(
+  async (userId: string) => {
+    const sixDaysAgo = subDays(new Date(), 6);
+
+    const result = await db.query.program.findMany({
+      columns: {
+        id: true,
+      },
+      where: (program, { eq, and, gte }) =>
+        and(eq(program.user_id, userId), gte(program.created, sixDaysAgo)),
+    });
+
+    return result.length;
+  }
+);
 
 export const getConfigurationQuery = cache(async (userId: string) => {
   const result = await db.query.configuration.findFirst({
@@ -145,13 +161,6 @@ export const getExperiencesQuery = cache(async () => {
     orderBy: [asc(experience.level)],
   });
   return result as ExperienceResponse[];
-});
-
-export const getProfileByEmailQuery = cache(async (email: string) => {
-  const result = await db.query.profile.findFirst({
-    where: (profile, { eq }) => eq(profile.email, email),
-  });
-  return result as ProfileResponse | undefined;
 });
 
 export const getProfileByIdQuery = cache(async (userId: string) => {

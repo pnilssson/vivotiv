@@ -16,11 +16,12 @@ import {
   workoutExercise,
 } from "./schema";
 import { z } from "zod";
-import { and, eq } from "drizzle-orm";
+import { and, eq, notInArray } from "drizzle-orm";
 import { ProfileResponse } from "@/lib/types";
 import { shortDate } from "@/lib/utils";
 import { addDays, isBefore } from "date-fns";
 import * as Sentry from "@sentry/nextjs";
+import { PROGRAM_ARCHIVED_LIMIT } from "@/lib/constants";
 
 export async function handleProgramInserts(
   newProgram: z.infer<typeof programSchema>,
@@ -104,6 +105,33 @@ export async function handleProgramInserts(
     }
   });
   return programId;
+}
+
+export async function deleteOldProgramsByUserIdCommand(userId: string) {
+  // Fetch the most recent programs that should be kept (the last PROGRAM_ARCHIVED_LIMIT programs)
+  const recentPrograms = await db.query.program.findMany({
+    columns: { id: true },
+    where: (program, { eq }) =>
+      and(eq(program.user_id, userId), eq(program.archived, true)),
+    orderBy: (program, { desc }) => desc(program.created),
+    limit: PROGRAM_ARCHIVED_LIMIT,
+  });
+
+  if (!recentPrograms.length) return;
+
+  // Extract the IDs of the programs to keep
+  const recentProgramIds = recentPrograms.map((program) => program.id);
+
+  // Delete all programs except the recent 4
+  await db
+    .delete(program)
+    .where(
+      and(
+        eq(program.user_id, userId),
+        eq(program.archived, true),
+        notInArray(program.id, recentProgramIds)
+      )
+    );
 }
 
 export async function updateProfileMembershipCommand(
