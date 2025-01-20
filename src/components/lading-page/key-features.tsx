@@ -31,7 +31,7 @@ const features = [
   {
     title: "Your preferences",
     description:
-      "Pick your preferred workout days and focus areas—strength, flexibility, balance, or endurance—and.",
+      "Pick your preferred workout days and focus areas—strength, flexibility, balance, or endurance.",
     icon: <SlidersHorizontalIcon />,
   },
 ];
