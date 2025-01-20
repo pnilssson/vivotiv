@@ -86,6 +86,7 @@ export const getPrompt = async (
     - The available execution types for workout exercises are:
       ${exerciseExecutionsText}
     - Ensure that each workout exercise includes the appropriate exercise_type_id from the list above.
+    - Ensure that exercise type is NOT included in the title.
     - Warm-up exercises should not use the exercise type ID.
 
   6. Exercise Description:
