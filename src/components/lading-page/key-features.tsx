@@ -25,13 +25,13 @@ const features = [
   {
     title: "Your experience",
     description:
-      "Choose your fitness level, and we'll tailor the program to challenge you just right, whether you're a beginner or advanced.",
+      "Choose your fitness level, and we'll make sure the program challenge you just right, whether you're a beginner or advanced.",
     icon: <UserCog />,
   },
   {
     title: "Your preferences",
     description:
-      "Pick your preferred workout days and focus areas—strength, flexibility, balance, or endurance—and we'll customize your plan.",
+      "Pick your preferred workout days and focus areas—strength, flexibility, balance, or endurance—and.",
     icon: <SlidersHorizontalIcon />,
   },
 ];

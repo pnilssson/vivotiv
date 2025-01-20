@@ -20,6 +20,8 @@ export const metadata: Metadata = {
     "personalized training programs",
     "training personalized for you",
     "working out from home",
+    "individualized workout program",
+    "custom training plans",
     "home workout plans",
     "effective home training",
     "personalized home workout plans",
@@ -27,6 +29,7 @@ export const metadata: Metadata = {
     "train from home program",
     "home training workouts",
     "personal home workouts",
+    "custom workout program"
   ],
   alternates: {
     canonical: "./",
