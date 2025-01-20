@@ -25,8 +25,6 @@ export default function Component({
   currentGeneratedProgramsCount: number;
 }) {
   const [archiveLoading, setArchiveLoading] = useState<boolean>(false);
-  const [updateWorkoutLoading, setUpdateWorkoutLoading] =
-    useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<string>(shortDate());
   const daysOfWeek = Array.from({ length: 7 }, (_, i) => {
     const day = new Date(program.start_date);
@@ -38,22 +36,6 @@ export default function Component({
     setArchiveLoading(true);
     await archiveProgram(program.id);
     setArchiveLoading(false);
-  };
-
-  const handleCompleteWorkout = async (workoutId: string | undefined) => {
-    if (workoutId) {
-      setUpdateWorkoutLoading(true);
-      await completeWorkout(workoutId);
-      setUpdateWorkoutLoading(false);
-    }
-  };
-
-  const handleUncompleteWorkout = async (workoutId: string | undefined) => {
-    if (workoutId) {
-      setUpdateWorkoutLoading(true);
-      await uncompleteWorkout(workoutId);
-      setUpdateWorkoutLoading(false);
-    }
   };
 
   return (
@@ -130,9 +112,6 @@ export default function Component({
       </div>
       <WorkoutView
         workout={program.workouts.find((w) => w.date == selectedDate)}
-        loading={updateWorkoutLoading}
-        completeAction={handleCompleteWorkout}
-        uncompleteAction={handleUncompleteWorkout}
       />
     </React.Fragment>
   );

@@ -51,6 +51,10 @@ export interface ExerciseResponse {
   completed: boolean;
 }
 
+export interface WorkoutExerciseResponse extends ExerciseResponse {
+  exerciseType: ExerciseTypeResponse;
+}
+
 export interface WarmUpResponse {
   id: string;
   description: string;
@@ -63,7 +67,7 @@ export interface WorkoutResponse {
   completed: boolean;
   description: string;
   warmup: WarmUpResponse | null;
-  exercises: ExerciseResponse[] | null;
+  exercises: WorkoutExerciseResponse[] | null;
 }
 
 export interface ExerciseTypeResponse {

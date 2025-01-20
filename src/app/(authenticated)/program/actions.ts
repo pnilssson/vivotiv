@@ -75,20 +75,34 @@ export async function archiveProgram(programId: string) {
   revalidatePath("/program", "page");
 }
 
-export async function completeWorkout(workoutId: string) {
+export async function completeWorkout(
+  workoutId: string
+): Promise<ActionResponse> {
   const supabase = await createClient();
   await getUserOrRedirect(supabase);
 
   await completeWorkoutCommand(workoutId);
   revalidatePath("/program", "page");
+  return {
+    success: true,
+    errors: [],
+    message: null,
+  };
 }
 
-export async function uncompleteWorkout(workoutId: string) {
+export async function uncompleteWorkout(
+  workoutId: string
+): Promise<ActionResponse> {
   const supabase = await createClient();
   await getUserOrRedirect(supabase);
 
   await uncompleteWorkoutCommand(workoutId);
   revalidatePath("/program", "page");
+  return {
+    success: true,
+    errors: [],
+    message: null,
+  };
 }
 
 export async function getCurrentGeneratedProgramsCount() {
@@ -99,6 +113,7 @@ export async function getCurrentGeneratedProgramsCount() {
 }
 
 export async function generateProgram(): Promise<ActionResponse> {
+  const startTime = Date.now();
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
   const activeProgramExists = await getActiveProgramExistQuery(user.id);
@@ -174,5 +189,12 @@ export async function generateProgram(): Promise<ActionResponse> {
 
   await deleteOldProgramsByUserIdCommand(user.id);
   revalidatePath("/program", "page");
+
+  log.info("Program generation completed.", {
+    userId: user.id,
+    email: user.email,
+    elapsedTime: `${Date.now() - startTime}ms`,
+  });
+
   redirect("/program");
 }

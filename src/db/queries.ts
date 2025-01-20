@@ -14,7 +14,7 @@ import { db } from "./db";
 import { cache } from "react";
 import { asc, gte } from "drizzle-orm";
 import { subDays, subMinutes } from "date-fns";
-import { experience, preferredDay, workoutType } from "./schema";
+import { exerciseType, experience, preferredDay, workoutType } from "./schema";
 
 export const getActiveProgramExistQuery = cache(async (userId: string) => {
   const exists = await db.query.program.findFirst({
@@ -38,7 +38,9 @@ export const getCurrentProgramQuery = cache(async (userId: string) => {
               exercises: true,
             },
           },
-          exercises: true,
+          exercises: {
+            with: { exerciseType: true },
+          },
         },
       },
     },
@@ -77,6 +79,7 @@ export const getCurrentProgramQuery = cache(async (userId: string) => {
         description: exercise.description,
         execution: exercise.execution,
         completed: exercise.completed,
+        exerciseType: exercise.exerciseType,
       })),
     })),
   };
