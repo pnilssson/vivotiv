@@ -99,6 +99,7 @@ export async function handleProgramInserts(
             description: exerciseData.description,
             execution: exerciseData.execution,
             workout_id: workoutId,
+            exercise_type_id: exerciseData.exercise_type_id,
           });
         }
       }

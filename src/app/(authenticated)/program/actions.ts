@@ -122,8 +122,7 @@ export async function generateProgram(): Promise<ActionResponse> {
     return {
       success: false,
       errors: [],
-      message:
-        "You have reached your weekly limit of five program generations.",
+      message: `You have reached your weekly limit of ${PROGRAM_GENERATION_LIMIT} program generations.`,
     };
   }
 

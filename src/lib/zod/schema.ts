@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+export const exerciseTypeSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  promptDescription: z.string(),
+});
+
 export const exerciseSchema = z.object({
   title: z.string(),
   description: z.string(),
@@ -16,7 +22,7 @@ export const workoutSchema = z.object({
   completed: z.boolean(),
   description: z.string(),
   warmup: warmUpSchema,
-  exercises: z.array(exerciseSchema),
+  exercises: z.array(exerciseSchema.extend({ exercise_type_id: z.string() })),
 });
 
 export const programSchema = z.object({

@@ -1,6 +1,6 @@
 "use server";
 
-import { getWorkoutTypesQuery } from "@/db/queries";
+import { getExerciseTypeQuery, getWorkoutTypesQuery } from "@/db/queries";
 import { ConfigurationResponse, WorkoutTypeResponse } from "./types";
 import { shortDate } from "./utils";
 
@@ -15,6 +15,7 @@ export const getPrompt = async (
     preferred_days,
     experience,
   } = data;
+  const exerciseTypes = await getExerciseTypeQuery();
   const allWorkoutTypes = await getWorkoutTypesQuery();
   const excludedWorkoutTypes = getExcludedWorkoutTypes(
     allWorkoutTypes,
@@ -42,8 +43,15 @@ export const getPrompt = async (
 
   const equipmentText =
     equipment.length > 0
-      ? `The available equipment is ${equipment}. No other external equipment can be used, body weight exercises and things usually available at home may still be used.`
+      ? `The available equipment is ${equipment}. No other gym equipment can be used, body weight exercises and equipment generally available at home may still be used.`
       : "No additional equipment is available.";
+
+  const exerciseExecutionsText = exerciseTypes
+    .map(
+      (type) =>
+        `- ${type.name}(exercise_type_id: ${type.id}): ${type.promptDescription}.`
+    )
+    .join("\n");
 
   // Calculate warmup and workout times with rounding
   const warmupTime = Math.round(time * 0.2);
@@ -75,15 +83,11 @@ export const getPrompt = async (
   
   5. Exercise Executions:
     - Vary execution types across exercises within each workout.
-      - Reps and sets
-        - IMPORTANT: If reps and sets is used the execution MUST include rest period.
-      - AMRAP (as many reps as possible within a time frame)
-      - EMOM (every minute on the minute) 
-        - IMPORTANT: EMOM ALWAYS needs specified repetitions to complete every minute and can not consists of exercises where there is no clear start and end of the exercise i.e balance on one leg
-      - Tabata (20 seconds of high-intensity work followed by 10 seconds of rest, repeated for 8 rounds)
-      - For Time (Complete a specific reps of exercises as quickly as possible)
-      - Supersets (performing two exercises back to back with no rest in between. These can be either antagonist supersets (working opposite muscle groups) or agonist supersets (working the same muscle group)).
-  
+    - The available execution types for workout exercises are:
+      ${exerciseExecutionsText}
+    - Ensure that each workout exercise includes the appropriate exercise_type_id from the list above.
+    - Warm-up exercises should not use the exercise type ID.
+
   6. Exercise Description:
     - Provide a clear, user-friendly description of how to perform the exercise.
      

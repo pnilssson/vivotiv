@@ -66,6 +66,13 @@ export interface WorkoutResponse {
   exercises: ExerciseResponse[] | null;
 }
 
+export interface ExerciseTypeResponse {
+  id: string;
+  name: string;
+  description: string;
+  promptDescription: string;
+}
+
 export interface WorkoutTypeResponse {
   id: string;
   name: string;

@@ -224,6 +224,11 @@ export const workoutExercise = pgTable(
         onDelete: "cascade",
       })
       .notNull(),
+    exercise_type_id: uuid()
+      .references(() => exerciseType.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
   },
   (table) => [
     pgPolicy("Authenticated can handle workoutExercise", {
@@ -241,8 +246,33 @@ export const workoutExerciseRelations = relations(
       fields: [workoutExercise.workout_id],
       references: [workout.id],
     }),
+    exerciseType: one(exerciseType, {
+      fields: [workoutExercise.exercise_type_id],
+      references: [exerciseType.id],
+    }),
   })
 );
+
+export const exerciseType = pgTable(
+  "exercise_type",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    name: text().notNull(),
+    description: text().notNull(),
+    promptDescription: text().notNull(),
+  },
+  (table) => [
+    pgPolicy("Supabase auth admin can handle exercise types", {
+      for: "all",
+      to: supabaseAuthAdminRole,
+      withCheck: sql`true`,
+    }),
+  ]
+).enableRLS();
+
+export const exerciseTypeRelations = relations(exerciseType, ({ many }) => ({
+  exercises: many(workoutExercise),
+}));
 
 // Program metadata
 export const programMetadata = pgTable(

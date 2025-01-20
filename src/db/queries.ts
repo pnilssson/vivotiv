@@ -2,6 +2,7 @@
 
 import {
   ConfigurationResponse,
+  ExerciseTypeResponse,
   ExperienceResponse,
   FeedbackResponse,
   PreferredDayResponse,
@@ -160,6 +161,11 @@ export const getConfigurationIdByUserIdQuery = async (userId: string) => {
 
   return result.id;
 };
+
+export const getExerciseTypeQuery = cache(async () => {
+  const result = await db.query.exerciseType.findMany();
+  return result as ExerciseTypeResponse[];
+});
 
 export const getWorkoutTypesQuery = cache(async () => {
   const result = await db.query.workoutType.findMany({
