@@ -17,7 +17,7 @@ export default async function Component() {
             <SectionContent className="py-0">
               <h2 className="text-5xl md:text-6xl font-semibold">
                 With the goal to make more people{" "}
-                <span className="text-emerald-400">move</span>
+                <span className="text-emerald-400">active</span>
               </h2>
             </SectionContent>
           </Section>
@@ -44,12 +44,12 @@ export default async function Component() {
                     </Link>
                   </div>
                   <p className="text-muted-foreground max-w-[540px]">
-                    We, are really just me—a passionate individual who has been
-                    working out his whole life and deeply believes in its power
-                    to transform lives. I&apos;m certain that movement can
-                    improve both physical and mental well-being, and I want to
-                    share that with as many people as possible. That&apos;s why
-                    I&apos;m building Vivotiv.
+                    We are really just me—a passionate individual who has been
+                    fortunate enough to work out my whole life. I deeply believe
+                    in the power that exercise has to transform lives. I&apos;m
+                    certain that movement can improve both physical and mental
+                    well-being, and I want to share that with as many people as
+                    possible. That&apos;s why I&apos;m building Vivotiv.
                   </p>
                 </div>
               </div>
