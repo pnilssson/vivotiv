@@ -53,7 +53,7 @@ export const generateProgram = inngest.createFunction(
       );
     });
 
-    logger.info("A new program was generated.", {
+    logger.info("User generated a new program.", {
       userId: event.data?.configuration.user_id,
       programId: programId,
       elapsedTime: `${Date.now() - startTime}ms`,

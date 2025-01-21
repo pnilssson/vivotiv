@@ -46,7 +46,7 @@ export default function Component() {
     }, 5000);
 
     return () => clearInterval(validationInterval);
-  }, []);
+  }, [log, router]);
 
   return <Progress value={progress} className="w-[100%] h-2" />;
 }
