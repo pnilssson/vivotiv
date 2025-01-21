@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { MIN_DATE } from "@/lib/constants";
 import { shortDate } from "@/lib/utils";
 import Link from "next/link";
-import { getMemberShipEndDate } from "../actions";
+import { getMemberShipEndDate } from "./actions";
 
 export default async function Component() {
   const membershipEndDate = await getMemberShipEndDate();
