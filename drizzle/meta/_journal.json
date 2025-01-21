@@ -204,6 +204,13 @@
       "when": 1737400291281,
       "tag": "0028_quiet_daredevil",
       "breakpoints": true
+    },
+    {
+      "idx": 29,
+      "version": "7",
+      "when": 1737489232857,
+      "tag": "0029_skinny_absorbing_man",
+      "breakpoints": true
     }
   ]
 }

@@ -46,6 +46,7 @@ export const profile = pgTable(
     stripe_customer_id: text(),
     membership_end_date: date(),
     created: timestamp().notNull().defaultNow(),
+    generating: boolean().notNull().default(false),
   },
   (table) => [
     foreignKey({
@@ -167,7 +168,7 @@ export const warmupExercise = pgTable(
       .notNull(),
   },
   (table) => [
-    pgPolicy("Authenticated can handle warmupExercise", {
+    pgPolicy("Authenticated can handle warmup exercise", {
       for: "all",
       to: authenticatedRole,
       using: sql`true`,
@@ -231,7 +232,7 @@ export const workoutExercise = pgTable(
       .notNull(),
   },
   (table) => [
-    pgPolicy("Authenticated can handle workoutExercise", {
+    pgPolicy("Authenticated can handle workout exercise", {
       for: "all",
       to: authenticatedRole,
       using: sql`true`,

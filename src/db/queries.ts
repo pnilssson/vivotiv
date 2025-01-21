@@ -87,7 +87,7 @@ export const getCurrentProgramQuery = cache(async (userId: string) => {
   return programResponse;
 });
 
-export const getCurrentGeneratedProgramsCountByUserIdQuery = cache(
+export const getCurrentGeneratedProgramsQuery = cache(
   async (userId: string) => {
     const sixDaysAgo = subDays(new Date(), 6);
 
@@ -197,6 +197,16 @@ export const getProfileByIdQuery = cache(async (userId: string) => {
   });
   return result as ProfileResponse;
 });
+
+export const getGeneratingQuery = async (userId: string) => {
+  const result = await db.query.profile.findFirst({
+    columns: {
+      generating: true,
+    },
+    where: (profile, { eq }) => eq(profile.id, userId),
+  });
+  return result?.generating as boolean;
+};
 
 export const getAnyFeedbackWithinLastMinuteByUserIdQuery = cache(
   async (userId: string) => {

@@ -34,6 +34,7 @@ export interface ProfileResponse {
   stripe_customer_id: string;
   membership_end_date: string;
   created: Date;
+  generating: boolean;
 }
 
 export interface FeedbackResponse {

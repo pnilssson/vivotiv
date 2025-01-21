@@ -175,6 +175,21 @@ export async function updateProfileStripeCustomerIdCommand(
   return result.id;
 }
 
+export async function updateProfileGeneratingCommand(
+  userId: string,
+  generating: boolean
+) {
+  const [result] = await db
+    .update(profile)
+    .set({
+      generating: generating,
+    })
+    .where(eq(profile.id, userId))
+    .returning({ id: profile.id });
+
+  return result.id;
+}
+
 export async function insertOrUpdateConfigurationCommand(
   newConfiguration: z.infer<typeof configurationRequestSchema>,
   configurationId: string | null,
