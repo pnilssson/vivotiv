@@ -11,7 +11,7 @@ const MotivationalTitle = dynamic(() => import("./motivational-title"), {
 export default function Component() {
   return (
     <header className="pt-4 md:px-8 max-w-[1280px] container">
-      <ContentBox className="flex flex-row justify-between items-center">
+      <ContentBox className="flex flex-row justify-between items-center px-4 py-2">
         <MotivationalTitle />
         <SidebarTrigger />
       </ContentBox>

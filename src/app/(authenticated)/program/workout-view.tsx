@@ -106,7 +106,7 @@ export default function Component({
                   </p>
                   <Popover>
                     <PopoverTrigger asChild>
-                      <Button variant="secondary" className="h-8 w-8">
+                      <Button variant="outline" className="h-8 w-8">
                         <InfoIcon />
                       </Button>
                     </PopoverTrigger>
