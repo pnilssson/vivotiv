@@ -10,7 +10,7 @@ export default async function Page() {
           <PageTitle
             className="mb-0"
             title="Generating program"
-            description="We're currently generating your new program. Please give us a minute."
+            description="Your new program will soon be ready . You don't necessarily need to wait—feel free to check back in a minute or two. If you choose to stay, we'll automatically redirect you as soon as it's ready."
           />
         </div>
       </div>

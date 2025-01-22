@@ -14,7 +14,7 @@ export default function Component({
   className?: string;
 }) {
   return (
-    <div className={cn("grid gap-2 mb-8", className)}>
+    <div className={cn("grid gap-2 mb-4 md:mb-8", className)}>
       <Title>{title}</Title>
       <TextMuted className="max-w-[768px]">{description}</TextMuted>
     </div>

@@ -2,7 +2,6 @@
 
 import ShineBorder from "@/components/magicui/shine-border";
 import ContentBox from "@/components/shared/content-box";
-import Heading from "@/components/shared/typography/heading";
 import TextMuted from "@/components/shared/typography/text-muted";
 import Title from "@/components/shared/typography/title";
 import { Badge } from "@/components/ui/badge";
@@ -61,10 +60,10 @@ export default function Component({
   const content = (
     <ContentBox
       className={cn("flex flex-col gap-4", {
-        "border-0": highlight,
+        "border-0 bg-slate-50/50": highlight,
       })}>
       <div className="flex items-baseline">
-        <Heading>{price}</Heading>
+        <Title>{price}</Title>
         {discount ? (
           <Badge
             className="bg-emerald-300 self-center font-normal ml-auto"

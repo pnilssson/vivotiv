@@ -8,14 +8,11 @@ import { cn, shortDate } from "@/lib/utils";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { FolderArchiveIcon, LoaderCircleIcon } from "lucide-react";
-import { archiveProgram, completeWorkout, uncompleteWorkout } from "./actions";
+import { archiveProgram } from "./actions";
 import ContentBox from "@/components/shared/content-box";
-const MotivationalTitle = dynamic(() => import("./motivational-title"), {
-  ssr: false,
-});
-import dynamic from "next/dynamic";
 import TextMuted from "@/components/shared/typography/text-muted";
 import ConfirmArchiveDialog from "./confirm-archive-dialog";
+import Title from "@/components/shared/typography/title";
 
 export default function Component({
   program,
@@ -40,16 +37,9 @@ export default function Component({
 
   return (
     <React.Fragment>
-      <div className="flex justify-between">
-        <div>
-          <MotivationalTitle />
-          <TextMuted className="mt-2 max-w-[768px]">
-            This is your current active program. If you would like to generate a
-            new program, archive existing program by clicking the archive button
-            in the corner.
-          </TextMuted>
-        </div>
-        <div>
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-row justify-between items-center">
+          <Title>Program</Title>
           <ConfirmArchiveDialog
             action={handleConfirm}
             currentGeneratedProgramsCount={currentGeneratedProgramsCount}>
@@ -62,8 +52,15 @@ export default function Component({
             </Button>
           </ConfirmArchiveDialog>
         </div>
+        <div>
+          <TextMuted className="max-w-[768px]">
+            Your currently active program is displayed below. To generate a new
+            program, archive your current program by clicking the archive button
+            in the corner.
+          </TextMuted>
+        </div>
       </div>
-      <div className="flex flex-row gap-2 sm:gap-4 mt-8">
+      <div className="flex flex-row gap-2 sm:gap-4 mt-4 md:mt-8">
         {daysOfWeek.map((date: string) => {
           const workout = program.workouts.find((w) => w.date === date);
           return (
@@ -71,7 +68,7 @@ export default function Component({
               <ContentBox
                 key={date + 1}
                 className={cn(
-                  "px-0 py-2 md:p-4 flex flex-col flex-1 items-center hover:bg-slate-100 cursor-pointer",
+                  "px-0 py-2 md:p-4 flex flex-col flex-1 items-center hover:bg-slate-100/90 cursor-pointer",
                   {
                     "bg-slate-100": date == selectedDate,
                   }

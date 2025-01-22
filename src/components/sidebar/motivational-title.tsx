@@ -1,8 +1,8 @@
 "use client";
 
-import Title from "@/components/shared/typography/title";
 import { MOTIVATIONAL_TITLES } from "@/lib/constants";
 import { useEffect, useState } from "react";
+import Title from "../shared/typography/title";
 
 const getRandomMotivationalTitle = () => {
   const randomIndex = Math.floor(Math.random() * MOTIVATIONAL_TITLES.length);
@@ -16,5 +16,5 @@ export default function MotivationalTitle() {
     setTitle(getRandomMotivationalTitle());
   }, []);
 
-  return <Title>{title}</Title>;
+  return <Title className="text-xl">{title}</Title>;
 }

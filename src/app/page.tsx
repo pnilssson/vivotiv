@@ -5,13 +5,12 @@ import Hero from "@/components/lading-page/hero";
 import HowItWorks from "@/components/lading-page/how-it-works";
 import React from "react";
 import KeyFeatures from "@/components/lading-page/key-features";
-import Banner from "@/components/lading-page/banner";
 import Benefits from "@/components/lading-page/benefits";
 
 export default async function Page() {
   return (
     <React.Fragment>
-      <Banner />
+      {/* <Banner /> */}
       <Header />
       <Hero />
       <KeyFeatures />

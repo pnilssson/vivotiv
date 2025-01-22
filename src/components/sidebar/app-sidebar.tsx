@@ -17,6 +17,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import FeedbackDialog from "../feedback-dialog";
 import { toast } from "@/lib/hooks/useToast";
+import Title from "../shared/typography/title";
 
 const items = [
   {
@@ -66,7 +67,9 @@ export default function Component({
       <SidebarHeader className="h-20 gap-0 p-4 justify-center">
         <SidebarGroup>
           <SidebarMenu>
-            <SidebarMenuItem className="text-xl">Vivotiv</SidebarMenuItem>
+            <SidebarMenuItem>
+              <Title>Vivotiv</Title>
+            </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
       </SidebarHeader>

@@ -12,7 +12,7 @@ export default function Component({
   return (
     <h3
       className={cn(
-        "text-2xl font-semibold leading-none tracking-tight",
+        "text-2xl font-light leading-none tracking-tight",
         className
       )}>
       {children}

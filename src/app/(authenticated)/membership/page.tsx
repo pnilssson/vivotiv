@@ -1,6 +1,7 @@
 import PageTitle from "@/components/shared/typography/page-title";
 import Product from "./product";
 import React from "react";
+import { PROGRAM_GENERATION_LIMIT } from "@/lib/constants";
 
 const MEMBERSHIP_OPTIONS = [
   {
@@ -47,12 +48,12 @@ export default async function Page() {
     <React.Fragment>
       <PageTitle
         title={"Membership store"}
-        description={"All options are one time payments."}
+        description={`All of the options below are one-time payments. With an active membership, you'll be able to generate up to ${PROGRAM_GENERATION_LIMIT} programs per week—for example, if you decide to adjust your configuration and create a new program. Please note that an active membership is required to view your generated programs.`}
       />
       <div className="grid grid-col-1 md:grid-cols-2 gap-4">
         {MEMBERSHIP_OPTIONS.map((option, index) => (
           <Product
-            key={index} // Use a unique key; index is used here as a fallback.
+            key={index}
             title={option.title}
             description={option.description}
             priceId={option.priceId}

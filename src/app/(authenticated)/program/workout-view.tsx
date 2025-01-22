@@ -1,8 +1,6 @@
 "use client";
 
 import ContentBox from "@/components/shared/content-box";
-import Heading from "@/components/shared/typography/heading";
-import SubPageTitle from "@/components/shared/typography/sub-page-title";
 import TextMuted from "@/components/shared/typography/text-muted";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,6 +13,8 @@ import { cn } from "@/lib/utils";
 import { BanIcon, CheckIcon, InfoIcon, LoaderCircleIcon } from "lucide-react";
 import React, { useState } from "react";
 import { completeWorkout, uncompleteWorkout } from "./actions";
+import Title from "@/components/shared/typography/title";
+import PageTitle from "@/components/shared/typography/page-title";
 
 export default function Component({
   workout,
@@ -46,13 +46,13 @@ export default function Component({
       {workout ? (
         <div className="flex flex-col gap-4 mt-4">
           <div className={cn("flex flex-row justify-between")}>
-            <Heading className="self-center">{`Workout of ${new Date(
+            <Title className="self-center">{`Workout of ${new Date(
               workout.date
             ).toLocaleDateString("en-US", {
               weekday: "short",
               month: "short",
               day: "numeric",
-            })}`}</Heading>{" "}
+            })}`}</Title>{" "}
             {!workoutCompleted ? (
               <Button
                 variant="secondary"
@@ -78,7 +78,7 @@ export default function Component({
             )}
           </div>
           <div className="">
-            <SubPageTitle
+            <PageTitle
               title="Warm up"
               description={workout.warmup?.description ?? ""}
             />
@@ -96,7 +96,7 @@ export default function Component({
             ))}
           </div>
           <div className="">
-            <SubPageTitle title="Workout" description={workout.description} />
+            <PageTitle title="Workout" description={workout.description} />
             {workout.exercises?.map((exercise, i) => (
               <ContentBox key={exercise.title} className="mt-4">
                 <div className="flex flex-row justify-between items-center">

@@ -16,7 +16,7 @@ export default function ContentBox({
   return (
     <div
       className={cn(
-        "bg-slate-50/50 border border-slate-100 rounded-lg p-4",
+        "bg-slate-50/90 border border-slate-100 rounded-lg p-4",
         className
       )}
       {...props}>
