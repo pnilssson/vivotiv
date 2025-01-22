@@ -24,12 +24,13 @@ export const metadata: Metadata = {
     "custom training plans",
     "home workout plans",
     "effective home training",
+    "effective workouts",
     "personalized home workout plans",
     "ai workouts",
     "train from home program",
     "home training workouts",
     "personal home workouts",
-    "custom workout program"
+    "custom workout program",
   ],
   alternates: {
     canonical: "./",

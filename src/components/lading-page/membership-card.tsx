@@ -19,9 +19,9 @@ export default async function Component({
 }) {
   const content = (
     <div
-      className={cn("rounded-lg shadow-lg lg:h-80 2xl:h-96 md:my-auto", {
+      className={cn("rounded-lg lg:h-80 2xl:h-96 md:my-auto", {
         "border-0": highlight,
-        "border-2 border-gray-100 bg-white": !highlight,
+        "border-2 border-gray-100 bg-white shadow-lg": !highlight,
       })}>
       <div className="p-8 h-full flex flex-col">
         {discount ? (
@@ -50,7 +50,7 @@ export default async function Component({
 
   return highlight ? (
     <ShineBorder
-      className="overflow-hidden flex w-full bg-white"
+      className="overflow-hidden flex w-full bg-white shadow-lg"
       color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}>
       {content}
     </ShineBorder>

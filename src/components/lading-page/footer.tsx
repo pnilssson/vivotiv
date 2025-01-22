@@ -6,6 +6,8 @@ import SectionContent from "./section-content";
 import PrivacyPolicy from "../shared/privacy-policy";
 import TermsAndConditions from "../shared/terms-and-conditions";
 import CookiePolicy from "../shared/cookie-policy";
+import TextMuted from "../shared/typography/text-muted";
+import Title from "../shared/typography/title";
 
 export default async function Component() {
   return (
@@ -13,75 +15,56 @@ export default async function Component() {
       <Section className="mb-8 md:mb-8">
         <SectionContent className="bg-gradient-to-br from-emerald-100 to-sky-100">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-y-16 gap-x-12">
-            <div className="col-span-2 lg:pr-8">
-              <h4 className="font-bold text-2xl">Vivotiv</h4>
-
-              <p className="text-base leading-relaxed text-gray-600 mt-7">
-                We aim to make it easy for you to start working out from home
-                today by providing simple, effective routines that fit your
-                schedule and space.
-              </p>
-
-              <ul className="flex items-center space-x-3 mt-9">
-                <li>
-                  <Link
-                    href="https://www.linkedin.com/in/pnilssson/"
-                    target="_blank">
-                    <LinkedInLogoIcon color="black" className="h-8 w-8" />
-                  </Link>
-                </li>
-              </ul>
+            <div className="col-span-2 lg:pr-8 flex flex-col gap-4">
+              <Title className="font-semibold">Vivotiv</Title>
+              <TextMuted>
+                Our goal is to make it easy for more people to get active. We
+                aim to remove barriers by offering simple, effective workouts
+                tailored to fit your schedule and space.
+              </TextMuted>
+              <Link
+                href="https://www.linkedin.com/in/pnilssson/"
+                title="Creators linkedin"
+                target="_blank">
+                <LinkedInLogoIcon color="black" className="h-8 w-8" />
+              </Link>
             </div>
-
             <div>
-              <p className="text-sm font-semibold tracking-widest  text-muted-foreground uppercase">
-                Company
-              </p>
-
-              <ul className="mt-6 space-y-4">
+              <TextMuted>Company</TextMuted>
+              <ul className="mt-4 flex flex-col gap-4">
                 <li>
                   <Link
                     href="/about"
-                    className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
-                    About us
+                    title="About us"
+                    className="flex font-light text-sm transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
+                    About
                   </Link>
                 </li>
-
                 <li>
                   <Link
                     href="mailto:info@vivotiv.com"
                     title="Mail us"
-                    className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
-                    Contact us
+                    className="flex font-light text-sm transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
+                    Contact
                   </Link>
                 </li>
               </ul>
             </div>
-
             <div>
-              <p className="text-sm font-semibold tracking-widest text-muted-foreground uppercase">
-                Resources
-              </p>
-
-              <ul className="mt-6 space-y-4">
+              <TextMuted>Resources</TextMuted>
+              <ul className="mt-4 flex flex-col gap-4">
                 <li>
-                  <TermsAndConditions className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
+                  <TermsAndConditions className="flex font-light text-sm transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
                 </li>
-
                 <li>
-                  <PrivacyPolicy className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
+                  <PrivacyPolicy className="flex font-light text-sm transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
                 </li>
-
                 <li>
-                  <CookiePolicy className="flex text-base text-black transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
+                  <CookiePolicy className="flex font-light text-sm transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
                 </li>
               </ul>
             </div>
           </div>
-
-          <p className="text-sm mt-12">
-            © Copyright 2024, All Rights Reserved by Vivotiv
-          </p>
         </SectionContent>
       </Section>
     </FadeIn>

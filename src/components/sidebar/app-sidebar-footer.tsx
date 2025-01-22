@@ -14,7 +14,11 @@ export default async function Component() {
       <SidebarMenu>
         <SidebarMenuItem>
           <form action={signOut}>
-            <Button type="submit" variant="link">
+            <Button
+              type="submit"
+              className="w-full"
+              size="sm"
+              variant="outline">
               <ExitIcon />
               Sign out
             </Button>
