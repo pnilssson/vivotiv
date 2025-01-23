@@ -68,9 +68,9 @@ export default function Component({
               <ContentBox
                 key={date + 1}
                 className={cn(
-                  "px-0 py-2 md:p-4 flex flex-col flex-1 items-center hover:bg-slate-100/90 cursor-pointer",
+                  "px-0 py-2 md:p-4 flex flex-col flex-1 items-center hover:bg-gray-100/90 cursor-pointer",
                   {
-                    "bg-slate-100": date == selectedDate,
+                    "bg-gray-100": date == selectedDate,
                   }
                 )}
                 onClick={() => setSelectedDate(date)}>
@@ -86,7 +86,7 @@ export default function Component({
                   )
                 ) : (
                   <Badge
-                    className="bg-slate-200 align-middle font-normal w-fit md:w-8 lg:w-10"
+                    className="bg-gray-200 align-middle font-normal w-fit md:w-8 lg:w-10"
                     variant="secondary"></Badge>
                 )}
                 <h3 className="mt-2 xl:hidden flex sm:text-xl">

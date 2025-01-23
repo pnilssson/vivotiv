@@ -60,7 +60,7 @@ export default function Component({
   const content = (
     <ContentBox
       className={cn("flex flex-col gap-4", {
-        "border-0 bg-slate-50/50": highlight,
+        "border-0 bg-gray-50/50": highlight,
       })}>
       <div className="flex items-baseline">
         <Title>{price}</Title>
@@ -95,7 +95,7 @@ export default function Component({
 
   return highlight ? (
     <ShineBorder
-      className="overflow-hidden flex w-full bg-slate-50/50"
+      className="overflow-hidden flex w-full bg-gray-50/50"
       color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}>
       {content}
     </ShineBorder>
