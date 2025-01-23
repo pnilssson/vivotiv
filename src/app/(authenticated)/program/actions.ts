@@ -155,7 +155,6 @@ export async function generateProgram(): Promise<ActionResponse> {
 
   await updateProfileGeneratingCommand(user.id, true);
 
-  // await deleteOldProgramsByUserIdCommand(user.id);
   revalidatePath("/program", "page");
   redirect("/program");
 }

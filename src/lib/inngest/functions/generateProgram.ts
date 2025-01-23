@@ -1,8 +1,8 @@
 import { generateObject } from "ai";
-import { getPrompt } from "../prompt";
-import { inngest } from "./client";
+import { getPrompt } from "../../prompt";
+import { inngest } from "../client";
 import { openai } from "@ai-sdk/openai";
-import { programSchema } from "../zod/schema";
+import { programSchema } from "../../zod/schema";
 import {
   handleProgramInserts,
   updateProfileGeneratingCommand,

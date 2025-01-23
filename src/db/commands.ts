@@ -108,31 +108,50 @@ export async function handleProgramInserts(
   return programId;
 }
 
-export async function deleteOldProgramsByUserIdCommand(userId: string) {
-  // Fetch the most recent programs that should be kept (the last PROGRAM_ARCHIVED_LIMIT programs)
-  const recentPrograms = await db.query.program.findMany({
+export async function deleteOldProgramsCommand() {
+  const allProfiles = await db.query.profile.findMany({
     columns: { id: true },
-    where: (program, { eq }) =>
-      and(eq(program.user_id, userId), eq(program.archived, true)),
-    orderBy: (program, { desc }) => desc(program.created),
-    limit: PROGRAM_ARCHIVED_LIMIT,
   });
 
-  if (!recentPrograms.length) return;
+  let usersWithDeletedPrograms = 0;
+  let totalDeletedPrograms = 0;
 
-  // Extract the IDs of the programs to keep
-  const recentProgramIds = recentPrograms.map((program) => program.id);
+  for (const profile of allProfiles) {
+    const userId = profile.id;
 
-  // Delete all programs except the recent 4
-  await db
-    .delete(program)
-    .where(
-      and(
-        eq(program.user_id, userId),
-        eq(program.archived, true),
-        notInArray(program.id, recentProgramIds)
+    // Fetch the most recent programs that should be kept (the last PROGRAM_ARCHIVED_LIMIT programs)
+    const recentPrograms = await db.query.program.findMany({
+      columns: { id: true },
+      where: (program, { eq }) =>
+        and(eq(program.user_id, userId), eq(program.archived, true)),
+      orderBy: (program, { desc }) => desc(program.created),
+      limit: PROGRAM_ARCHIVED_LIMIT,
+    });
+
+    if (!recentPrograms.length) continue;
+
+    // Extract the IDs of the programs to keep
+    const recentProgramIds = recentPrograms.map((program) => program.id);
+
+    // Delete all programs except the recent PROGRAM_ARCHIVED_LIMIT
+    const result = await db
+      .delete(program)
+      .where(
+        and(
+          eq(program.user_id, userId),
+          eq(program.archived, true),
+          notInArray(program.id, recentProgramIds)
+        )
       )
-    );
+      .returning({ id: program.id });
+
+    if (result && result.length) {
+      usersWithDeletedPrograms += 1;
+      totalDeletedPrograms += result.length;
+    }
+  }
+
+  return { usersWithDeletedPrograms, totalDeletedPrograms };
 }
 
 export async function updateProfileMembershipCommand(
