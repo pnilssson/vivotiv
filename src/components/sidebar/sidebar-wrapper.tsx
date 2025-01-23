@@ -1,7 +1,7 @@
 import AppSidebar from "@/components/sidebar/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import Header from "./header";
-import Footer from "./app-sidebar-footer";
+import Footer from "./footer";
 
 export default async function Component({
   children,

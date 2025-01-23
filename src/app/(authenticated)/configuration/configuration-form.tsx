@@ -310,11 +310,11 @@ export default function Component({
               )}
             />
           </div> */}
-          <div className="ml-auto">
+          <div className="md:ml-auto">
             <SubmitButton
               content="Save"
               loadingContent="Saving.."
-              classes="md:w-36"
+              classes="w-full md:w-36"
             />
           </div>
         </div>
