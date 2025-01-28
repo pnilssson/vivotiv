@@ -5,7 +5,11 @@ export default async function Component() {
   return (
     <SectionContent>
       <div className="z-10 flex min-h-64 items-center justify-center">
-        <TextReveal text="Fitness isn’t defined by reaching a specific goal or hitting a certain number—it’s about creating lasting habits that improve your overall well-being. Moving your body regularly, even in small ways, makes a huge difference in how you feel and function. It’s not about perfection; it’s about progress. Whether it’s walking, stretching, or a quick workout, every bit helps reduce stress, enhance your energy, and improve your quality of life. The more consistent you are, the more your body and mind will thrive, giving you the strength to enjoy the things that matter most, like being active with loved ones and embracing each day with confidence." />
+        <TextReveal
+          text="Do it for you, for the ones you love, for the ones who doubt you, and for the ones who inspire you. Working out isn’t about becoming a world champion—it’s about being the best version of yourself. It’s about building good habits, both big and small. Moving your body regularly improves how you feel and function. Staying consistent reduces stress, boosts energy, and enhances your quality of life.
+
+"
+        />
       </div>
     </SectionContent>
   );

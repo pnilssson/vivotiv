@@ -6,26 +6,15 @@ import { useToast } from "@/lib/hooks/useToast";
 import { LoaderCircleIcon } from "lucide-react";
 import { ActionResponse } from "@/lib/types";
 import PageTitle from "@/components/shared/typography/page-title";
-import ContentBox from "@/components/shared/content-box";
-import { PROGRAM_GENERATION_LIMIT } from "@/lib/constants";
 import { generateProgram } from "../actions";
+import FullPageContentBox from "@/components/shared/full-page-content-box";
 
-export default function Component({
-  currentGeneratedProgramsCount,
-}: {
-  currentGeneratedProgramsCount: number;
-}) {
+export default function Component() {
   const [loading, setLoading] = useState<boolean>(false);
   const { toast } = useToast();
 
   const generate = async () => {
     setLoading(true);
-    if (currentGeneratedProgramsCount < PROGRAM_GENERATION_LIMIT) {
-      toast({
-        description:
-          "Generating your training program may take a minute or two. Please avoid closing or refreshing the page during this process.",
-      });
-    }
     const result = await generateProgram();
     handleResult(result);
     setLoading(false);
@@ -41,17 +30,13 @@ export default function Component({
   }
 
   return (
-    <ContentBox className={"flex lg:gap-4 items-center lg:flex-row flex-wrap"}>
-      <div className="flex gap-4 flex-1">
-        <div className="flex items-center">
-          <PageTitle
-            className="mb-0"
-            title="No active programs"
-            description="Generate a new program to get started."
-          />
-        </div>
-      </div>
-      <div className="flex w-full lg:w-auto mt-4 lg:mt-0 justify-end">
+    <FullPageContentBox className={"flex flex-col justify-center"}>
+      <PageTitle
+        className="self-center text-center"
+        title="No active programs"
+        description="Generate a new program to get started."
+      />
+      <div className="mt-4 self-center">
         <Button
           className="w-full lg:w-36"
           aria-disabled={loading}
@@ -66,6 +51,6 @@ export default function Component({
           )}
         </Button>
       </div>
-    </ContentBox>
+    </FullPageContentBox>
   );
 }
