@@ -73,7 +73,7 @@ export default function Component({
         ) : null}
       </div>
       <div className="flex items-center">
-        <Title>{title}</Title>
+        <Title className="font-semibold">{title}</Title>
       </div>
       <TextMuted className="min-h-10">{description}</TextMuted>
 

@@ -19,6 +19,7 @@ export default async function Page() {
   return (
     <React.Fragment>
       <PageTitle
+        className="mb-4 md:mb-8"
         title={"Configuration"}
         description={
           "We will tailor your program to your needs based on the information you provide below."
