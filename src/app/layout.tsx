@@ -4,8 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 import { cn } from "@/lib/utils";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
+import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/toaster";
 import Termly from "@/components/shared/termly";
 
@@ -43,6 +42,15 @@ export const metadata: Metadata = {
   },
 };
 
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
+});
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+});
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -52,9 +60,9 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          GeistSans.variable,
-          GeistMono.variable
+          geist.variable,
+          geistMono.variable,
+          "min-h-screen bg-background font-sans antialiased"
         )}>
         <link rel="icon" type="image/svg+xml" href="favicon.svg" />
         {children}

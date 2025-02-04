@@ -13,7 +13,7 @@ export default async function Component() {
   return (
     <FadeIn>
       <Section className="mb-8 md:mb-8">
-        <SectionContent className="bg-gradient-to-br from-emerald-100 to-sky-100">
+        <SectionContent className="bg-linear-to-br from-emerald-100 to-sky-100">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-y-16 gap-x-12">
             <div className="col-span-2 lg:pr-8 flex flex-col gap-4">
               <Title className="font-semibold">Vivotiv</Title>

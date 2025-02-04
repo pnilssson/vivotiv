@@ -20,7 +20,7 @@ export default function Component() {
           </Link>
         </Title>
         {pathname.startsWith("/auth") ? null : (
-          <Button asChild className="!ml-auto" size="sm">
+          <Button asChild className="ml-auto!" size="sm">
             <Link href="/auth/signin">Sign in</Link>
           </Button>
         )}

@@ -27,7 +27,7 @@ export default async function Component() {
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-gradient-to-br from-emerald-100 to-sky-100 rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex justify-between flex-col">
+              <div className="bg-linear-to-br from-emerald-100 to-sky-100 rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex justify-between flex-col">
                 <Settings2Icon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-2">
                   <h3 className="font-semibold">1. Configure</h3>
@@ -37,7 +37,7 @@ export default async function Component() {
                   </p>
                 </div>
               </div>
-              <div className="bg-gradient-to-br from-emerald-100 to-sky-100 rounded-lg shadow-lg p-8 flex justify-between flex-col">
+              <div className="bg-linear-to-br from-emerald-100 to-sky-100 rounded-lg shadow-lg p-8 flex justify-between flex-col">
                 <MagicWandIcon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-2">
                   <h3 className="font-semibold">2. Generate</h3>
@@ -48,7 +48,7 @@ export default async function Component() {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-emerald-100 to-sky-100 rounded-lg shadow-lg p-8 flex justify-between flex-col">
+              <div className="bg-linear-to-br from-emerald-100 to-sky-100 rounded-lg shadow-lg p-8 flex justify-between flex-col">
                 <Crosshair2Icon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-2">
                   <h3 className="font-semibold">3. Execute</h3>
@@ -58,7 +58,7 @@ export default async function Component() {
                   </p>
                 </div>
               </div>
-              <div className="bg-gradient-to-br from-emerald-100 to-sky-100 rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex justify-between flex-col">
+              <div className="bg-linear-to-br from-emerald-100 to-sky-100 rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex justify-between flex-col">
                 <RepeatIcon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-2">
                   <h3 className="font-semibold">4. Repeat</h3>
