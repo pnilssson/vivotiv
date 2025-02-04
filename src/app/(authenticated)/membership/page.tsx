@@ -47,6 +47,7 @@ export default async function Page() {
   return (
     <React.Fragment>
       <PageTitle
+        className="mb-4 md:mb-8"
         title={"Membership store"}
         description={`All of the options below are one-time payments. With an active membership, you'll be able to generate up to ${PROGRAM_GENERATION_LIMIT} programs per week—for example, if you decide to adjust your configuration and create a new program. Please note that an active membership is required to view your generated programs.`}
       />
