@@ -14,7 +14,7 @@ import { db } from "./db";
 import { cache } from "react";
 import { asc, gte } from "drizzle-orm";
 import { subDays, subMinutes } from "date-fns";
-import { exerciseType, experience, preferredDay, workoutType } from "./schema";
+import { experience, preferredDay, workoutType } from "./schema";
 
 export const getActiveProgramExistQuery = cache(async (userId: string) => {
   const exists = await db.query.program.findFirst({
@@ -23,7 +23,7 @@ export const getActiveProgramExistQuery = cache(async (userId: string) => {
       and(eq(program.user_id, userId), eq(program.archived, false)),
   });
 
-  return !!exists; // Return true if a record exists, false otherwise
+  return !!exists;
 });
 
 export const getCurrentProgramQuery = cache(async (userId: string) => {

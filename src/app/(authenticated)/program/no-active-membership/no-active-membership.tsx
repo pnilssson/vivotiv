@@ -1,15 +1,17 @@
+"use client";
+
 import PageTitle from "@/components/shared/typography/page-title";
 import { Button } from "@/components/ui/button";
 import { MIN_DATE } from "@/lib/constants";
 import { shortDate } from "@/lib/utils";
 import Link from "next/link";
-import { getMemberShipEndDate, validateMembership } from "./actions";
 import FullPageContentBox from "@/components/shared/full-page-content-box";
 
-export default async function Component() {
-  const membershipEndDate = await getMemberShipEndDate();
-  await validateMembership();
-
+export default function Component({
+  membershipEndDate,
+}: {
+  membershipEndDate: Date;
+}) {
   return (
     <FullPageContentBox className={"flex flex-col justify-center"}>
       <PageTitle

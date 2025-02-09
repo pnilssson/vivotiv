@@ -96,6 +96,7 @@ async function handleCheckoutSessionCompleted(
   req.log.info("Completed checkout session handled successfully.", {
     checkoutSessionId: checkoutSession.id,
   });
+  req.log.flush();
 }
 
 // Utility function for consistent error responses

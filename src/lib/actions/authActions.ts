@@ -142,6 +142,7 @@ export async function signUpWithPassword(
   log.info("New user signed up using password.", {
     email: validated.data.email,
   });
+  log.flush();
   revalidatePath("/");
   redirect("/auth/verify-request");
 }
@@ -182,6 +183,7 @@ export async function resetPassword(
   log.info("User requested reset of their password.", {
     email: validated.data.email,
   });
+  log.flush();
   revalidatePath("/");
   redirect("/auth/verify-request");
 }
@@ -219,6 +221,7 @@ export async function updatePassword(
   }
 
   log.info("User updated their password.");
+  log.flush();
   revalidatePath("/");
   redirect("/program");
 }

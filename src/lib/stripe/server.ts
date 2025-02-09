@@ -68,6 +68,7 @@ export async function checkoutWithStripe(
       throw new Error("Unable to create checkout session.");
     }
 
+    log.flush();
     return { sessionId: session.id };
   } catch (error) {
     Sentry.captureException(error);

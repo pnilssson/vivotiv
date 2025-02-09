@@ -44,8 +44,8 @@ export async function validateMembership(): Promise<void> {
 export async function validateGenerating(): Promise<void> {
   const supabase = await createClient();
   const user = await getUserOrRedirect(supabase);
-  const result = await getGeneratingQuery(user.id);
-  if (result) redirect("/program/generating-program");
+  const isGenerating = await getGeneratingQuery(user.id);
+  if (isGenerating) redirect("/program/generating-program");
 }
 
 export async function getCurrentProgram(): Promise<ProgramResponse | null> {
@@ -65,6 +65,7 @@ export async function archiveProgram(programId: string) {
     email: user.email,
     programId,
   });
+  log.flush();
   await archiveProgramCommand(programId, user.id);
   revalidatePath("/program", "page");
 }

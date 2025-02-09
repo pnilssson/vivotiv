@@ -1,31 +1,13 @@
 "use client";
 
-import { Progress } from "@/components/ui/progress";
+import { LoaderCircleIcon } from "lucide-react";
 import { useLogger } from "next-axiom";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function Component() {
-  const [progress, setProgress] = useState(0);
   const router = useRouter();
   const log = useLogger();
-
-  useEffect(() => {
-    const totalDuration = 90 * 1000;
-    const intervalDuration = totalDuration / 100;
-
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
-        }
-        return prev + 1;
-      });
-    }, intervalDuration);
-
-    return () => clearInterval(progressInterval);
-  }, []);
 
   useEffect(() => {
     const validationInterval = setInterval(async () => {
@@ -48,5 +30,7 @@ export default function Component() {
     return () => clearInterval(validationInterval);
   }, [log, router]);
 
-  return <Progress value={progress} className="max-w-sm h-2 mt-4 mx-auto" />;
+  return (
+    <LoaderCircleIcon className="animate-spin self-center mt-4 h-8 w-8 text-muted-foreground" />
+  );
 }

@@ -104,6 +104,7 @@ export async function setConfiguration(
     };
   }
 
+  log.flush();
   revalidatePath("/");
   return {
     success: true,

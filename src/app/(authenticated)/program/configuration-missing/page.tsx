@@ -2,8 +2,10 @@ import FullPageContentBox from "@/components/shared/full-page-content-box";
 import PageTitle from "@/components/shared/typography/page-title";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { validateConfigurationExist } from "./actions";
 
 export default async function Page() {
+  await validateConfigurationExist();
   return (
     <FullPageContentBox className={"flex flex-col justify-center"}>
       <PageTitle
