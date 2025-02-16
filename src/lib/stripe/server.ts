@@ -22,10 +22,10 @@ const priceIdMap: {
 const priceIdMapLive: {
   [key: string]: { days: number };
 } = {
-  price_1QdeKSRpZn3h4qfLBhcmNKJY: { days: 7 },
-  price_1QdeRCRpZn3h4qfLXsBBwv39: { days: 28 },
-  price_1QdeWmRpZn3h4qfLyWCG7f1A: { days: 84 },
-  price_1QdeGXRpZn3h4qfLOk4KS5be: { days: 182 },
+  price_1Qt2jJRpZn3h4qfLymmeNNe8: { days: 7 },
+  price_1Qt2lXRpZn3h4qfLE9pJ7H39: { days: 28 },
+  price_1Qt2mGRpZn3h4qfLiG30HoVP: { days: 84 },
+  price_1Qt2n7RpZn3h4qfL9LHjBapD: { days: 182 },
 };
 
 export async function checkoutWithStripe(
