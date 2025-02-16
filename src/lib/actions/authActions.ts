@@ -100,6 +100,10 @@ export async function signInWithPassword(
     redirect("/auth/signup");
   }
 
+  if (error?.code == "email_not_confirmed") {
+    redirect("/auth/email-not-confirmed");
+  }
+
   if (error) {
     Sentry.captureException(error);
     redirect("/error");
