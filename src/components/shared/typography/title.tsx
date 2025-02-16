@@ -10,7 +10,11 @@ export default function Component({
   className?: string;
 }) {
   return (
-    <h3 className={cn("text-2xl leading-none tracking-tight", className)}>
+    <h3
+      className={cn(
+        "text-2xl font-semibold leading-none tracking-tight",
+        className
+      )}>
       {children}
     </h3>
   );

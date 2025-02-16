@@ -30,7 +30,9 @@ export default async function Component({
             variant="secondary">
             Save {discount}
           </Badge>
-        ) : null}
+        ) : (
+          <div className="h-5 mb-2 hidden 2xl:flex"></div>
+        )}
         <div className="flex flex-row justify-between">
           <h3 className="text-base font-semibold text-purple-600">{title}</h3>
           {discount ? (

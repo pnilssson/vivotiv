@@ -8,6 +8,7 @@ import {
   MagicWandIcon,
   ResetIcon,
 } from "@radix-ui/react-icons";
+import Title from "../shared/typography/title";
 
 export default async function Component() {
   return (
@@ -28,41 +29,40 @@ export default async function Component() {
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="border rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex justify-between flex-col">
+              <div className="border rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex flex-col">
                 <SlidersHorizontalIcon className="h-6 w-6 mb-4" />
-                <div className="flex flex-col gap-2">
-                  <h3 className="font-semibold text-xl">1. Configure</h3>
+                <div className="flex flex-col gap-4">
+                  <Title>1. Configure</Title>
                   <p className="text-muted-foreground max-w-xs text-base">
                     The programs will be tailor-made based on your needs and
                     takes above mentioned inputs in consideration.
                   </p>
                 </div>
               </div>
-              <div className="border rounded-lg shadow-lg p-8 flex justify-between flex-col">
+              <div className="border rounded-lg shadow-lg p-8 flex flex-col">
                 <MagicWandIcon className="h-6 w-6 mb-4" />
-                <div className="flex flex-col gap-2">
-                  <h3 className="font-semibold text-xl">2. Generate</h3>
+                <div className="flex flex-col gap-4">
+                  <Title>2. Generate</Title>
                   <p className="text-muted-foreground max-w-xs text-base">
                     We create personalized traning program based on your
                     configuration in minutes.
                   </p>
                 </div>
               </div>
-
-              <div className="border rounded-lg shadow-lg p-8 flex justify-between flex-col">
+              <div className="border rounded-lg shadow-lg p-8 flex flex-col">
                 <Crosshair2Icon className="h-6 w-6 mb-4" />
-                <div className="flex flex-col gap-2">
-                  <h3 className="font-semibold text-xl">3. Execute</h3>
+                <div className="flex flex-col gap-4">
+                  <Title>3. Execute</Title>
                   <p className="text-muted-foreground max-w-xs text-base">
                     Execute the program we provide you with and reap the
                     benefits of regular exercise.
                   </p>
                 </div>
               </div>
-              <div className="border rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex justify-between flex-col">
+              <div className="border rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex  flex-col">
                 <RepeatIcon className="h-6 w-6 mb-4" />
-                <div className="flex flex-col gap-2">
-                  <h3 className="font-semibold text-xl">4. Repeat</h3>
+                <div className="flex flex-col gap-4">
+                  <Title>4. Repeat</Title>
                   <p className="text-muted-foreground max-w-xs text-base">
                     Fine tune the configuration, repeat the process and stay
                     healthy.

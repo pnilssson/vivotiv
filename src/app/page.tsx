@@ -6,6 +6,7 @@ import HowItWorks from "@/components/lading-page/how-it-works";
 import React from "react";
 import KeyFeatures from "@/components/lading-page/key-features";
 import Benefits from "@/components/lading-page/benefits";
+import Promote from "@/components/lading-page/promote";
 
 export default async function Page() {
   return (
@@ -13,6 +14,7 @@ export default async function Page() {
       {/* <Banner /> */}
       <Header />
       <Hero />
+      <Promote />
       <KeyFeatures />
       <HowItWorks />
       <Benefits />

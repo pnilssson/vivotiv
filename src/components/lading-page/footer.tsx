@@ -30,7 +30,7 @@ export default async function Component() {
               </Link>
             </div>
             <div>
-              <Title className="text-base font-semibold">Company</Title>
+              <Title className="text-base">Company</Title>
               <ul className="mt-4 flex flex-col gap-4">
                 <li>
                   <Link
@@ -51,7 +51,7 @@ export default async function Component() {
               </ul>
             </div>
             <div>
-              <Title className="text-base font-semibold">Resources</Title>
+              <Title className="text-base">Resources</Title>
               <ul className="mt-4 flex flex-col gap-4">
                 <li>
                   <TermsAndConditions className="flex font-light transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />

@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
+import Title from "../shared/typography/title";
 
 export interface Feature {
   title: string;
@@ -42,12 +43,12 @@ const Feature = ({
         <div className="opacity-0 group-hover/feature:opacity-100 transition duration-200 absolute inset-0 h-full w-full bg-linear-to-b from-emerald-50 to-transparent pointer-events-none" />
       )}
       <div className="mb-4 relative z-10 px-10">{icon}</div>
-      <div className="text-xl font-semibold mb-2 relative z-10 px-10">
+      <Title className="mb-4 relative z-10 px-10">
         <div className="absolute left-0 inset-y-0 h-6 group-hover/feature:h-8 w-1 rounded-tr-full rounded-br-full bg-gray-300 group-hover/feature:bg-emerald-400 transition-all duration-200 origin-center" />
         <span className="group-hover/feature:translate-x-2 transition duration-200 inline-block">
           {title}
         </span>
-      </div>
+      </Title>
       <p className="text-muted-foreground max-w-xs relative z-10 px-10">
         {description}
       </p>

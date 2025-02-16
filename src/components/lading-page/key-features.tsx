@@ -39,7 +39,7 @@ const features = [
 export default async function Component() {
   return (
     <FadeIn>
-      <Section className="mt-36 md:mt-64">
+      <Section className="my-36 md:my-64">
         <SectionContent>
           <FeatureSection features={features} />
         </SectionContent>
