@@ -19,6 +19,15 @@ const priceIdMap: {
   price_1QdeGXRpZn3h4qfLOk4KS5be: { days: 182 },
 };
 
+const priceIdMapLive: {
+  [key: string]: { days: number };
+} = {
+  price_1QdeKSRpZn3h4qfLBhcmNKJY: { days: 7 },
+  price_1QdeRCRpZn3h4qfLXsBBwv39: { days: 28 },
+  price_1QdeWmRpZn3h4qfLyWCG7f1A: { days: 84 },
+  price_1QdeGXRpZn3h4qfLOk4KS5be: { days: 182 },
+};
+
 export async function checkoutWithStripe(
   priceId: string,
   redirectPath: string = "/program"
@@ -49,7 +58,7 @@ export async function checkoutWithStripe(
       ],
       metadata: {
         userId: user?.id,
-        days: priceIdMap[priceId].days,
+        days: priceIdMapLive[priceId].days,
       },
       mode: "payment",
       cancel_url: getURL(),
