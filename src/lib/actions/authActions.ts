@@ -229,3 +229,42 @@ export async function updatePassword(
   revalidatePath("/");
   redirect("/program");
 }
+
+const resendOtpSchema = z.object({
+  email: z.string().email({
+    message: "Provided email is invalid.",
+  }),
+});
+
+export async function resendOtp(
+  _: any,
+  formData: FormData
+): Promise<ActionResponse> {
+  const supabase = await createClient();
+  const validated = resendOtpSchema.safeParse({
+    email: formData.get("email"),
+  });
+
+  if (!validated.success) {
+    return {
+      success: validated.success,
+      errors: validated.error.issues,
+      message: null,
+    };
+  }
+
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email: validated.data.email,
+  });
+
+  if (error) {
+    Sentry.captureException(error);
+    redirect("/error");
+  }
+
+  await setPreferredSignInView("password");
+
+  revalidatePath("/");
+  redirect("/auth/verify-request");
+}

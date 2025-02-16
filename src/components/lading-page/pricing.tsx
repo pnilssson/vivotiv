@@ -74,7 +74,7 @@ export default async function Component() {
           </div>
           <GetStartedButton
             content="Join now"
-            classes="py-4 mt-10 sm:w-96 w-full mx-auto bg-linear-to-br from-emerald-400 to-sky-400 hover:from-emerald-400/35 hover:to-sky-400/75 shadow-lg"
+            classes="py-4 mt-10 h-24 w-full mx-auto shadow-lg text-lg"
           />
         </SectionContent>
       </Section>

@@ -1,13 +1,13 @@
 import FadeIn from "../shared/fade-in";
+import SectionContent from "./section-content";
+import React from "react";
+import Section from "./section";
+import { RepeatIcon, SlidersHorizontalIcon } from "lucide-react";
 import {
   Crosshair2Icon,
   MagicWandIcon,
   ResetIcon,
 } from "@radix-ui/react-icons";
-import SectionContent from "./section-content";
-import React from "react";
-import Section from "./section";
-import { RepeatIcon, Settings2Icon } from "lucide-react";
 
 export default async function Component() {
   return (
@@ -23,45 +23,46 @@ export default async function Component() {
                 How it works?
               </h2>
               <p className="text-muted-foreground max-w-[540px]">
-                It will only take a few minutes to prepare your first custom workout program.
+                It will only take a few minutes to prepare your first custom
+                workout program.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="bg-linear-to-br from-emerald-100 to-sky-100 rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex justify-between flex-col">
-                <Settings2Icon className="h-6 w-6 mb-4" />
+              <div className="border rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex justify-between flex-col">
+                <SlidersHorizontalIcon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-2">
-                  <h3 className="font-semibold">1. Configure</h3>
+                  <h3 className="font-semibold text-xl">1. Configure</h3>
                   <p className="text-muted-foreground max-w-xs text-base">
                     The programs will be tailor-made based on your needs and
                     takes above mentioned inputs in consideration.
                   </p>
                 </div>
               </div>
-              <div className="bg-linear-to-br from-emerald-100 to-sky-100 rounded-lg shadow-lg p-8 flex justify-between flex-col">
+              <div className="border rounded-lg shadow-lg p-8 flex justify-between flex-col">
                 <MagicWandIcon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-2">
-                  <h3 className="font-semibold">2. Generate</h3>
+                  <h3 className="font-semibold text-xl">2. Generate</h3>
                   <p className="text-muted-foreground max-w-xs text-base">
-                    We use AI to generate personalized traning program based on
-                    your configuration.
+                    We create personalized traning program based on your
+                    configuration in minutes.
                   </p>
                 </div>
               </div>
 
-              <div className="bg-linear-to-br from-emerald-100 to-sky-100 rounded-lg shadow-lg p-8 flex justify-between flex-col">
+              <div className="border rounded-lg shadow-lg p-8 flex justify-between flex-col">
                 <Crosshair2Icon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-2">
-                  <h3 className="font-semibold">3. Execute</h3>
+                  <h3 className="font-semibold text-xl">3. Execute</h3>
                   <p className="text-muted-foreground max-w-xs text-base">
                     Execute the program we provide you with and reap the
                     benefits of regular exercise.
                   </p>
                 </div>
               </div>
-              <div className="bg-linear-to-br from-emerald-100 to-sky-100 rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex justify-between flex-col">
+              <div className="border rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex justify-between flex-col">
                 <RepeatIcon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-2">
-                  <h3 className="font-semibold">4. Repeat</h3>
+                  <h3 className="font-semibold text-xl">4. Repeat</h3>
                   <p className="text-muted-foreground max-w-xs text-base">
                     Fine tune the configuration, repeat the process and stay
                     healthy.

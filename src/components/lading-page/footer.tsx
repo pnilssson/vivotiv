@@ -13,11 +13,11 @@ export default async function Component() {
   return (
     <FadeIn>
       <Section className="mb-8 md:mb-8">
-        <SectionContent className="bg-linear-to-br from-emerald-100 to-sky-100">
+        <SectionContent className="border  shadow-lg">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-y-16 gap-x-12">
             <div className="col-span-2 lg:pr-8 flex flex-col gap-4">
               <Title className="font-semibold">Vivotiv</Title>
-              <TextMuted>
+              <TextMuted className="text-base">
                 Our goal is to make it easy for more people to get active. We
                 aim to remove barriers by offering simple, effective workouts
                 tailored to fit your schedule and space.
@@ -30,13 +30,13 @@ export default async function Component() {
               </Link>
             </div>
             <div>
-              <TextMuted>Company</TextMuted>
+              <Title className="text-base font-semibold">Company</Title>
               <ul className="mt-4 flex flex-col gap-4">
                 <li>
                   <Link
                     href="/about"
                     title="About us"
-                    className="flex font-light text-sm transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
+                    className="flex font-light transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
                     About
                   </Link>
                 </li>
@@ -44,23 +44,23 @@ export default async function Component() {
                   <Link
                     href="mailto:info@vivotiv.com"
                     title="Mail us"
-                    className="flex font-light text-sm transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
+                    className="flex font-light transition-all duration-200 hover:text-purple-600 focus:text-purple-600">
                     Contact
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <TextMuted>Resources</TextMuted>
+              <Title className="text-base font-semibold">Resources</Title>
               <ul className="mt-4 flex flex-col gap-4">
                 <li>
-                  <TermsAndConditions className="flex font-light text-sm transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
+                  <TermsAndConditions className="flex font-light transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
                 </li>
                 <li>
-                  <PrivacyPolicy className="flex font-light text-sm transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
+                  <PrivacyPolicy className="flex font-light transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
                 </li>
                 <li>
-                  <CookiePolicy className="flex font-light text-sm transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
+                  <CookiePolicy className="flex font-light transition-all duration-200 hover:text-purple-600 focus:text-purple-600" />
                 </li>
               </ul>
             </div>
