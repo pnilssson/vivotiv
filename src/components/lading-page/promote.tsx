@@ -13,7 +13,7 @@ export default async function Component() {
           <div className="flex flex-col gap-10">
             <div className="flex gap-4 flex-col items-start">
               <p className="flex flex-row font-semibold text-violet-600">
-                Less hassle, more results
+                Less hassle, all the benefits
               </p>
               <h2 className="text-4xl md:text-6xl font-semibold">
                 Make the most out of what you have
@@ -22,7 +22,6 @@ export default async function Component() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Left Column Spanning 3 Rows */}
               <div className="border rounded-lg shadow-lg p-8 flex flex-col row-span-2 lg:col-span-1 col-span-2">
-                <WalletIcon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-4">
                   <Title>Tired of expensive memberships?</Title>
                   <p className="text-muted-foreground text-base">
@@ -35,7 +34,6 @@ export default async function Component() {
               </div>
               {/* Right Column - 3 Individual Rows */}
               <div className="border rounded-lg shadow-lg p-8 flex flex-col col-span-2">
-                <ClockIcon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-4">
                   <Title>Struggling to find time for the gym?</Title>
                   <p className="text-muted-foreground text-base">
@@ -47,7 +45,6 @@ export default async function Component() {
                 </div>
               </div>
               <div className="border rounded-lg shadow-lg p-8 flex flex-col col-span-2">
-                <LightbulbIcon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-4">
                   <Title>Overwhelmed by complex workout plans?</Title>
                   <p className="text-muted-foreground text-base">
