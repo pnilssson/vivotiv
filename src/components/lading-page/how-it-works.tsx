@@ -33,7 +33,7 @@ export default async function Component() {
                 <SlidersHorizontalIcon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-4">
                   <Title>1. Configure</Title>
-                  <p className="text-muted-foreground max-w-xs text-base">
+                  <p className="text-muted-foreground text-base">
                     The programs will be tailor-made based on your needs and
                     takes above mentioned inputs in consideration.
                   </p>
@@ -43,7 +43,7 @@ export default async function Component() {
                 <MagicWandIcon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-4">
                   <Title>2. Generate</Title>
-                  <p className="text-muted-foreground max-w-xs text-base">
+                  <p className="text-muted-foreground text-base">
                     We create personalized traning program based on your
                     configuration in minutes.
                   </p>
@@ -53,7 +53,7 @@ export default async function Component() {
                 <Crosshair2Icon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-4">
                   <Title>3. Execute</Title>
-                  <p className="text-muted-foreground max-w-xs text-base">
+                  <p className="text-muted-foreground text-base">
                     Execute the program we provide you with and reap the
                     benefits of regular exercise.
                   </p>
@@ -63,7 +63,7 @@ export default async function Component() {
                 <RepeatIcon className="h-6 w-6 mb-4" />
                 <div className="flex flex-col gap-4">
                   <Title>4. Repeat</Title>
-                  <p className="text-muted-foreground max-w-xs text-base">
+                  <p className="text-muted-foreground text-base">
                     Fine tune the configuration, repeat the process and stay
                     healthy.
                   </p>
