@@ -2,7 +2,6 @@ import FadeIn from "../shared/fade-in";
 import SectionContent from "./section-content";
 import React from "react";
 import Section from "./section";
-import { ClockIcon, LightbulbIcon, WalletIcon } from "lucide-react";
 import Title from "../shared/typography/title";
 
 export default async function Component() {
@@ -38,9 +37,9 @@ export default async function Component() {
                   <Title>Struggling to find time for the gym?</Title>
                   <p className="text-muted-foreground text-base">
                     Our programs fit seamlessly into your schedule, allowing you
-                    to train wherever and whenever it's most convenient. Make
-                    the most out of what you have with efficient, personalized
-                    workouts designed for your lifestyle.
+                    to train wherever and whenever it&apos;s most convenient.
+                    Make the most out of what you have with efficient,
+                    personalized workouts designed for your lifestyle.
                   </p>
                 </div>
               </div>
@@ -48,9 +47,9 @@ export default async function Component() {
                 <div className="flex flex-col gap-4">
                   <Title>Overwhelmed by complex workout plans?</Title>
                   <p className="text-muted-foreground text-base">
-                    Workout plans can be complex but we've made it easy! Our
-                    plans come with clear descriptions and explanations of each
-                    exercise, so you can confidently perform every move—no
+                    Workout plans can be complex but we&apos;ve made it easy!
+                    Our plans come with clear descriptions and explanations of
+                    each exercise, so you can confidently perform every move—no
                     matter your previous experience.
                   </p>
                 </div>
