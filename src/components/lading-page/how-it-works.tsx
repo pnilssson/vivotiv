@@ -10,6 +10,30 @@ import {
 } from "@radix-ui/react-icons";
 import Title from "../shared/typography/title";
 
+// Extracted list of steps
+const steps = [
+  {
+    title: "1. Configure",
+    text: "The programs will be tailor-made based on your needs and takes above mentioned inputs in consideration.",
+    icon: SlidersHorizontalIcon,
+  },
+  {
+    title: "2. Generate",
+    text: "We create personalized training programs based on your configuration in minutes.",
+    icon: MagicWandIcon,
+  },
+  {
+    title: "3. Execute",
+    text: "Execute the program we provide you with and reap the benefits of regular exercise.",
+    icon: Crosshair2Icon,
+  },
+  {
+    title: "4. Repeat",
+    text: "Fine-tune the configuration, repeat the process and stay healthy.",
+    icon: RepeatIcon,
+  },
+];
+
 export default async function Component() {
   return (
     <FadeIn>
@@ -28,47 +52,23 @@ export default async function Component() {
                 workout program.
               </p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="border rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex flex-col">
-                <SlidersHorizontalIcon className="h-6 w-6 mb-4" />
-                <div className="flex flex-col gap-4">
-                  <Title>1. Configure</Title>
-                  <p className="text-muted-foreground text-base">
-                    The programs will be tailor-made based on your needs and
-                    takes above mentioned inputs in consideration.
-                  </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              {steps.map((step, index) => (
+                <div
+                  key={index}
+                  className="relative border rounded-lg shadow-lg p-8 flex flex-col overflow-hidden hover:border-emerald-400 transition-all duration-300 hover:shadow-emerald-100">
+                  {/* Background Icon */}
+                  <step.icon className="absolute top-8 right-8 text-violet-400 opacity-25 w-24 h-24 z-0" />
+
+                  {/* Foreground Content */}
+                  <div className="relative z-10 flex flex-col gap-4">
+                    <Title>{step.title}</Title>
+                    <p className="text-muted-foreground text-base">
+                      {step.text}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div className="border rounded-lg shadow-lg p-8 flex flex-col">
-                <MagicWandIcon className="h-6 w-6 mb-4" />
-                <div className="flex flex-col gap-4">
-                  <Title>2. Generate</Title>
-                  <p className="text-muted-foreground text-base">
-                    We create personalized traning program based on your
-                    configuration in minutes.
-                  </p>
-                </div>
-              </div>
-              <div className="border rounded-lg shadow-lg p-8 flex flex-col">
-                <Crosshair2Icon className="h-6 w-6 mb-4" />
-                <div className="flex flex-col gap-4">
-                  <Title>3. Execute</Title>
-                  <p className="text-muted-foreground text-base">
-                    Execute the program we provide you with and reap the
-                    benefits of regular exercise.
-                  </p>
-                </div>
-              </div>
-              <div className="border rounded-lg shadow-lg h-full lg:col-span-2 p-8 flex  flex-col">
-                <RepeatIcon className="h-6 w-6 mb-4" />
-                <div className="flex flex-col gap-4">
-                  <Title>4. Repeat</Title>
-                  <p className="text-muted-foreground text-base">
-                    Fine tune the configuration, repeat the process and stay
-                    healthy.
-                  </p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </SectionContent>

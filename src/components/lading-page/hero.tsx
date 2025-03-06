@@ -1,7 +1,28 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import GridPattern from "../magicui/grid-pattern";
+import { useToast } from "@/lib/hooks/useToast";
+import { useEffect } from "react";
+import { ToastAction } from "@/components/ui/toast";
+import Link from "next/link";
 
-export default async function Component() {
+export default function Component() {
+  const { toast } = useToast();
+
+  useEffect(() => {
+    toast({
+      title: "Try one week for free!",
+      description: "Join now and get your first week for free.",
+      duration: Infinity,
+      action: (
+        <ToastAction altText="Join now">
+          <Link href="/auth/signup">Join now</Link>
+        </ToastAction>
+      ),
+    });
+  }, []);
+
   return (
     <main className="flex flex-col text-center pt-36 md:pt-48 container animate-fade">
       <h1 className="text-4xl md:text-8xl font-bold md:max-w-[980px] mx-auto">

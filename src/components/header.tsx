@@ -9,6 +9,7 @@ import Title from "./shared/typography/title";
 
 export default function Component() {
   const pathname = usePathname();
+
   return (
     <SectionContent className="container p-4 sticky top-0 z-50">
       <ContentBox className="flex flex-row justify-between px-4 py-2">

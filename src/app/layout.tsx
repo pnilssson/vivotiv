@@ -65,11 +65,11 @@ export default async function RootLayout({
           "min-h-screen bg-background font-sans antialiased"
         )}>
         <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-        {children}
         <SpeedInsights />
         <Analytics />
         <Toaster />
         <Termly websiteUUID={process.env.TERMLY_WEBSITE_UUID!} />
+        {children}
       </body>
     </html>
   );

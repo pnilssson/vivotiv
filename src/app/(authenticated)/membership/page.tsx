@@ -77,7 +77,6 @@ const MEMBERSHIP_OPTIONS_LIVE = [
       "Enjoy one week of membership to access personalized training.",
     priceId: "price_1Qt2jJRpZn3h4qfLymmeNNe8",
     price: "$1.99",
-    weeklyPrice: "($1.99/week)",
     discount: "",
     highlight: false,
   },
