@@ -53,7 +53,10 @@ export const configurationRequestSchema = z.object({
   equipment: z
     .string()
     .max(1000, "Maximum 1000 characters.")
-    .regex(/^[\w,\s]*$/, "Please provide equipment in English.")
+    .regex(
+      /^[\w,\s]*$/,
+      "Please provide equipment in English. Allowed characters: a-z, A-Z, 0-9, comma, space."
+    )
     .nullable(),
   generate_automatically: z.boolean(),
 });
