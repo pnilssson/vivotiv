@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 import GridPattern from "../magicui/grid-pattern";
 import { useToast } from "@/lib/hooks/useToast";
 import { useEffect } from "react";
-import { ToastAction } from "@/components/ui/toast";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 export default function Component() {
   const { toast } = useToast();
@@ -16,9 +16,9 @@ export default function Component() {
       description: "Join now and get your first week for free.",
       duration: Infinity,
       action: (
-        <ToastAction altText="Join now">
+        <Button asChild>
           <Link href="/auth/signup">Join now</Link>
-        </ToastAction>
+        </Button>
       ),
     });
   }, []);
