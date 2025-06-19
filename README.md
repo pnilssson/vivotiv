@@ -7,6 +7,8 @@ Revolutionize your home workouts with AI-powered tailor-made training programs j
 - NextJs
 - Supabase
 - Shadcn/ui
+- Inngest
+- Stripe
 
 ## Hosted on
 
