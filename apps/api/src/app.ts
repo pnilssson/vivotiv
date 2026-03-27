@@ -1,17 +1,24 @@
+import { env } from "hono/adapter";
 import { cors } from "hono/cors";
 
 import { createApp } from "./lib/factory";
 import { healthRoutes } from "./features/health/routes";
 import { scanRoutes } from "./features/scan/routes";
 
-const app = createApp();
+type Env = {
+  CORS_ORIGINS: string;
+};
 
-const allowedOrigins = process.env.CORS_ORIGINS?.split(",") ?? [];
+const app = createApp();
 
 app.use(
   "/v1/*",
   cors({
-    origin: allowedOrigins,
+    origin: (origin, c) => {
+      const { CORS_ORIGINS } = env<Env>(c);
+      const allowed = CORS_ORIGINS?.split(",") ?? [];
+      return allowed.includes(origin) ? origin : null;
+    },
     allowMethods: ["GET", "POST", "OPTIONS"],
     allowHeaders: ["content-type", "authorization"],
   }),
