@@ -4,8 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "srvx --env-file=.env.local",
-    "build": "tsup src/app.ts --format esm",
+    "dev": "vercel dev --listen 3001",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
@@ -18,8 +17,6 @@
     "@eslint/js": "^10.0.0",
     "@types/node": "^25.5.0",
     "eslint": "^10.1.0",
-    "srvx": "^0.11.13",
-    "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.0"
   }
