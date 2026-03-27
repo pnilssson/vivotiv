@@ -1,9 +1,10 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "globalPassThroughEnv": ["CORS_ORIGINS"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**", ".vercel/output/**"]
     },
     "dev": {
       "cache": false,

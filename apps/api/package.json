@@ -4,13 +4,12 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch --env-file=.env.local src/dev.ts",
+    "dev": "srvx --env-file=.env.local",
     "build": "tsc",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@hono/node-server": "^1.19.4",
     "@hono/zod-validator": "^0.7.6",
     "@vivotiv/shared": "workspace:*",
     "hono": "^4.12.9"
@@ -19,7 +18,7 @@
     "@eslint/js": "^10.0.0",
     "@types/node": "^25.5.0",
     "eslint": "^10.1.0",
-    "tsx": "^4.21.0",
+    "srvx": "^0.11.13",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.0"
   }
