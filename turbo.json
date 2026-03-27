@@ -5,9 +5,6 @@
       "dependsOn": ["^build"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"]
     },
-    "api#build": {
-      "outputs": []
-    },
     "dev": {
       "cache": false,
       "persistent": true
