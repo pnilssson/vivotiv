@@ -1,7 +1,7 @@
+import { Hono } from "hono";
 import { env } from "hono/adapter";
 import { cors } from "hono/cors";
 
-import { createApp } from "./lib/factory";
 import { healthRoutes } from "./features/health/routes";
 import { scanRoutes } from "./features/scan/routes";
 
@@ -9,7 +9,7 @@ type Env = {
   CORS_ORIGINS: string;
 };
 
-const app = createApp();
+const app = new Hono();
 
 app.use(
   "/v1/*",
