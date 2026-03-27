@@ -1,18 +1,3 @@
-import { Hono } from 'hono'
+import app from "./app";
 
-const app = new Hono()
-
-const welcomeStrings = [
-  'Hello Hono!',
-  'To learn more about Hono on Vercel, visit https://vercel.com/docs/frameworks/backend/hono'
-]
-
-app.get('/', (c) => {
-  return c.text(welcomeStrings.join('\n\n'))
-})
-
-app.get('/health', (c) => {
-  return c.json({ ok: true })
-})
-
-export default app
+export default app;

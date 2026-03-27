@@ -1,0 +1,16 @@
+{
+  "landing": {
+    "title": "Gratis webbplatsanalys",
+    "subtitle": "Klistra in din webbadress och få en tydlig bild av vad som håller den tillbaka.",
+    "urlLabel": "Webbadress",
+    "urlPlaceholder": "https://example.se",
+    "urlInvalid": "Ange en giltig webbadress.",
+    "emailLabel": "E-post",
+    "emailPlaceholder": "namn@företag.se",
+    "emailInvalid": "Ange en giltig e-postadress.",
+    "submit": "Begär gratis analys",
+    "pending": "Skickar...",
+    "success": "Tack, din analysbegäran är mottagen. Vi mejlar när den är klar.",
+    "error": "Vi kunde inte skicka din begäran just nu. Försök igen."
+  }
+}

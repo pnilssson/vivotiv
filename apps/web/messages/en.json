@@ -1,0 +1,16 @@
+{
+  "landing": {
+    "title": "Free website scan",
+    "subtitle": "Paste your website URL and get a clear view of what is holding it back.",
+    "urlLabel": "Website URL",
+    "urlPlaceholder": "https://example.com",
+    "urlInvalid": "Enter a valid website URL.",
+    "emailLabel": "Work email",
+    "emailPlaceholder": "name@company.com",
+    "emailInvalid": "Enter a valid email address.",
+    "submit": "Request free scan",
+    "pending": "Submitting...",
+    "success": "Thanks, your scan request is accepted. We will email you when it is ready.",
+    "error": "We could not submit your request right now. Please try again."
+  }
+}
