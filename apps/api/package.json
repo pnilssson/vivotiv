@@ -4,11 +4,12 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vercel dev --listen 3001",
+    "dev:api": "tsx watch --env-file=.env.local src/dev.ts",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@hono/node-server": "^1.19.11",
     "@hono/zod-validator": "^0.7.6",
     "@vivotiv/shared": "workspace:*",
     "hono": "^4.12.9"
@@ -17,6 +18,7 @@
     "@eslint/js": "^10.0.0",
     "@types/node": "^25.5.0",
     "eslint": "^10.1.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.57.0"
   }
