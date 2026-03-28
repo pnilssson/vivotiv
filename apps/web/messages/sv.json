@@ -9,8 +9,8 @@
     "primaryNav": "Huvudnavigering"
   },
   "hero": {
-    "headline": "Ta reda p\u00e5 vad som \u00e4r fel med din webbplats.",
-    "subheadline": "P\u00e5 60 sekunder ser du vad som kostar dig bes\u00f6kare, s\u00f6kplaceringar och juridisk risk.",
+    "headline": "F\u00e5 en gratis h\u00e4lsokontroll av din webbplats",
+    "subheadline": "F\u00f6rst\u00e5 vad som p\u00e5verkar din Google-ranking, juridiska efterlevnad och bes\u00f6ksupplevelse med en gratis rapport.",
     "urlLabel": "Webbadress",
     "urlPlaceholder": "https://dinwebbplats.se",
     "urlInvalid": "Ange en giltig webbadress.",
@@ -29,7 +29,7 @@
   },
   "categories": {
     "pretitle": "GRANSKNINGEN",
-    "title": "Vi kontrollerar det som faktiskt spelar roll.",
+    "title": "Vi kontrollerar det som faktiskt spelar roll",
     "subtitle": "D\u00e5lig prestanda, trasig SEO och bristande efterlevnad kostar dig bes\u00f6kare, int\u00e4kter och trov\u00e4rdighet varje dag din sida f\u00f6rblir o\u00e5tg\u00e4rdad.",
     "performance": {
       "title": "Prestanda & Hastighet",
@@ -57,9 +57,9 @@
     }
   },
   "reportPreview": {
-    "pretitle": "EXEMPELRAPPORT",
-    "title": "S\u00e5 ser din rapport ut",
-    "subtitle": "Varje misslyckat test visar vad som \u00e4r fel och hur du l\u00f6ser det.",
+    "pretitle": "DIN RAPPORT",
+    "title": "En fullst\u00e4ndig genomg\u00e5ng av vad som beh\u00f6ver \u00e5tg\u00e4rdas",
+    "subtitle": "Du f\u00e5r en betygsatt genomg\u00e5ng av din sida med specifika problem, varf\u00f6r de p\u00e5verkar ditt f\u00f6retag och vad som beh\u00f6ver \u00e4ndras.",
     "overallScore": "\u00d6vergripande betyg",
     "categoryScores": "Kategoriuppdelning",
     "issuesFound": "Hittade problem",
@@ -79,9 +79,9 @@
     }
   },
   "howItWorks": {
-    "pretitle": "3 STEG",
+    "pretitle": "4 STEG",
     "title": "S\u00e5 fungerar det",
-    "subtitle": "Inget konto beh\u00f6vs. Resultaten g\u00e5r direkt till din inkorg.",
+    "subtitle": "En tydlig v\u00e4g fr\u00e5n problem till l\u00f6sning.",
     "step1": {
       "title": "Klistra in din URL",
       "description": "Vilken publik webbplats som helst. WordPress, Wix, egenutvecklad, vad som helst."
@@ -93,6 +93,10 @@
     "step3": {
       "title": "F\u00e5 din rapport",
       "description": "Betyg, problem och rekommendationer i alla sex kategorier. Dela med ditt team eller din utvecklare."
+    },
+    "step4": {
+      "title": "\u00c5tg\u00e4rda",
+      "description": "Anv\u00e4nd rapporten f\u00f6r att fixa sj\u00e4lv, skicka den till din utvecklare, eller l\u00e5t oss sk\u00f6ta det."
     }
   },
   "audience": {
@@ -118,7 +122,7 @@
   },
   "compliance": {
     "pretitle": "TILLG\u00c4NGLIGHET",
-    "title": "EU:s tillg\u00e4nglighetsdirektiv \u00e4r lag.",
+    "title": "EU:s tillg\u00e4nglighetsdirektiv \u00e4r lag",
     "description": "Sedan juni 2025 m\u00e5ste f\u00f6retag med 10+ anst\u00e4llda eller \u20ac2M+ i oms\u00e4ttning uppfylla WCAG 2.1 AA. Bristande efterlevnad inneb\u00e4r b\u00f6ter upp till \u20ac3M. De flesta svenska f\u00f6retag vet inte \u00e4n att det g\u00e4ller dem.",
     "stat1": {
       "value": "10 Mkr",
@@ -136,7 +140,7 @@
   },
   "gdpr": {
     "pretitle": "INTEGRITET",
-    "title": "Cookielagstiftning \u00e4r inte frivillig.",
+    "title": "Cookielagstiftning \u00e4r inte frivillig",
     "description": "Din cookiebanner m\u00e5ste ha en lika tydlig avvisningsknapp. Att ladda analytics innan samtycke \u00e4r ett direkt GDPR-brott. IMY har utf\u00e4rdat formella varningar till svenska f\u00f6retag sedan april 2025.",
     "stat1": {
       "value": "\u20ac20M / 4%",
@@ -159,11 +163,11 @@
     "items": [
       {
         "question": "\u00c4r det verkligen gratis?",
-        "answer": "Ja. Inget kreditkort, inga dolda kostnader, ingen hake."
+        "answer": "Ja. Inget kreditkort, inga dolda kostnader, ingen hake. Men om resultaten ser illa ut, bli inte f\u00f6rv\u00e5nad om vi erbjuder oss att hj\u00e4lpa till."
       },
       {
         "question": "Vad h\u00e4nder med min e-post?",
-        "answer": "Vi anv\u00e4nder den f\u00f6r att skicka din rapport. Det \u00e4r allt. Inga nyhetsbrev, ingen delning med tredje part."
+        "answer": "Vi anv\u00e4nder den f\u00f6r att skicka din rapport och ibland f\u00f6lja upp med relevanta erbjudanden. Vi delar den aldrig med tredje part."
       },
       {
         "question": "Hur l\u00e5ng tid tar analysen?",
@@ -180,8 +184,8 @@
     ]
   },
   "bottomCta": {
-    "title": "Din webbplats har problem du inte kan se.",
-    "subtitle": "60 sekunder. Ingen registrering, inget kreditkort.",
+    "title": "De flesta f\u00f6retag inser inte hur mycket deras webbplats kostar dem",
+    "subtitle": "Rapporten din webbutvecklare borde ha gett dig redan.",
     "button": "Skanna din webbplats"
   },
   "footer": {

@@ -9,8 +9,8 @@
     "primaryNav": "Main navigation"
   },
   "hero": {
-    "headline": "Find out what's wrong with your website.",
-    "subheadline": "In 60 seconds you'll know what's costing you visitors, search rankings, and legal risk.",
+    "headline": "Get a free health check for your website",
+    "subheadline": "Understand what's affecting your Google ranking, legal compliance, and visitor experience with a free report.",
     "urlLabel": "Website URL",
     "urlPlaceholder": "https://yourwebsite.com",
     "urlInvalid": "Enter a valid website URL.",
@@ -29,7 +29,7 @@
   },
   "categories": {
     "pretitle": "THE AUDIT",
-    "title": "We check what actually matters.",
+    "title": "We check what actually matters",
     "subtitle": "Poor performance, broken SEO, and missing compliance cost you visitors, revenue, and credibility every day your site stays unfixed.",
     "performance": {
       "title": "Performance & Speed",
@@ -57,9 +57,9 @@
     }
   },
   "reportPreview": {
-    "pretitle": "SAMPLE REPORT",
-    "title": "What your report looks like",
-    "subtitle": "Every failed check includes what's wrong and how to resolve it.",
+    "pretitle": "YOUR REPORT",
+    "title": "A full breakdown of what needs attention",
+    "subtitle": "You get a scored breakdown of your site with specific issues, why they matter to your business, and what needs to change.",
     "overallScore": "Overall Score",
     "categoryScores": "Category Breakdown",
     "issuesFound": "Issues Found",
@@ -79,9 +79,9 @@
     }
   },
   "howItWorks": {
-    "pretitle": "3 STEPS",
+    "pretitle": "4 STEPS",
     "title": "How it works",
-    "subtitle": "No account needed. Results go straight to your inbox.",
+    "subtitle": "A clear path from problems to solutions.",
     "step1": {
       "title": "Paste your URL",
       "description": "Any publicly accessible website. WordPress, Wix, custom built, anything."
@@ -93,6 +93,10 @@
     "step3": {
       "title": "Get your report",
       "description": "Scores, issues, and recommendations across all six categories. Share it with your team or your developer."
+    },
+    "step4": {
+      "title": "Take action",
+      "description": "Use the report to fix things yourself, hand it to your developer, or let us handle it."
     }
   },
   "audience": {
@@ -118,7 +122,7 @@
   },
   "compliance": {
     "pretitle": "ACCESSIBILITY",
-    "title": "The EU Accessibility Act is law.",
+    "title": "The EU Accessibility Act is law",
     "description": "Since June 2025, businesses with 10+ employees or \u20ac2M+ turnover must meet WCAG 2.1 AA. Non-compliance means fines up to \u20ac3M. Most Swedish businesses don't know this applies to them yet.",
     "stat1": {
       "value": "SEK 10M",
@@ -136,7 +140,7 @@
   },
   "gdpr": {
     "pretitle": "PRIVACY",
-    "title": "Cookie compliance is not optional.",
+    "title": "Cookie compliance is not optional",
     "description": "Your cookie banner needs an equally prominent reject button. Loading analytics before consent is a direct GDPR violation. IMY has been issuing formal warnings to Swedish businesses since April 2025.",
     "stat1": {
       "value": "\u20ac20M / 4%",
@@ -159,11 +163,11 @@
     "items": [
       {
         "question": "Is this really free?",
-        "answer": "Yes. No credit card, no hidden costs, no catch."
+        "answer": "Yes. No credit card, no hidden costs, no catch. But if the results are rough, don't be surprised if we offer to help."
       },
       {
         "question": "What happens with my email?",
-        "answer": "We use it to send your report. That's it. No newsletters, no sharing with third parties."
+        "answer": "We use it to send your report and occasionally follow up with relevant offers. We never share it with third parties."
       },
       {
         "question": "How long does the scan take?",
@@ -180,8 +184,8 @@
     ]
   },
   "bottomCta": {
-    "title": "Your website has problems you can't see.",
-    "subtitle": "60 seconds. No signup, no credit card.",
+    "title": "Most businesses don't realize how much their website is costing them",
+    "subtitle": "The report your web developer should have given you already.",
     "button": "Scan your website"
   },
   "footer": {

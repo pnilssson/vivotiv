@@ -80,6 +80,7 @@ export default async function LocaleLandingPage() {
 
       <main id="main-content">
         <HeroSection />
+        <SectionDivider wide />
 
         <CategoriesSection />
         <SectionDivider wide />

@@ -4,7 +4,7 @@ import { motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
 
-const steps = ["step1", "step2", "step3"] as const;
+const steps = ["step1", "step2", "step3", "step4"] as const;
 
 export function HowItWorksSection() {
   const t = useTranslations("howItWorks");

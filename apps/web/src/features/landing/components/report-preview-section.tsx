@@ -43,11 +43,6 @@ function scoreBg(score: number): string {
   return "bg-red-500";
 }
 
-function scoreBgLight(score: number): string {
-  if (score >= 71) return "bg-emerald-50 border-emerald-200";
-  if (score >= 41) return "bg-amber-50 border-amber-200";
-  return "bg-red-50 border-red-200";
-}
 
 type Issue = {
   status: "fail" | "warn" | "pass";
@@ -173,10 +168,10 @@ export function ReportPreviewSection() {
               {/* Overall score circle */}
               <div className="mb-8 flex flex-col items-center">
                 <div
-                  className={`flex h-24 w-24 items-center justify-center rounded-full border-4 ${scoreBgLight(overall)}`}
+                  className="flex h-24 w-24 items-center justify-center rounded-full border-3 border-amber-500"
                 >
                   <span
-                    className={`font-heading text-3xl font-bold tabular-nums ${scoreColor(overall)}`}
+                    className="font-heading text-3xl font-bold tabular-nums text-amber-500"
                   >
                     {overall}
                   </span>
