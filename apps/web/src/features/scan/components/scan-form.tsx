@@ -84,10 +84,9 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
               onBlur={() => handleUrlBlur(field.state.value)}
               placeholder={t("urlPlaceholder")}
               className={isHero ? "h-12 text-base" : undefined}
-              required
             />
             {field.state.meta.errors.length > 0 && (
-              <p className="text-sm text-destructive">{t("urlInvalid")}</p>
+              <p className="text-left text-sm text-destructive">{t("urlInvalid")}</p>
             )}
           </div>
         )}
@@ -118,10 +117,9 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
                     onBlur={field.handleBlur}
                     placeholder={t("emailPlaceholder")}
                     className={isHero ? "h-12 text-base" : undefined}
-                    required
                   />
                   {field.state.meta.errors.length > 0 && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-left text-sm text-destructive">
                       {t("emailInvalid")}
                     </p>
                   )}
@@ -151,7 +149,7 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
       </AnimatePresence>
 
       {mutation.isError && (
-        <p className="text-sm text-destructive">{t("error")}</p>
+        <p className="text-left text-sm text-destructive">{t("error")}</p>
       )}
 
       {mutation.isSuccess && (

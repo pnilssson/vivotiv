@@ -23,8 +23,8 @@
     --depth-2: oklch(0.9061 0.0068 97.36);
     --destructive: oklch(0.63 0.19 23.03);
     --destructive-foreground: oklch(0.9753 0.004 106.47);
-    --border: oklch(0.88 0.005 97.36);
-    --input: oklch(0.91 0 0);
+    --border: oklch(0.8947 0.0054 95.1);
+    --input: oklch(0.8531 0.0054 95.1);
     --ring: oklch(0.1957 0 0);
     --chart-1: oklch(0.897 0.196 126.665);
     --chart-2: oklch(0.841 0.238 128.85);
@@ -202,7 +202,8 @@
     body {
         @apply bg-background text-foreground;
     }
-    button, [role="button"] {
+    button,
+    [role="button"] {
         cursor: pointer;
     }
 }

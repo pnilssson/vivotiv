@@ -4,7 +4,7 @@
   },
   "hero": {
     "headline": "Find out what's wrong with your website.",
-    "subheadline": "Paste your URL. Get a full audit of performance, SEO, accessibility, EU compliance, security, and web standards. Free, in 60 seconds.",
+    "subheadline": "Get a full audit of performance, SEO, accessibility, EU compliance, security, and web standards for free, within 60 seconds.",
     "urlLabel": "Website URL",
     "urlPlaceholder": "https://yourwebsite.com",
     "urlInvalid": "Enter a valid website URL.",
