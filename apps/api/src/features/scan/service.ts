@@ -1,15 +1,19 @@
-import {
-  ScanSubmissionResponseSchema,
-  scanSource,
-  type ScanSubmission,
-} from "@vivotiv/shared";
+import type { Database } from "@vivotiv/db";
+import { leads } from "@vivotiv/db";
+import type { ScanSubmission } from "@vivotiv/shared";
 
-export function acceptScanSubmission(payload: ScanSubmission) {
-  const response = {
+export async function createLead(db: Database, payload: ScanSubmission) {
+  const [lead] = await db
+    .insert(leads)
+    .values({
+      email: payload.email,
+      url: payload.url,
+    })
+    .returning({ id: leads.id });
+
+  return {
     status: "accepted" as const,
-    source: scanSource,
+    leadId: lead.id,
     message: `Scan request accepted for ${payload.url}`,
   };
-
-  return ScanSubmissionResponseSchema.parse(response);
 }

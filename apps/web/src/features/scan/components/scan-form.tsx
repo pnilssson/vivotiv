@@ -4,7 +4,6 @@ import { useForm } from "@tanstack/react-form";
 import { useMutation } from "@tanstack/react-query";
 import {
   ScanSubmissionSchema,
-  scanSource,
   type Locale,
   type ScanSubmission,
 } from "@vivotiv/shared";
@@ -41,7 +40,6 @@ export function ScanForm() {
       await mutation.mutateAsync({
         ...value,
         locale,
-        source: scanSource,
       });
     },
   });

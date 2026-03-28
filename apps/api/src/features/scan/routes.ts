@@ -2,15 +2,17 @@ import { zValidator } from "@hono/zod-validator";
 import { ScanSubmissionSchema } from "@vivotiv/shared";
 import { Hono } from "hono";
 
-import { acceptScanSubmission } from "./service";
+import type { Env } from "../../env";
+import { validationHook } from "../../middleware/validator";
+import { createLead } from "./service";
 
-export const scanRoutes = new Hono().post(
+export const scanRoutes = new Hono<Env>().post(
   "/scan",
-  zValidator("json", ScanSubmissionSchema),
-  (c) => {
+  zValidator("json", ScanSubmissionSchema, validationHook),
+  async (c) => {
     const payload = c.req.valid("json");
-    const response = acceptScanSubmission(payload);
+    const lead = await createLead(c.var.db, payload);
 
-    return c.json(response, 202);
+    return c.json(lead, 202);
   },
 );
