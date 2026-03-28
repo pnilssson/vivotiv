@@ -43,7 +43,7 @@ function ScoreCard({
   const numberRef = useTickingNumber({ value: score, delay: index * 0.1, isInView });
 
   return (
-    <div className="flex flex-col gap-2 bg-card p-5">
+    <div className="flex flex-col gap-2 bg-card p-5 transition-colors hover:bg-depth-1">
       <div className="flex items-baseline justify-between">
         <span className="text-xs text-muted-foreground">{label}</span>
         <span className={`text-lg font-semibold tabular-nums ${scoreColor(score)}`}>
@@ -81,7 +81,7 @@ export function HeroScoresCustom() {
     <div
       className="mx-auto grid w-full max-w-2xl grid-cols-2 gap-px border border-border bg-border sm:grid-cols-3"
     >
-      <div className="col-span-2 bg-card p-5 sm:col-span-3">
+      <div className="col-span-2 bg-card p-5 transition-colors hover:bg-depth-1 sm:col-span-3">
         <h3 className="font-heading text-sm font-semibold">
           {tHero("averageScoresLabel")}
         </h3>
