@@ -167,7 +167,7 @@
     "items": [
       {
         "question": "\u00c4r det verkligen gratis?",
-        "answer": "Ja. Inget kreditkort, inga dolda kostnader, ingen hake. Men om resultaten ser illa ut, bli inte f\u00f6rv\u00e5nad om vi erbjuder oss att hj\u00e4lpa till."
+        "answer": "Ja. Inget kreditkort, inga dolda kostnader. Men om resultaten ser illa ut, bli inte f\u00f6rv\u00e5nad om vi erbjuder oss att hj\u00e4lpa till."
       },
       {
         "question": "Vad h\u00e4nder med min e-post?",
@@ -179,21 +179,23 @@
       },
       {
         "question": "Vad inneh\u00e5ller rapporten?",
-        "answer": "Ett betyg f\u00f6r var och en av de sex kategorierna, en lista \u00f6ver alla problem vi hittade och vad du kan g\u00f6ra \u00e5t varje enskilt."
+        "answer": "Ett betyg f\u00f6r var och en av de sex kategorierna, en lista \u00f6ver alla problem vi hittade och konkreta \u00e5tg\u00e4rder f\u00f6r varje problem."
       },
       {
         "question": "Vilka \u00e4r Vivotiv?",
-        "answer": "Ett svenskt f\u00f6retag som hj\u00e4lper f\u00f6retag modernisera sina webbplatser. Vi byggde den h\u00e4r analysen f\u00f6r att visa webbplats\u00e4gare exakt vad de missar."
+        "answer": "Ett svenskt f\u00f6retag som hj\u00e4lper f\u00f6retag modernisera sina webbplatser. Vi byggde den h\u00e4r analysen f\u00f6r att visa webbplats\u00e4gare exakt vad de g\u00e5r misste om."
       }
     ]
   },
   "bottomCta": {
     "title": "De flesta f\u00f6retag inser inte hur mycket deras webbplats kostar dem",
-    "subtitle": "Rapporten din webbutvecklare borde ha gett dig redan.",
+    "subtitle": "Rapporten din webbutvecklare redan borde ha gett dig.",
     "button": "Skanna din webbplats"
   },
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
+    "columnLegal": "Juridiskt",
+    "columnLanguage": "Spr\u00e5k",
     "privacy": "Integritetspolicy",
     "cookiePolicy": "Cookiepolicy",
     "cookiePreferences": "Cookieinst\u00e4llningar",

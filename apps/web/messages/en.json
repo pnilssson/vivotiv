@@ -167,7 +167,7 @@
     "items": [
       {
         "question": "Is this really free?",
-        "answer": "Yes. No credit card, no hidden costs, no catch. But if the results are rough, don't be surprised if we offer to help."
+        "answer": "Yes. No credit card, no hidden costs. But if the results are rough, don't be surprised if we offer to help."
       },
       {
         "question": "What happens with my email?",
@@ -194,6 +194,8 @@
   },
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
+    "columnLegal": "Legal",
+    "columnLanguage": "Language",
     "privacy": "Privacy Policy",
     "cookiePolicy": "Cookie Policy",
     "cookiePreferences": "Cookie Preferences",
