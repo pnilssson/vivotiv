@@ -4,15 +4,15 @@ import { Hono } from "hono";
 
 import type { Env } from "../../env";
 import { validationHook } from "../../middleware/validator";
-import { createLead } from "./service";
+import { submitScan } from "./service";
 
 export const scanRoutes = new Hono<Env>().post(
   "/scan",
   zValidator("json", ScanSubmissionSchema, validationHook),
   async (c) => {
     const payload = c.req.valid("json");
-    const lead = await createLead(c.var.db, payload);
+    const result = await submitScan(c.var.db, payload);
 
-    return c.json(lead, 202);
+    return c.json(result, 202);
   },
 );

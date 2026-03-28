@@ -23,6 +23,7 @@
     "submit": "Starta gratis analys",
     "pending": "Skickar...",
     "trustPills": ["Alltid gratis", "Ingen registrering", "44 kontroller"],
+    "averageScoresLabel": "Genomsnittliga resultat från analyserade webbplatser",
     "success": "Analys skickad. Vi mejlar n\u00e4r resultaten \u00e4r klara.",
     "error": "N\u00e5got gick fel. F\u00f6rs\u00f6k igen."
   },

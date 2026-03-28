@@ -5,6 +5,7 @@ import { HTTPException } from "hono/http-exception";
 import type { Env } from "./env";
 import { healthRoutes } from "./features/health/routes";
 import { scanRoutes } from "./features/scan/routes";
+import { scoresRoutes } from "./features/scores/routes";
 import { dbMiddleware } from "./middleware/db";
 
 const app = new Hono<Env>();
@@ -26,6 +27,7 @@ app.use("/v1/*", dbMiddleware);
 app.get("/", (c) => c.text("Vivotiv API"));
 app.route("/", healthRoutes);
 app.route("/v1", scanRoutes);
+app.route("/v1", scoresRoutes);
 
 app.notFound((c) => {
   return c.json({ error: { message: "Not found" } }, 404);

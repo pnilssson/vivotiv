@@ -23,6 +23,7 @@
     "submit": "Start free scan",
     "pending": "Submitting...",
     "trustPills": ["Always free", "No signup", "44 checks"],
+    "averageScoresLabel": "Average scores from scanned websites",
     "success": "Scan submitted. We'll email you when results are ready.",
     "error": "Something went wrong. Please try again."
   },

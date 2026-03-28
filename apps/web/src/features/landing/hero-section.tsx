@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 import { ScanForm } from "@/features/scan/scan-form";
+import { HeroScoresCustom } from "./hero-scores-custom";
 
 const ROTATE_INTERVAL_MS = 3000;
 
@@ -29,7 +30,7 @@ export function HeroSection() {
 
   return (
     <section aria-labelledby="hero-heading">
-      <div className="px-6 pb-28 pt-28 md:pb-64 md:pt-64">
+      <div className="px-6 pb-20 pt-20 md:pb-40 md:pt-40">
         <div className="mx-auto flex max-w-6xl flex-col items-center text-center">
           <motion.h1
             id="hero-heading"
@@ -105,6 +106,15 @@ export function HeroSection() {
               </motion.span>
             ))}
           </div>
+
+          <motion.div
+            className="mt-12 w-full"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 1.0, ease: "easeOut" }}
+          >
+            <HeroScoresCustom />
+          </motion.div>
         </div>
       </div>
     </section>
