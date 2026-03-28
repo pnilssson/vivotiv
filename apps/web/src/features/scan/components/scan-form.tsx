@@ -58,10 +58,8 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
     }
   }, [mutation.isSuccess, mutation.isError]);
 
-  function handleUrlBlur(value: string) {
-    if (value.length > 0 && !showEmail) {
-      setShowEmail(true);
-    }
+  function handleUrlChange(value: string) {
+    setShowEmail(value.length > 0);
   }
 
   const isHero = variant === "hero";
@@ -89,8 +87,10 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
                 type="url"
                 name={field.name}
                 value={field.state.value}
-                onChange={(event) => field.handleChange(event.target.value)}
-                onBlur={() => handleUrlBlur(field.state.value)}
+                onChange={(event) => {
+                  field.handleChange(event.target.value);
+                  handleUrlChange(event.target.value);
+                }}
                 placeholder={t("urlPlaceholder")}
                 aria-describedby={hasError ? `${field.name}-error` : undefined}
                 aria-invalid={hasError || undefined}
