@@ -1,17 +1,17 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
-import { AudienceSection } from "@/features/landing/components/audience-section";
-import { BottomCtaSection } from "@/features/landing/components/bottom-cta-section";
-import { CategoriesSection } from "@/features/landing/components/categories-section";
-import { ComplianceSection } from "@/features/landing/components/compliance-section";
-import { FaqSection } from "@/features/landing/components/faq-section";
-import { GdprSection } from "@/features/landing/components/gdpr-section";
-import { HeroSection } from "@/features/landing/components/hero-section";
-import { HowItWorksSection } from "@/features/landing/components/how-it-works-section";
-import { ReportPreviewSection } from "@/features/landing/components/report-preview-section";
-import { SectionDivider } from "@/features/landing/components/section-divider";
-import { SiteFooter } from "@/features/landing/components/site-footer";
-import { SiteHeader } from "@/features/landing/components/site-header";
+import { AudienceSection } from "@/features/landing/audience-section";
+import { BottomCtaSection } from "@/features/landing/bottom-cta-section";
+import { CategoriesSection } from "@/features/landing/categories-section";
+import { ComplianceSection } from "@/features/landing/compliance-section";
+import { FaqSection } from "@/features/landing/faq-section";
+import { GdprSection } from "@/features/landing/gdpr-section";
+import { HeroSection } from "@/features/landing/hero-section";
+import { HowItWorksSection } from "@/features/landing/how-it-works-section";
+import { ReportPreviewSection } from "@/features/landing/report-preview-section";
+import { SectionDivider } from "@/features/landing/section-divider";
+import { SiteFooter } from "@/features/landing/site-footer";
+import { SiteHeader } from "@/features/landing/site-header";
 
 const domainsByLocale = {
   en: "https://vivotiv.com",

@@ -1,21 +1,17 @@
 "use client";
 
 import { useForm } from "@tanstack/react-form";
-import { useMutation } from "@tanstack/react-query";
-import {
-  ScanSubmissionSchema,
-  type Locale,
-  type ScanSubmission,
-} from "@vivotiv/shared";
+import { ScanSubmissionSchema, type Locale } from "@vivotiv/shared";
 import { AnimatePresence, motion } from "motion/react";
 import { useLocale, useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { submitScan } from "../api/submit-scan";
+import { useSubmitScan } from "./use-submit-scan";
+import { useTypewriter } from "@/lib/use-typewriter";
 
 const ScanFormValuesSchema = ScanSubmissionSchema.pick({
   url: true,
@@ -30,11 +26,16 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
   const t = useTranslations("hero");
   const locale = useLocale() as Locale;
   const [showEmail, setShowEmail] = useState(false);
+  const [urlFocused, setUrlFocused] = useState(false);
   const statusRef = useRef<HTMLParagraphElement>(null);
 
-  const mutation = useMutation({
-    mutationFn: (payload: ScanSubmission) => submitScan(payload),
+  const urlExamples = useMemo(() => t("urlExamples").split(","), [t]);
+  const typewriterText = useTypewriter(urlExamples, {
+    enabled: variant === "hero" && !urlFocused && !showEmail,
+    prefix: "https://",
   });
+
+  const mutation = useSubmitScan();
 
   const form = useForm({
     defaultValues: {
@@ -91,7 +92,9 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
                   field.handleChange(event.target.value);
                   handleUrlChange(event.target.value);
                 }}
-                placeholder={t("urlPlaceholder")}
+                onFocus={() => setUrlFocused(true)}
+                onBlur={() => setUrlFocused(false)}
+                placeholder={typewriterText || t("urlPlaceholder")}
                 aria-describedby={hasError ? `${field.name}-error` : undefined}
                 aria-invalid={hasError || undefined}
                 className={isHero ? "h-12 text-base" : undefined}
