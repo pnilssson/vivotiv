@@ -3,5 +3,8 @@
   "name": "vivotiv-api",
   "main": "src/app.ts",
   "compatibility_date": "2026-03-28",
-  "compatibility_flags": ["nodejs_compat"]
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    "CORS_ORIGINS": "https://www.vivotiv.com,https://www.vivotiv.se,https://vivotiv-web.vercel.app"
+  }
 }
