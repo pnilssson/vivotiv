@@ -16,32 +16,34 @@ export default function LocaleLandingPage() {
     <>
       <SiteHeader />
 
-      <HeroSection />
+      <main id="main-content">
+        <HeroSection />
 
-      <CategoriesSection />
-      <SectionDivider wide />
+        <CategoriesSection />
+        <SectionDivider wide />
 
-      <ReportPreviewSection />
-      <SectionDivider wide />
+        <ReportPreviewSection />
+        <SectionDivider wide />
 
-      <HowItWorksSection />
-      <SectionDivider wide />
+        <HowItWorksSection />
+        <SectionDivider wide />
 
-      <AudienceSection />
-      <SectionDivider wide />
+        <AudienceSection />
+        <SectionDivider wide />
 
-      <ComplianceSection />
-      <SectionDivider wide />
+        <ComplianceSection />
+        <SectionDivider wide />
 
-      <GdprSection />
-      <SectionDivider wide />
+        <GdprSection />
+        <SectionDivider wide />
 
-      <FaqSection />
-      <SectionDivider wide />
+        <FaqSection />
+        <SectionDivider wide />
 
-      <div className="bg-foreground text-background">
-        <BottomCtaSection />
-      </div>
+        <div className="bg-foreground text-background">
+          <BottomCtaSection />
+        </div>
+      </main>
 
       <SiteFooter />
     </>

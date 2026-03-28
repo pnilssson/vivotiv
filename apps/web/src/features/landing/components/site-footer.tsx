@@ -19,13 +19,17 @@ export function SiteFooter() {
     <footer className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-8 text-sm text-muted-foreground">
       <span>{t("copyright", { year })}</span>
       <div className="flex items-center gap-4">
-        <a href="/privacy" className="hover:text-foreground transition-colors">
+        <a
+          href="/privacy"
+          className="inline-flex min-h-[24px] min-w-[24px] items-center transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
+        >
           {t("privacy")}
         </a>
         <button
           type="button"
           onClick={switchLocale}
-          className="cursor-pointer font-medium transition-colors hover:text-foreground"
+          aria-label={t("switchLanguage")}
+          className="inline-flex min-h-[24px] min-w-[24px] cursor-pointer items-center font-medium transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           {locale === "sv" ? "English" : "Svenska"}
         </button>

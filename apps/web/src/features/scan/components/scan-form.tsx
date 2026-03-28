@@ -9,7 +9,7 @@ import {
 } from "@vivotiv/shared";
 import { AnimatePresence, motion } from "motion/react";
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +30,7 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
   const t = useTranslations("hero");
   const locale = useLocale() as Locale;
   const [showEmail, setShowEmail] = useState(false);
+  const statusRef = useRef<HTMLParagraphElement>(null);
 
   const mutation = useMutation({
     mutationFn: (payload: ScanSubmission) => submitScan(payload),
@@ -51,6 +52,12 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
     },
   });
 
+  useEffect(() => {
+    if (mutation.isSuccess || mutation.isError) {
+      statusRef.current?.focus();
+    }
+  }, [mutation.isSuccess, mutation.isError]);
+
   function handleUrlBlur(value: string) {
     if (value.length > 0 && !showEmail) {
       setShowEmail(true);
@@ -70,26 +77,33 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
       }}
     >
       <form.Field name="url">
-        {(field) => (
-          <div className="grid gap-2">
-            {!isHero && (
-              <Label htmlFor={field.name}>{t("urlLabel")}</Label>
-            )}
-            <Input
-              id={field.name}
-              type="url"
-              name={field.name}
-              value={field.state.value}
-              onChange={(event) => field.handleChange(event.target.value)}
-              onBlur={() => handleUrlBlur(field.state.value)}
-              placeholder={t("urlPlaceholder")}
-              className={isHero ? "h-12 text-base" : undefined}
-            />
-            {field.state.meta.errors.length > 0 && (
-              <p className="text-left text-sm text-destructive">{t("urlInvalid")}</p>
-            )}
-          </div>
-        )}
+        {(field) => {
+          const hasError = field.state.meta.errors.length > 0;
+          return (
+            <div className="grid gap-2">
+              <Label htmlFor={field.name} className={isHero ? "sr-only" : undefined}>
+                {t("urlLabel")}
+              </Label>
+              <Input
+                id={field.name}
+                type="url"
+                name={field.name}
+                value={field.state.value}
+                onChange={(event) => field.handleChange(event.target.value)}
+                onBlur={() => handleUrlBlur(field.state.value)}
+                placeholder={t("urlPlaceholder")}
+                aria-describedby={hasError ? `${field.name}-error` : undefined}
+                aria-invalid={hasError || undefined}
+                className={isHero ? "h-12 text-base" : undefined}
+              />
+              {hasError && (
+                <p id={`${field.name}-error`} className="text-left text-sm text-destructive" role="alert">
+                  {t("urlInvalid")}
+                </p>
+              )}
+            </div>
+          );
+        }}
       </form.Field>
 
       <AnimatePresence>
@@ -101,30 +115,35 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
             transition={{ duration: 0.3, ease: "easeOut" }}
           >
             <form.Field name="email">
-              {(field) => (
-                <div className="grid gap-2">
-                  {!isHero && (
-                    <Label htmlFor={field.name}>{t("emailLabel")}</Label>
-                  )}
-                  <Input
-                    id={field.name}
-                    type="email"
-                    name={field.name}
-                    value={field.state.value}
-                    onChange={(event) =>
-                      field.handleChange(event.target.value)
-                    }
-                    onBlur={field.handleBlur}
-                    placeholder={t("emailPlaceholder")}
-                    className={isHero ? "h-12 text-base" : undefined}
-                  />
-                  {field.state.meta.errors.length > 0 && (
-                    <p className="text-left text-sm text-destructive">
-                      {t("emailInvalid")}
-                    </p>
-                  )}
-                </div>
-              )}
+              {(field) => {
+                const hasError = field.state.meta.errors.length > 0;
+                return (
+                  <div className="grid gap-2">
+                    <Label htmlFor={field.name} className={isHero ? "sr-only" : undefined}>
+                      {t("emailLabel")}
+                    </Label>
+                    <Input
+                      id={field.name}
+                      type="email"
+                      name={field.name}
+                      value={field.state.value}
+                      onChange={(event) =>
+                        field.handleChange(event.target.value)
+                      }
+                      onBlur={field.handleBlur}
+                      placeholder={t("emailPlaceholder")}
+                      aria-describedby={hasError ? `${field.name}-error` : undefined}
+                      aria-invalid={hasError || undefined}
+                      className={isHero ? "h-12 text-base" : undefined}
+                    />
+                    {hasError && (
+                      <p id={`${field.name}-error`} className="text-left text-sm text-destructive" role="alert">
+                        {t("emailInvalid")}
+                      </p>
+                    )}
+                  </div>
+                );
+              }}
             </form.Field>
           </motion.div>
         )}
@@ -149,11 +168,15 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
       </AnimatePresence>
 
       {mutation.isError && (
-        <p className="text-left text-sm text-destructive">{t("error")}</p>
+        <p ref={statusRef} tabIndex={-1} role="alert" className="text-left text-sm text-destructive outline-none">
+          {t("error")}
+        </p>
       )}
 
       {mutation.isSuccess && (
-        <p className="text-sm text-emerald-700">{t("success")}</p>
+        <p ref={statusRef} tabIndex={-1} role="status" className="text-sm text-emerald-700 outline-none">
+          {t("success")}
+        </p>
       )}
     </form>
   );

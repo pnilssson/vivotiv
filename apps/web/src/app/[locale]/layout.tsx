@@ -3,6 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 
 import { routing } from "@/i18n/routing";
+import { MotionProvider } from "@/providers/motion-provider";
 import { AppQueryClientProvider } from "@/providers/query-client-provider";
 
 type LocaleLayoutProps = {
@@ -28,7 +29,9 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider>
-      <AppQueryClientProvider>{children}</AppQueryClientProvider>
+      <MotionProvider>
+        <AppQueryClientProvider>{children}</AppQueryClientProvider>
+      </MotionProvider>
     </NextIntlClientProvider>
   );
 }

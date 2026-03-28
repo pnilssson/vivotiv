@@ -1,6 +1,8 @@
 {
   "nav": {
-    "scanCta": "Free scan"
+    "scanCta": "Free scan",
+    "skipToContent": "Skip to content",
+    "primaryNav": "Main navigation"
   },
   "hero": {
     "headline": "Find out what's wrong with your website.",
@@ -18,7 +20,8 @@
     "error": "Something went wrong. Please try again."
   },
   "socialProof": {
-    "label": "Powered by"
+    "label": "Powered by",
+    "opensInNewTab": "(opens in new tab)"
   },
   "categories": {
     "pretitle": "THE AUDIT",
@@ -56,6 +59,12 @@
     "overallScore": "Overall Score",
     "categoryScores": "Category Breakdown",
     "issuesFound": "Issues Found",
+    "scoreGood": "Good",
+    "scoreWarning": "Needs improvement",
+    "scoreCritical": "Critical",
+    "statusFail": "Failed",
+    "statusWarn": "Warning",
+    "statusPass": "Passed",
     "example": {
       "performance": "72",
       "seo": "58",
@@ -173,6 +182,7 @@
   },
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
-    "privacy": "Privacy Policy"
+    "privacy": "Privacy Policy",
+    "switchLanguage": "Switch language to Svenska"
   }
 }

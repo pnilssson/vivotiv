@@ -18,11 +18,11 @@ export function AudienceSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="py-28 md:py-36" ref={ref}>
+    <section className="py-28 md:py-36" ref={ref} aria-labelledby="audience-heading">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("pretitle")}</p>
-          <h2 className="font-heading mt-4 text-3xl font-bold tracking-tight md:text-4xl">
+          <h2 id="audience-heading" className="font-heading mt-4 text-3xl font-bold tracking-tight md:text-4xl">
             {t("title")}
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">{t("subtitle")}</p>
@@ -43,7 +43,7 @@ export function AudienceSection() {
                   ease: "easeOut",
                 }}
               >
-                <Icon className="h-5 w-5" />
+                <Icon className="h-5 w-5" aria-hidden="true" />
                 <h3 className="font-heading text-lg font-semibold">
                   {t(`${audience.key}.title`)}
                 </h3>

@@ -1,6 +1,8 @@
 {
   "nav": {
-    "scanCta": "Gratis analys"
+    "scanCta": "Gratis analys",
+    "skipToContent": "Hoppa till innehåll",
+    "primaryNav": "Huvudnavigering"
   },
   "hero": {
     "headline": "Ta reda p\u00e5 vad som \u00e4r fel med din webbplats.",
@@ -18,7 +20,8 @@
     "error": "N\u00e5got gick fel. F\u00f6rs\u00f6k igen."
   },
   "socialProof": {
-    "label": "Drivs av"
+    "label": "Drivs av",
+    "opensInNewTab": "(öppnas i ny flik)"
   },
   "categories": {
     "pretitle": "GRANSKNINGEN",
@@ -56,6 +59,12 @@
     "overallScore": "\u00d6vergripande betyg",
     "categoryScores": "Kategoriuppdelning",
     "issuesFound": "Hittade problem",
+    "scoreGood": "Bra",
+    "scoreWarning": "Kan förbättras",
+    "scoreCritical": "Kritiskt",
+    "statusFail": "Underkänt",
+    "statusWarn": "Varning",
+    "statusPass": "Godkänt",
     "example": {
       "performance": "72",
       "seo": "58",
@@ -173,6 +182,7 @@
   },
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
-    "privacy": "Integritetspolicy"
+    "privacy": "Integritetspolicy",
+    "switchLanguage": "Byt språk till English"
   }
 }

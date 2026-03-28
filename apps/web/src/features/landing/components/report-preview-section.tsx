@@ -25,6 +25,18 @@ function scoreColor(score: number): string {
   return "text-red-500";
 }
 
+function scoreLevelKey(score: number): "scoreGood" | "scoreWarning" | "scoreCritical" {
+  if (score >= 71) return "scoreGood";
+  if (score >= 41) return "scoreWarning";
+  return "scoreCritical";
+}
+
+const statusLabelKey = {
+  fail: "statusFail",
+  warn: "statusWarn",
+  pass: "statusPass",
+} as const;
+
 function scoreBg(score: number): string {
   if (score >= 71) return "bg-emerald-600";
   if (score >= 41) return "bg-amber-500";
@@ -116,11 +128,12 @@ export function ReportPreviewSection() {
   }
 
   return (
-    <section className="py-28 md:py-36" ref={ref}>
+    <section className="py-28 md:py-36" ref={ref} aria-labelledby="report-preview-heading">
       <div className="mx-auto max-w-6xl px-6">
         <div className="text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("pretitle")}</p>
           <motion.h2
+            id="report-preview-heading"
             className="font-heading mt-4 text-3xl font-bold tracking-tight md:text-4xl"
             initial={{ opacity: 0, y: 12 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -170,6 +183,9 @@ export function ReportPreviewSection() {
                 </div>
                 <span className="mt-3 text-sm text-muted-foreground">
                   {t("overallScore")}
+                </span>
+                <span className="sr-only">
+                  {t(scoreLevelKey(overall))}
                 </span>
               </div>
 
@@ -225,6 +241,7 @@ export function ReportPreviewSection() {
                 {exampleIssues.map((issue, i) => {
                   const Icon = StatusIcon[issue.status];
                   const isOpen = openIndex === i;
+                  const panelId = `issue-panel-${i}`;
                   return (
                     <motion.div
                       key={i}
@@ -240,19 +257,26 @@ export function ReportPreviewSection() {
                       <button
                         type="button"
                         onClick={() => toggleIssue(i)}
-                        className="flex w-full items-center gap-3 p-3 text-left"
+                        aria-expanded={isOpen}
+                        aria-controls={panelId}
+                        className="flex w-full items-center gap-3 p-3 text-left focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
                       >
                         <Icon
                           className={`h-4 w-4 shrink-0 ${statusColor[issue.status]}`}
+                          aria-hidden="true"
                         />
+                        <span className="sr-only">{t(statusLabelKey[issue.status])}:</span>
                         <span className="flex-1 text-sm">{issue.label}</span>
                         <ChevronDown
                           className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                          aria-hidden="true"
                         />
                       </button>
                       <AnimatePresence>
                         {isOpen && (
                           <motion.div
+                            id={panelId}
+                            role="region"
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}

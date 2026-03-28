@@ -12,13 +12,14 @@ export function ComplianceSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="py-28 md:py-36" ref={ref}>
+    <section className="py-28 md:py-36" ref={ref} aria-labelledby="compliance-heading">
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
           {/* Left: copy */}
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("pretitle")}</p>
             <motion.h2
+              id="compliance-heading"
               className="font-heading mt-4 text-3xl font-bold tracking-tight md:text-4xl"
               initial={{ opacity: 0, y: 12 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -44,7 +45,7 @@ export function ComplianceSection() {
             >
               <a
                 href="#scan"
-                className="text-sm font-medium text-brand transition-colors hover:opacity-70"
+                className="text-sm font-medium text-brand transition-colors hover:opacity-70 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
               >
                 {t("cta")}
               </a>
