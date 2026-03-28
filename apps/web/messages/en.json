@@ -1,4 +1,8 @@
 {
+  "metadata": {
+    "title": "Free Website Scan | Vivotiv",
+    "description": "Find out what's wrong with your website in 60 seconds. Check performance, SEO, accessibility, GDPR compliance, and security for free."
+  },
   "nav": {
     "scanCta": "Free scan",
     "skipToContent": "Skip to content",
@@ -117,16 +121,16 @@
     "title": "The EU Accessibility Act is law.",
     "description": "Since June 2025, businesses with 10+ employees or \u20ac2M+ turnover must meet WCAG 2.1 AA. Non-compliance means fines up to \u20ac3M. Most Swedish businesses don't know this applies to them yet.",
     "stat1": {
-      "value": "\u20ac3M",
-      "label": "Maximum fine for non-compliance"
+      "value": "SEK 10M",
+      "label": "Maximum fine in Sweden for non-compliance"
     },
     "stat2": {
-      "value": "WCAG 2.1",
-      "label": "Now mandatory across the EU"
+      "value": "WCAG 2.1 AA",
+      "label": "Required standard under the EU Accessibility Act"
     },
     "stat3": {
-      "value": "10+",
-      "label": "Employees threshold for enforcement"
+      "value": "10+ / \u20ac2M+",
+      "label": "Employees or annual turnover threshold for enforcement"
     },
     "cta": "Check your compliance for free"
   },
@@ -135,16 +139,16 @@
     "title": "Cookie compliance is not optional.",
     "description": "Your cookie banner needs an equally prominent reject button. Loading analytics before consent is a direct GDPR violation. IMY has been issuing formal warnings to Swedish businesses since April 2025.",
     "stat1": {
-      "value": "4%",
-      "label": "Of global turnover, maximum GDPR fine"
+      "value": "\u20ac20M / 4%",
+      "label": "Maximum GDPR fine, whichever is higher"
     },
     "stat2": {
       "value": "IMY",
-      "label": "Swedish DPA actively enforcing since 2025"
+      "label": "Issued formal reprimands to Swedish companies in April 2025"
     },
     "stat3": {
-      "value": "Reject",
-      "label": "Must be as prominent as Accept"
+      "value": "Symmetry",
+      "label": "Rejecting cookies must be as easy as accepting them"
     },
     "cta": "Scan your site for cookie issues"
   },
@@ -183,6 +187,186 @@
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
     "privacy": "Privacy Policy",
+    "cookiePolicy": "Cookie Policy",
+    "cookiePreferences": "Cookie Preferences",
     "switchLanguage": "Switch language to Svenska"
+  },
+  "notFound": {
+    "message": "This page does not exist.",
+    "backHome": "Back to homepage"
+  },
+  "legal": {
+    "backHome": "\u2190 Back to Vivotiv"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: 28 March 2026",
+    "intro": "This Privacy Policy explains how Vivotiv (\"we\", \"us\", \"our\") collects, uses, and protects your personal data when you use vivotiv.com and vivotiv.se (the \"Service\").",
+    "controller": {
+      "title": "1. Data Controller",
+      "name": "Vivotiv",
+      "email": {
+        "label": "Email",
+        "address": "hello@vivotiv.com"
+      },
+      "contact": "If you have questions about how we handle your personal data, contact us at that address."
+    },
+    "dataCollected": {
+      "title": "2. What Data We Collect",
+      "leadData": {
+        "title": "Scan submissions",
+        "description": "When you submit a website scan, we collect your email address and the website URL you enter. This data is stored in our database so we can process the scan and send you the results."
+      }
+    },
+    "legalBasis": {
+      "title": "3. Legal Basis for Processing",
+      "table": {
+        "purpose": "Purpose",
+        "basis": "Legal basis (GDPR Art. 6)",
+        "scan": {
+          "purpose": "Processing website scans and delivering results",
+          "basis": "Consent \u2014 Art. 6(1)(a)"
+        },
+        "email": {
+          "purpose": "Sending scan results via email",
+          "basis": "Consent \u2014 Art. 6(1)(a)"
+        }
+      }
+    },
+    "processors": {
+      "title": "4. Data Processors (Sub-processors)",
+      "intro": "We share data with the following third-party processors to operate the Service:",
+      "table": {
+        "processor": "Processor",
+        "purpose": "Purpose",
+        "location": "Location"
+      },
+      "supabase": "Database (scan data, email storage)",
+      "vercel": "Hosting",
+      "onecom": "Transactional email (SMTP)"
+    },
+    "transfers": {
+      "title": "5. International Data Transfers",
+      "description": "Some of our processors (Vercel) operate in the United States. Where personal data is transferred outside the EU/EEA, we rely on Standard Contractual Clauses (SCCs) approved by the European Commission to ensure adequate protection."
+    },
+    "retention": {
+      "title": "6. Data Retention",
+      "table": {
+        "data": "Data",
+        "period": "Retention period",
+        "leads": {
+          "data": "Email and URL from scan submissions",
+          "period": "Until deletion request"
+        }
+      }
+    },
+    "rights": {
+      "title": "7. Your Rights",
+      "intro": "Under the GDPR you have the right to:",
+      "access": {
+        "title": "Access",
+        "description": "\u2014 request a copy of the personal data we hold about you."
+      },
+      "rectification": {
+        "title": "Rectification",
+        "description": "\u2014 ask us to correct inaccurate data."
+      },
+      "erasure": {
+        "title": "Erasure",
+        "description": "\u2014 ask us to delete your personal data."
+      },
+      "restriction": {
+        "title": "Restriction",
+        "description": "\u2014 ask us to restrict processing in certain circumstances."
+      },
+      "portability": {
+        "title": "Data portability",
+        "description": "\u2014 receive your data in a machine-readable format."
+      },
+      "object": {
+        "title": "Object",
+        "description": "\u2014 object to processing based on legitimate interests."
+      },
+      "withdraw": {
+        "title": "Withdraw consent",
+        "description": "\u2014 withdraw consent at any time via the Cookie Preferences link in the footer."
+      },
+      "exercise": "To exercise any right, email us at",
+      "responseTime": "We will respond within 30 days."
+    },
+    "authority": {
+      "title": "8. Supervisory Authority",
+      "description": "You have the right to lodge a complaint with the Swedish Authority for Privacy Protection (Integritetsskyddsmyndigheten, IMY) at"
+    },
+    "changes": {
+      "title": "9. Changes to This Policy",
+      "description": "We may update this policy from time to time. The \"Last updated\" date at the top of this page reflects the most recent revision."
+    },
+    "contact": {
+      "title": "10. Contact"
+    }
+  },
+  "cookiePolicy": {
+    "title": "Cookie Policy",
+    "lastUpdated": "Last updated: 28 March 2026",
+    "intro": "This Cookie Policy explains what cookies Vivotiv uses, why we use them, and how you can control them.",
+    "whatAreCookies": {
+      "title": "What are cookies?",
+      "description": "Cookies are small text files stored on your device by your browser. They allow a website to remember information about your visit across page loads and sessions."
+    },
+    "cookiesWeUse": {
+      "title": "Cookies we use",
+      "table": {
+        "cookie": "Cookie",
+        "purpose": "Purpose",
+        "duration": "Duration"
+      },
+      "necessary": {
+        "title": "Strictly Necessary",
+        "description": "These cookies are required for the site to function. They cannot be disabled.",
+        "locale": {
+          "purpose": "Stores your language preference so the site displays in the correct language.",
+          "duration": "1 year"
+        }
+      },
+      "analytics": {
+        "title": "Analytics",
+        "description": "We do not currently use any analytics cookies. If this changes, we will update this policy and request your consent before setting any analytics cookies."
+      }
+    },
+    "managing": {
+      "title": "Managing your preferences",
+      "description": "You can change your cookie preferences at any time:",
+      "preferences": "Use the Cookie Preferences link in the page footer to update your choices.",
+      "browser": "You can also clear cookies via your browser settings."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Questions about this Cookie Policy? Email us at"
+    }
+  },
+  "cookies": {
+    "banner": {
+      "ariaLabel": "Cookie consent",
+      "message": "We use cookies to improve your experience.",
+      "policyLink": "Cookie Policy",
+      "reject": "Reject all",
+      "manage": "Manage preferences",
+      "accept": "Accept all"
+    },
+    "preferences": {
+      "title": "Cookie Preferences",
+      "description": "Manage which cookies you allow. You can change these settings at any time.",
+      "necessary": {
+        "title": "Strictly Necessary",
+        "description": "Required for language preference and core functionality. Cannot be disabled."
+      },
+      "analytics": {
+        "title": "Analytics",
+        "description": "Not currently in use. This toggle is here for when we add analytics in the future."
+      },
+      "cancel": "Cancel",
+      "save": "Save preferences"
+    }
   }
 }

@@ -1,3 +1,5 @@
+import { getLocale, getTranslations } from "next-intl/server";
+
 import { AudienceSection } from "@/features/landing/components/audience-section";
 import { BottomCtaSection } from "@/features/landing/components/bottom-cta-section";
 import { CategoriesSection } from "@/features/landing/components/categories-section";
@@ -11,9 +13,69 @@ import { SectionDivider } from "@/features/landing/components/section-divider";
 import { SiteFooter } from "@/features/landing/components/site-footer";
 import { SiteHeader } from "@/features/landing/components/site-header";
 
-export default function LocaleLandingPage() {
+const domainsByLocale = {
+  en: "https://vivotiv.com",
+  sv: "https://vivotiv.se",
+} as const;
+
+export default async function LocaleLandingPage() {
+  const locale = await getLocale();
+  const t = await getTranslations("metadata");
+  const tFaq = await getTranslations("faq");
+
+  const domain = domainsByLocale[locale as keyof typeof domainsByLocale];
+  const faqItems = tFaq.raw("items") as { question: string; answer: string }[];
+
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Vivotiv",
+    url: domain,
+    description: t("description"),
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Vivotiv",
+    url: domain,
+    inLanguage: locale === "sv" ? "sv-SE" : "en-US",
+  };
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(websiteSchema),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(faqSchema),
+        }}
+      />
+
       <SiteHeader />
 
       <main id="main-content">

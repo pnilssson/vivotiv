@@ -1,4 +1,8 @@
 {
+  "metadata": {
+    "title": "Gratis webbplatsanalys | Vivotiv",
+    "description": "Ta reda p\u00e5 vad som \u00e4r fel med din webbplats p\u00e5 60 sekunder. Kontrollera prestanda, SEO, tillg\u00e4nglighet, GDPR-efterlevnad och s\u00e4kerhet gratis."
+  },
   "nav": {
     "scanCta": "Gratis analys",
     "skipToContent": "Hoppa till innehåll",
@@ -117,16 +121,16 @@
     "title": "EU:s tillg\u00e4nglighetsdirektiv \u00e4r lag.",
     "description": "Sedan juni 2025 m\u00e5ste f\u00f6retag med 10+ anst\u00e4llda eller \u20ac2M+ i oms\u00e4ttning uppfylla WCAG 2.1 AA. Bristande efterlevnad inneb\u00e4r b\u00f6ter upp till \u20ac3M. De flesta svenska f\u00f6retag vet inte \u00e4n att det g\u00e4ller dem.",
     "stat1": {
-      "value": "\u20ac3M",
-      "label": "Maxb\u00f6ter f\u00f6r bristande efterlevnad"
+      "value": "10 Mkr",
+      "label": "Maximala b\u00f6ter i Sverige f\u00f6r bristande efterlevnad"
     },
     "stat2": {
-      "value": "WCAG 2.1",
-      "label": "Nu obligatoriskt i hela EU"
+      "value": "WCAG 2.1 AA",
+      "label": "Obligatorisk standard enligt EU:s tillg\u00e4nglighetsdirektiv"
     },
     "stat3": {
-      "value": "10+",
-      "label": "Anst\u00e4llda f\u00f6r att lagen ska g\u00e4lla"
+      "value": "10+ / \u20ac2M+",
+      "label": "Anst\u00e4llda eller \u00e5rsoms\u00e4ttning f\u00f6r att lagen ska g\u00e4lla"
     },
     "cta": "Kontrollera din efterlevnad gratis"
   },
@@ -135,16 +139,16 @@
     "title": "Cookielagstiftning \u00e4r inte frivillig.",
     "description": "Din cookiebanner m\u00e5ste ha en lika tydlig avvisningsknapp. Att ladda analytics innan samtycke \u00e4r ett direkt GDPR-brott. IMY har utf\u00e4rdat formella varningar till svenska f\u00f6retag sedan april 2025.",
     "stat1": {
-      "value": "4%",
-      "label": "Av global oms\u00e4ttning, maximalt GDPR-b\u00f6ter"
+      "value": "\u20ac20M / 4%",
+      "label": "Maximala GDPR-b\u00f6ter, det h\u00f6gsta beloppet g\u00e4ller"
     },
     "stat2": {
       "value": "IMY",
-      "label": "Svensk tillsynsmyndighet, aktivt sedan 2025"
+      "label": "Utf\u00e4rdade formella varningar till svenska f\u00f6retag i april 2025"
     },
     "stat3": {
-      "value": "Avvisa",
-      "label": "M\u00e5ste vara lika tydlig som Acceptera"
+      "value": "Symmetri",
+      "label": "Att avvisa cookies m\u00e5ste vara lika enkelt som att acceptera"
     },
     "cta": "Skanna din sida efter cookieproblem"
   },
@@ -183,6 +187,186 @@
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
     "privacy": "Integritetspolicy",
-    "switchLanguage": "Byt språk till English"
+    "cookiePolicy": "Cookiepolicy",
+    "cookiePreferences": "Cookieinst\u00e4llningar",
+    "switchLanguage": "Byt spr\u00e5k till English"
+  },
+  "notFound": {
+    "message": "Den h\u00e4r sidan finns inte.",
+    "backHome": "Tillbaka till startsidan"
+  },
+  "legal": {
+    "backHome": "\u2190 Tillbaka till Vivotiv"
+  },
+  "privacy": {
+    "title": "Integritetspolicy",
+    "lastUpdated": "Senast uppdaterad: 28 mars 2026",
+    "intro": "Den h\u00e4r integritetspolicyn f\u00f6rklarar hur Vivotiv (\"vi\", \"oss\", \"v\u00e5r\") samlar in, anv\u00e4nder och skyddar dina personuppgifter n\u00e4r du anv\u00e4nder vivotiv.com och vivotiv.se (\"Tj\u00e4nsten\").",
+    "controller": {
+      "title": "1. Personuppgiftsansvarig",
+      "name": "Vivotiv",
+      "email": {
+        "label": "E-post",
+        "address": "hello@vivotiv.com"
+      },
+      "contact": "Om du har fr\u00e5gor om hur vi hanterar dina personuppgifter, kontakta oss p\u00e5 den adressen."
+    },
+    "dataCollected": {
+      "title": "2. Vilka uppgifter vi samlar in",
+      "leadData": {
+        "title": "Skanningsformul\u00e4r",
+        "description": "N\u00e4r du skickar in en webbplatsanalys samlar vi in din e-postadress och den webbadress du anger. Dessa uppgifter lagras i v\u00e5r databas s\u00e5 att vi kan genomf\u00f6ra analysen och skicka resultaten till dig."
+      }
+    },
+    "legalBasis": {
+      "title": "3. R\u00e4ttslig grund f\u00f6r behandling",
+      "table": {
+        "purpose": "\u00c4ndam\u00e5l",
+        "basis": "R\u00e4ttslig grund (GDPR art. 6)",
+        "scan": {
+          "purpose": "Genomf\u00f6ra webbplatsanalyser och leverera resultat",
+          "basis": "Samtycke \u2014 art. 6.1 a"
+        },
+        "email": {
+          "purpose": "Skicka analysresultat via e-post",
+          "basis": "Samtycke \u2014 art. 6.1 a"
+        }
+      }
+    },
+    "processors": {
+      "title": "4. Personuppgiftsbitr\u00e4den",
+      "intro": "Vi delar uppgifter med f\u00f6ljande tredjepartsbitr\u00e4den f\u00f6r att driva Tj\u00e4nsten:",
+      "table": {
+        "processor": "Bitr\u00e4de",
+        "purpose": "\u00c4ndam\u00e5l",
+        "location": "Plats"
+      },
+      "supabase": "Databas (analysdata, e-postlagring)",
+      "vercel": "Hosting",
+      "onecom": "Transaktionell e-post (SMTP)"
+    },
+    "transfers": {
+      "title": "5. Internationella data\u00f6verf\u00f6ringar",
+      "description": "N\u00e5gra av v\u00e5ra bitr\u00e4den (Vercel) \u00e4r baserade i USA. N\u00e4r personuppgifter \u00f6verf\u00f6rs utanf\u00f6r EU/EES f\u00f6rlitar vi oss p\u00e5 standardavtalsklausuler (SCC) godk\u00e4nda av Europeiska kommissionen f\u00f6r att s\u00e4kerst\u00e4lla adekvat skydd."
+    },
+    "retention": {
+      "title": "6. Lagringstid",
+      "table": {
+        "data": "Uppgift",
+        "period": "Lagringsperiod",
+        "leads": {
+          "data": "E-post och URL fr\u00e5n skanningsinl\u00e4mningar",
+          "period": "Till beg\u00e4ran om radering"
+        }
+      }
+    },
+    "rights": {
+      "title": "7. Dina r\u00e4ttigheter",
+      "intro": "Enligt GDPR har du r\u00e4tt att:",
+      "access": {
+        "title": "\u00c5tkomst",
+        "description": "\u2014 beg\u00e4ra en kopia av de personuppgifter vi har om dig."
+      },
+      "rectification": {
+        "title": "R\u00e4ttelse",
+        "description": "\u2014 be oss r\u00e4tta felaktiga uppgifter."
+      },
+      "erasure": {
+        "title": "Radering",
+        "description": "\u2014 be oss radera dina personuppgifter."
+      },
+      "restriction": {
+        "title": "Begr\u00e4nsning",
+        "description": "\u2014 be oss begr\u00e4nsa behandlingen under vissa omst\u00e4ndigheter."
+      },
+      "portability": {
+        "title": "Dataportabilitet",
+        "description": "\u2014 f\u00e5 dina uppgifter i ett maskinl\u00e4sbart format."
+      },
+      "object": {
+        "title": "Inv\u00e4ndning",
+        "description": "\u2014 inv\u00e4nda mot behandling baserad p\u00e5 ber\u00e4ttigat intresse."
+      },
+      "withdraw": {
+        "title": "\u00c5terkalla samtycke",
+        "description": "\u2014 \u00e5terkalla samtycke n\u00e4r som helst via Cookieinst\u00e4llningar-l\u00e4nken i sidfoten."
+      },
+      "exercise": "F\u00f6r att ut\u00f6va n\u00e5gon r\u00e4ttighet, mejla oss p\u00e5",
+      "responseTime": "Vi svarar inom 30 dagar."
+    },
+    "authority": {
+      "title": "8. Tillsynsmyndighet",
+      "description": "Du har r\u00e4tt att l\u00e4mna in ett klagom\u00e5l till Integritetsskyddsmyndigheten (IMY) p\u00e5"
+    },
+    "changes": {
+      "title": "9. \u00c4ndringar av denna policy",
+      "description": "Vi kan uppdatera denna policy fr\u00e5n tid till annan. Datumet \"Senast uppdaterad\" l\u00e4ngst upp p\u00e5 denna sida visar den senaste \u00e4ndringen."
+    },
+    "contact": {
+      "title": "10. Kontakt"
+    }
+  },
+  "cookiePolicy": {
+    "title": "Cookiepolicy",
+    "lastUpdated": "Senast uppdaterad: 28 mars 2026",
+    "intro": "Den h\u00e4r cookiepolicyn f\u00f6rklarar vilka cookies Vivotiv anv\u00e4nder, varf\u00f6r vi anv\u00e4nder dem och hur du kan kontrollera dem.",
+    "whatAreCookies": {
+      "title": "Vad \u00e4r cookies?",
+      "description": "Cookies \u00e4r sm\u00e5 textfiler som lagras p\u00e5 din enhet av din webbl\u00e4sare. De g\u00f6r det m\u00f6jligt f\u00f6r en webbplats att komma ih\u00e5g information om ditt bes\u00f6k mellan sidladdningar och sessioner."
+    },
+    "cookiesWeUse": {
+      "title": "Cookies vi anv\u00e4nder",
+      "table": {
+        "cookie": "Cookie",
+        "purpose": "\u00c4ndam\u00e5l",
+        "duration": "Varaktighet"
+      },
+      "necessary": {
+        "title": "Strikt n\u00f6dv\u00e4ndiga",
+        "description": "Dessa cookies kr\u00e4vs f\u00f6r att webbplatsen ska fungera. De kan inte inaktiveras.",
+        "locale": {
+          "purpose": "Lagrar ditt spr\u00e5kval s\u00e5 att webbplatsen visas p\u00e5 r\u00e4tt spr\u00e5k.",
+          "duration": "1 \u00e5r"
+        }
+      },
+      "analytics": {
+        "title": "Analys",
+        "description": "Vi anv\u00e4nder f\u00f6r n\u00e4rvarande inga analyticscookies. Om detta \u00e4ndras uppdaterar vi denna policy och ber om ditt samtycke innan n\u00e5gra analyticscookies s\u00e4tts."
+      }
+    },
+    "managing": {
+      "title": "Hantera dina inst\u00e4llningar",
+      "description": "Du kan \u00e4ndra dina cookieinst\u00e4llningar n\u00e4r som helst:",
+      "preferences": "Anv\u00e4nd l\u00e4nken Cookieinst\u00e4llningar i sidfoten f\u00f6r att uppdatera dina val.",
+      "browser": "Du kan \u00e4ven rensa cookies via din webbl\u00e4sares inst\u00e4llningar."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "description": "Fr\u00e5gor om denna cookiepolicy? Mejla oss p\u00e5"
+    }
+  },
+  "cookies": {
+    "banner": {
+      "ariaLabel": "Cookiesamtycke",
+      "message": "Vi anv\u00e4nder cookies f\u00f6r att f\u00f6rb\u00e4ttra din upplevelse.",
+      "policyLink": "Cookiepolicy",
+      "reject": "Avvisa alla",
+      "manage": "Hantera inst\u00e4llningar",
+      "accept": "Acceptera alla"
+    },
+    "preferences": {
+      "title": "Cookieinst\u00e4llningar",
+      "description": "Hantera vilka cookies du till\u00e5ter. Du kan \u00e4ndra dessa inst\u00e4llningar n\u00e4r som helst.",
+      "necessary": {
+        "title": "Strikt n\u00f6dv\u00e4ndiga",
+        "description": "Kr\u00e4vs f\u00f6r spr\u00e5kinst\u00e4llningar och grundl\u00e4ggande funktionalitet. Kan inte inaktiveras."
+      },
+      "analytics": {
+        "title": "Analys",
+        "description": "Anv\u00e4nds inte f\u00f6r n\u00e4rvarande. Den h\u00e4r inst\u00e4llningen finns h\u00e4r f\u00f6r n\u00e4r vi l\u00e4gger till analys i framtiden."
+      },
+      "cancel": "Avbryt",
+      "save": "Spara inst\u00e4llningar"
+    }
   }
 }

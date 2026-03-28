@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { hasLocale } from "next-intl";
 import { headers } from "next/headers";
 import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
@@ -22,11 +21,6 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Vivotiv",
-  description: "Free website scan",
-};
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -39,9 +33,9 @@ export default async function RootLayout({
   return (
     <html
       lang={lang}
-      className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} h-full antialiased overflow-x-hidden`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col overflow-x-hidden">{children}</body>
     </html>
   );
 }
