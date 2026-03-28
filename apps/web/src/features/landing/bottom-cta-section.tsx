@@ -16,7 +16,7 @@ export function BottomCtaSection() {
   return (
     <section className="py-32 md:py-44" ref={ref} aria-labelledby="bottom-cta-heading">
       <motion.div
-        className="mx-auto flex max-w-2xl flex-col items-center text-center"
+        className="mx-auto flex max-w-2xl flex-col items-center px-6 text-center"
         initial={{ opacity: 0, y: 16 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.5, ease: "easeOut" }}

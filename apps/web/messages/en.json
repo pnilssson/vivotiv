@@ -49,7 +49,7 @@
     },
     "legal": {
       "title": "EU Legal Compliance",
-      "description": "Missing cookie consent, no privacy policy, tracking before user approval. These are the things that lead to fines."
+      "description": "Missing cookie consent, no privacy policy, tracking before user approval. This can potentially lead to fines."
     },
     "security": {
       "title": "Security",
@@ -127,7 +127,7 @@
   "compliance": {
     "pretitle": "ACCESSIBILITY",
     "title": "The EU Accessibility Act is law",
-    "description": "Since June 2025, businesses with 10+ employees or \u20ac2M+ turnover must meet WCAG 2.1 AA. Non-compliance means fines up to \u20ac3M. Most Swedish businesses don't know this applies to them yet.",
+    "description": "Since June 2025, businesses with 10+ employees or \u20ac2M+ turnover must meet WCAG 2.1 AA. Non-compliance means fines up to SEK 10M in Sweden. Most Swedish businesses don't know this applies to them yet.",
     "stat1": {
       "value": "SEK 10M",
       "label": "Maximum fine in Sweden for non-compliance"

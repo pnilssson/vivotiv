@@ -49,7 +49,7 @@
     },
     "legal": {
       "title": "EU-r\u00e4ttslig efterlevnad",
-      "description": "Saknat cookiesamtycke, ingen integritetspolicy, sp\u00e5rning innan godk\u00e4nnande. Det h\u00e4r \u00e4r det som leder till b\u00f6ter."
+      "description": "Saknat cookiesamtycke, ingen integritetspolicy, sp\u00e5rning innan godk\u00e4nnande. Det h\u00e4r kan potentiellt leda till b\u00f6ter."
     },
     "security": {
       "title": "S\u00e4kerhet",
@@ -127,7 +127,7 @@
   "compliance": {
     "pretitle": "TILLG\u00c4NGLIGHET",
     "title": "EU:s tillg\u00e4nglighetsdirektiv \u00e4r lag",
-    "description": "Sedan juni 2025 m\u00e5ste f\u00f6retag med 10+ anst\u00e4llda eller \u20ac2M+ i oms\u00e4ttning uppfylla WCAG 2.1 AA. Bristande efterlevnad inneb\u00e4r b\u00f6ter upp till \u20ac3M. De flesta svenska f\u00f6retag vet inte \u00e4n att det g\u00e4ller dem.",
+    "description": "Sedan juni 2025 m\u00e5ste f\u00f6retag med 10+ anst\u00e4llda eller \u20ac2M+ i oms\u00e4ttning uppfylla WCAG 2.1 AA. Bristande efterlevnad inneb\u00e4r b\u00f6ter upp till 10 miljoner SEK i Sverige. De flesta svenska f\u00f6retag vet inte \u00e4n att det g\u00e4ller dem.",
     "stat1": {
       "value": "10 Mkr",
       "label": "Maximala b\u00f6ter i Sverige f\u00f6r bristande efterlevnad"
