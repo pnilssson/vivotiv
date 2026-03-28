@@ -163,7 +163,7 @@ User submits URL + email on landing page
             3. axe-core runs deep WCAG analysis
             4. Custom checks: cookie banner, legal, security headers
             5. Results aggregated + scored
-          -> Results stored in Supabase (scan_results table)
+          -> Results stored in Supabase (scans table)
           -> Nodemailer sends email with link to results page
           -> SSE pushes "scan complete" to waiting frontend
 ```
@@ -173,7 +173,7 @@ User submits URL + email on landing page
 leads:
   id, email, url, source (scan/waitlist/preview), created_at
 
-scan_results:
+scans:
   id, lead_id, url, overall_score,
   performance_score, seo_score, accessibility_score,
   legal_score, security_score, standards_score,

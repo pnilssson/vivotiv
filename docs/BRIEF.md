@@ -36,8 +36,8 @@ The **Vivotiv landing page + Free Website Scan**. This is a standalone lead gene
 ```
 vivotiv/
   apps/
-    web/           # Next.js landing page + scan UI -> Vercel project
-    api/           # Hono API (scan pipeline, form handling) -> separate Vercel project
+    web/           # Next.js landing page + scan UI
+    api/           # Hono API (scan pipeline, form handling)
   packages/
     db/            # Drizzle schemas + migrations
     shared/        # Zod schemas, TypeScript types, constants
@@ -54,7 +54,6 @@ vivotiv/
 
 ### What NOT to build yet
 
-- The actual scan pipeline (Lighthouse, axe-core, Playwright) -- that's phase 2
 - User authentication / dashboard
 - Payment / billing
 - The full migration platform
@@ -65,9 +64,6 @@ vivotiv/
 A beautiful landing page that:
 1. Explains what the scan does (6 categories: Performance, SEO, Accessibility, EU Legal Compliance, Security, Modern Web Standards)
 2. Has a URL input + email capture form
-3. Shows a "coming soon" state after submission (scan pipeline not built yet)
 4. Stores the lead (email + URL) in Supabase
 5. Sends a confirmation email via Nodemailer (one.com SMTP)
 6. Works in both Swedish and English via next-intl
-
-This is enough to start capturing leads while we build the scan pipeline.
