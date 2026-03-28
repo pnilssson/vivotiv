@@ -1,16 +1,178 @@
 {
-  "landing": {
-    "title": "Free website scan",
-    "subtitle": "Paste your website URL and get a clear view of what is holding it back.",
+  "nav": {
+    "scanCta": "Free scan"
+  },
+  "hero": {
+    "headline": "Find out what's wrong with your website.",
+    "subheadline": "Paste your URL. Get a full audit of performance, SEO, accessibility, EU compliance, security, and web standards. Free, in 60 seconds.",
     "urlLabel": "Website URL",
-    "urlPlaceholder": "https://example.com",
+    "urlPlaceholder": "https://yourwebsite.com",
     "urlInvalid": "Enter a valid website URL.",
-    "emailLabel": "Work email",
-    "emailPlaceholder": "name@company.com",
+    "emailLabel": "Email",
+    "emailPlaceholder": "your@email.com",
     "emailInvalid": "Enter a valid email address.",
-    "submit": "Request free scan",
+    "submit": "Start free scan",
     "pending": "Submitting...",
-    "success": "Thanks, your scan request is accepted. We will email you when it is ready.",
-    "error": "We could not submit your request right now. Please try again."
+    "trust": "Free \u00b7 60 seconds \u00b7 No signup required",
+    "success": "Scan submitted. We'll email you when results are ready.",
+    "error": "Something went wrong. Please try again."
+  },
+  "socialProof": {
+    "label": "Powered by"
+  },
+  "categories": {
+    "pretitle": "THE AUDIT",
+    "title": "Six categories. Scored 0 to 100.",
+    "subtitle": "Each check tells you what's wrong, why it matters, and how we fix it.",
+    "performance": {
+      "title": "Performance & Speed",
+      "description": "Core Web Vitals, page weight, server response time, image formats. The things Google measures when ranking your site."
+    },
+    "seo": {
+      "title": "SEO",
+      "description": "Meta tags, structured data, crawlability, mobile viewport, Open Graph. Whether search engines can find and understand your pages."
+    },
+    "accessibility": {
+      "title": "Accessibility",
+      "description": "WCAG 2.1 AA conformance, color contrast, keyboard navigation, screen reader support. Legally required for most EU businesses since June 2025."
+    },
+    "legal": {
+      "title": "EU Legal Compliance",
+      "description": "Cookie consent, GDPR requirements, privacy policy, the European Accessibility Act. The things that get you fined."
+    },
+    "security": {
+      "title": "Security",
+      "description": "HTTPS, security headers, mixed content, exposed server versions, outdated CMS. Vulnerabilities you can't see from the outside."
+    },
+    "standards": {
+      "title": "Modern Web Standards",
+      "description": "Responsive design, deprecated HTML, third-party bloat, favicon, 404 page. Signs your website was built for 2015."
+    }
+  },
+  "reportPreview": {
+    "pretitle": "SAMPLE REPORT",
+    "title": "What your report looks like",
+    "subtitle": "Every failed check includes what's wrong and how to resolve it.",
+    "overallScore": "Overall Score",
+    "categoryScores": "Category Breakdown",
+    "issuesFound": "Issues Found",
+    "example": {
+      "performance": "72",
+      "seo": "58",
+      "accessibility": "41",
+      "legal": "35",
+      "security": "84",
+      "standards": "67"
+    }
+  },
+  "howItWorks": {
+    "pretitle": "3 STEPS",
+    "title": "How it works",
+    "subtitle": "No account needed. Results go straight to your inbox.",
+    "step1": {
+      "title": "Paste your URL",
+      "description": "Any publicly accessible website. WordPress, Wix, custom built, anything."
+    },
+    "step2": {
+      "title": "Enter your email",
+      "description": "We send the full report to your inbox when it's done. Nothing else."
+    },
+    "step3": {
+      "title": "Get your report",
+      "description": "Scores, issues, and recommendations across all six categories. Share it with your team or your developer."
+    }
+  },
+  "audience": {
+    "pretitle": "USE CASES",
+    "title": "Who this is for",
+    "subtitle": "Whether you run the website or report on it.",
+    "business": {
+      "title": "Business owners",
+      "description": "You know your site needs work but not what's wrong or where to start. This report gives you the answers."
+    },
+    "marketing": {
+      "title": "Marketing managers",
+      "description": "You need hard numbers to justify a website investment to leadership. This report is the business case."
+    },
+    "developer": {
+      "title": "Developers",
+      "description": "A quick audit across performance, security, and standards without running five different tools."
+    },
+    "agency": {
+      "title": "Agencies",
+      "description": "Send clients a scored report instead of explaining why their site needs a rebuild. Let the numbers talk."
+    }
+  },
+  "compliance": {
+    "pretitle": "ACCESSIBILITY",
+    "title": "The EU Accessibility Act is law.",
+    "description": "Since June 2025, businesses with 10+ employees or \u20ac2M+ turnover must meet WCAG 2.1 AA. Non-compliance means fines up to \u20ac3M. Our scan checks every requirement.",
+    "stat1": {
+      "value": "\u20ac3M",
+      "label": "Maximum fine for non-compliance"
+    },
+    "stat2": {
+      "value": "WCAG 2.1",
+      "label": "Now mandatory across the EU"
+    },
+    "stat3": {
+      "value": "10+",
+      "label": "Employees threshold for enforcement"
+    },
+    "cta": "Check your compliance for free"
+  },
+  "gdpr": {
+    "pretitle": "PRIVACY",
+    "title": "Cookie compliance is not optional.",
+    "description": "Your cookie banner needs an equally prominent reject button. Loading analytics before consent is a direct GDPR violation. IMY has been issuing formal warnings to Swedish businesses since April 2025. Our scan detects all of this.",
+    "stat1": {
+      "value": "4%",
+      "label": "Of global turnover, maximum GDPR fine"
+    },
+    "stat2": {
+      "value": "IMY",
+      "label": "Swedish DPA actively enforcing since 2025"
+    },
+    "stat3": {
+      "value": "Reject",
+      "label": "Must be as prominent as Accept"
+    },
+    "cta": "Scan your site for cookie issues"
+  },
+  "faq": {
+    "pretitle": "FAQ",
+    "title": "Questions & answers",
+    "subtitle": "What you need to know before scanning.",
+    "items": [
+      {
+        "question": "Is this really free?",
+        "answer": "Yes. No credit card, no hidden costs, no catch."
+      },
+      {
+        "question": "What happens with my email?",
+        "answer": "We use it to send your report. That's it. No newsletters, no sharing with third parties."
+      },
+      {
+        "question": "How long does the scan take?",
+        "answer": "About 60 seconds. We run Lighthouse, axe-core, and custom compliance checks against your site in real time."
+      },
+      {
+        "question": "What does the report include?",
+        "answer": "Scores across six categories: performance, SEO, accessibility, EU legal compliance, security, and web standards. Each failed check explains what's wrong and why it matters."
+      },
+      {
+        "question": "Who is Vivotiv?",
+        "answer": "A Swedish company that helps businesses modernize their websites. We built this scan to show site owners exactly what they're missing."
+      }
+    ]
+  },
+  "bottomCta": {
+    "title": "Ready to see your score?",
+    "subtitle": "60 seconds. No signup, no credit card.",
+    "button": "Scan your website"
+  },
+  "footer": {
+    "copyright": "\u00a9 {year} Vivotiv",
+    "privacy": "Privacy Policy"
   }
 }

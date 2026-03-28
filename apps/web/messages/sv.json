@@ -1,16 +1,178 @@
 {
-  "landing": {
-    "title": "Gratis webbplatsanalys",
-    "subtitle": "Klistra in din webbadress och få en tydlig bild av vad som håller den tillbaka.",
+  "nav": {
+    "scanCta": "Gratis analys"
+  },
+  "hero": {
+    "headline": "Ta reda p\u00e5 vad som \u00e4r fel med din webbplats.",
+    "subheadline": "Klistra in din URL. F\u00e5 en fullst\u00e4ndig granskning av prestanda, SEO, tillg\u00e4nglighet, EU-efterlevnad, s\u00e4kerhet och webbstandarder. Gratis, p\u00e5 60 sekunder.",
     "urlLabel": "Webbadress",
-    "urlPlaceholder": "https://example.se",
+    "urlPlaceholder": "https://dinwebbplats.se",
     "urlInvalid": "Ange en giltig webbadress.",
     "emailLabel": "E-post",
-    "emailPlaceholder": "namn@företag.se",
+    "emailPlaceholder": "namn@f\u00f6retag.se",
     "emailInvalid": "Ange en giltig e-postadress.",
-    "submit": "Begär gratis analys",
+    "submit": "Starta gratis analys",
     "pending": "Skickar...",
-    "success": "Tack, din analysbegäran är mottagen. Vi mejlar när den är klar.",
-    "error": "Vi kunde inte skicka din begäran just nu. Försök igen."
+    "trust": "Gratis \u00b7 60 sekunder \u00b7 Ingen registrering kr\u00e4vs",
+    "success": "Analys skickad. Vi mejlar n\u00e4r resultaten \u00e4r klara.",
+    "error": "N\u00e5got gick fel. F\u00f6rs\u00f6k igen."
+  },
+  "socialProof": {
+    "label": "Drivs av"
+  },
+  "categories": {
+    "pretitle": "GRANSKNINGEN",
+    "title": "Sex kategorier. Betyg 0 till 100.",
+    "subtitle": "Varje kontroll visar vad som \u00e4r fel, varf\u00f6r det spelar roll och hur vi l\u00f6ser det.",
+    "performance": {
+      "title": "Prestanda & Hastighet",
+      "description": "Core Web Vitals, sidvikt, serversvarstid, bildformat. Det Google m\u00e4ter n\u00e4r de rankar din sida."
+    },
+    "seo": {
+      "title": "SEO",
+      "description": "Metataggar, strukturerad data, crawlbarhet, mobil viewport, Open Graph. Om s\u00f6kmotorer kan hitta och f\u00f6rst\u00e5 dina sidor."
+    },
+    "accessibility": {
+      "title": "Tillg\u00e4nglighet",
+      "description": "WCAG 2.1 AA, f\u00e4rgkontrast, tangentbordsnavigering, sk\u00e4rml\u00e4sarst\u00f6d. Lagkrav f\u00f6r de flesta EU-f\u00f6retag sedan juni 2025."
+    },
+    "legal": {
+      "title": "EU-r\u00e4ttslig efterlevnad",
+      "description": "Cookiesamtycke, GDPR-krav, integritetspolicy, tillg\u00e4nglighetsdirektivet. Det som ger b\u00f6ter."
+    },
+    "security": {
+      "title": "S\u00e4kerhet",
+      "description": "HTTPS, s\u00e4kerhetsrubriker, blandat inneh\u00e5ll, exponerade serverversioner, f\u00f6r\u00e5ldrat CMS. S\u00e5rbarheter du inte ser utifr\u00e5n."
+    },
+    "standards": {
+      "title": "Moderna webbstandarder",
+      "description": "Responsiv design, f\u00f6r\u00e5ldrad HTML, tredjepartsskript, favicon, 404-sida. Tecken p\u00e5 att din webbplats byggdes f\u00f6r 2015."
+    }
+  },
+  "reportPreview": {
+    "pretitle": "EXEMPELRAPPORT",
+    "title": "S\u00e5 ser din rapport ut",
+    "subtitle": "Varje misslyckat test visar vad som \u00e4r fel och hur du l\u00f6ser det.",
+    "overallScore": "\u00d6vergripande betyg",
+    "categoryScores": "Kategoriuppdelning",
+    "issuesFound": "Hittade problem",
+    "example": {
+      "performance": "72",
+      "seo": "58",
+      "accessibility": "41",
+      "legal": "35",
+      "security": "84",
+      "standards": "67"
+    }
+  },
+  "howItWorks": {
+    "pretitle": "3 STEG",
+    "title": "S\u00e5 fungerar det",
+    "subtitle": "Inget konto beh\u00f6vs. Resultaten g\u00e5r direkt till din inkorg.",
+    "step1": {
+      "title": "Klistra in din URL",
+      "description": "Vilken publik webbplats som helst. WordPress, Wix, egenutvecklad, vad som helst."
+    },
+    "step2": {
+      "title": "Ange din e-post",
+      "description": "Vi skickar hela rapporten till din inkorg n\u00e4r den \u00e4r klar. Inget annat."
+    },
+    "step3": {
+      "title": "F\u00e5 din rapport",
+      "description": "Betyg, problem och rekommendationer i alla sex kategorier. Dela med ditt team eller din utvecklare."
+    }
+  },
+  "audience": {
+    "pretitle": "ANV\u00c4NDNINGSFALL",
+    "title": "Vem det h\u00e4r \u00e4r f\u00f6r",
+    "subtitle": "Oavsett om du driver webbplatsen eller rapporterar om den.",
+    "business": {
+      "title": "F\u00f6retagare",
+      "description": "Du vet att din sida beh\u00f6ver \u00e5tg\u00e4rdas men inte vad som \u00e4r fel eller var du ska b\u00f6rja. Den h\u00e4r rapporten ger dig svaren."
+    },
+    "marketing": {
+      "title": "Marknadsansvariga",
+      "description": "Du beh\u00f6ver siffror f\u00f6r att motivera en webbplatsinvestering f\u00f6r ledningen. Den h\u00e4r rapporten \u00e4r aff\u00e4rsunderlaget."
+    },
+    "developer": {
+      "title": "Utvecklare",
+      "description": "En snabb granskning av prestanda, s\u00e4kerhet och standarder utan att k\u00f6ra fem olika verktyg."
+    },
+    "agency": {
+      "title": "Byr\u00e5er",
+      "description": "Skicka kunden en betygsatt rapport ist\u00e4llet f\u00f6r att f\u00f6rklara varf\u00f6r sidan beh\u00f6ver g\u00f6ras om. L\u00e5t siffrorna tala."
+    }
+  },
+  "compliance": {
+    "pretitle": "TILLG\u00c4NGLIGHET",
+    "title": "EU:s tillg\u00e4nglighetsdirektiv \u00e4r lag.",
+    "description": "Sedan juni 2025 m\u00e5ste f\u00f6retag med 10+ anst\u00e4llda eller \u20ac2M+ i oms\u00e4ttning uppfylla WCAG 2.1 AA. Bristande efterlevnad inneb\u00e4r b\u00f6ter upp till \u20ac3M. V\u00e5r analys kontrollerar alla krav.",
+    "stat1": {
+      "value": "\u20ac3M",
+      "label": "Maxb\u00f6ter f\u00f6r bristande efterlevnad"
+    },
+    "stat2": {
+      "value": "WCAG 2.1",
+      "label": "Nu obligatoriskt i hela EU"
+    },
+    "stat3": {
+      "value": "10+",
+      "label": "Anst\u00e4llda f\u00f6r att lagen ska g\u00e4lla"
+    },
+    "cta": "Kontrollera din efterlevnad gratis"
+  },
+  "gdpr": {
+    "pretitle": "INTEGRITET",
+    "title": "Cookielagstiftning \u00e4r inte frivillig.",
+    "description": "Din cookiebanner m\u00e5ste ha en lika tydlig avvisningsknapp. Att ladda analytics innan samtycke \u00e4r ett direkt GDPR-brott. IMY har utf\u00e4rdat formella varningar till svenska f\u00f6retag sedan april 2025. V\u00e5r analys uppt\u00e4cker allt detta.",
+    "stat1": {
+      "value": "4%",
+      "label": "Av global oms\u00e4ttning, maximalt GDPR-b\u00f6ter"
+    },
+    "stat2": {
+      "value": "IMY",
+      "label": "Svensk tillsynsmyndighet, aktivt sedan 2025"
+    },
+    "stat3": {
+      "value": "Avvisa",
+      "label": "M\u00e5ste vara lika tydlig som Acceptera"
+    },
+    "cta": "Skanna din sida efter cookieproblem"
+  },
+  "faq": {
+    "pretitle": "FAQ",
+    "title": "Fr\u00e5gor och svar",
+    "subtitle": "Vad du beh\u00f6ver veta innan du skannar.",
+    "items": [
+      {
+        "question": "\u00c4r det verkligen gratis?",
+        "answer": "Ja. Inget kreditkort, inga dolda kostnader, ingen hake."
+      },
+      {
+        "question": "Vad h\u00e4nder med min e-post?",
+        "answer": "Vi anv\u00e4nder den f\u00f6r att skicka din rapport. Det \u00e4r allt. Inga nyhetsbrev, ingen delning med tredje part."
+      },
+      {
+        "question": "Hur l\u00e5ng tid tar analysen?",
+        "answer": "Ungef\u00e4r 60 sekunder. Vi k\u00f6r Lighthouse, axe-core och egna efterlevnadskontroller mot din sida i realtid."
+      },
+      {
+        "question": "Vad inneh\u00e5ller rapporten?",
+        "answer": "Betyg i sex kategorier: prestanda, SEO, tillg\u00e4nglighet, EU-r\u00e4ttslig efterlevnad, s\u00e4kerhet och webbstandarder. Varje misslyckat test f\u00f6rklarar vad som \u00e4r fel och varf\u00f6r det spelar roll."
+      },
+      {
+        "question": "Vilka \u00e4r Vivotiv?",
+        "answer": "Ett svenskt f\u00f6retag som hj\u00e4lper f\u00f6retag modernisera sina webbplatser. Vi byggde den h\u00e4r analysen f\u00f6r att visa webbplats\u00e4gare exakt vad de missar."
+      }
+    ]
+  },
+  "bottomCta": {
+    "title": "Redo att se ditt betyg?",
+    "subtitle": "60 sekunder. Ingen registrering, inget kreditkort.",
+    "button": "Skanna din webbplats"
+  },
+  "footer": {
+    "copyright": "\u00a9 {year} Vivotiv",
+    "privacy": "Integritetspolicy"
   }
 }

@@ -1,0 +1,81 @@
+"use client";
+
+import { motion, useInView } from "motion/react";
+import { useTranslations } from "next-intl";
+import { useRef } from "react";
+
+const stats = ["stat1", "stat2", "stat3"] as const;
+
+export function ComplianceSection() {
+  const t = useTranslations("compliance");
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <section className="py-28 md:py-36" ref={ref}>
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
+          {/* Left: copy */}
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("pretitle")}</p>
+            <motion.h2
+              className="font-heading mt-4 text-3xl font-bold tracking-tight md:text-4xl"
+              initial={{ opacity: 0, y: 12 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            >
+              {t("title")}
+            </motion.h2>
+
+            <motion.p
+              className="mt-6 text-lg text-muted-foreground leading-relaxed"
+              initial={{ opacity: 0, y: 12 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
+            >
+              {t("description")}
+            </motion.p>
+
+            <motion.div
+              className="mt-8"
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.4, delay: 0.3 }}
+            >
+              <a
+                href="#scan"
+                className="text-sm font-medium text-brand transition-colors hover:opacity-70"
+              >
+                {t("cta")}
+              </a>
+            </motion.div>
+          </div>
+
+          {/* Right: stats */}
+          <div className="flex flex-col gap-px border border-border bg-border">
+            {stats.map((stat, i) => (
+              <motion.div
+                key={stat}
+                className="bg-card p-8 transition-colors hover:bg-depth-1"
+                initial={{ opacity: 0, y: 8 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{
+                  duration: 0.4,
+                  delay: 0.2 + i * 0.1,
+                  ease: "easeOut",
+                }}
+              >
+                <div className="font-heading text-3xl font-bold tracking-tight">
+                  {t(`${stat}.value`)}
+                </div>
+                <p className="mt-2 text-muted-foreground">
+                  {t(`${stat}.label`)}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
