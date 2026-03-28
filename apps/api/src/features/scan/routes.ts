@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/cloudflare";
 import { zValidator } from "@hono/zod-validator";
 import { ScanSubmissionSchema } from "@vivotiv/shared";
 import { Hono } from "hono";
@@ -12,6 +13,13 @@ export const scanRoutes = new Hono<Env>().post(
   async (c) => {
     const payload = c.req.valid("json");
     const result = await submitScan(c.var.db, payload);
+
+    Sentry.logger.info("Scan submitted", { url: payload.url });
+    c.var.posthog.capture({
+      distinctId: payload.email,
+      event: "scan_submitted",
+      properties: { url: payload.url },
+    });
 
     return c.json(result, 202);
   },

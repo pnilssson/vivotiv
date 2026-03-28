@@ -1,8 +1,11 @@
+import { PostHogProvider, PostHogPageView } from "@posthog/next";
 import type { Metadata } from "next";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
+import { PostHogConsentBridge } from "@/features/analytics/posthog-consent-bridge";
 import { CookieBanner } from "@/features/cookies/cookie-banner";
 import { CookieConsentProvider } from "@/features/cookies/cookie-consent-provider";
 import { routing } from "@/i18n/routing";
@@ -86,10 +89,22 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider>
       <MotionProvider>
-        <CookieConsentProvider>
-          <AppQueryClientProvider>{children}</AppQueryClientProvider>
-          <CookieBanner />
-        </CookieConsentProvider>
+        <PostHogProvider
+          clientOptions={{
+            api_host: "/ingest",
+            opt_out_capturing_by_default: true,
+            capture_pageview: false,
+          }}
+        >
+          <CookieConsentProvider>
+            <PostHogConsentBridge />
+            <Suspense fallback={null}>
+              <PostHogPageView />
+            </Suspense>
+            <AppQueryClientProvider>{children}</AppQueryClientProvider>
+            <CookieBanner />
+          </CookieConsentProvider>
+        </PostHogProvider>
       </MotionProvider>
     </NextIntlClientProvider>
   );

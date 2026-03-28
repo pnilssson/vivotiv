@@ -1,5 +1,6 @@
 "use client";
 
+import { usePostHog } from "@posthog/next";
 import { useForm } from "@tanstack/react-form";
 import { ScanSubmissionSchema, type Locale } from "@vivotiv/shared";
 import { AnimatePresence, motion } from "motion/react";
@@ -35,6 +36,9 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
     prefix: "https://",
   });
 
+  const posthog = usePostHog();
+  const urlEngaged = useRef(false);
+  const emailEngaged = useRef(false);
   const mutation = useSubmitScan();
 
   const form = useForm({
@@ -46,6 +50,7 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
       onSubmit: ScanFormValuesSchema,
     },
     onSubmit: async ({ value }) => {
+      posthog?.capture("scan_form_submitted");
       await mutation.mutateAsync({
         ...value,
         locale,
@@ -60,6 +65,10 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
   }, [mutation.isSuccess, mutation.isError]);
 
   function handleUrlChange(value: string) {
+    if (value.length > 0 && !urlEngaged.current) {
+      urlEngaged.current = true;
+      posthog?.capture("scan_url_entered");
+    }
     setShowEmail(value.length > 0);
   }
 
@@ -130,9 +139,13 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
                       type="email"
                       name={field.name}
                       value={field.state.value}
-                      onChange={(event) =>
-                        field.handleChange(event.target.value)
-                      }
+                      onChange={(event) => {
+                        field.handleChange(event.target.value);
+                        if (event.target.value.length > 0 && !emailEngaged.current) {
+                          emailEngaged.current = true;
+                          posthog?.capture("scan_email_entered");
+                        }
+                      }}
                       onBlur={field.handleBlur}
                       placeholder={t("emailPlaceholder")}
                       aria-describedby={hasError ? `${field.name}-error` : undefined}

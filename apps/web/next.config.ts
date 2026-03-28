@@ -31,8 +31,8 @@ const nextConfig: NextConfig = {
 };
 
 export default withSentryConfig(withNextIntl(nextConfig), {
-  org: process.env.SENTRY_ORG,
-  project: process.env.SENTRY_PROJECT,
+  org: "corely-sentry",
+  project: "vivotiv-web",
   authToken: process.env.SENTRY_AUTH_TOKEN,
   silent: !process.env.CI,
   widenClientFileUpload: true,

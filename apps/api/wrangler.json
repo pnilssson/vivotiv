@@ -5,7 +5,8 @@
   "compatibility_date": "2026-03-28",
   "compatibility_flags": ["nodejs_compat"],
   "vars": {
-    "CORS_ORIGINS": "https://www.vivotiv.com,https://www.vivotiv.se,https://vivotiv-web.vercel.app"
+    "CORS_ORIGINS": "https://www.vivotiv.com,https://www.vivotiv.se,https://vivotiv-web.vercel.app",
+    "POSTHOG_KEY": "phc_iKgEtBnHvF4hIsakh2dNvtmvkrWKL2DxleaTJ6hFXtl"
   },
   "version_metadata": {
     "binding": "CF_VERSION_METADATA"

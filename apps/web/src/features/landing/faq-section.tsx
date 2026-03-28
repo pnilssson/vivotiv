@@ -1,5 +1,6 @@
 "use client";
 
+import { usePostHog } from "@posthog/next";
 import { ChevronDown } from "lucide-react";
 import { motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
@@ -7,6 +8,7 @@ import { useRef } from "react";
 
 export function FaqSection() {
   const t = useTranslations("faq");
+  const posthog = usePostHog();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -28,6 +30,11 @@ export function FaqSection() {
           <motion.details
             key={i}
             className="group"
+            onToggle={(e) => {
+              if ((e.target as HTMLDetailsElement).open) {
+                posthog?.capture("faq_item_opened", { question: item.question });
+              }
+            }}
             initial={{ opacity: 0, y: 8 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{

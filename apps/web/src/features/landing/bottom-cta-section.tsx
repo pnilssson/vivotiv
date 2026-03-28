@@ -1,15 +1,18 @@
 "use client";
 
+import { usePostHog } from "@posthog/next";
 import { motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
 
 export function BottomCtaSection() {
   const t = useTranslations("bottomCta");
+  const posthog = usePostHog();
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   function scrollToTop() {
+    posthog?.capture("cta_clicked", { location: "bottom" });
     document.getElementById("scan")?.scrollIntoView({ behavior: "smooth" });
   }
 

@@ -8,6 +8,7 @@ import { healthRoutes } from "./features/health/routes";
 import { scanRoutes } from "./features/scan/routes";
 import { scoresRoutes } from "./features/scores/routes";
 import { dbMiddleware } from "./middleware/db";
+import { posthogMiddleware } from "./middleware/posthog";
 
 const app = new Hono<Env>();
 
@@ -24,6 +25,7 @@ app.use(
 );
 
 app.use("/v1/*", dbMiddleware);
+app.use("/v1/*", posthogMiddleware);
 
 app.get("/", (c) => c.text("Vivotiv API"));
 app.route("/", healthRoutes);
@@ -40,6 +42,10 @@ app.onError((err, c) => {
   }
 
   Sentry.captureException(err);
+  Sentry.logger.error("Unhandled error", {
+    path: c.req.path,
+    method: c.req.method,
+  });
   console.error(err);
   return c.json({ error: { message: "Internal server error" } }, 500);
 });
@@ -48,6 +54,7 @@ export default Sentry.withSentry<Env["Bindings"]>(
   (env) => ({
     dsn: env.SENTRY_DSN,
     tracesSampleRate: 1.0,
+    enableLogs: true,
   }),
   app,
 );
