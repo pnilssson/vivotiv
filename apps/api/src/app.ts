@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/cloudflare";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { HTTPException } from "hono/http-exception";
@@ -38,8 +39,15 @@ app.onError((err, c) => {
     return c.json({ error: { message: err.message } }, err.status);
   }
 
+  Sentry.captureException(err);
   console.error(err);
   return c.json({ error: { message: "Internal server error" } }, 500);
 });
 
-export default app;
+export default Sentry.withSentry<Env["Bindings"]>(
+  (env) => ({
+    dsn: env.SENTRY_DSN,
+    tracesSampleRate: 1.0,
+  }),
+  app,
+);
