@@ -35,7 +35,7 @@ export function HowItWorksSection() {
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.4, delay: i * 0.15, ease: "easeOut" }}
                 >
-                  <div className="absolute -left-12 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background text-xs font-semibold tabular-nums">
+                  <div className="absolute -left-12 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-depth-1 text-xs font-semibold tabular-nums">
                     {String(i + 1).padStart(2, "0")}
                   </div>
                   <div>
@@ -67,7 +67,7 @@ export function HowItWorksSection() {
                   transition={{ duration: 0.4, delay: i * 0.15, ease: "easeOut" }}
                 >
                   {/* Step number centered on the line */}
-                  <div className="absolute left-1/2 flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full border border-border bg-background text-xs font-semibold tabular-nums">
+                  <div className="absolute left-1/2 flex h-9 w-9 -translate-x-1/2 items-center justify-center rounded-full border border-border bg-depth-1 text-xs font-semibold tabular-nums">
                     {String(i + 1).padStart(2, "0")}
                   </div>
 

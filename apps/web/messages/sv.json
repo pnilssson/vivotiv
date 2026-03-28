@@ -4,7 +4,7 @@
   },
   "hero": {
     "headline": "Ta reda p\u00e5 vad som \u00e4r fel med din webbplats.",
-    "subheadline": "F\u00e5 en fullst\u00e4ndig granskning av prestanda, SEO, tillg\u00e4nglighet, EU-efterlevnad, s\u00e4kerhet och webbstandarder gratis, p\u00e5 60 sekunder.",
+    "subheadline": "P\u00e5 60 sekunder ser du vad som kostar dig bes\u00f6kare, s\u00f6kplaceringar och juridisk risk.",
     "urlLabel": "Webbadress",
     "urlPlaceholder": "https://dinwebbplats.se",
     "urlInvalid": "Ange en giltig webbadress.",
@@ -22,31 +22,31 @@
   },
   "categories": {
     "pretitle": "GRANSKNINGEN",
-    "title": "Sex kategorier. Betyg 0 till 100.",
-    "subtitle": "Varje kontroll visar vad som \u00e4r fel, varf\u00f6r det spelar roll och hur vi l\u00f6ser det.",
+    "title": "Vi kontrollerar det som faktiskt spelar roll.",
+    "subtitle": "D\u00e5lig prestanda, trasig SEO och bristande efterlevnad kostar dig bes\u00f6kare, int\u00e4kter och trov\u00e4rdighet varje dag din sida f\u00f6rblir o\u00e5tg\u00e4rdad.",
     "performance": {
       "title": "Prestanda & Hastighet",
-      "description": "Core Web Vitals, sidvikt, serversvarstid, bildformat. Det Google m\u00e4ter n\u00e4r de rankar din sida."
+      "description": "L\u00e5ngsamma sidor tappar bes\u00f6kare innan de ens hinner ladda. Google rankar dem l\u00e4gre ocks\u00e5. Vi m\u00e4ter samma saker som Google g\u00f6r n\u00e4r de avg\u00f6r var din sida hamnar."
     },
     "seo": {
       "title": "SEO",
-      "description": "Metataggar, strukturerad data, crawlbarhet, mobil viewport, Open Graph. Om s\u00f6kmotorer kan hitta och f\u00f6rst\u00e5 dina sidor."
+      "description": "Om s\u00f6kmotorer inte kan l\u00e4sa dina sidor ordentligt hittar inte kunderna dig. Vi kontrollerar om Google kan hitta, f\u00f6rst\u00e5 och ranka din sida."
     },
     "accessibility": {
       "title": "Tillg\u00e4nglighet",
-      "description": "WCAG 2.1 AA, f\u00e4rgkontrast, tangentbordsnavigering, sk\u00e4rml\u00e4sarst\u00f6d. Lagkrav f\u00f6r de flesta EU-f\u00f6retag sedan juni 2025."
+      "description": "Sedan juni 2025 \u00e4r de flesta EU-f\u00f6retag skyldiga att ha tillg\u00e4ngliga webbplatser. Vi kontrollerar om din uppfyller kraven."
     },
     "legal": {
       "title": "EU-r\u00e4ttslig efterlevnad",
-      "description": "Cookiesamtycke, GDPR-krav, integritetspolicy, tillg\u00e4nglighetsdirektivet. Det som ger b\u00f6ter."
+      "description": "Saknat cookiesamtycke, ingen integritetspolicy, sp\u00e5rning innan godk\u00e4nnande. Det h\u00e4r \u00e4r det som leder till b\u00f6ter."
     },
     "security": {
       "title": "S\u00e4kerhet",
-      "description": "HTTPS, s\u00e4kerhetsrubriker, blandat inneh\u00e5ll, exponerade serverversioner, f\u00f6r\u00e5ldrat CMS. S\u00e5rbarheter du inte ser utifr\u00e5n."
+      "description": "F\u00f6r\u00e5ldrad mjukvara och saknade s\u00e4kerhetsrubriker g\u00f6r din sida till ett enkelt m\u00e5l. De flesta av dessa problem \u00e4r osynliga tills n\u00e5got g\u00e5r s\u00f6nder."
     },
     "standards": {
       "title": "Moderna webbstandarder",
-      "description": "Responsiv design, f\u00f6r\u00e5ldrad HTML, tredjepartsskript, favicon, 404-sida. Tecken p\u00e5 att din webbplats byggdes f\u00f6r 2015."
+      "description": "Trasiga mobillayouter, f\u00f6r\u00e5ldrad kod, saknade sidor. Det signalerar till bes\u00f6kare att ditt f\u00f6retag inte investerar i sin n\u00e4rvaro online."
     }
   },
   "reportPreview": {
@@ -106,7 +106,7 @@
   "compliance": {
     "pretitle": "TILLG\u00c4NGLIGHET",
     "title": "EU:s tillg\u00e4nglighetsdirektiv \u00e4r lag.",
-    "description": "Sedan juni 2025 m\u00e5ste f\u00f6retag med 10+ anst\u00e4llda eller \u20ac2M+ i oms\u00e4ttning uppfylla WCAG 2.1 AA. Bristande efterlevnad inneb\u00e4r b\u00f6ter upp till \u20ac3M. V\u00e5r analys kontrollerar alla krav.",
+    "description": "Sedan juni 2025 m\u00e5ste f\u00f6retag med 10+ anst\u00e4llda eller \u20ac2M+ i oms\u00e4ttning uppfylla WCAG 2.1 AA. Bristande efterlevnad inneb\u00e4r b\u00f6ter upp till \u20ac3M. De flesta svenska f\u00f6retag vet inte \u00e4n att det g\u00e4ller dem.",
     "stat1": {
       "value": "\u20ac3M",
       "label": "Maxb\u00f6ter f\u00f6r bristande efterlevnad"
@@ -124,7 +124,7 @@
   "gdpr": {
     "pretitle": "INTEGRITET",
     "title": "Cookielagstiftning \u00e4r inte frivillig.",
-    "description": "Din cookiebanner m\u00e5ste ha en lika tydlig avvisningsknapp. Att ladda analytics innan samtycke \u00e4r ett direkt GDPR-brott. IMY har utf\u00e4rdat formella varningar till svenska f\u00f6retag sedan april 2025. V\u00e5r analys uppt\u00e4cker allt detta.",
+    "description": "Din cookiebanner m\u00e5ste ha en lika tydlig avvisningsknapp. Att ladda analytics innan samtycke \u00e4r ett direkt GDPR-brott. IMY har utf\u00e4rdat formella varningar till svenska f\u00f6retag sedan april 2025.",
     "stat1": {
       "value": "4%",
       "label": "Av global oms\u00e4ttning, maximalt GDPR-b\u00f6ter"
@@ -154,11 +154,11 @@
       },
       {
         "question": "Hur l\u00e5ng tid tar analysen?",
-        "answer": "Ungef\u00e4r 60 sekunder. Vi k\u00f6r Lighthouse, axe-core och egna efterlevnadskontroller mot din sida i realtid."
+        "answer": "Ungef\u00e4r 60 sekunder. Vi k\u00f6r automatiserade kontroller mot din sida i alla sex kategorier i realtid."
       },
       {
         "question": "Vad inneh\u00e5ller rapporten?",
-        "answer": "Betyg i sex kategorier: prestanda, SEO, tillg\u00e4nglighet, EU-r\u00e4ttslig efterlevnad, s\u00e4kerhet och webbstandarder. Varje misslyckat test f\u00f6rklarar vad som \u00e4r fel och varf\u00f6r det spelar roll."
+        "answer": "Ett betyg f\u00f6r var och en av de sex kategorierna, en lista \u00f6ver alla problem vi hittade och vad du kan g\u00f6ra \u00e5t varje enskilt."
       },
       {
         "question": "Vilka \u00e4r Vivotiv?",
@@ -167,7 +167,7 @@
     ]
   },
   "bottomCta": {
-    "title": "Redo att se ditt betyg?",
+    "title": "Din webbplats har problem du inte kan se.",
     "subtitle": "60 sekunder. Ingen registrering, inget kreditkort.",
     "button": "Skanna din webbplats"
   },

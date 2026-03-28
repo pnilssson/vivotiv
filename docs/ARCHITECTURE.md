@@ -54,20 +54,6 @@ Both apps deploy to Vercel from the same repo, each as its own project. Turborep
 | Analytics | PostHog |
 | Transactional email | Nodemailer (MVP) via one.com SMTP. Transition to Resend later. |
 
-## Estimated Monthly Cost (MVP)
-
-| Service | Cost/mo |
-|---|---|
-| Vercel Pro | $20 |
-| Supabase Pro | $25 |
-| Firecrawl Hobby | $16 |
-| Inngest | $0 (free tier) |
-| GitHub | $0 (free org) |
-| Sentry | $0 (developer) |
-| PostHog | $0 (free tier) |
-| Email (Nodemailer) | $0 |
-| Polar.sh | $0 (% of transactions) |
-| **Total** | **~$61/mo** |
 
 ## Build Order (MVP)
 

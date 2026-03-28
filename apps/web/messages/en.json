@@ -4,7 +4,7 @@
   },
   "hero": {
     "headline": "Find out what's wrong with your website.",
-    "subheadline": "Get a full audit of performance, SEO, accessibility, EU compliance, security, and web standards for free, within 60 seconds.",
+    "subheadline": "In 60 seconds you'll know what's costing you visitors, search rankings, and legal risk.",
     "urlLabel": "Website URL",
     "urlPlaceholder": "https://yourwebsite.com",
     "urlInvalid": "Enter a valid website URL.",
@@ -22,31 +22,31 @@
   },
   "categories": {
     "pretitle": "THE AUDIT",
-    "title": "Six categories. Scored 0 to 100.",
-    "subtitle": "Each check tells you what's wrong, why it matters, and how we fix it.",
+    "title": "We check what actually matters.",
+    "subtitle": "Poor performance, broken SEO, and missing compliance cost you visitors, revenue, and credibility every day your site stays unfixed.",
     "performance": {
       "title": "Performance & Speed",
-      "description": "Core Web Vitals, page weight, server response time, image formats. The things Google measures when ranking your site."
+      "description": "Slow pages lose visitors before they even load. Google ranks them lower too. We measure the same things Google does when deciding where your site appears."
     },
     "seo": {
       "title": "SEO",
-      "description": "Meta tags, structured data, crawlability, mobile viewport, Open Graph. Whether search engines can find and understand your pages."
+      "description": "If search engines can't read your pages properly, customers won't find you. We check whether Google can discover, understand, and rank your site."
     },
     "accessibility": {
       "title": "Accessibility",
-      "description": "WCAG 2.1 AA conformance, color contrast, keyboard navigation, screen reader support. Legally required for most EU businesses since June 2025."
+      "description": "Since June 2025, most EU businesses are legally required to have accessible websites. We check if yours meets the requirements."
     },
     "legal": {
       "title": "EU Legal Compliance",
-      "description": "Cookie consent, GDPR requirements, privacy policy, the European Accessibility Act. The things that get you fined."
+      "description": "Missing cookie consent, no privacy policy, tracking before user approval. These are the things that lead to fines."
     },
     "security": {
       "title": "Security",
-      "description": "HTTPS, security headers, mixed content, exposed server versions, outdated CMS. Vulnerabilities you can't see from the outside."
+      "description": "Outdated software and missing security headers make your site an easy target. Most of these issues are invisible until something breaks."
     },
     "standards": {
       "title": "Modern Web Standards",
-      "description": "Responsive design, deprecated HTML, third-party bloat, favicon, 404 page. Signs your website was built for 2015."
+      "description": "Broken mobile layouts, deprecated code, missing pages. These signal to visitors that your business doesn't invest in its online presence."
     }
   },
   "reportPreview": {
@@ -106,7 +106,7 @@
   "compliance": {
     "pretitle": "ACCESSIBILITY",
     "title": "The EU Accessibility Act is law.",
-    "description": "Since June 2025, businesses with 10+ employees or \u20ac2M+ turnover must meet WCAG 2.1 AA. Non-compliance means fines up to \u20ac3M. Our scan checks every requirement.",
+    "description": "Since June 2025, businesses with 10+ employees or \u20ac2M+ turnover must meet WCAG 2.1 AA. Non-compliance means fines up to \u20ac3M. Most Swedish businesses don't know this applies to them yet.",
     "stat1": {
       "value": "\u20ac3M",
       "label": "Maximum fine for non-compliance"
@@ -124,7 +124,7 @@
   "gdpr": {
     "pretitle": "PRIVACY",
     "title": "Cookie compliance is not optional.",
-    "description": "Your cookie banner needs an equally prominent reject button. Loading analytics before consent is a direct GDPR violation. IMY has been issuing formal warnings to Swedish businesses since April 2025. Our scan detects all of this.",
+    "description": "Your cookie banner needs an equally prominent reject button. Loading analytics before consent is a direct GDPR violation. IMY has been issuing formal warnings to Swedish businesses since April 2025.",
     "stat1": {
       "value": "4%",
       "label": "Of global turnover, maximum GDPR fine"
@@ -154,11 +154,11 @@
       },
       {
         "question": "How long does the scan take?",
-        "answer": "About 60 seconds. We run Lighthouse, axe-core, and custom compliance checks against your site in real time."
+        "answer": "About 60 seconds. We run automated checks against your site covering all six categories in real time."
       },
       {
         "question": "What does the report include?",
-        "answer": "Scores across six categories: performance, SEO, accessibility, EU legal compliance, security, and web standards. Each failed check explains what's wrong and why it matters."
+        "answer": "A score for each of the six categories, a list of every issue we found, and what to do about each one."
       },
       {
         "question": "Who is Vivotiv?",
@@ -167,7 +167,7 @@
     ]
   },
   "bottomCta": {
-    "title": "Ready to see your score?",
+    "title": "Your website has problems you can't see.",
     "subtitle": "60 seconds. No signup, no credit card.",
     "button": "Scan your website"
   },
