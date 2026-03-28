@@ -3,11 +3,12 @@
 import {
   AlertTriangle,
   CheckCircle2,
+  ChevronDown,
   XCircle,
 } from "lucide-react";
-import { motion, useInView } from "motion/react";
+import { AnimatePresence, motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const categoryKeys = [
   "performance",
@@ -39,15 +40,46 @@ function scoreBgLight(score: number): string {
 type Issue = {
   status: "fail" | "warn" | "pass";
   label: string;
+  detail: string;
 };
 
 const exampleIssues: Issue[] = [
-  { status: "fail", label: "LCP: 4.2s (target: <2.5s)" },
-  { status: "fail", label: "No cookie consent banner detected" },
-  { status: "warn", label: "Images served as PNG, not WebP/AVIF" },
-  { status: "warn", label: "Missing meta description" },
-  { status: "pass", label: "Valid SSL certificate" },
-  { status: "pass", label: "Responsive viewport configured" },
+  {
+    status: "fail",
+    label: "LCP: 4.2s (target: <2.5s)",
+    detail:
+      "Largest Contentful Paint measures how long it takes for the main content to appear. Your page takes 4.2 seconds, nearly double the recommended 2.5s threshold. This directly affects your Google ranking and causes visitors to leave before the page loads.",
+  },
+  {
+    status: "fail",
+    label: "No cookie consent banner detected",
+    detail:
+      "No cookie consent mechanism was found on your site. Under GDPR and the ePrivacy Directive, you must obtain consent before setting non-essential cookies. Without a banner, any analytics or marketing tracking on your site is a violation.",
+  },
+  {
+    status: "warn",
+    label: "Images served as PNG, not WebP/AVIF",
+    detail:
+      "Your images are served in PNG format, which is significantly larger than modern formats like WebP or AVIF. Switching formats can reduce image size by 30-50%, improving load times and reducing bandwidth costs.",
+  },
+  {
+    status: "warn",
+    label: "Missing meta description",
+    detail:
+      "Your page has no meta description tag. Search engines use this to generate the snippet shown in search results. Without it, Google will pick a random passage from your page, which often looks unprofessional and reduces click-through rates.",
+  },
+  {
+    status: "pass",
+    label: "Valid SSL certificate",
+    detail:
+      "Your site has a valid SSL certificate and is served over HTTPS. This is the baseline for secure communication between your site and its visitors.",
+  },
+  {
+    status: "pass",
+    label: "Responsive viewport configured",
+    detail:
+      "Your site has a proper viewport meta tag configured, which means it adapts to different screen sizes. This is essential for mobile usability and Google's mobile-first indexing.",
+  },
 ];
 
 const StatusIcon = {
@@ -67,6 +99,7 @@ export function ReportPreviewSection() {
   const tc = useTranslations("categories");
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const scores = categoryKeys.map((key) => ({
     key,
@@ -77,6 +110,10 @@ export function ReportPreviewSection() {
   const overall = Math.round(
     scores.reduce((sum, s) => sum + s.score, 0) / scores.length,
   );
+
+  function toggleIssue(index: number) {
+    setOpenIndex(openIndex === index ? null : index);
+  }
 
   return (
     <section className="py-28 md:py-36" ref={ref}>
@@ -102,7 +139,7 @@ export function ReportPreviewSection() {
         </div>
 
         <motion.div
-          className="mx-auto mt-16 max-w-4xl overflow-hidden rounded-xl border border-border bg-card"
+          className="mx-auto mt-16 max-w-5xl overflow-hidden border border-border bg-card"
           initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
@@ -119,7 +156,7 @@ export function ReportPreviewSection() {
 
           <div className="grid md:grid-cols-5">
             {/* Left: Overall score + category bars */}
-            <div className="border-b border-border p-6 md:col-span-2 md:border-b-0 md:border-r">
+            <div className="border-b border-border p-8 md:col-span-2 md:border-b-0 md:border-r">
               {/* Overall score circle */}
               <div className="mb-8 flex flex-col items-center">
                 <div
@@ -180,17 +217,18 @@ export function ReportPreviewSection() {
             </div>
 
             {/* Right: Example issues */}
-            <div className="p-6 md:col-span-3">
+            <div className="p-8 md:col-span-3">
               <p className="mb-4 text-sm font-medium text-muted-foreground">
                 {t("issuesFound")}
               </p>
               <div className="flex flex-col gap-3">
                 {exampleIssues.map((issue, i) => {
                   const Icon = StatusIcon[issue.status];
+                  const isOpen = openIndex === i;
                   return (
                     <motion.div
                       key={i}
-                      className="flex items-start gap-3 rounded-lg border border-border bg-card p-3"
+                      className="border border-border bg-card"
                       initial={{ opacity: 0, y: 6 }}
                       animate={isInView ? { opacity: 1, y: 0 } : {}}
                       transition={{
@@ -199,10 +237,36 @@ export function ReportPreviewSection() {
                         ease: "easeOut",
                       }}
                     >
-                      <Icon
-                        className={`mt-0.5 h-4 w-4 shrink-0 ${statusColor[issue.status]}`}
-                      />
-                      <span className="text-sm">{issue.label}</span>
+                      <button
+                        type="button"
+                        onClick={() => toggleIssue(i)}
+                        className="flex w-full items-center gap-3 p-3 text-left"
+                      >
+                        <Icon
+                          className={`h-4 w-4 shrink-0 ${statusColor[issue.status]}`}
+                        />
+                        <span className="flex-1 text-sm">{issue.label}</span>
+                        <ChevronDown
+                          className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                        />
+                      </button>
+                      <AnimatePresence>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.2, ease: "easeOut" }}
+                            className="overflow-hidden"
+                          >
+                            <div className="border-t border-border px-3 pb-3 pt-2">
+                              <p className="text-xs text-muted-foreground leading-relaxed">
+                                {issue.detail}
+                              </p>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </motion.div>
                   );
                 })}
