@@ -8,12 +8,11 @@ import {
 
 const CHROME_FLAGS = [
   "--headless=new",
+  "--no-sandbox",
   "--disable-gpu",
   "--disable-dev-shm-usage",
 ];
 
-// Temporary hardcoded override for Railway compatibility testing.
-const DISABLE_CHROME_SANDBOX = true;
 const LIGHTHOUSE_TIMEOUT_MS = 120_000;
 
 const DESKTOP_CONFIG = {
@@ -31,11 +30,7 @@ export async function runLighthouse(
   url: string,
   categories: string[],
 ): Promise<LighthouseResult> {
-  const chromeFlags = DISABLE_CHROME_SANDBOX
-    ? [...CHROME_FLAGS, "--no-sandbox"]
-    : CHROME_FLAGS;
-
-  const chrome = await chromeLauncher.launch({ chromeFlags });
+  const chrome = await chromeLauncher.launch({ chromeFlags: CHROME_FLAGS });
   let timeoutHandle: ReturnType<typeof setTimeout> | null = null;
 
   try {

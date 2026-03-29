@@ -125,6 +125,12 @@ The scan is designed to be trustworthy even on unstable targets:
 - DNS and redirect-chain validation against private/local IP targets
 - Request and runtime timeouts to avoid hanging scans
 
+Current platform note:
+
+- On Railway, Chromium sandbox startup caused Lighthouse connection failures (`ECONNREFUSED` to local DevTools port).
+- The jobs service currently runs Chromium with `--no-sandbox` for compatibility.
+- Revisit sandbox mode when the runtime supports stable sandbox startup.
+
 ## Why this matters for the business
 
 This is not just a technical audit. It is a sales conversation starter.

@@ -18,9 +18,6 @@ import {
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
 
-// Temporary hardcoded override for Railway compatibility testing.
-const DISABLE_CHROME_SANDBOX = true;
-
 export interface DomCheckResults {
   seo: SeoDomResults;
   accessibility: AccessibilityResults;
@@ -66,13 +63,8 @@ function defaultStandards(reason: string): StandardsDomResults {
 }
 
 export async function runDomChecks(url: string): Promise<DomCheckResults> {
-  const browserArgs = ["--disable-gpu", "--disable-dev-shm-usage"];
-  if (DISABLE_CHROME_SANDBOX) {
-    browserArgs.push("--no-sandbox");
-  }
-
   const browser = await chromium.launch({
-    args: browserArgs,
+    args: ["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
   });
 
   try {
