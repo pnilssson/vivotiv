@@ -11,23 +11,23 @@ import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 
 const categoryKeys = [
-  "performance",
-  "seo",
-  "accessibility",
   "legal",
+  "accessibility",
+  "seo",
+  "performance",
   "security",
   "standards",
 ] as const;
 
 function scoreColor(score: number): string {
-  if (score >= 71) return "text-emerald-600";
-  if (score >= 41) return "text-amber-500";
+  if (score >= 90) return "text-emerald-600";
+  if (score >= 50) return "text-amber-500";
   return "text-red-500";
 }
 
 function scoreLevelKey(score: number): "scoreGood" | "scoreWarning" | "scoreCritical" {
-  if (score >= 71) return "scoreGood";
-  if (score >= 41) return "scoreWarning";
+  if (score >= 90) return "scoreGood";
+  if (score >= 50) return "scoreWarning";
   return "scoreCritical";
 }
 
@@ -38,8 +38,8 @@ const statusLabelKey = {
 } as const;
 
 function scoreBg(score: number): string {
-  if (score >= 71) return "bg-emerald-600";
-  if (score >= 41) return "bg-amber-500";
+  if (score >= 90) return "bg-emerald-600";
+  if (score >= 50) return "bg-amber-500";
   return "bg-red-500";
 }
 

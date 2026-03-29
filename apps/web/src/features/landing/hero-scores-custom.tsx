@@ -9,22 +9,22 @@ import { useTickingNumber } from "@/lib/use-ticking-number";
 import { useAverageScores } from "./use-average-scores";
 
 function scoreColor(score: number) {
-  if (score <= 40) return "text-red-500";
-  if (score <= 70) return "text-orange-400";
-  return "text-green-500";
+  if (score >= 90) return "text-emerald-600";
+  if (score >= 50) return "text-amber-500";
+  return "text-red-500";
 }
 
 function barColor(score: number) {
-  if (score <= 40) return "bg-red-500";
-  if (score <= 70) return "bg-orange-400";
-  return "bg-green-500";
+  if (score >= 90) return "bg-emerald-600";
+  if (score >= 50) return "bg-amber-500";
+  return "bg-red-500";
 }
 
 const categories: ScanCategoryKey[] = [
-  "performance",
-  "seo",
-  "accessibility",
   "legal",
+  "accessibility",
+  "seo",
+  "performance",
   "security",
   "standards",
 ];

@@ -1,8 +1,8 @@
 export const scanCategoryKeys = [
-  "performance",
-  "seo",
-  "accessibility",
   "legal",
+  "accessibility",
+  "seo",
+  "performance",
   "security",
   "standards",
 ] as const;
