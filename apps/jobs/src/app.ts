@@ -11,6 +11,7 @@ import { functions } from "./inngest/functions/index";
 Sentry.init({
   dsn: env.SENTRY_DSN,
   tracesSampleRate: process.env.NODE_ENV === "production" ? 0.2 : 1.0,
+  enableLogs: true,
 });
 
 const app = new Hono();

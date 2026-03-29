@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 import { chromium } from "playwright";
 import type { CheckResult } from "@vivotiv/shared";
 
@@ -72,7 +73,10 @@ export async function runDomChecks(url: string): Promise<DomCheckResults> {
     const page = await context.newPage();
     await page
       .goto(url, { waitUntil: "networkidle", timeout: 30_000 })
-      .catch(() => page.goto(url, { waitUntil: "load", timeout: 30_000 }));
+      .catch(() => {
+        Sentry.logger.warn("Playwright networkidle failed, falling back to load", { url });
+        return page.goto(url, { waitUntil: "load", timeout: 30_000 });
+      });
 
     const [seoResult, a11yResult, legalResult, standardsResult] =
       await Promise.allSettled([
@@ -81,6 +85,24 @@ export async function runDomChecks(url: string): Promise<DomCheckResults> {
         extractLegalDomChecks(page),
         extractStandardsDomChecks(page),
       ]);
+
+    const failures = [
+      seoResult.status === "rejected" && "seo",
+      a11yResult.status === "rejected" && "accessibility",
+      legalResult.status === "rejected" && "legal",
+      standardsResult.status === "rejected" && "standards",
+    ].filter(Boolean) as string[];
+
+    if (failures.length > 0) {
+      Sentry.logger.warn("DOM sub-checks failed", {
+        url,
+        failedChecks: failures.join(", "),
+        seoError: seoResult.status === "rejected" ? String(seoResult.reason) : null,
+        a11yError: a11yResult.status === "rejected" ? String(a11yResult.reason) : null,
+        legalError: legalResult.status === "rejected" ? String(legalResult.reason) : null,
+        standardsError: standardsResult.status === "rejected" ? String(standardsResult.reason) : null,
+      });
+    }
 
     return {
       seo:

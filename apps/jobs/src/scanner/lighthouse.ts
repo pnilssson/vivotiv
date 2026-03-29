@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 import * as chromeLauncher from "chrome-launcher";
 import lighthouse from "lighthouse";
 import type { Result } from "lighthouse";
@@ -30,10 +31,15 @@ export async function runLighthouse(
   url: string,
   categories: string[],
 ): Promise<LighthouseResult> {
+  const chromeStartedAt = Date.now();
   const chrome = await chromeLauncher.launch({ chromeFlags: CHROME_FLAGS });
+  const chromeLaunchMs = Date.now() - chromeStartedAt;
+  Sentry.logger.info("Chrome launched", { url, chromeLaunchMs });
+
   let timeoutHandle: ReturnType<typeof setTimeout> | null = null;
 
   try {
+    const auditStartedAt = Date.now();
     const result = (await Promise.race([
       lighthouse(
         url,
@@ -60,6 +66,8 @@ export async function runLighthouse(
       clearTimeout(timeoutHandle);
     }
 
+    const auditDurationMs = Date.now() - auditStartedAt;
+
     if (!result) {
       throw new Error(`Lighthouse returned no result for ${url}`);
     }
@@ -69,6 +77,12 @@ export async function runLighthouse(
         `Lighthouse runtime error: ${result.lhr.runtimeError.message}`,
       );
     }
+
+    Sentry.logger.info("Lighthouse audit completed", {
+      url,
+      chromeLaunchMs,
+      auditDurationMs,
+    });
 
     return result.lhr;
   } finally {

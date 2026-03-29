@@ -1,5 +1,6 @@
 import { resolve4, resolve6 } from "node:dns/promises";
 
+import * as Sentry from "@sentry/node";
 import { isPrivateIp } from "@vivotiv/shared";
 
 const REDIRECT_STATUS = new Set([301, 302, 303, 307, 308]);
@@ -51,6 +52,7 @@ export async function validatePublicRedirectChain(
   const maxRedirects = options.maxRedirects ?? 10;
 
   let currentUrl = inputUrl;
+  let hopCount = 0;
 
   for (let hop = 0; hop <= maxRedirects; hop++) {
     await assertPublicHostname(currentUrl);
@@ -65,8 +67,17 @@ export async function validatePublicRedirectChain(
     });
 
     if (!REDIRECT_STATUS.has(response.status)) {
+      if (hopCount > 0) {
+        Sentry.logger.info("Redirect chain validated", {
+          inputUrl,
+          finalUrl: currentUrl,
+          hopCount,
+        });
+      }
       return currentUrl;
     }
+
+    hopCount++;
 
     const location = response.headers.get("location");
     if (!location) {

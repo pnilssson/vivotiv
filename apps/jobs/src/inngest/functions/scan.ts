@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/node";
 import { createDb, createScan } from "@vivotiv/db";
 
 import { env } from "../../env";
@@ -24,7 +25,9 @@ export const scanFunction = inngest.createFunction(
   { event: "scan.requested" },
   async ({ event, step, logger }) => {
     const { leadId, url } = event.data as { leadId: string; url: string };
+    const scanStartedAt = Date.now();
     logger.info("Scan started", { leadId, url });
+    Sentry.logger.info("Scan started", { leadId, url });
 
     const validatedUrl = await step.run("validate-dns-redirect-chain", () =>
       validatePublicRedirectChain(url, {
@@ -57,14 +60,26 @@ export const scanFunction = inngest.createFunction(
       logger.error("Lighthouse track failed", {
         error: String(lighthouseResult.reason),
       });
+      Sentry.logger.warn("Lighthouse track failed", {
+        url,
+        error: String(lighthouseResult.reason),
+      });
     }
     if (domResult.status === "rejected") {
       logger.error("DOM checks track failed", {
         error: String(domResult.reason),
       });
+      Sentry.logger.warn("DOM checks track failed", {
+        url,
+        error: String(domResult.reason),
+      });
     }
     if (headersResult.status === "rejected") {
       logger.error("Header checks track failed", {
+        error: String(headersResult.reason),
+      });
+      Sentry.logger.warn("Header checks track failed", {
+        url,
         error: String(headersResult.reason),
       });
     }
@@ -109,10 +124,18 @@ export const scanFunction = inngest.createFunction(
       }),
     );
 
+    const durationMs = Date.now() - scanStartedAt;
     logger.info("Scan completed", {
       leadId,
       scanId: scan.id,
       overallScore: result.overallScore,
+    });
+    Sentry.logger.info("Scan completed", {
+      leadId,
+      scanId: scan.id,
+      url,
+      overallScore: result.overallScore,
+      durationMs,
     });
 
     return { scanId: scan.id, overallScore: result.overallScore };

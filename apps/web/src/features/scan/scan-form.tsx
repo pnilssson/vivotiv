@@ -50,7 +50,6 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
       onSubmit: ScanFormValuesSchema,
     },
     onSubmit: async ({ value }) => {
-      posthog?.capture("scan_form_submitted");
       await mutation.mutateAsync({
         ...value,
         locale,

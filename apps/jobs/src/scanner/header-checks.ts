@@ -1,6 +1,8 @@
 import * as https from "node:https";
 import type { TLSSocket } from "node:tls";
 
+import * as Sentry from "@sentry/node";
+
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
 
@@ -85,7 +87,13 @@ export async function runHeaderChecks(
   }
 
   const tls = response.url.startsWith("https://")
-    ? await inspectTls(response.url).catch(() => null)
+    ? await inspectTls(response.url).catch((error) => {
+        Sentry.logger.warn("TLS inspection failed", {
+          url: response.url,
+          error: String(error),
+        });
+        return null;
+      })
     : null;
 
   return {
