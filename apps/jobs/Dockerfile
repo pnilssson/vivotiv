@@ -17,15 +17,11 @@ RUN apt-get update && \
     npx -y playwright install-deps chromium && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=deps /app/apps/jobs/node_modules ./apps/jobs/node_modules
-COPY --from=deps /app/packages/db/node_modules ./packages/db/node_modules
-COPY --from=deps /app/packages/shared/node_modules ./packages/shared/node_modules
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/apps/jobs/node_modules ./apps/jobs/node_modules
 COPY --from=build /app/apps/jobs/dist ./apps/jobs/dist
-COPY packages/db ./packages/db
-COPY packages/shared ./packages/shared
-COPY apps/jobs/package.json ./apps/jobs/
-COPY package.json pnpm-workspace.yaml ./
+COPY --from=build /app/apps/jobs/package.json ./apps/jobs/
+COPY --from=build /app/package.json ./
 
 EXPOSE 3001
 ENV NODE_ENV=production
