@@ -56,7 +56,6 @@ function auditToCheckResult(
       scoreThresholds: null,
       weight,
       description: stripMarkdownLinks(audit.description),
-      recommendation: null,
       items: null,
     };
   }
@@ -87,10 +86,6 @@ function auditToCheckResult(
       : null,
     weight,
     description: stripMarkdownLinks(audit.description),
-    recommendation:
-      status === "pass"
-        ? null
-        : (audit.explanation ?? stripMarkdownLinks(audit.description)),
     items: items.length > 0 ? items : null,
   };
 }

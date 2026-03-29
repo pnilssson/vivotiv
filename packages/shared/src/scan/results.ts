@@ -24,7 +24,6 @@ export const CheckResultSchema = z.object({
   scoreThresholds: ScoreThresholdsSchema.nullable(),
   weight: z.int().min(1).max(3),
   description: z.string(),
-  recommendation: z.string().nullable(),
   items: z.array(z.string()).nullable(),
 });
 
