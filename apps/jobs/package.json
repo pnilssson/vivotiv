@@ -5,18 +5,21 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch --env-file=.env.local src/app.ts",
-    "build": "tsup src/app.ts --format esm --target node22 --clean",
+    "build": "tsup",
     "start": "node dist/app.js",
     "lint": "eslint",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.1",
+    "@inngest/middleware-sentry": "0.1.3",
     "@sentry/node": "^10.46.0",
     "@vivotiv/db": "workspace:*",
     "@vivotiv/shared": "workspace:*",
+    "chrome-launcher": "^1.2.1",
     "hono": "^4.12.9",
     "inngest": "^3.35.0",
+    "lighthouse": "^13.0.3",
     "posthog-node": "^5.28.8",
     "zod": "^4.3.6"
   },

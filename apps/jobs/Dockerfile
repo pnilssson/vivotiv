@@ -12,11 +12,15 @@ RUN pnpm install --frozen-lockfile
 FROM deps AS build
 RUN pnpm --filter jobs build
 
-FROM base AS production
-RUN apt-get update && \
-    npx -y playwright install-deps chromium && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+FROM mcr.microsoft.com/playwright:v1.58.2-noble AS production
+WORKDIR /app
+
+# Resolve Chrome binary from Playwright image (version-agnostic)
+RUN CHROME_BIN=$(find /ms-playwright -name "chrome" -path "*/chromium-*/chrome-linux64/chrome" | head -1) && \
+    echo "CHROME_PATH=${CHROME_BIN}" >> /etc/environment && \
+    ln -s "${CHROME_BIN}" /usr/local/bin/chrome
+ENV CHROME_PATH="/usr/local/bin/chrome"
+
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/apps/jobs/node_modules ./apps/jobs/node_modules
 COPY --from=build /app/apps/jobs/dist ./apps/jobs/dist

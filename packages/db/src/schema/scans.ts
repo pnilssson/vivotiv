@@ -2,6 +2,7 @@ import {
   integer,
   jsonb,
   pgTable,
+  text,
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
@@ -13,6 +14,7 @@ export const scans = pgTable("scans", {
   leadId: uuid("lead_id")
     .notNull()
     .references(() => leads.id, { onDelete: "cascade" }),
+  url: text("url").notNull(),
   overallScore: integer("overall_score"),
   performanceScore: integer("performance_score"),
   seoScore: integer("seo_score"),

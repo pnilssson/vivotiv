@@ -1,0 +1,1 @@
+ALTER TABLE "scans" ADD COLUMN "url" text NOT NULL;

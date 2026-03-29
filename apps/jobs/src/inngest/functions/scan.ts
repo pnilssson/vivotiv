@@ -1,23 +1,40 @@
+import { aggregate } from "../../scanner/aggregate";
+import { runLighthouse } from "../../scanner/lighthouse";
+import { storeScanResult } from "../../scanner/store";
 import { inngest } from "../client";
 
 export const scanFunction = inngest.createFunction(
-  { id: "scan-website" },
+  { id: "scan-website", retries: 2 },
   { event: "scan.requested" },
-  async ({ event, logger }) => {
-    logger.info("Scan requested", {
-      leadId: event.data.leadId,
-      url: event.data.url,
+  async ({ event, step, logger }) => {
+    const { leadId, url } = event.data;
+    logger.info("Scan started", { leadId, url });
+
+    const [lighthouse] = await Promise.all([
+      step.run("run-lighthouse", () => runLighthouse(url, ["performance"])),
+      // step.run("run-dom-checks", ...) -- added with scans 3-6
+      // step.run("run-header-checks", ...) -- added with security scan
+    ]);
+
+    const result = await step.run("aggregate", () =>
+      aggregate(url, { lighthouse }),
+    );
+
+    const scan = await step.run("store", () =>
+      storeScanResult({
+        leadId,
+        url: result.finalUrl,
+        overallScore: result.overallScore,
+        details: result.details,
+      }),
+    );
+
+    logger.info("Scan completed", {
+      leadId,
+      scanId: scan.id,
+      overallScore: result.overallScore,
     });
 
-    // TODO: Implement scan pipeline steps
-    // step.run("validate-url", ...)
-    // step.run("lighthouse", ...)
-    // step.run("axe-core", ...)
-    // step.run("custom-checks", ...)
-    // step.run("aggregate-scores", ...)
-    // step.run("store-results", ...)
-    // step.run("send-email", ...)
-
-    return { status: "placeholder", leadId: event.data.leadId };
+    return { scanId: scan.id, overallScore: result.overallScore };
   },
 );

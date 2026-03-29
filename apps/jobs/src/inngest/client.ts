@@ -1,3 +1,4 @@
+import { sentryMiddleware } from "@inngest/middleware-sentry";
 import { EventSchemas, Inngest } from "inngest";
 
 type Events = {
@@ -12,4 +13,5 @@ type Events = {
 export const inngest = new Inngest({
   id: "vivotiv",
   schemas: new EventSchemas().fromRecord<Events>(),
+  middleware: [sentryMiddleware()],
 });
