@@ -1,0 +1,31 @@
+{
+  "name": "jobs",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.1",
+    "@sentry/node": "^10.46.0",
+    "@vivotiv/db": "workspace:*",
+    "@vivotiv/shared": "workspace:*",
+    "hono": "^4.12.9",
+    "inngest": "^3.35.0",
+    "posthog-node": "^5.28.8",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.0",
+    "@types/node": "^22.16.0",
+    "eslint": "^10.1.0",
+    "tsx": "^4.19.4",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.57.0"
+  }
+}

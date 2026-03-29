@@ -12,7 +12,7 @@ export const scanRoutes = new Hono<Env>().post(
   zValidator("json", ScanSubmissionSchema, validationHook),
   async (c) => {
     const payload = c.req.valid("json");
-    const result = await submitScan(c.var.db, payload);
+    const result = await submitScan(c.var.db, payload, c.env.INNGEST_EVENT_KEY);
 
     Sentry.logger.info("Scan submitted", { url: payload.url });
     c.var.posthog.capture({
