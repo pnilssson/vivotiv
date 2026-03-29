@@ -1,4 +1,6 @@
 import { aggregate } from "../../scanner/aggregate";
+import { runDomChecks } from "../../scanner/dom-checks";
+import { runHeaderChecks } from "../../scanner/header-checks";
 import { runLighthouse } from "../../scanner/lighthouse";
 import { storeScanResult } from "../../scanner/store";
 import { inngest } from "../client";
@@ -10,14 +12,16 @@ export const scanFunction = inngest.createFunction(
     const { leadId, url } = event.data;
     logger.info("Scan started", { leadId, url });
 
-    const [lighthouse] = await Promise.all([
-      step.run("run-lighthouse", () => runLighthouse(url, ["performance"])),
-      // step.run("run-dom-checks", ...) -- added with scans 3-6
-      // step.run("run-header-checks", ...) -- added with security scan
+    const [lighthouse, dom, headers] = await Promise.all([
+      step.run("run-lighthouse", () =>
+        runLighthouse(url, ["performance", "seo", "best-practices"]),
+      ),
+      step.run("run-dom-checks", () => runDomChecks(url)),
+      step.run("run-header-checks", () => runHeaderChecks(url)),
     ]);
 
     const result = await step.run("aggregate", () =>
-      aggregate(url, { lighthouse }),
+      aggregate(url, { lighthouse, dom, headers }),
     );
 
     const scan = await step.run("store", () =>

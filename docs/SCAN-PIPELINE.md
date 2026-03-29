@@ -1,275 +1,243 @@
 # Scan Pipeline -- Implementation Plan
 
-Full scan pipeline implementation for the Free Website Scan. Builds all 6 scan categories one at a time, with shared architecture in place from the start.
+Full scan pipeline for the Free Website Scan. Three parallel data collection tracks feed into 6 scored categories.
 
-## Architecture overview
-
-Three parallel data collection tracks, then aggregate and store:
+## Architecture
 
 ```
 scan.requested event (Inngest)
   |
-  |-- step: "run-lighthouse"       ONE Lighthouse run, all categories at once
-  |     -> extracts: performance, seo (partial), accessibility (partial), security (partial)
+  |-- step: "run-lighthouse"       ONE Lighthouse run, all categories
+  |     -> performance, seo, security (best-practices)
   |
   |-- step: "run-dom-checks"       ONE Playwright page load, all DOM inspections
-  |     -> extracts: legal, standards, seo extras, accessibility (axe-core)
+  |     -> seo extras, accessibility (axe-core), legal, standards
   |
-  |-- step: "run-header-checks"    Plain HTTP fetch, no browser needed
-  |     -> extracts: security headers, HTTP/2, SSL, server exposure
+  |-- step: "run-header-checks"    Plain HTTP fetch, no browser
+  |     -> SSL, security headers, server exposure
   |
   (all three run in parallel via Promise.all)
   |
-  -> step: "aggregate-scores"      Merge results from all 3 tracks into 6 categories
-  -> step: "store-results"         Write scan row to Supabase
-  -> step: "notify"                Update lead status, send email (future)
+  -> step: "aggregate"             Merge results from all 3 tracks into 6 categories
+  -> step: "store"                 Write scan row to Supabase
 ```
 
 ### Why parallel tracks instead of per-category steps
 
-- **Lighthouse runs all its categories in a single pass.** Calling it 4 times for performance, SEO, accessibility, and best-practices would mean 4 Chrome launches and 4 page loads. One run with `onlyCategories: ['performance', 'seo', 'accessibility', 'best-practices']` returns everything at once.
-- **Playwright DOM checks share one page load.** Cookie banner detection, deprecated HTML, axe-core, heading hierarchy, structured data -- all inspect the same loaded DOM. Load the page once, run all checks against it.
-- **Security headers need no browser at all.** A simple `fetch()` gives us response headers, SSL info, and HTTP/2 support. No reason to wait for a browser.
-
-This brings wall time from ~60s (sequential) down to ~15-20s (parallel).
+- **Lighthouse runs all its categories in a single pass.** One run with `onlyCategories: ['performance', 'seo', 'best-practices']` returns everything at once.
+- **Playwright DOM checks share one page load.** Cookie banner, axe-core, structured data, deprecated HTML -- all inspect the same loaded DOM.
+- **Security headers need no browser.** A `fetch()` gives us response headers, SSL info, and HTTPS status.
 
 ### How 3 tracks map to 6 result categories
 
-The 6 categories in the scan results don't map 1:1 to collection tracks. Data gets split and merged during aggregation:
-
-| Result category | Data from Lighthouse | Data from DOM checks | Data from header checks |
+| Result category | Lighthouse | DOM checks | Header checks |
 |---|---|---|---|
 | Performance | Core Web Vitals, page weight, Speed Index | -- | -- |
-| SEO | Meta tags, mobile viewport, Lighthouse SEO score | Structured data, Open Graph, sitemap, robots.txt, broken links | -- |
-| Accessibility | Lighthouse a11y score (baseline) | axe-core deep WCAG analysis | -- |
+| SEO | Meta tags, viewport, Lighthouse SEO score | Structured data, Open Graph, sitemap, robots.txt | -- |
+| Accessibility | -- | axe-core WCAG 2.1 AA analysis (full) | -- |
 | EU Legal | -- | Cookie banner, reject button, privacy policy, contact info, pre-consent tracking | SSL certificate |
-| Security | Lighthouse best-practices (mixed content) | -- | Security headers (CSP, HSTS, X-Frame), server version, HTTPS |
+| Security | Mixed content (best-practices) | -- | Security headers, HSTS, server version, HTTPS |
 | Modern Standards | -- | Deprecated HTML, responsive check, favicon, third-party scripts | -- |
 
-## Key decisions
+## What's built
 
-- **Lighthouse via chrome-launcher, DOM checks via Playwright**: Two separate browser instances. Lighthouse manages its own Chrome DevTools connection. Playwright handles DOM inspection and axe-core injection. Both launch in parallel.
-- **Versioned details schema**: The `details` JSONB column includes a `version` field (integer, starting at `1`). The frontend reads the version to know which Zod schema to use for parsing. When we change the structure, we bump the version and add a new schema.
-- **Zod schemas in `@vivotiv/shared`**: All scan result types are defined as Zod schemas so both the jobs app (writing) and web app (reading) share the exact same types.
-- **3 parallel Inngest steps for collection, then sequential for aggregation + storage**: Collection steps run via `Promise.all()` for speed. Aggregation and storage are sequential because they depend on the collected data.
+### Completed (all 6 scans)
 
-## Shared types (`@vivotiv/shared`)
+**Shared infrastructure:**
+- Zod schemas in `@vivotiv/shared` (CheckResult, CategoryResult, ScanDetailsV1)
+- Lighthouse extraction helpers (`scanner/checks/lighthouse-helpers.ts`) -- `extractLighthouseCategory()` works for any Lighthouse category
+- Playwright DOM checks runner (`scanner/dom-checks.ts`) -- one page load, all extractors in parallel
+- Header checks runner (`scanner/header-checks.ts`) -- plain HTTP fetch, returns URL/HTTPS/headers/status
+- Scoring utilities (`scanner/scoring.ts`)
+- Aggregation (`scanner/aggregate.ts`)
+- Storage (`scanner/store.ts`)
+- Inngest orchestrator (`inngest/functions/scan.ts`) with all 3 parallel steps active
+- Dockerfile with Playwright base image
+- tsup bundling with workspace packages
+- Database schema and migrations
 
-### Check result shape
+**Scan extractors:**
+- Performance: `scanner/checks/performance.ts` (Lighthouse)
+- SEO: `scanner/checks/seo.ts` (Lighthouse) + `scanner/checks/seo-dom.ts` (robots.txt, sitemap, structured data, Open Graph)
+- Accessibility: `scanner/checks/accessibility.ts` (axe-core via `@axe-core/playwright`)
+- Legal: `scanner/checks/legal.ts` (DOM: cookie banner, reject button, pre-consent tracking, privacy policy, cookie policy, contact info) + `scanner/checks/legal-headers.ts` (SSL)
+- Security: `scanner/checks/security.ts` (Lighthouse best-practices) + `scanner/checks/security-headers.ts` (CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, server exposure)
+- Standards: `scanner/checks/standards.ts` (DOM: responsive design, deprecated HTML, favicon, third-party scripts)
 
-Every individual check across all 6 categories follows this shape:
+## Scan #1: Performance & Speed (done)
 
-```typescript
-{
-  id: string           // e.g. "lcp", "meta-title", "color-contrast"
-  name: string         // Human-readable: "Largest Contentful Paint"
-  status: "pass" | "warn" | "fail"
-  value: string | null // Measured value: "4.2s", "missing", "true"
-  threshold: string | null // Expected: "< 2.5s", "present", ">= 4.5:1"
-  weight: number       // 1-3, used for score calculation
-  description: string  // What this check measures
-  recommendation: string | null // How to fix (null if pass)
-}
-```
+### Data sources
 
-### Category result shape
+**From Lighthouse** (`"performance"` category):
+- Core Web Vitals: Largest Contentful Paint (LCP), Total Blocking Time (TBT, proxy for INP), Cumulative Layout Shift (CLS)
+- First Contentful Paint (FCP), Time to First Byte (TTFB), Speed Index
+- Total page weight, image optimization, render-blocking resources, HTTP/2 support
+- Lighthouse assigns its own scores and weights -- audits with weight > 0 are metrics, audits with savings are opportunities, the rest are diagnostics
 
-```typescript
-{
-  score: number           // 0-100
-  status: "pass" | "warn" | "fail"  // Traffic light derived from score
-  checks: CheckResult[]
-}
-```
+### How it fits
 
-### Full scan details (versioned)
+Performance is Lighthouse-only. The `extractLighthouseCategory(lhr, "performance")` helper splits audits into metrics (scored), opportunities (savings-based), and diagnostics (informational). Lighthouse's own category score is used as the final score.
 
-```typescript
-{
-  version: 1
-  url: string             // The URL that was actually scanned (after redirects)
-  scannedAt: string       // ISO timestamp
-  performance: CategoryResult | null
-  seo: CategoryResult | null
-  accessibility: CategoryResult | null
-  legal: CategoryResult | null
-  security: CategoryResult | null
-  standards: CategoryResult | null
-}
-```
+### Scoring
 
-Categories are nullable so we can ship with only some categories implemented and add the rest incrementally. The frontend renders whatever is present.
+- Lighthouse's performance category score (0-100) is used directly
+- Status derived from score via `getTrafficLight()`: 0-40 fail, 41-70 warn, 71-100 pass
+- Individual audit scores, thresholds, and display values come straight from Lighthouse
 
-## Scan #1: Performance & Speed
-
-### What it does
-
-Runs a Lighthouse audit and extracts the performance category results. This is the first track to implement ("run-lighthouse"), starting with only `onlyCategories: ['performance']`. As we add SEO, accessibility, and security scans later, we expand the categories array in the same Lighthouse run -- no new steps needed.
-
-### Dependencies to add
+### Files created
 
 ```
-apps/jobs/package.json:
-  lighthouse        (Lighthouse Node API)
-  chrome-launcher   (Launch headless Chrome for Lighthouse)
+scanner/lighthouse.ts                  -- chrome-launcher + Lighthouse runner
+scanner/checks/performance.ts          -- Lighthouse performance extractor (thin wrapper around extractLighthouseCategory)
+scanner/scoring.ts                     -- score calculation, traffic light, category builder, overall score
+scanner/aggregate.ts                   -- merges all track results into ScanDetailsV1
+scanner/store.ts                       -- writes scan to database
 ```
 
-### Checks to implement
+## Scan #2: SEO (done)
 
-| Check ID | Name | Source | Weight | Threshold |
-|---|---|---|---|---|
-| `lcp` | Largest Contentful Paint | Lighthouse `largest-contentful-paint` | 3 | Good: <= 2.5s, Warn: <= 4.0s |
-| `cls` | Cumulative Layout Shift | Lighthouse `cumulative-layout-shift` | 3 | Good: <= 0.1, Warn: <= 0.25 |
-| `tbt` | Total Blocking Time | Lighthouse `total-blocking-time` (proxy for INP) | 3 | Good: <= 200ms, Warn: <= 600ms |
-| `fcp` | First Contentful Paint | Lighthouse `first-contentful-paint` | 2 | Good: <= 1.8s, Warn: <= 3.0s |
-| `ttfb` | Time to First Byte | Lighthouse `server-response-time` | 2 | Good: <= 800ms, Warn: <= 1800ms |
-| `speed-index` | Speed Index | Lighthouse `speed-index` | 2 | Good: <= 3.4s, Warn: <= 5.8s |
-| `page-weight` | Total Page Weight | Lighthouse `total-byte-weight` | 2 | Good: <= 2MB, Warn: <= 4MB |
-| `image-optimization` | Image Optimization | Lighthouse `uses-optimized-images` + `modern-image-formats` | 2 | Pass: no savings, Warn: < 500KB, Fail: >= 500KB |
-| `render-blocking` | Render-blocking Resources | Lighthouse `render-blocking-resources` | 1 | Pass: none, Warn: 1-2, Fail: 3+ |
-| `http2` | HTTP/2 Support | Lighthouse `uses-http2` | 1 | Pass/Fail |
+### Data sources
 
-### File structure
+**From Lighthouse** (`"seo"` category):
+- Meta title, meta description, viewport, canonical, hreflang
+- Image alt text, crawlable anchors, robots directives
+- Lighthouse assigns its own scores and weights
+
+**From DOM checks** (Playwright):
+- `robots.txt` exists and allows indexing
+- `sitemap.xml` exists and is valid XML
+- Structured data (JSON-LD `<script>` tags)
+- Open Graph tags (`og:title`, `og:description`, `og:image`)
+
+### How it fits
+
+Lighthouse SEO audits use the same `extractLighthouseCategory` pattern as performance. DOM extras are placed as diagnostics (don't affect score -- Lighthouse's SEO score is used as-is).
+
+### Files created
 
 ```
-apps/jobs/src/
-  scanner/
-    lighthouse.ts                 # chrome-launcher + Lighthouse runner
-    scoring.ts                    # Score calculation + traffic light utils
-    checks/
-      performance.ts              # Extract performance checks from Lighthouse result
-      index.ts                    # Re-exports all check extractors
-  inngest/
-    functions/
-      scan.ts                     # Updated: real pipeline with parallel steps
-
-packages/shared/src/
-  scan/
-    results.ts                    # Zod schemas: CheckResult, CategoryResult, ScanDetails
-    categories.ts                 # (existing) category keys
+scanner/checks/lighthouse-helpers.ts   -- shared Lighthouse extraction utilities (extracted from performance.ts)
+scanner/checks/seo.ts                  -- Lighthouse SEO extractor
+scanner/checks/seo-dom.ts             -- DOM-based SEO extras
+scanner/dom-checks.ts                  -- Playwright runner (shared by all DOM scans)
 ```
 
-### Todo list
+## Scan #3: Accessibility (done)
 
-#### 1. Define Zod schemas for scan results in `@vivotiv/shared`
+### Data sources
 
-- [ ] Create `packages/shared/src/scan/results.ts`
-  - `CheckResultSchema` -- single check with id, name, status, value, threshold, weight, description, recommendation
-  - `CategoryResultSchema` -- score (0-100), status (pass/warn/fail), checks array
-  - `ScanDetailsV1Schema` -- version: 1, url, scannedAt, 6 nullable category results
-  - `ScanDetailsSchema` -- discriminated union on version (just v1 for now)
-  - Export all types
-- [ ] Update `packages/shared/src/index.ts` to export new schemas
-- [ ] Run `pnpm typecheck` to verify
+**From DOM checks** (axe-core via Playwright, exclusively):
+- Full WCAG 2.1 AA analysis via `@axe-core/playwright`
+- Lighthouse uses axe-core under the hood -- running axe-core directly gives broader coverage without duplicates
+- Filter: `.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])`
+- Violations = fail, incomplete = warn, passes = pass
 
-#### 2. Create scoring utilities
+### Scoring
 
-- [ ] Create `apps/jobs/src/scanner/scoring.ts`
-  - `calculateCategoryScore(checks)` -- weighted score: checks with status "pass" get full weight, "warn" gets half, "fail" gets zero. Score = sum(earned) / sum(maxWeight) * 100
-  - `getTrafficLight(score)` -- 0-40: fail, 41-70: warn, 71-100: pass
-  - `calculateOverallScore(categories, weights)` -- weighted average across present (non-null) categories using the weights from the spec (Performance: 20%, SEO: 20%, Accessibility: 20%, Legal: 20%, Security: 10%, Standards: 10%)
+- Impact maps to weight: critical = 3, serious = 2, moderate = 1, minor = 1
+- All checks go into metrics (all affect score)
+- Score calculated by `buildCategoryResult` from weighted metrics
 
-#### 3. Create Lighthouse runner
+### Files created
 
-- [ ] Install dependencies: `pnpm --filter jobs add lighthouse chrome-launcher`
-- [ ] Check if `chrome-launcher` ships types (it does -- no separate `@types` package needed)
-- [ ] Create `apps/jobs/src/scanner/lighthouse.ts`
-  - `runLighthouse(url: string, categories: string[]): Promise<LighthouseResult>`
-  - Launches headless Chrome via chrome-launcher with Docker-safe flags (`--no-sandbox`, `--disable-gpu`, `--disable-dev-shm-usage`)
-  - Runs Lighthouse with specified categories + json output
-  - Returns the `lhr` (Lighthouse Result) object
-  - Always kills Chrome in a `finally` block
+```
+scanner/checks/accessibility.ts        -- axe-core runner + CheckResult conversion
+```
 
-#### 4. Implement performance check extraction
+## Scan #4: EU Legal Compliance (done)
 
-- [ ] Create `apps/jobs/src/scanner/checks/performance.ts`
-  - `extractPerformanceChecks(lhr: LighthouseResult): CheckResult[]`
-  - Maps each Lighthouse audit to our `CheckResult` format
-  - Each check: reads `lhr.audits[auditId]`, extracts `numericValue` or `score`, applies our thresholds, writes human-readable `value`/`threshold`/`description`/`recommendation`
-- [ ] Create `apps/jobs/src/scanner/checks/index.ts` -- re-exports
+### Data sources
 
-#### 5. Wire up the Inngest scan function
+**From DOM checks** (Playwright):
+- Cookie consent banner (known selectors: CookieBot, OneTrust, generic patterns + text fallback)
+- Reject/decline button (known selectors + text search, English + Swedish)
+- Pre-consent tracking (script tags matching GA, Meta Pixel, Hotjar, Clarity)
+- Privacy policy link (English + Swedish patterns)
+- Cookie policy link
+- Contact information (Swedish org numbers, postal codes, street names)
 
-- [ ] Update `apps/jobs/src/inngest/functions/scan.ts`
-  - Replace placeholder with real steps:
-    ```typescript
-    // Phase 1: parallel data collection (only Lighthouse for now)
-    const [lighthouseResult] = await Promise.all([
-      step.run("run-lighthouse", () => runLighthouse(url, ["performance"])),
-      // step.run("run-dom-checks", ...) -- added later
-      // step.run("run-header-checks", ...) -- added later
-    ]);
+**From header checks:**
+- SSL certificate (HTTPS status)
 
-    // Phase 2: extract checks from raw results
-    const performanceChecks = extractPerformanceChecks(lighthouseResult);
+### How it fits
 
-    // Phase 3: aggregate
-    const details = await step.run("aggregate-scores", () => {
-      // Build CategoryResults, calculate scores, return ScanDetailsV1
-    });
+All legal checks go into metrics (compliant or not -- no opportunities/diagnostics split). SSL check comes from the header-checks track, everything else from DOM.
 
-    // Phase 4: store
-    await step.run("store-results", () => {
-      // Write to database
-    });
-    ```
-  - The `Promise.all` pattern means adding DOM checks and header checks later is just uncommenting + adding the new step
+### Files created
 
-#### 6. Add database query for storing scan results
+```
+scanner/checks/legal.ts                -- DOM-based legal compliance checks
+scanner/checks/legal-headers.ts        -- SSL check from header results
+scanner/header-checks.ts               -- plain HTTP fetch runner (shared by legal + security)
+```
 
-- [ ] Add `createScan` insert query in `packages/db` (if not already present)
-  - Accepts: leadId, url, overallScore, per-category scores, details JSONB
-  - Returns the created scan row
-- [ ] Export from `packages/db`
+## Scan #5: Security (done)
 
-#### 7. Update Dockerfile for Chrome
+### Data sources
 
-- [ ] Verify Dockerfile installs Chromium system deps (it does -- `npx playwright install-deps chromium`)
-- [ ] Add `npx playwright install chromium` to install the actual Chromium binary (system deps alone are not enough)
-- [ ] Set `CHROME_PATH` env var so chrome-launcher finds the Playwright-installed Chromium
-- [ ] Alternatively: install Google Chrome for Testing directly if Playwright's Chromium causes issues with Lighthouse
+**From Lighthouse** (`"best-practices"` category):
+- Mixed content (HTTP resources on HTTPS page)
+- Deprecated APIs, vulnerable libraries
+- Lighthouse assigns its own scores and weights
 
-#### 8. Local testing
+**From header checks** (existing header-checks track):
+- Content-Security-Policy: present -> pass, missing -> fail (weight 2)
+- Strict-Transport-Security: present with max-age >= 31536000 -> pass, low max-age -> warn, missing -> fail (weight 2)
+- X-Frame-Options: present -> pass, missing -> warn (weight 1)
+- X-Content-Type-Options: `nosniff` -> pass, other/missing -> warn (weight 1)
+- Referrer-Policy: present -> pass, missing -> warn (weight 1)
+- Permissions-Policy: present -> pass, missing -> warn (weight 1)
+- Server version exposure: no version -> pass, version exposed -> warn (weight 1)
 
-- [ ] `pnpm typecheck` passes for all packages
-- [ ] `pnpm --filter jobs dev` starts cleanly
-- [ ] Trigger a scan event via Inngest dev server with a test URL
-- [ ] Verify Lighthouse runs and returns performance scores
-- [ ] Verify scan results are stored in Supabase with correct schema
-- [ ] Verify `details` JSONB matches `ScanDetailsV1Schema`
+### How it fits
 
-#### 9. Database migration
+Lighthouse best-practices metrics + header checks are merged. Header checks go into metrics alongside Lighthouse metrics. Lighthouse's category score is used when available. Lighthouse best-practices opportunities and diagnostics are passed through.
 
-- [ ] Generate a new Drizzle migration for the `url` column added to the `scans` table
-- [ ] Run migration against Supabase (handled by `deploy-api.yml` in production)
+### Files created
 
-#### 10. Docker verification
+```
+scanner/checks/security.ts             -- Lighthouse best-practices extractor (thin wrapper)
+scanner/checks/security-headers.ts     -- 7 security header checks from header-checks track
+```
 
-- [ ] `docker build -f apps/jobs/Dockerfile .` succeeds
-- [ ] Chrome/Lighthouse can run inside the container
-- [ ] Test with a known URL and verify scores match local results
+## Scan #6: Modern Web Standards (done)
 
-## Adding future scans
+### Data sources
 
-Each new scan extends the existing architecture rather than creating new Inngest steps:
+**From DOM checks** (entirely Playwright-based):
+- Responsive design: viewport meta tag with `width=device-width` (weight 3)
+- Deprecated HTML: `<font>`, `<center>`, `<marquee>`, `<blink>`, `<big>`, `<strike>`, layout tables without headers (weight 2)
+- Favicon: `<link rel="icon">` or `/favicon.ico` fallback (weight 1)
+- Third-party scripts: count unique external script origins, warn > 10, fail > 20 (weight 2)
 
-### To add SEO, Accessibility, or Security (Lighthouse-based):
+### How it fits
 
-1. Add a new check extractor in `scanner/checks/` (e.g. `seo.ts`)
-2. Expand the categories array in the existing `runLighthouse()` call: `["performance", "seo"]`
-3. Call the new extractor in the aggregate step
-4. No new Inngest steps -- same Lighthouse run covers it
+Entirely DOM-based. Runs on the same Playwright page as SEO, Accessibility, and Legal. All checks go into metrics. No new tracks needed.
 
-### To add Legal, Standards, or deeper Accessibility (DOM-based):
+### Files created
 
-1. Add a new check extractor in `scanner/checks/` (e.g. `legal.ts`)
-2. Create `scanner/dom-checks.ts` -- launches Playwright, loads page, runs all DOM extractors
-3. Uncomment the `step.run("run-dom-checks", ...)` line in the Inngest function
-4. Merge DOM results into the aggregate step
+```
+scanner/checks/standards.ts         -- 4 modern standards checks from DOM
+```
 
-### To add Security headers:
+## Shared infrastructure
 
-1. Add check extractor in `scanner/checks/headers.ts`
-2. Create `scanner/header-checks.ts` -- plain `fetch()`, inspects response headers
-3. Uncomment the `step.run("run-header-checks", ...)` line
-4. Merge header results into the aggregate step
+### Lighthouse extraction helpers (`scanner/checks/lighthouse-helpers.ts`)
+
+Shared utilities: `lighthouseScoreToStatus`, `extractItems`, `stripMarkdownLinks`, `auditToCheckResult`, `clampWeight`, `formatScoringOption`, and `extractLighthouseCategory`. Any Lighthouse-based extractor calls `extractLighthouseCategory(lhr, categoryId)` and gets back metrics/opportunities/diagnostics/lighthouseScore.
+
+### DOM checks runner (`scanner/dom-checks.ts`)
+
+Launches Playwright, navigates to URL with `waitUntil: "load"`, runs all DOM extractors in parallel via `Promise.all`, returns a flat `DomCheckResults` object with named sections. New extractors are added by importing and calling them against the page.
+
+### Header checks runner (`scanner/header-checks.ts`)
+
+Plain `fetch()` with 15s timeout, follows redirects. Returns URL, HTTPS status, response headers as a flat record, and status code. Used by legal (SSL) and security (headers) extractors.
+
+### Implementation order
+
+1. **SEO** -- introduced DOM checks track + Lighthouse category extension pattern (done)
+2. **Accessibility** -- added axe-core to DOM track (done)
+3. **Legal** -- introduced header checks track (done)
+4. **Security** -- extends Lighthouse (best-practices) + header track
+5. **Standards** -- pure DOM checks, no new infrastructure

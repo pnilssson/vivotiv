@@ -11,22 +11,25 @@ RUN pnpm install --frozen-lockfile
 
 FROM deps AS build
 RUN pnpm --filter jobs build
+RUN pnpm --filter jobs --prod deploy --legacy /deploy
 
-FROM mcr.microsoft.com/playwright:v1.58.2-noble AS production
+FROM node:22-slim AS production
 WORKDIR /app
 
-# Resolve Chrome binary from Playwright image (version-agnostic)
+# Install only Chromium + system deps (skips Firefox and WebKit)
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
+RUN npx -y playwright@1.58.2 install --with-deps chromium
+
+# Resolve Chrome binary for chrome-launcher (used by Lighthouse)
 RUN CHROME_BIN=$(find /ms-playwright -name "chrome" -path "*/chromium-*/chrome-linux64/chrome" | head -1) && \
-    echo "CHROME_PATH=${CHROME_BIN}" >> /etc/environment && \
     ln -s "${CHROME_BIN}" /usr/local/bin/chrome
 ENV CHROME_PATH="/usr/local/bin/chrome"
 
-COPY --from=build /app/node_modules ./node_modules
-COPY --from=build /app/apps/jobs/node_modules ./apps/jobs/node_modules
-COPY --from=build /app/apps/jobs/dist ./apps/jobs/dist
-COPY --from=build /app/apps/jobs/package.json ./apps/jobs/
-COPY --from=build /app/package.json ./
+# Copy only production dependencies and built app
+COPY --from=build /deploy/node_modules ./node_modules
+COPY --from=build /app/apps/jobs/dist ./dist
+COPY --from=build /deploy/package.json ./
 
 EXPOSE 3001
 ENV NODE_ENV=production
-CMD ["node", "apps/jobs/dist/app.js"]
+CMD ["node", "dist/app.js"]

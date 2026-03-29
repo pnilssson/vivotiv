@@ -9,9 +9,9 @@
     "primaryNav": "Main navigation"
   },
   "hero": {
-    "headline": "Get a free health check for your website",
-    "headlineBase": "Get a free health check for",
-    "rotatingPhrases": "your website,site ranking,legal compliance,site security,page speed",
+    "headline": "Get a free health check of your website",
+    "headlineBase": "Get a free health check of your",
+    "rotatingPhrases": "websites SEO,sites accessibility,legal compliance,security,page speed",
     "subheadline": "Understand what's affecting your Google ranking, legal compliance, and visitor experience with a free report.",
     "urlLabel": "Website URL",
     "urlPlaceholder": "https://yourwebsite.com",

@@ -1,124 +1,27 @@
-# Free Website Scan -- Full Spec
+# Free Website Scan
 
-Pre-launch lead magnet and sales tool. Scans any URL for performance, SEO, accessibility, EU legal compliance, and security -- shows a traffic-light scorecard that makes the case for a rebuild.
+Pre-launch lead magnet and sales tool. Scans any URL for performance, SEO, accessibility, EU legal compliance, security, and modern web standards. Shows a traffic-light scorecard that makes the case for a rebuild.
 
-## 1. Purpose & Lead Gen Flow
+## User Flow
 
-The Free Website Scan is the first thing we build and ship -- before the full migration platform. It works as a standalone lead generation tool.
-
-**User flow:**
 ```
 Visitor lands on landing page
   -> Pastes their website URL
     -> Enters email to see results (gate)
-      -> Scan runs (30-60 seconds, live progress bar)
-        -> Results page: 6 categories, traffic-light scores
-          -> CTA: "We fix all of this. Get your modern site."
-            -> Feeds into waitlist / Instant Preview pipeline
+      -> API upserts lead, fires Inngest event
+        -> Scan runs (~15-20s, 3 parallel tracks)
+          -> Results page: 6 categories, traffic-light scores
+            -> CTA: "We fix all of this. Get your modern site."
 ```
 
-**Why this works:**
-- Costs almost nothing to run (Playwright + Lighthouse, no paid APIs)
-- Every scan is a qualified lead (they have a website they care about)
-- Results are inherently shareable ("look how bad our site scored")
-- Naturally leads to the product ("we fix all of this")
-- Validates demand before the full platform is built
-- The before/after data becomes marketing content ("We scanned 500 Swedish business sites -- here's what we found")
+## Scoring System
 
-## 2. Scan Categories
+Each category gets a 0-100 score. Traffic light:
+- Red (0-40): Critical issues
+- Orange (41-70): Room for improvement
+- Green (71-100): Good shape
 
-### 2.1 Performance & Speed
-Source: Lighthouse Performance API
-
-| Check | What we look for | Why it matters |
-|---|---|---|
-| Core Web Vitals (LCP, INP, CLS) | Google's ranking signals | Directly affects SEO ranking since 2021 |
-| Time to First Byte (TTFB) | Server response time | Slow hosting = slow everything |
-| Total page weight | MB of assets loaded | Old sites often load 5-10MB+ |
-| Image optimization | Uncompressed JPG/PNG, no WebP/AVIF | Often the #1 performance killer |
-| Render-blocking resources | CSS/JS blocking first paint | Common on WordPress with 20+ plugins |
-| HTTP/2 support | Protocol version | Many old hosts still serve HTTP/1.1 |
-
-### 2.2 SEO
-Source: Lighthouse SEO audit + custom checks
-
-| Check | What we look for | Why it matters |
-|---|---|---|
-| Meta title | Present, correct length (50-60 chars) | #1 on-page SEO factor |
-| Meta description | Present, correct length (150-160 chars) | Click-through rate from Google |
-| H1 tag | Present, unique, one per page | Page structure signal |
-| Image alt attributes | All images have descriptive alt text | SEO + accessibility |
-| Canonical URL | Proper canonical tag | Prevents duplicate content penalties |
-| Robots.txt | Exists and allows indexing | Basic crawlability |
-| Sitemap.xml | Exists and valid | Helps Google discover all pages |
-| Mobile-friendly viewport | Proper viewport meta tag | Google mobile-first indexing |
-| Structured data | schema.org markup (LocalBusiness, etc.) | Rich snippets in search results |
-| Open Graph tags | og:title, og:description, og:image | Social sharing appearance |
-| Internal broken links | 404s within the site | Bad UX + wasted crawl budget |
-
-### 2.3 Accessibility (WCAG 2.1 AA)
-Source: axe-core (open source, used by Google/Microsoft/Deque)
-
-| Check | What we look for | Why it matters |
-|---|---|---|
-| Color contrast | WCAG AA contrast ratios (4.5:1 text, 3:1 large text) | Readability for low-vision users |
-| Image alt text | All non-decorative images have alt attributes | Screen reader support |
-| Form labels | All inputs have associated labels | Usability + screen readers |
-| Heading hierarchy | Logical order (no skipping h1 to h3) | Navigation for assistive tech |
-| Keyboard navigation | All interactive elements reachable via Tab | Essential for motor disabilities |
-| ARIA attributes | Correct usage (no invalid roles) | Screen reader compatibility |
-| Language attribute | lang attribute on html tag | Screen readers need this for pronunciation |
-| Focus indicators | Visible focus styles on interactive elements | Keyboard navigation visibility |
-| Link text quality | No "click here" or "read more" without context | Meaningful navigation |
-
-> EU Legal context: The European Accessibility Act (EAA) became enforceable on June 28, 2025. All businesses with 10+ employees or 2M+ EUR turnover offering digital services to EU customers must comply with WCAG 2.1 AA (via EN 301 549). Fines up to 3 million EUR. Swedish enforcement is handled by DIGG.
-
-### 2.4 EU Legal Compliance
-Source: Custom Playwright DOM inspection
-
-| Check | What we look for | Why it matters |
-|---|---|---|
-| Cookie consent banner | Banner present on page load | Required by ePrivacy Directive + GDPR |
-| Reject option | "Reject all" button exists and is equally prominent | IMY actively enforcing symmetry since April 2025 |
-| No pre-consent tracking | Check if GA / Meta Pixel / tracking cookies load before consent | Major GDPR violation, fines up to 4% of global turnover |
-| Privacy policy | Link to privacy policy exists in footer or cookie banner | GDPR Article 13/14 requirement |
-| Cookie policy | Separate or combined cookie policy with categories | ePrivacy Directive requirement |
-| Contact information | Business name, address, or org number visible | Swedish law (Lag om elektronisk handel) |
-| SSL certificate | Valid HTTPS | Chrome shows "Not Secure" warning without it |
-
-### 2.5 Security
-Source: HTTP header inspection + Lighthouse best practices
-
-| Check | What we look for | Why it matters |
-|---|---|---|
-| HTTPS | Valid SSL/TLS certificate | Baseline security |
-| Mixed content | HTTP resources loaded on HTTPS page | Breaks the security chain |
-| Security headers | CSP, X-Frame-Options, X-Content-Type-Options, HSTS | Protection against XSS, clickjacking |
-| Server version exposure | Server header leaking Apache/nginx version | Makes targeted attacks easier |
-| Outdated CMS | WordPress version detection (via generator meta tag) | Known vulnerabilities |
-
-### 2.6 Modern Web Standards
-Source: Playwright DOM analysis + custom checks
-
-| Check | What we look for | Why it matters |
-|---|---|---|
-| Responsive design | Viewport meta + media queries + no horizontal scroll | 60%+ of traffic is mobile |
-| Deprecated HTML | font, center, tables for layout | Signals an ancient codebase |
-| Favicon | Favicon present | Professionalism |
-| 404 page | Custom 404 exists | UX when links break |
-| Page weight | Total assets < 3MB target | Speed + mobile data |
-| Third-party bloat | Number of third-party scripts loaded | Common on old WordPress sites |
-
-## 3. Scoring System
-
-Each category gets a 0-100 score based on passed vs. failed checks, weighted by severity.
-
-**Traffic light:**
-- Red (0-40): Critical issues. Needs immediate attention.
-- Orange (41-70): Room for improvement. Common issues found.
-- Green (71-100): Good shape. Minor tweaks possible.
-
-**Overall score -- weighted average:**
+Overall score is a weighted average:
 
 | Category | Weight |
 |---|---|
@@ -129,65 +32,256 @@ Each category gets a 0-100 score based on passed vs. failed checks, weighted by 
 | Security | 10% |
 | Modern Web Standards | 10% |
 
-**Results page design:**
-- Overall score prominently displayed (big number + color)
-- 6 category cards, each with score + traffic light + expandable details
-- Each failed check shows: what's wrong, why it matters, how we fix it
-- Clear CTA: "Vi fixar allt detta."
-- Option to download PDF report (V2)
-- Share button (V2)
+## Jobs App (`apps/jobs`)
 
-## 4. Technical Implementation
+Hono + Inngest on Railway in a Docker container. Runs the scan pipeline as background jobs.
 
-### Stack
-| Tool | Purpose | Cost |
+### Entry point and routing
+
+- `src/app.ts` -- Hono app with `@hono/node-server`
+- `GET /health` -- health check
+- `/api/inngest` -- Inngest serve handler
+- Inngest client ID: `"vivotiv"`, event: `"scan.requested"` with `{ leadId, url }`
+
+### Database
+
+Supabase transaction pooler (port 6543). Migrations handled by `deploy-api.yml` only -- jobs does not run migrations.
+
+### Docker
+
+- Build stages: `node:22-slim` (base + deps + build), production stage also `node:22-slim`
+- Chromium installed via `npx playwright install --with-deps chromium` (no Firefox/WebKit)
+- `CHROME_PATH` symlinked for chrome-launcher (Lighthouse)
+- `PLAYWRIGHT_BROWSERS_PATH=/ms-playwright` for Playwright
+- `pnpm deploy --prod --legacy` for minimal node_modules
+- `tsup` bundles app with `noExternal: ["@vivotiv/db", "@vivotiv/shared"]`
+
+### Dependencies
+
+- `lighthouse` + `chrome-launcher` -- Lighthouse Node API
+- `playwright` + `@axe-core/playwright` -- DOM inspection + WCAG analysis
+- `inngest` + `@inngest/middleware-sentry` -- job orchestration + error capture
+- `hono` + `@hono/node-server` -- HTTP server
+
+## Scan Pipeline Architecture
+
+Three parallel data collection tracks, then aggregate and store:
+
+```
+scan.requested event (Inngest, 2 retries)
+  |
+  |-- step: "run-lighthouse"       ONE Lighthouse run, all categories
+  |     -> performance, seo, security (best-practices)
+  |
+  |-- step: "run-dom-checks"       ONE Playwright page load, all DOM inspections
+  |     -> seo extras, accessibility (axe-core), legal, standards
+  |
+  |-- step: "run-header-checks"    Plain HTTP fetch, no browser
+  |     -> SSL, security headers, server exposure
+  |
+  (all three run in parallel via Promise.all)
+  |
+  -> step: "aggregate"             Merge results from all 3 tracks into 6 categories
+  -> step: "store"                 Write scan row to Supabase
+```
+
+### Why parallel tracks
+
+- **Lighthouse** runs all its categories in a single pass. One run with `onlyCategories: ['performance', 'seo', 'best-practices']`.
+- **Playwright DOM checks** share one page load. All extractors run in parallel via `Promise.all` on the same page.
+- **Header checks** need no browser. Plain `fetch()` with 15s timeout.
+
+### How tracks map to categories
+
+| Category | Lighthouse | DOM checks | Header checks |
+|---|---|---|---|
+| Performance | Core Web Vitals, page weight, Speed Index | -- | -- |
+| SEO | Meta tags, viewport, Lighthouse SEO score | Structured data, Open Graph, sitemap, robots.txt | -- |
+| Accessibility | -- | axe-core WCAG 2.1 AA (full) | -- |
+| EU Legal | -- | Cookie banner, reject button, privacy policy, contact info, pre-consent tracking | SSL certificate |
+| Security | Mixed content (best-practices) | -- | Security headers, HSTS, server version, HTTPS |
+| Modern Standards | -- | Deprecated HTML, responsive check, favicon, third-party scripts | -- |
+
+## Scan Categories
+
+### Performance & Speed
+
+**Source:** Lighthouse `"performance"` category.
+
+Core Web Vitals (LCP, TBT, CLS), FCP, TTFB, Speed Index, page weight, image optimization, render-blocking resources, HTTP/2. Lighthouse assigns scores and weights. Audits split into metrics (scored), opportunities (savings-based), diagnostics (informational). Lighthouse's own category score used directly.
+
+### SEO
+
+**Source:** Lighthouse `"seo"` category + Playwright DOM checks.
+
+Lighthouse: meta title, meta description, viewport, canonical, hreflang, image alt, crawlable anchors, robots directives. `is-crawlable` has ~31% weight (blocks indexing = fails category). All SEO audits are binary pass/fail.
+
+DOM extras (diagnostics, don't affect score): robots.txt validation, sitemap.xml validation, structured data (JSON-LD), Open Graph tags (og:title, og:description, og:image).
+
+Lighthouse's SEO category score used directly.
+
+### Accessibility (WCAG 2.1 AA)
+
+**Source:** axe-core via `@axe-core/playwright` (exclusively, no Lighthouse).
+
+Lighthouse uses axe-core under the hood -- running axe-core directly gives broader WCAG 2.1 AA coverage without duplicates. Filtered with `.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])`.
+
+Impact maps to weight: critical = 3, serious = 2, moderate = 1, minor = 1. Violations = fail, incomplete = warn, passes = pass. All checks are metrics (all affect score). Score calculated by `buildCategoryResult` from weighted metrics.
+
+> EU context: The European Accessibility Act (EAA) became enforceable on June 28, 2025. All businesses with 10+ employees or 2M+ EUR turnover offering digital services to EU customers must comply with WCAG 2.1 AA (via EN 301 549). Fines up to 3 million EUR. Swedish enforcement by DIGG.
+
+### EU Legal Compliance
+
+**Source:** Playwright DOM checks + header checks (SSL).
+
+| Check | What | Weight |
 |---|---|---|
-| Playwright | Page rendering, DOM inspection, screenshot | Free |
-| Lighthouse Node API | Performance, SEO, accessibility baseline | Free |
-| axe-core | Deep WCAG 2.1 AA analysis | Free |
-| Custom checks | Cookie banner, legal compliance, security headers | Free |
-| Hono API | Endpoint to trigger scans, serve results | In stack |
-| Supabase | Store scan results, email signups | In stack |
-| Nodemailer | Send scan report email (via one.com SMTP) | Free |
+| Cookie consent banner | Known selectors (CookieBot, OneTrust, generic) + text fallback (Swedish + English) | 3 |
+| Reject option | Known reject/decline selectors + text patterns | 2 |
+| Pre-consent tracking | Script tags matching GA, Meta Pixel, Hotjar, Clarity loaded before consent | 3 |
+| Privacy policy | Links containing privacy/integritet/personuppgift/dataskydd | 2 |
+| Cookie policy | Links containing cookie-policy/kakor/kakpolicy | 1 |
+| Contact information | Swedish org numbers (XXXXXX-XXXX), postal codes, street names | 1 |
+| SSL certificate | HTTPS status from header checks | 2 |
 
-### Architecture
+All checks go into metrics (compliant or not).
+
+### Security
+
+**Source:** Lighthouse `"best-practices"` category + header checks.
+
+Lighthouse: mixed content, deprecated APIs, vulnerable libraries.
+
+Header checks:
+
+| Check | Pass | Fail/Warn | Weight |
+|---|---|---|---|
+| Content-Security-Policy | Present | Missing = fail | 2 |
+| Strict-Transport-Security | max-age >= 31536000 | Low max-age = warn, missing = fail | 2 |
+| X-Frame-Options | Present | Missing = warn | 1 |
+| X-Content-Type-Options | `nosniff` | Other/missing = warn | 1 |
+| Referrer-Policy | Present | Missing = warn | 1 |
+| Permissions-Policy | Present | Missing = warn | 1 |
+| Server version exposure | No version | Version exposed = warn | 1 |
+
+Lighthouse category score used when available.
+
+### Modern Web Standards
+
+**Source:** Playwright DOM checks (exclusively).
+
+| Check | Pass | Warn | Fail | Weight |
+|---|---|---|---|---|
+| Responsive design | viewport with `width=device-width` | viewport without `width=device-width` | No viewport meta | 3 |
+| Deprecated HTML | None found | -- | `<font>`, `<center>`, `<marquee>`, `<blink>`, `<big>`, `<strike>`, layout tables | 2 |
+| Favicon | `<link rel="icon">` or `/favicon.ico` | No favicon | -- | 1 |
+| Third-party scripts | 0-10 origins | 11-20 origins | 20+ origins | 2 |
+
+## Data Schema
+
+### CheckResult (one check)
+
+```typescript
+{
+  id: string               // e.g., "lcp", "meta-title", "color-contrast"
+  name: string             // Human-readable name
+  status: "pass" | "warn" | "fail" | "error"
+  score: number | null     // 0-100
+  value: string | null     // Measured value: "4.2s", "Missing"
+  rawValue: number | null  // Original measurement
+  rawUnit: string | null   // "millisecond", "byte", "element"
+  scoreThresholds: { good: string, warn: string } | null
+  weight: 1 | 2 | 3       // Importance in scoring
+  description: string      // What this measures
+  items: string[] | null   // Up to 10 problematic URLs/elements
+}
 ```
-User submits URL + email on landing page
-  -> Hono API receives request
-    -> Validates URL (reachable, not blocked)
-      -> Stores email + URL in Supabase (leads table)
-        -> Triggers Inngest job: "scan.requested"
-          -> Inngest runs scan pipeline:
-            1. Playwright launches headless Chrome
-            2. Lighthouse runs performance + SEO + a11y audits
-            3. axe-core runs deep WCAG analysis
-            4. Custom checks: cookie banner, legal, security headers
-            5. Results aggregated + scored
-          -> Results stored in Supabase (scans table)
-          -> Nodemailer sends email with link to results page
-          -> SSE pushes "scan complete" to waiting frontend
+
+### CategoryResult (one of 6 categories)
+
+```typescript
+{
+  score: number            // 0-100
+  status: "pass" | "warn" | "fail" | "error"
+  metrics: CheckResult[]        // Scored checks (affect category score)
+  opportunities: CheckResult[]  // Optimization suggestions
+  diagnostics: CheckResult[]    // Informational checks
+}
 ```
 
-### Database schema
-```sql
-leads:
-  id, email, url, source (scan/waitlist/preview), created_at
+### ScanDetailsV1 (full scan, stored as JSONB)
 
-scans:
-  id, lead_id, url, overall_score,
-  performance_score, seo_score, accessibility_score,
-  legal_score, security_score, standards_score,
-  details (JSONB -- full check results),
-  created_at
+```typescript
+{
+  version: 1
+  url: string              // Final URL after redirects
+  scannedAt: string        // ISO timestamp
+  performance: CategoryResult | null
+  seo: CategoryResult | null
+  accessibility: CategoryResult | null
+  legal: CategoryResult | null
+  security: CategoryResult | null
+  standards: CategoryResult | null
+}
 ```
 
-## 5. Build Priority
+All schemas defined as Zod in `packages/shared/src/scan/results.ts`. Categories are nullable so the frontend renders whatever is present.
 
-**Phase 1 (ship first):**
-- Landing page with URL input + email capture
-- Scan pipeline (Lighthouse + axe-core + custom checks)
-- Results page with traffic-light scores
-- Email delivery of results
+### Database tables
+
+```
+leads: id, email (unique), created_at
+scans: id, lead_id (FK), url, overall_score, performance_score, seo_score,
+       accessibility_score, legal_score, security_score, standards_score,
+       details (JSONB: ScanDetailsV1), created_at
+```
+
+Lead upsert on email (onConflictDoNothing + fallback select).
+
+## File Structure
+
+```
+apps/jobs/src/
+  app.ts                              # Hono app + @hono/node-server
+  env.ts                              # Environment variable validation
+  inngest/
+    client.ts                         # Inngest client + Sentry middleware
+    functions/
+      scan.ts                         # Thin orchestrator (~40 lines)
+      index.ts                        # Re-exports all functions
+  scanner/
+    lighthouse.ts                     # chrome-launcher + Lighthouse runner
+    dom-checks.ts                     # Playwright runner, all DOM extractors
+    header-checks.ts                  # Plain HTTP fetch for headers
+    aggregate.ts                      # Merges 3 tracks into ScanDetailsV1
+    store.ts                          # Writes scan to database
+    scoring.ts                        # Score calculation, traffic light, category builder
+    checks/
+      lighthouse-helpers.ts           # Shared Lighthouse extraction utilities
+      performance.ts                  # Lighthouse performance extractor
+      seo.ts                          # Lighthouse SEO extractor
+      seo-dom.ts                      # robots.txt, sitemap, structured data, Open Graph
+      accessibility.ts                # axe-core WCAG 2.1 AA analysis
+      legal.ts                        # Cookie banner, reject, tracking, privacy, contact
+      legal-headers.ts                # SSL check
+      security.ts                     # Lighthouse best-practices extractor
+      security-headers.ts             # 7 security header checks
+      standards.ts                    # Responsive, deprecated HTML, favicon, third-party
+      index.ts                        # Re-exports all extractors
+```
+
+## API Integration
+
+The Cloudflare Workers API (`apps/api`) triggers scans:
+
+1. User submits URL + email on landing page
+2. API receives request, validates URL
+3. Upserts lead by email in Supabase
+4. POSTs Inngest event to `https://inn.gs/e/<key>` with `{ leadId, url }`
+5. Returns `{ status: "accepted", leadId }` immediately
+6. Jobs app picks up the event and runs the scan pipeline
+
+## Future Phases
 
 **Phase 2 (after initial traction):**
 - PDF report download

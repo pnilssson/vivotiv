@@ -5,8 +5,8 @@ import {
   type LighthouseCategoryExtraction,
 } from "./lighthouse-helpers";
 
-export function extractPerformanceChecks(
+export function extractSecurityChecks(
   lhr: LighthouseResult,
 ): LighthouseCategoryExtraction {
-  return extractLighthouseCategory(lhr, "performance");
+  return extractLighthouseCategory(lhr, "best-practices");
 }

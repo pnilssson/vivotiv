@@ -1,8 +1,12 @@
-# Vivotiv -- Architecture & Tech Decisions
+# Vivotiv -- Architecture
 
-## Product Overview
+## What is Vivotiv?
 
-Vivotiv automates the full lifecycle of taking an existing website (e.g. WordPress) and turning it into a modern, hosted, AI-editable Next.js codebase -- with ongoing editing via natural language prompts and a Git-based approval flow.
+A platform that takes existing websites (typically WordPress), scans them, rebuilds them as modern Next.js apps, and provides ongoing AI-powered editing. Long-term: full web presence management (SEO, WCAG compliance, analytics, monitoring).
+
+## What to build FIRST
+
+The **Vivotiv landing page + Free Website Scan**. A standalone lead generation tool that ships before the full migration platform. Captures leads, validates demand, and naturally leads to the full product.
 
 ## Domain Strategy
 
@@ -18,17 +22,16 @@ Turborepo + pnpm workspaces.
 ```
 vivotiv/
   apps/
-    web/           # Next.js SaaS UI -> deploys as Vercel project
-    api/           # Hono pipeline API -> deploys as separate Vercel project
+    web/           # Next.js SaaS UI -> Vercel
+    api/           # Hono API -> Cloudflare Workers
+    jobs/          # Background jobs (scan pipeline) -> Railway (Docker)
   packages/
     db/            # Drizzle schemas + migrations + RLS policies
     shared/        # Zod schemas, TypeScript types, constants
-    template/      # Base Next.js template for generated customer sites (later)
+  docs/            # Architecture, scan pipeline, specs
   turbo.json
   pnpm-workspace.yaml
 ```
-
-Both apps deploy to Vercel from the same repo, each as its own project. Turborepo handles the build graph so packages/db builds before both apps.
 
 ## Tech Stack
 
@@ -36,10 +39,10 @@ Both apps deploy to Vercel from the same repo, each as its own project. Turborep
 
 | Layer | Technology | Rationale |
 |---|---|---|
-| Frontend (SaaS UI) | Next.js + Tailwind + shadcn/ui + next-intl + Zod + TanStack React Query + TanStack Form + nuqs + Motion | Dogfood own stack. next-intl for i18n from day one. nuqs for type-safe URL search params (filters, pagination, shareable scan results). |
-| Backend / Pipeline API | Hono | Lightweight, edge-deployable. Next.js API routes for simple SaaS endpoints only. |
+| Frontend (SaaS UI) | Next.js + Tailwind + shadcn/ui + next-intl + Zod + TanStack React Query + TanStack Form + nuqs + Motion | Dogfood own stack. next-intl for i18n from day one. nuqs for type-safe URL search params. |
+| API | Hono on Cloudflare Workers | Lightweight, edge-deployable. Handles scan submissions, form handling. |
+| Background jobs | Hono + Inngest on Railway (Docker) | Event-driven scan pipeline. Runs Lighthouse + Playwright in Docker with Chromium. |
 | Database + Auth | Supabase (Postgres + Auth + Storage) + Drizzle ORM | Schema-as-code, migrations, RLS via pgPolicy(). |
-| Background jobs | Inngest | Event-driven, managed, no Redis. |
 | AI | Anthropic Claude (primary) + OpenAI (fallback) | Direct API, no OpenRouter markup. |
 | AI orchestration | Vercel AI SDK | Lightweight, TypeScript-native, streaming, structured output. |
 | Monorepo | Turborepo + pnpm workspaces | Shared packages between apps. |
@@ -54,6 +57,13 @@ Both apps deploy to Vercel from the same repo, each as its own project. Turborep
 | Analytics | PostHog |
 | Transactional email | Nodemailer (MVP) via one.com SMTP. Transition to Resend later. |
 
+### Deployment
+
+| App | Platform | Trigger |
+|---|---|---|
+| web | Vercel | Push to main (Vercel Git integration) |
+| api | Cloudflare Workers | GitHub Actions (`deploy-api.yml`), also runs Drizzle migrations |
+| jobs | Railway (Docker) | GitHub Actions (`deploy-jobs.yml`), builds Docker image via GHCR |
 
 ## Build Order (MVP)
 
@@ -65,5 +75,3 @@ Both apps deploy to Vercel from the same repo, each as its own project. Turborep
 6. Domain connection wizard
 7. Prompt-based editing + PR flow
 8. Billing + onboarding
-
-Start with step 1 to capture leads and validate demand while building steps 2-3.
