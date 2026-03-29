@@ -6,20 +6,38 @@ export interface SeoDomResults {
 }
 
 export async function extractSeoDomChecks(page: Page): Promise<SeoDomResults> {
-  const results = await Promise.allSettled([
-    checkRobotsTxt(page),
-    checkSitemapXml(page),
-    checkStructuredData(page),
-    checkOpenGraph(page),
-  ]);
+  const entries: Array<{ id: string; promise: Promise<CheckResult> }> = [
+    { id: "robots-txt", promise: checkRobotsTxt(page) },
+    { id: "sitemap-xml", promise: checkSitemapXml(page) },
+    { id: "structured-data", promise: checkStructuredData(page) },
+    { id: "open-graph", promise: checkOpenGraph(page) },
+    { id: "twitter-cards", promise: checkTwitterCards(page) },
+  ];
 
-  const checks = results
-    .filter(
-      (r): r is PromiseFulfilledResult<CheckResult> => r.status === "fulfilled",
-    )
-    .map((r) => r.value);
+  const results = await Promise.allSettled(entries.map((e) => e.promise));
+
+  const checks: CheckResult[] = results.map((r, i) => {
+    if (r.status === "fulfilled") return r.value;
+    return errorCheck(entries[i].id, String(r.reason));
+  });
 
   return { checks };
+}
+
+function errorCheck(id: string, reason: string): CheckResult {
+  return {
+    id,
+    name: id,
+    status: "error",
+    score: null,
+    value: reason,
+    rawValue: null,
+    rawUnit: null,
+    scoreThresholds: null,
+    weight: 1,
+    description: "Check failed due to an error",
+    items: null,
+  };
 }
 
 async function checkRobotsTxt(page: Page): Promise<CheckResult> {
@@ -93,44 +111,68 @@ async function checkSitemapXml(page: Page): Promise<CheckResult> {
 }
 
 async function checkStructuredData(page: Page): Promise<CheckResult> {
-  const jsonLdScripts = await page
-    .locator('script[type="application/ld+json"]')
-    .evaluateAll((els) =>
-      els.map((el) => {
-        try {
-          return JSON.parse(el.textContent ?? "");
-        } catch {
-          return null;
-        }
-      }),
-    );
+  const data = await page.evaluate(() => {
+    // JSON-LD
+    const jsonLd: unknown[] = [];
+    for (const el of document.querySelectorAll(
+      'script[type="application/ld+json"]',
+    )) {
+      try {
+        jsonLd.push(JSON.parse(el.textContent ?? ""));
+      } catch {
+        // skip invalid JSON-LD
+      }
+    }
 
-  const valid = jsonLdScripts.filter(Boolean);
+    // Microdata (itemscope/itemprop)
+    const microdataCount = document.querySelectorAll("[itemscope]").length;
+    const microdataTypes = [
+      ...new Set(
+        [...document.querySelectorAll("[itemscope][itemtype]")].map(
+          (el) => el.getAttribute("itemtype")?.replace(/^https?:\/\/schema\.org\//, "") ?? "",
+        ).filter(Boolean),
+      ),
+    ];
 
-  if (valid.length === 0) {
+    // RDFa
+    const rdfaCount = document.querySelectorAll("[typeof]").length;
+
+    return { jsonLd, microdataCount, microdataTypes, rdfaCount };
+  });
+
+  const jsonLdValid = data.jsonLd.filter(Boolean);
+  const jsonLdTypes = jsonLdValid
+    .map((obj) => (obj as Record<string, unknown>)?.["@type"])
+    .filter(Boolean)
+    .flat()
+    .map(String);
+
+  const formats: string[] = [];
+  if (jsonLdValid.length > 0) formats.push(`${jsonLdValid.length} JSON-LD`);
+  if (data.microdataCount > 0) formats.push(`${data.microdataCount} Microdata`);
+  if (data.rdfaCount > 0) formats.push(`${data.rdfaCount} RDFa`);
+
+  if (formats.length === 0) {
     return buildCheck(
       "structured-data",
       "Structured Data",
       "warn",
-      "No JSON-LD found",
+      "No structured data found",
       1,
       "Adding structured data (schema.org) helps search engines understand your content and can enable rich snippets in search results.",
     );
   }
 
-  const types = valid
-    .map((obj) => obj?.["@type"])
-    .filter(Boolean)
-    .flat();
+  const allTypes = [...jsonLdTypes, ...data.microdataTypes];
 
   return buildCheck(
     "structured-data",
     "Structured Data",
     "pass",
-    `${valid.length} schema(s) found: ${types.join(", ") || "unknown type"}`,
+    `${formats.join(", ")}${allTypes.length > 0 ? `: ${allTypes.join(", ")}` : ""}`,
     1,
     "Structured data helps search engines understand your content and can enable rich snippets in search results.",
-    types.length > 0 ? types.map(String) : null,
+    allTypes.length > 0 ? allTypes : null,
   );
 }
 
@@ -145,7 +187,7 @@ async function checkOpenGraph(page: Page): Promise<CheckResult> {
     return tags;
   });
 
-  const required = ["og:title", "og:description", "og:image"];
+  const required = ["og:title", "og:description", "og:image", "og:type", "og:url"];
   const missing = required.filter((tag) => !ogTags[tag]);
 
   if (missing.length === required.length) {
@@ -179,6 +221,59 @@ async function checkOpenGraph(page: Page): Promise<CheckResult> {
     "All required tags present",
     1,
     "Open Graph tags control how your page appears when shared on social media.",
+  );
+}
+
+async function checkTwitterCards(page: Page): Promise<CheckResult> {
+  const twitterTags = await page.evaluate(() => {
+    const tags: Record<string, string> = {};
+    for (const el of document.querySelectorAll('meta[name^="twitter:"]')) {
+      const name = el.getAttribute("name");
+      const content = el.getAttribute("content");
+      if (name && content) tags[name] = content;
+    }
+    return tags;
+  });
+
+  const required = [
+    "twitter:card",
+    "twitter:title",
+    "twitter:description",
+    "twitter:image",
+  ];
+  const missing = required.filter((tag) => !twitterTags[tag]);
+
+  if (missing.length === required.length) {
+    return buildCheck(
+      "twitter-cards",
+      "Twitter Cards",
+      "warn",
+      "No Twitter Card tags found",
+      1,
+      "Twitter Card tags improve previews when links are shared on X and many chat/social tools.",
+      missing,
+    );
+  }
+
+  if (missing.length > 0) {
+    return buildCheck(
+      "twitter-cards",
+      "Twitter Cards",
+      "warn",
+      `Missing: ${missing.map((t) => t.replace("twitter:", "")).join(", ")}`,
+      1,
+      "Twitter Card tags improve previews when links are shared on X and many chat/social tools.",
+      missing,
+    );
+  }
+
+  return buildCheck(
+    "twitter-cards",
+    "Twitter Cards",
+    "pass",
+    "All recommended tags present",
+    1,
+    "Twitter Card tags improve previews when links are shared on X and many chat/social tools.",
   );
 }
 

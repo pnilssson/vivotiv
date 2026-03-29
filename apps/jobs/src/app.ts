@@ -10,7 +10,7 @@ import { functions } from "./inngest/functions/index";
 
 Sentry.init({
   dsn: env.SENTRY_DSN,
-  tracesSampleRate: 1.0,
+  tracesSampleRate: process.env.NODE_ENV === "production" ? 0.2 : 1.0,
 });
 
 const app = new Hono();
@@ -36,9 +36,17 @@ app.onError((err, c) => {
   return c.json({ error: { message: "Internal server error" } }, 500);
 });
 
-serveHttp({
+const server = serveHttp({
   fetch: app.fetch,
   port: env.PORT,
 });
+
+function shutdown() {
+  console.log("Shutting down gracefully...");
+  server.close(() => process.exit(0));
+}
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);
 
 console.log(`Jobs server running on port ${env.PORT}`);

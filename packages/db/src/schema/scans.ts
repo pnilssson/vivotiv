@@ -1,4 +1,6 @@
+import { desc } from "drizzle-orm";
 import {
+  index,
   integer,
   jsonb,
   pgTable,
@@ -9,21 +11,31 @@ import {
 
 import { leads } from "./leads";
 
-export const scans = pgTable("scans", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  leadId: uuid("lead_id")
-    .notNull()
-    .references(() => leads.id, { onDelete: "cascade" }),
-  url: text("url").notNull(),
-  overallScore: integer("overall_score"),
-  performanceScore: integer("performance_score"),
-  seoScore: integer("seo_score"),
-  accessibilityScore: integer("accessibility_score"),
-  legalScore: integer("legal_score"),
-  securityScore: integer("security_score"),
-  standardsScore: integer("standards_score"),
-  details: jsonb("details"),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-}).enableRLS();
+export const scans = pgTable(
+  "scans",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    leadId: uuid("lead_id")
+      .notNull()
+      .references(() => leads.id, { onDelete: "cascade" }),
+    url: text("url").notNull(),
+    overallScore: integer("overall_score"),
+    performanceScore: integer("performance_score"),
+    seoScore: integer("seo_score"),
+    accessibilityScore: integer("accessibility_score"),
+    legalScore: integer("legal_score"),
+    securityScore: integer("security_score"),
+    standardsScore: integer("standards_score"),
+    details: jsonb("details"),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    index("idx_scans_lead_id").on(table.leadId),
+    index("idx_scans_lead_created").on(
+      table.leadId,
+      desc(table.createdAt),
+    ),
+  ],
+).enableRLS();

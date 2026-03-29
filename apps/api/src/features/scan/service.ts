@@ -31,12 +31,13 @@ async function sendInngestEvent(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(event),
+    signal: AbortSignal.timeout(10_000),
   });
 
   if (!response.ok) {
-    console.error("Failed to send Inngest event", {
-      status: response.status,
-      body: await response.text(),
-    });
+    const body = await response.text();
+    throw new Error(
+      `Failed to send Inngest event (status ${response.status}): ${body}`,
+    );
   }
 }

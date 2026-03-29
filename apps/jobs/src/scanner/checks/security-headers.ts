@@ -13,16 +13,60 @@ export function extractSecurityHeaderChecks(
     checkReferrerPolicy(headers),
     checkPermissionsPolicy(headers),
     checkServerExposure(headers),
+    checkPoweredByExposure(headers),
   ];
 }
 
 function checkCsp(h: HeaderCheckResults): CheckResult {
   const value = h.headers["content-security-policy"];
+
+  if (!value) {
+    return buildCheck(
+      "csp",
+      "Content Security Policy",
+      "fail",
+      "Missing",
+      2,
+      "Content Security Policy (CSP) helps prevent cross-site scripting (XSS) and other code injection attacks.",
+    );
+  }
+
+  const lower = value.toLowerCase();
+  const warnings: string[] = [];
+
+  // Check for overly permissive default-src
+  if (/default-src\s[^;]*\*/.test(lower)) {
+    warnings.push("default-src allows all origins");
+  }
+
+  // Check for unsafe directives in script-src (or default-src as fallback)
+  const scriptSection =
+    lower.match(/script-src\s([^;]*)/)?.[1] ??
+    lower.match(/default-src\s([^;]*)/)?.[1] ??
+    "";
+  if (scriptSection.includes("'unsafe-inline'")) {
+    warnings.push("script-src allows unsafe-inline");
+  }
+  if (scriptSection.includes("'unsafe-eval'")) {
+    warnings.push("script-src allows unsafe-eval");
+  }
+
+  if (warnings.length > 0) {
+    return buildCheck(
+      "csp",
+      "Content Security Policy",
+      "warn",
+      `Present but permissive: ${warnings.join(", ")}`,
+      2,
+      "Content Security Policy (CSP) helps prevent cross-site scripting (XSS) and other code injection attacks.",
+    );
+  }
+
   return buildCheck(
     "csp",
     "Content Security Policy",
-    value ? "pass" : "fail",
-    value ? "Present" : "Missing",
+    "pass",
+    "Present",
     2,
     "Content Security Policy (CSP) helps prevent cross-site scripting (XSS) and other code injection attacks.",
   );
@@ -43,6 +87,9 @@ function checkHsts(h: HeaderCheckResults): CheckResult {
 
   const maxAgeMatch = value.match(/max-age=(\d+)/);
   const maxAge = maxAgeMatch ? parseInt(maxAgeMatch[1], 10) : 0;
+  const hasIncludeSubDomains = value
+    .toLowerCase()
+    .includes("includesubdomains");
 
   if (maxAge < 31536000) {
     return buildCheck(
@@ -55,11 +102,22 @@ function checkHsts(h: HeaderCheckResults): CheckResult {
     );
   }
 
+  if (!hasIncludeSubDomains) {
+    return buildCheck(
+      "hsts",
+      "HTTP Strict Transport Security",
+      "warn",
+      `max-age=${maxAge} but missing includeSubDomains`,
+      2,
+      "HSTS tells browsers to only connect via HTTPS, preventing protocol downgrade attacks. includeSubDomains is required for HSTS preload list eligibility.",
+    );
+  }
+
   return buildCheck(
     "hsts",
     "HTTP Strict Transport Security",
     "pass",
-    `max-age=${maxAge}`,
+    `max-age=${maxAge}; includeSubDomains`,
     2,
     "HSTS tells browsers to only connect via HTTPS, preventing protocol downgrade attacks.",
   );
@@ -91,11 +149,34 @@ function checkXContentTypeOptions(h: HeaderCheckResults): CheckResult {
 
 function checkReferrerPolicy(h: HeaderCheckResults): CheckResult {
   const value = h.headers["referrer-policy"];
+
+  if (!value) {
+    return buildCheck(
+      "referrer-policy",
+      "Referrer Policy",
+      "warn",
+      "Missing",
+      1,
+      "Referrer-Policy controls how much referrer information is included with requests, protecting user privacy.",
+    );
+  }
+
+  if (value.toLowerCase() === "unsafe-url") {
+    return buildCheck(
+      "referrer-policy",
+      "Referrer Policy",
+      "warn",
+      "unsafe-url leaks full URLs to third parties",
+      1,
+      "Referrer-Policy controls how much referrer information is included with requests, protecting user privacy.",
+    );
+  }
+
   return buildCheck(
     "referrer-policy",
     "Referrer Policy",
-    value ? "pass" : "warn",
-    value ?? "Missing",
+    "pass",
+    value,
     1,
     "Referrer-Policy controls how much referrer information is included with requests, protecting user privacy.",
   );
@@ -136,6 +217,38 @@ function checkServerExposure(h: HeaderCheckResults): CheckResult {
     value,
     1,
     "Exposing the server software and version makes targeted attacks easier.",
+  );
+}
+
+function checkPoweredByExposure(h: HeaderCheckResults): CheckResult {
+  const exposureHeaders = [
+    "x-powered-by",
+    "x-aspnet-version",
+    "x-generator",
+  ];
+
+  const exposed = exposureHeaders
+    .filter((name) => h.headers[name])
+    .map((name) => `${name}: ${h.headers[name]}`);
+
+  if (exposed.length > 0) {
+    return buildCheck(
+      "powered-by-exposure",
+      "Technology Exposure Headers",
+      "warn",
+      exposed.join(", "),
+      1,
+      "Headers like X-Powered-By reveal server technology, making targeted attacks easier. Remove them in production.",
+    );
+  }
+
+  return buildCheck(
+    "powered-by-exposure",
+    "Technology Exposure Headers",
+    "pass",
+    "Not exposed",
+    1,
+    "Headers like X-Powered-By reveal server technology, making targeted attacks easier.",
   );
 }
 

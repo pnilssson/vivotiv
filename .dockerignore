@@ -3,3 +3,8 @@
 .git
 *.md
 .env*
+.turbo
+.vscode
+.github
+apps/web
+*.log

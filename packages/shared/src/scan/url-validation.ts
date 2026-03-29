@@ -1,6 +1,7 @@
 const BLOCKED_HOSTNAMES = new Set([
   "localhost",
   "0.0.0.0",
+  "::1",
   "[::1]",
 ]);
 
@@ -16,6 +17,7 @@ const BLOCKED_IP_PREFIXES = [
   "0.", // current network
 ];
 
+/** Synchronous URL format check (safe for edge/worker runtimes). */
 export function isSafeUrl(url: string): boolean {
   let parsed: URL;
   try {
@@ -43,4 +45,39 @@ export function isSafeUrl(url: string): boolean {
   }
 
   return true;
+}
+
+/** Check if a resolved IP address is private/local. */
+export function isPrivateIp(ip: string): boolean {
+  // IPv4
+  if (BLOCKED_IP_PREFIXES.some((prefix) => ip.startsWith(prefix))) {
+    return true;
+  }
+
+  // IPv6 loopback
+  if (ip === "::1" || ip === "0:0:0:0:0:0:0:1") return true;
+
+  // IPv6 unspecified address
+  if (ip === "::" || ip === "0:0:0:0:0:0:0:0") return true;
+
+  // IPv6 link-local (fe80::/10)
+  if (ip.toLowerCase().startsWith("fe80:")) return true;
+
+  // IPv6 site-local (deprecated but still non-public)
+  if (ip.toLowerCase().startsWith("fec") || ip.toLowerCase().startsWith("fed")) {
+    return true;
+  }
+
+  // IPv6 unique local (fc00::/7 covers fc00:: and fd00::)
+  const first2 = ip.toLowerCase().slice(0, 2);
+  if (first2 === "fc" || first2 === "fd") return true;
+
+  // IPv6 multicast
+  if (first2 === "ff") return true;
+
+  // IPv4-mapped IPv6 (::ffff:127.0.0.1)
+  const v4Mapped = ip.match(/^::ffff:(\d+\.\d+\.\d+\.\d+)$/i);
+  if (v4Mapped && isPrivateIp(v4Mapped[1])) return true;
+
+  return false;
 }

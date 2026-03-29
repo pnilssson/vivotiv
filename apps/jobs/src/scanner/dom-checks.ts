@@ -1,4 +1,5 @@
 import { chromium } from "playwright";
+import type { CheckResult } from "@vivotiv/shared";
 
 import {
   extractAccessibilityChecks,
@@ -14,6 +15,11 @@ import {
   type StandardsDomResults,
 } from "./checks/standards";
 
+const USER_AGENT =
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
+
+const DISABLE_CHROME_SANDBOX = process.env.DISABLE_CHROME_SANDBOX === "true";
+
 export interface DomCheckResults {
   seo: SeoDomResults;
   accessibility: AccessibilityResults;
@@ -21,23 +27,86 @@ export interface DomCheckResults {
   standards: StandardsDomResults;
 }
 
+function errorCheck(id: string, reason: string): CheckResult {
+  return {
+    id,
+    name: id,
+    status: "error",
+    score: null,
+    value: reason,
+    rawValue: null,
+    rawUnit: null,
+    scoreThresholds: null,
+    weight: 1,
+    description: "Check failed due to an error",
+    items: null,
+  };
+}
+
+function defaultSeo(reason: string): SeoDomResults {
+  return { checks: [errorCheck("seo-dom-track", reason)] };
+}
+
+function defaultA11y(reason: string): AccessibilityResults {
+  return {
+    violations: [errorCheck("accessibility-track", reason)],
+    incomplete: [],
+    passCount: 0,
+    error: reason,
+  };
+}
+
+function defaultLegal(reason: string): LegalDomResults {
+  return { checks: [errorCheck("legal-track", reason)] };
+}
+
+function defaultStandards(reason: string): StandardsDomResults {
+  return { checks: [errorCheck("standards-track", reason)] };
+}
+
 export async function runDomChecks(url: string): Promise<DomCheckResults> {
+  const browserArgs = ["--disable-gpu", "--disable-dev-shm-usage"];
+  if (DISABLE_CHROME_SANDBOX) {
+    browserArgs.push("--no-sandbox");
+  }
+
   const browser = await chromium.launch({
-    args: ["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
+    args: browserArgs,
   });
 
   try {
-    const page = await browser.newPage();
-    await page.goto(url, { waitUntil: "load", timeout: 30_000 });
+    const context = await browser.newContext({ userAgent: USER_AGENT });
+    const page = await context.newPage();
+    await page
+      .goto(url, { waitUntil: "networkidle", timeout: 30_000 })
+      .catch(() => page.goto(url, { waitUntil: "load", timeout: 30_000 }));
 
-    const [seo, accessibility, legal, standards] = await Promise.all([
-      extractSeoDomChecks(page),
-      extractAccessibilityChecks(page),
-      extractLegalDomChecks(page),
-      extractStandardsDomChecks(page),
-    ]);
+    const [seoResult, a11yResult, legalResult, standardsResult] =
+      await Promise.allSettled([
+        extractSeoDomChecks(page),
+        extractAccessibilityChecks(page),
+        extractLegalDomChecks(page),
+        extractStandardsDomChecks(page),
+      ]);
 
-    return { seo, accessibility, legal, standards };
+    return {
+      seo:
+        seoResult.status === "fulfilled"
+          ? seoResult.value
+          : defaultSeo(String(seoResult.reason)),
+      accessibility:
+        a11yResult.status === "fulfilled"
+          ? a11yResult.value
+          : defaultA11y(String(a11yResult.reason)),
+      legal:
+        legalResult.status === "fulfilled"
+          ? legalResult.value
+          : defaultLegal(String(legalResult.reason)),
+      standards:
+        standardsResult.status === "fulfilled"
+          ? standardsResult.value
+          : defaultStandards(String(standardsResult.reason)),
+    };
   } finally {
     await browser.close();
   }

@@ -5,7 +5,11 @@ import type { LighthouseResult } from "../lighthouse";
 const SKIPPED_DISPLAY_MODES = new Set([
   "manual",
   "notApplicable",
-  "informative",
+]);
+
+const INCLUDED_INFORMATIVE_AUDITS = new Set([
+  "server-response-time",
+  "js-libraries",
 ]);
 
 export function lighthouseScoreToStatus(
@@ -64,6 +68,13 @@ export function auditToCheckResult(
   audit: LighthouseResult["audits"][string],
   weight: 1 | 2 | 3,
 ): CheckResult | null {
+  if (
+    audit.scoreDisplayMode === "informative" &&
+    !INCLUDED_INFORMATIVE_AUDITS.has(audit.id)
+  ) {
+    return null;
+  }
+
   if (SKIPPED_DISPLAY_MODES.has(audit.scoreDisplayMode)) return null;
 
   if (audit.scoreDisplayMode === "error") {
@@ -79,6 +90,23 @@ export function auditToCheckResult(
       weight,
       description: stripMarkdownLinks(audit.description),
       items: null,
+    };
+  }
+
+  if (audit.scoreDisplayMode === "informative") {
+    const items = extractItems(audit);
+    return {
+      id: audit.id,
+      name: audit.title,
+      status: "warn",
+      score: null,
+      value: audit.displayValue ?? "Informational audit",
+      rawValue: audit.numericValue ?? null,
+      rawUnit: audit.numericUnit ?? null,
+      scoreThresholds: null,
+      weight,
+      description: stripMarkdownLinks(audit.description),
+      items: items.length > 0 ? items : null,
     };
   }
 

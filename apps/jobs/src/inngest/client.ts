@@ -1,17 +1,7 @@
 import { sentryMiddleware } from "@inngest/middleware-sentry";
-import { EventSchemas, Inngest } from "inngest";
-
-type Events = {
-  "scan.requested": {
-    data: {
-      leadId: string;
-      url: string;
-    };
-  };
-};
+import { Inngest } from "inngest";
 
 export const inngest = new Inngest({
   id: "vivotiv",
-  schemas: new EventSchemas().fromRecord<Events>(),
   middleware: [sentryMiddleware()],
 });
