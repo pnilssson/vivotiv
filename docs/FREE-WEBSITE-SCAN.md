@@ -39,7 +39,7 @@ Job orchestration is handled by **Inngest**, with execution in the `apps/jobs` s
 Focuses on real loading and rendering quality signals, including Core Web Vitals and related diagnostics from Lighthouse.
 
 Examples:
-- LCP, TBT, CLS, FCP, Speed Index, TTFB
+- Largest Contentful Paint (LCP), Total Blocking Time (TBT), Cumulative Layout Shift (CLS), First Contentful Paint (FCP), Speed Index (SI), Time to First Byte (TTFB)
 - Render-blocking resources
 - Page weight and optimization opportunities
 

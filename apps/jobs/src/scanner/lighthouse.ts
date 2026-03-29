@@ -12,7 +12,8 @@ const CHROME_FLAGS = [
   "--disable-dev-shm-usage",
 ];
 
-const DISABLE_CHROME_SANDBOX = process.env.DISABLE_CHROME_SANDBOX === "true";
+// Temporary hardcoded override for Railway compatibility testing.
+const DISABLE_CHROME_SANDBOX = true;
 const LIGHTHOUSE_TIMEOUT_MS = 120_000;
 
 const DESKTOP_CONFIG = {
