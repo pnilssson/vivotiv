@@ -21,12 +21,13 @@ function lighthouseScoreToStatus(
 
 function extractItems(audit: LighthouseResult["audits"][string]): string[] {
   const details = audit.details;
-  if (!details || !("items" in details)) return [];
+  if (!details || !("items" in details) || !Array.isArray(details.items)) {
+    return [];
+  }
 
-  const items = details.items as Array<Record<string, unknown>>;
-  return items
+  return details.items
     .slice(0, 10)
-    .map((item) => {
+    .map((item: Record<string, unknown>) => {
       const url = item.url as string | undefined;
       return url ?? String(item.label ?? "");
     })
