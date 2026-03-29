@@ -1,3 +1,5 @@
+import { eq } from "drizzle-orm";
+
 import type { Database } from "../client";
 import { scans } from "../schema";
 
@@ -32,4 +34,10 @@ export async function createScan(db: Database, input: CreateScanInput) {
     .returning({ id: scans.id });
 
   return scan;
+}
+
+export async function getScanById(db: Database, id: string) {
+  const [scan] = await db.select().from(scans).where(eq(scans.id, id));
+
+  return scan ?? null;
 }

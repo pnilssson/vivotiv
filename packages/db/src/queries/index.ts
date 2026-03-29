@@ -1,3 +1,3 @@
 export { upsertLead } from "./leads";
-export { createScan } from "./scans";
+export { createScan, getScanById } from "./scans";
 export { getAverageScores } from "./scores";
