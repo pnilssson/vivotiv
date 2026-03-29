@@ -378,5 +378,28 @@
       "cancel": "Cancel",
       "save": "Save preferences"
     }
+  },
+  "scanResults": {
+    "title": "Scan Results",
+    "backHome": "Back to Vivotiv",
+    "error": {
+      "title": "Scan not found",
+      "description": "This scan does not exist or has not completed yet.",
+      "backHome": "Back to homepage"
+    },
+    "overallScore": "Overall Score",
+    "scoreGood": "Good",
+    "scoreWarning": "Needs improvement",
+    "scoreCritical": "Critical",
+    "scannedUrl": "Scanned URL",
+    "scannedAt": "Scanned on",
+    "metrics": "Metrics",
+    "opportunities": "Opportunities",
+    "diagnostics": "Diagnostics",
+    "statusFail": "Failed",
+    "statusWarn": "Warning",
+    "statusPass": "Passed",
+    "statusError": "Error",
+    "noChecks": "No checks in this category."
   }
 }

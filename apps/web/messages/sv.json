@@ -378,5 +378,28 @@
       "cancel": "Avbryt",
       "save": "Spara inst\u00e4llningar"
     }
+  },
+  "scanResults": {
+    "title": "Analysresultat",
+    "backHome": "Tillbaka till Vivotiv",
+    "error": {
+      "title": "Analys hittades inte",
+      "description": "Den h\u00e4r analysen finns inte eller har inte slutf\u00f6rts \u00e4nnu.",
+      "backHome": "Tillbaka till startsidan"
+    },
+    "overallScore": "\u00d6vergripande betyg",
+    "scoreGood": "Bra",
+    "scoreWarning": "Kan f\u00f6rb\u00e4ttras",
+    "scoreCritical": "Kritiskt",
+    "scannedUrl": "Analyserad URL",
+    "scannedAt": "Analyserad den",
+    "metrics": "M\u00e4tv\u00e4rden",
+    "opportunities": "F\u00f6rb\u00e4ttringsm\u00f6jligheter",
+    "diagnostics": "Diagnostik",
+    "statusFail": "Underk\u00e4nt",
+    "statusWarn": "Varning",
+    "statusPass": "Godk\u00e4nt",
+    "statusError": "Fel",
+    "noChecks": "Inga kontroller i denna kategori."
   }
 }
