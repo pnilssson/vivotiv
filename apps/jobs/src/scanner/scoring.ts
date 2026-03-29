@@ -41,12 +41,18 @@ export function calculateCategoryScore(checks: CheckResult[]): number {
   return Math.round((earned / maxWeight) * 100);
 }
 
-export function buildCategoryResult(checks: CheckResult[]): CategoryResult {
-  const score = calculateCategoryScore(checks);
+export function buildCategoryResult(input: {
+  metrics: CheckResult[];
+  opportunities?: CheckResult[];
+  diagnostics?: CheckResult[];
+}): CategoryResult {
+  const score = calculateCategoryScore(input.metrics);
   return {
     score,
     status: getTrafficLight(score),
-    checks,
+    metrics: input.metrics,
+    opportunities: input.opportunities ?? [],
+    diagnostics: input.diagnostics ?? [],
   };
 }
 

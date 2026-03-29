@@ -11,8 +11,9 @@ interface RawResults {
 }
 
 export function aggregate(url: string, raw: RawResults) {
-  const { checks, lighthouseScore } = extractPerformanceChecks(raw.lighthouse);
-  const performance = buildCategoryResult(checks);
+  const { metrics, opportunities, diagnostics, lighthouseScore } =
+    extractPerformanceChecks(raw.lighthouse);
+  const performance = buildCategoryResult({ metrics, opportunities, diagnostics });
 
   if (lighthouseScore !== null) {
     performance.score = lighthouseScore;

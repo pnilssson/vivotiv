@@ -33,7 +33,9 @@ export type CheckResult = z.infer<typeof CheckResultSchema>;
 export const CategoryResultSchema = z.object({
   score: z.int().min(0).max(100),
   status: CheckStatusSchema,
-  checks: z.array(CheckResultSchema),
+  metrics: z.array(CheckResultSchema),
+  opportunities: z.array(CheckResultSchema),
+  diagnostics: z.array(CheckResultSchema),
 });
 
 export type CategoryResult = z.infer<typeof CategoryResultSchema>;

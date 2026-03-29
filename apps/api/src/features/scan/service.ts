@@ -1,4 +1,4 @@
-import { createLead } from "@vivotiv/db";
+import { upsertLead } from "@vivotiv/db";
 import type { Database } from "@vivotiv/db";
 import type { ScanSubmission } from "@vivotiv/shared";
 
@@ -7,9 +7,8 @@ export async function submitScan(
   payload: ScanSubmission,
   inngestEventKey: string,
 ) {
-  const lead = await createLead(db, {
+  const lead = await upsertLead(db, {
     email: payload.email,
-    url: payload.url,
   });
 
   await sendInngestEvent(inngestEventKey, {
