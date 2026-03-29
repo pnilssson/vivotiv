@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/app.ts",
+    "dev": "tsx watch --env-file=.env.local src/app.ts",
     "build": "tsc",
     "start": "node dist/app.js",
     "lint": "eslint",
