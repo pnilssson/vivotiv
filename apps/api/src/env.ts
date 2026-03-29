@@ -10,6 +10,7 @@ export type Env = {
     SENTRY_DSN: string;
     CF_VERSION_METADATA: { id: string; tag: string };
     POSTHOG_KEY: string;
+    SCAN_RATE_LIMITER: RateLimit;
   };
   Variables: {
     db: Database;

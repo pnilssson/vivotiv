@@ -4,11 +4,13 @@ import { ScanSubmissionSchema } from "@vivotiv/shared";
 import { Hono } from "hono";
 
 import type { Env } from "../../env";
+import { rateLimiter } from "../../middleware/rate-limit";
 import { validationHook } from "../../middleware/validator";
 import { submitScan } from "./service";
 
 export const scanRoutes = new Hono<Env>().post(
   "/scan",
+  rateLimiter("SCAN_RATE_LIMITER"),
   zValidator("json", ScanSubmissionSchema, validationHook),
   async (c) => {
     const payload = c.req.valid("json");
