@@ -17,4 +17,4 @@ jobs:
       RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
     steps:
       - uses: actions/checkout@v6
-      - run: railway up --service ${{ vars.RAILWAY_JOBS_SERVICE_ID }} --ci
+      - run: railway up --ci
