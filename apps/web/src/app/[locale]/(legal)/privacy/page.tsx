@@ -34,6 +34,12 @@ export default function PrivacyPolicyPage() {
       <h3>{t("dataCollected.leadData.title")}</h3>
       <p>{t("dataCollected.leadData.description")}</p>
 
+      <h3>{t("dataCollected.analytics.title")}</h3>
+      <p>{t("dataCollected.analytics.description")}</p>
+
+      <h3>{t("dataCollected.errorMonitoring.title")}</h3>
+      <p>{t("dataCollected.errorMonitoring.description")}</p>
+
       <h2>{t("legalBasis.title")}</h2>
       <table>
         <thead>
@@ -50,6 +56,18 @@ export default function PrivacyPolicyPage() {
           <tr>
             <td>{t("legalBasis.table.email.purpose")}</td>
             <td>{t("legalBasis.table.email.basis")}</td>
+          </tr>
+          <tr>
+            <td>{t("legalBasis.table.followUp.purpose")}</td>
+            <td>{t("legalBasis.table.followUp.basis")}</td>
+          </tr>
+          <tr>
+            <td>{t("legalBasis.table.analytics.purpose")}</td>
+            <td>{t("legalBasis.table.analytics.basis")}</td>
+          </tr>
+          <tr>
+            <td>{t("legalBasis.table.errorMonitoring.purpose")}</td>
+            <td>{t("legalBasis.table.errorMonitoring.basis")}</td>
           </tr>
         </tbody>
       </table>
@@ -80,6 +98,26 @@ export default function PrivacyPolicyPage() {
             <td>{t("processors.onecom")}</td>
             <td>EU</td>
           </tr>
+          <tr>
+            <td>PostHog</td>
+            <td>{t("processors.posthog")}</td>
+            <td>EU</td>
+          </tr>
+          <tr>
+            <td>Sentry</td>
+            <td>{t("processors.sentry")}</td>
+            <td>US</td>
+          </tr>
+          <tr>
+            <td>Cloudflare</td>
+            <td>{t("processors.cloudflare")}</td>
+            <td>US / EU</td>
+          </tr>
+          <tr>
+            <td>Railway</td>
+            <td>{t("processors.railway")}</td>
+            <td>US</td>
+          </tr>
         </tbody>
       </table>
 
@@ -98,6 +136,18 @@ export default function PrivacyPolicyPage() {
           <tr>
             <td>{t("retention.table.leads.data")}</td>
             <td>{t("retention.table.leads.period")}</td>
+          </tr>
+          <tr>
+            <td>{t("retention.table.analytics.data")}</td>
+            <td>{t("retention.table.analytics.period")}</td>
+          </tr>
+          <tr>
+            <td>{t("retention.table.errors.data")}</td>
+            <td>{t("retention.table.errors.period")}</td>
+          </tr>
+          <tr>
+            <td>{t("retention.table.consent.data")}</td>
+            <td>{t("retention.table.consent.period")}</td>
           </tr>
         </tbody>
       </table>

@@ -22,7 +22,7 @@
     "emailInvalid": "Ange en giltig e-postadress.",
     "submit": "Starta gratis analys",
     "pending": "Skickar...",
-    "trustPills": ["Alltid gratis", "Ingen registrering", "44 kontroller"],
+    "trustPills": ["Alltid gratis", "Ingen registrering", "150+ kontrollpunkter"],
     "averageScoresLabel": "Genomsnittliga resultat från analyserade webbplatser",
     "success": "Analys skickad. Vi mejlar n\u00e4r resultaten \u00e4r klara.",
     "error": "N\u00e5got gick fel. F\u00f6rs\u00f6k igen."
@@ -210,7 +210,7 @@
   },
   "privacy": {
     "title": "Integritetspolicy",
-    "lastUpdated": "Senast uppdaterad: 28 mars 2026",
+    "lastUpdated": "Senast uppdaterad: 30 mars 2026",
     "intro": "Den h\u00e4r integritetspolicyn f\u00f6rklarar hur Vivotiv (\"vi\", \"oss\", \"v\u00e5r\") samlar in, anv\u00e4nder och skyddar dina personuppgifter n\u00e4r du anv\u00e4nder vivotiv.com och vivotiv.se (\"Tj\u00e4nsten\").",
     "controller": {
       "title": "1. Personuppgiftsansvarig",
@@ -226,6 +226,14 @@
       "leadData": {
         "title": "Skanningsformul\u00e4r",
         "description": "N\u00e4r du skickar in en webbplatsanalys samlar vi in din e-postadress och den webbadress du anger. Dessa uppgifter lagras i v\u00e5r databas s\u00e5 att vi kan genomf\u00f6ra analysen och skicka resultaten till dig."
+      },
+      "analytics": {
+        "title": "Analysdata",
+        "description": "Om du samtycker till analyticscookies samlar vi in anonymiserad anv\u00e4ndningsdata inklusive sidvisningar, sessionsl\u00e4ngd, enhets- och webbl\u00e4sartyp samt land. Denna data samlas in via PostHog och behandlas f\u00f6rst efter att du ger samtycke via cookiebannern."
+      },
+      "errorMonitoring": {
+        "title": "Fel- och prestandadata",
+        "description": "Vi anv\u00e4nder Sentry f\u00f6r att \u00f6vervaka fel och applikationsstabilitet. N\u00e4r ett fel uppst\u00e5r samlar Sentry in felmeddelanden, stacksp\u00e5r, webbl\u00e4sar- och operativsystemsmetadata samt URL:er. Sentry s\u00e4tter inga cookies. Denna data behandlas baserat p\u00e5 v\u00e5rt ber\u00e4ttigade intresse av att uppr\u00e4tth\u00e5lla en tillf\u00f6rlitlig tj\u00e4nst."
       }
     },
     "legalBasis": {
@@ -240,6 +248,18 @@
         "email": {
           "purpose": "Skicka analysresultat via e-post",
           "basis": "Samtycke \u2014 art. 6.1 a"
+        },
+        "followUp": {
+          "purpose": "Uppf\u00f6ljande kommunikation om v\u00e5ra tj\u00e4nster",
+          "basis": "Ber\u00e4ttigat intresse \u2014 art. 6.1 f"
+        },
+        "analytics": {
+          "purpose": "Analysera anv\u00e4ndning av webbplatsen f\u00f6r att f\u00f6rb\u00e4ttra tj\u00e4nsten",
+          "basis": "Samtycke \u2014 art. 6.1 a"
+        },
+        "errorMonitoring": {
+          "purpose": "Fel\u00f6vervakning och applikationsstabilitet",
+          "basis": "Ber\u00e4ttigat intresse \u2014 art. 6.1 f"
         }
       }
     },
@@ -253,11 +273,15 @@
       },
       "supabase": "Databas (analysdata, e-postlagring)",
       "vercel": "Hosting",
-      "onecom": "Transaktionell e-post (SMTP)"
+      "onecom": "Transaktionell e-post (SMTP)",
+      "posthog": "Produktanalys (sidvisningar, anv\u00e4ndning)",
+      "sentry": "Fel\u00f6vervakning och applikationsstabilitet",
+      "cloudflare": "API-hosting (Cloudflare Workers)",
+      "railway": "Bakgrundsjobb (analyspipeline)"
     },
     "transfers": {
       "title": "5. Internationella data\u00f6verf\u00f6ringar",
-      "description": "N\u00e5gra av v\u00e5ra bitr\u00e4den (Vercel) \u00e4r baserade i USA. N\u00e4r personuppgifter \u00f6verf\u00f6rs utanf\u00f6r EU/EES f\u00f6rlitar vi oss p\u00e5 standardavtalsklausuler (SCC) godk\u00e4nda av Europeiska kommissionen f\u00f6r att s\u00e4kerst\u00e4lla adekvat skydd."
+      "description": "N\u00e5gra av v\u00e5ra bitr\u00e4den (Vercel, Sentry, Cloudflare) \u00e4r baserade i USA. N\u00e4r personuppgifter \u00f6verf\u00f6rs utanf\u00f6r EU/EES f\u00f6rlitar vi oss p\u00e5 standardavtalsklausuler (SCC) godk\u00e4nda av Europeiska kommissionen f\u00f6r att s\u00e4kerst\u00e4lla adekvat skydd. Vi har personuppgiftsbitr\u00e4desavtal med alla bitr\u00e4den som hanterar personuppgifter."
     },
     "retention": {
       "title": "6. Lagringstid",
@@ -266,7 +290,19 @@
         "period": "Lagringsperiod",
         "leads": {
           "data": "E-post och URL fr\u00e5n skanningsinl\u00e4mningar",
-          "period": "Till beg\u00e4ran om radering"
+          "period": "12 m\u00e5nader efter senaste analys, eller till beg\u00e4ran om radering"
+        },
+        "analytics": {
+          "data": "Analysdata (PostHog)",
+          "period": "24 m\u00e5nader"
+        },
+        "errors": {
+          "data": "Felrapporter (Sentry)",
+          "period": "90 dagar"
+        },
+        "consent": {
+          "data": "Cookiesamtyckesp\u00e5slag",
+          "period": "5 \u00e5r"
         }
       }
     },
@@ -318,7 +354,7 @@
   },
   "cookiePolicy": {
     "title": "Cookiepolicy",
-    "lastUpdated": "Senast uppdaterad: 28 mars 2026",
+    "lastUpdated": "Senast uppdaterad: 30 mars 2026",
     "intro": "Den h\u00e4r cookiepolicyn f\u00f6rklarar vilka cookies Vivotiv anv\u00e4nder, varf\u00f6r vi anv\u00e4nder dem och hur du kan kontrollera dem.",
     "whatAreCookies": {
       "title": "Vad \u00e4r cookies?",
@@ -333,15 +369,23 @@
       },
       "necessary": {
         "title": "Strikt n\u00f6dv\u00e4ndiga",
-        "description": "Dessa cookies kr\u00e4vs f\u00f6r att webbplatsen ska fungera. De kan inte inaktiveras.",
+        "description": "Dessa cookies och lagringsposter kr\u00e4vs f\u00f6r att webbplatsen ska fungera. De kan inte inaktiveras.",
         "locale": {
           "purpose": "Lagrar ditt spr\u00e5kval s\u00e5 att webbplatsen visas p\u00e5 r\u00e4tt spr\u00e5k.",
           "duration": "1 \u00e5r"
+        },
+        "consent": {
+          "purpose": "Lagrar dina cookiesamtyckesinst\u00e4llningar (localStorage).",
+          "duration": "Tills rensad"
         }
       },
       "analytics": {
         "title": "Analys",
-        "description": "Vi anv\u00e4nder f\u00f6r n\u00e4rvarande inga analyticscookies. Om detta \u00e4ndras uppdaterar vi denna policy och ber om ditt samtycke innan n\u00e5gra analyticscookies s\u00e4tts."
+        "description": "Dessa cookies s\u00e4tts f\u00f6rst efter att du samtycker till analys via cookiebannern.",
+        "posthog": {
+          "purpose": "Lagrar en unik sessions- och anv\u00e4ndaridentifierare f\u00f6r analys (PostHog). Lagrar \u00e4ven data i localStorage.",
+          "duration": "1 \u00e5r"
+        }
       }
     },
     "managing": {
@@ -373,7 +417,7 @@
       },
       "analytics": {
         "title": "Analys",
-        "description": "Anv\u00e4nds inte f\u00f6r n\u00e4rvarande. Den h\u00e4r inst\u00e4llningen finns h\u00e4r f\u00f6r n\u00e4r vi l\u00e4gger till analys i framtiden."
+        "description": "Anonymiserad anv\u00e4ndningsdata (sidvisningar, sessionsl\u00e4ngd, enhetstyp) via PostHog. Aktiveras f\u00f6rst efter samtycke."
       },
       "cancel": "Avbryt",
       "save": "Spara inst\u00e4llningar"

@@ -22,7 +22,7 @@
     "emailInvalid": "Enter a valid email address.",
     "submit": "Start free scan",
     "pending": "Submitting...",
-    "trustPills": ["Always free", "No signup", "44 checks"],
+    "trustPills": ["Always free", "No signup", "150+ checks"],
     "averageScoresLabel": "Average scores from scanned websites",
     "success": "Scan submitted. We'll email you when results are ready.",
     "error": "Something went wrong. Please try again."
@@ -210,7 +210,7 @@
   },
   "privacy": {
     "title": "Privacy Policy",
-    "lastUpdated": "Last updated: 28 March 2026",
+    "lastUpdated": "Last updated: 30 March 2026",
     "intro": "This Privacy Policy explains how Vivotiv (\"we\", \"us\", \"our\") collects, uses, and protects your personal data when you use vivotiv.com and vivotiv.se (the \"Service\").",
     "controller": {
       "title": "1. Data Controller",
@@ -226,6 +226,14 @@
       "leadData": {
         "title": "Scan submissions",
         "description": "When you submit a website scan, we collect your email address and the website URL you enter. This data is stored in our database so we can process the scan and send you the results."
+      },
+      "analytics": {
+        "title": "Analytics data",
+        "description": "If you consent to analytics cookies, we collect anonymized usage data including page views, session duration, device and browser type, and country-level location. This data is collected through PostHog and is only processed after you grant consent via the cookie banner."
+      },
+      "errorMonitoring": {
+        "title": "Error and performance data",
+        "description": "We use Sentry to monitor errors and application stability. When an error occurs, Sentry collects error messages, stack traces, browser and operating system metadata, and request URLs. Sentry does not set cookies. This data is processed based on our legitimate interest in maintaining a reliable service."
       }
     },
     "legalBasis": {
@@ -240,6 +248,18 @@
         "email": {
           "purpose": "Sending scan results via email",
           "basis": "Consent \u2014 Art. 6(1)(a)"
+        },
+        "followUp": {
+          "purpose": "Occasional follow-up communication about our services",
+          "basis": "Legitimate interest \u2014 Art. 6(1)(f)"
+        },
+        "analytics": {
+          "purpose": "Analyzing website usage to improve the service",
+          "basis": "Consent \u2014 Art. 6(1)(a)"
+        },
+        "errorMonitoring": {
+          "purpose": "Error monitoring and application stability",
+          "basis": "Legitimate interest \u2014 Art. 6(1)(f)"
         }
       }
     },
@@ -253,11 +273,15 @@
       },
       "supabase": "Database (scan data, email storage)",
       "vercel": "Hosting",
-      "onecom": "Transactional email (SMTP)"
+      "onecom": "Transactional email (SMTP)",
+      "posthog": "Product analytics (page views, feature usage)",
+      "sentry": "Error monitoring and application stability",
+      "cloudflare": "API hosting (Cloudflare Workers)",
+      "railway": "Background job processing (scan pipeline)"
     },
     "transfers": {
       "title": "5. International Data Transfers",
-      "description": "Some of our processors (Vercel) operate in the United States. Where personal data is transferred outside the EU/EEA, we rely on Standard Contractual Clauses (SCCs) approved by the European Commission to ensure adequate protection."
+      "description": "Some of our processors (Vercel, Sentry, Cloudflare) operate in the United States. Where personal data is transferred outside the EU/EEA, we rely on Standard Contractual Clauses (SCCs) approved by the European Commission to ensure adequate protection. We have Data Processing Agreements in place with all processors that handle personal data."
     },
     "retention": {
       "title": "6. Data Retention",
@@ -266,7 +290,19 @@
         "period": "Retention period",
         "leads": {
           "data": "Email and URL from scan submissions",
-          "period": "Until deletion request"
+          "period": "12 months after last scan, or until deletion request"
+        },
+        "analytics": {
+          "data": "Analytics data (PostHog)",
+          "period": "24 months"
+        },
+        "errors": {
+          "data": "Error reports (Sentry)",
+          "period": "90 days"
+        },
+        "consent": {
+          "data": "Cookie consent records",
+          "period": "5 years"
         }
       }
     },
@@ -318,7 +354,7 @@
   },
   "cookiePolicy": {
     "title": "Cookie Policy",
-    "lastUpdated": "Last updated: 28 March 2026",
+    "lastUpdated": "Last updated: 30 March 2026",
     "intro": "This Cookie Policy explains what cookies Vivotiv uses, why we use them, and how you can control them.",
     "whatAreCookies": {
       "title": "What are cookies?",
@@ -333,15 +369,23 @@
       },
       "necessary": {
         "title": "Strictly Necessary",
-        "description": "These cookies are required for the site to function. They cannot be disabled.",
+        "description": "These cookies and storage entries are required for the site to function. They cannot be disabled.",
         "locale": {
           "purpose": "Stores your language preference so the site displays in the correct language.",
           "duration": "1 year"
+        },
+        "consent": {
+          "purpose": "Stores your cookie consent preferences (localStorage).",
+          "duration": "Until cleared"
         }
       },
       "analytics": {
         "title": "Analytics",
-        "description": "We do not currently use any analytics cookies. If this changes, we will update this policy and request your consent before setting any analytics cookies."
+        "description": "These cookies are only set after you consent to analytics via the cookie banner.",
+        "posthog": {
+          "purpose": "Stores a unique session and user identifier for analytics (PostHog). Also stores data in localStorage.",
+          "duration": "1 year"
+        }
       }
     },
     "managing": {
@@ -373,7 +417,7 @@
       },
       "analytics": {
         "title": "Analytics",
-        "description": "Not currently in use. This toggle is here for when we add analytics in the future."
+        "description": "Anonymized usage data (page views, session duration, device type) collected through PostHog. Only active after consent."
       },
       "cancel": "Cancel",
       "save": "Save preferences"
