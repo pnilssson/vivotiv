@@ -66,7 +66,7 @@
     "subtitle": "You get a scored breakdown of your site with specific issues, why they matter to your business, and what needs to change.",
     "overallScore": "Overall Score",
     "categoryScores": "Category Breakdown",
-    "issuesFound": "Issues Found",
+    "issuesFound": "Results",
     "scoreGood": "Good",
     "scoreWarning": "Needs improvement",
     "scoreCritical": "Critical",
@@ -78,7 +78,7 @@
       "seo": "58",
       "accessibility": "41",
       "legal": "35",
-      "security": "84",
+      "security": "92",
       "standards": "67"
     }
   },

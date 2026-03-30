@@ -4,6 +4,7 @@ import {
   AlertTriangle,
   CheckCircle2,
   ChevronDown,
+  ChevronRight,
   XCircle,
 } from "lucide-react";
 import { AnimatePresence, motion, useInView } from "motion/react";
@@ -25,10 +26,10 @@ function scoreColor(score: number): string {
   return "text-red-500";
 }
 
-function scoreLevelKey(score: number): "scoreGood" | "scoreWarning" | "scoreCritical" {
-  if (score >= 90) return "scoreGood";
-  if (score >= 50) return "scoreWarning";
-  return "scoreCritical";
+function scoreBg(score: number): string {
+  if (score >= 90) return "bg-emerald-600";
+  if (score >= 50) return "bg-amber-500";
+  return "bg-red-500";
 }
 
 const statusLabelKey = {
@@ -36,13 +37,6 @@ const statusLabelKey = {
   warn: "statusWarn",
   pass: "statusPass",
 } as const;
-
-function scoreBg(score: number): string {
-  if (score >= 90) return "bg-emerald-600";
-  if (score >= 50) return "bg-amber-500";
-  return "bg-red-500";
-}
-
 
 type Issue = {
   status: "fail" | "warn" | "pass";
@@ -158,38 +152,21 @@ export function ReportPreviewSection() {
             <div className="h-3 w-3 rounded-full bg-border" />
             <div className="h-3 w-3 rounded-full bg-border" />
             <span className="ml-3 text-xs text-muted-foreground">
-              vivotiv.com/report/example
+              vivotiv.com/scan/example
             </span>
           </div>
 
           <div className="grid md:grid-cols-5">
-            {/* Left: Overall score + category bars */}
-            <div className="border-b border-border p-8 md:col-span-2 md:border-b-0 md:border-r">
-              {/* Overall score circle */}
-              <div className="mb-8 flex flex-col items-center">
-                <div
-                  className="flex h-24 w-24 items-center justify-center rounded-full border-3 border-amber-500"
-                >
-                  <span
-                    className="font-heading text-3xl font-bold tabular-nums text-amber-500"
-                  >
-                    {overall}
-                  </span>
-                </div>
-                <span className="mt-3 text-sm text-muted-foreground">
-                  {t("overallScore")}
-                </span>
-                <span className="sr-only">
-                  {t(scoreLevelKey(overall))}
-                </span>
-              </div>
-
-              {/* Category scores */}
-              <div className="flex flex-col gap-4">
+            {/* Left: Category cards */}
+            <div className="border-b border-border p-6 md:col-span-2 md:border-b-0 md:border-r">
+              <p className="mb-3 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                {t("categoryScores")}
+              </p>
+              <div className="flex flex-col gap-2">
                 {scores.map((item, i) => (
                   <motion.div
                     key={item.key}
-                    className="flex items-center gap-3"
+                    className="flex flex-col gap-1.5 border border-border bg-background p-3"
                     initial={{ opacity: 0, x: -8 }}
                     animate={isInView ? { opacity: 1, x: 0 } : {}}
                     transition={{
@@ -198,10 +175,20 @@ export function ReportPreviewSection() {
                       ease: "easeOut",
                     }}
                   >
-                    <span className="w-24 shrink-0 text-xs">
-                      {item.label}
-                    </span>
-                    <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-muted">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium">
+                        {item.label}
+                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <span
+                          className={`text-sm font-semibold tabular-nums ${scoreColor(item.score)}`}
+                        >
+                          {item.score}
+                        </span>
+                        <ChevronRight className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
+                      </div>
+                    </div>
+                    <div className="relative h-1.5 w-full overflow-hidden rounded-full bg-muted">
                       <motion.div
                         className={`absolute inset-y-0 left-0 rounded-full ${scoreBg(item.score)}`}
                         initial={{ width: 0 }}
@@ -217,22 +204,17 @@ export function ReportPreviewSection() {
                         }}
                       />
                     </div>
-                    <span
-                      className={`w-6 text-right text-xs font-semibold tabular-nums ${scoreColor(item.score)}`}
-                    >
-                      {item.score}
-                    </span>
                   </motion.div>
                 ))}
               </div>
             </div>
 
             {/* Right: Example issues */}
-            <div className="p-8 md:col-span-3">
-              <p className="mb-4 text-sm font-medium text-muted-foreground">
+            <div className="p-6 md:col-span-3">
+              <p className="mb-3 text-xs font-medium uppercase tracking-widest text-muted-foreground">
                 {t("issuesFound")}
               </p>
-              <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-2">
                 {exampleIssues.map((issue, i) => {
                   const Icon = StatusIcon[issue.status];
                   const isOpen = openIndex === i;
@@ -240,7 +222,7 @@ export function ReportPreviewSection() {
                   return (
                     <motion.div
                       key={i}
-                      className="border border-border bg-card"
+                      className={`border border-border ${issue.status === "fail" ? "bg-red-500/5" : "bg-background"}`}
                       initial={{ opacity: 0, y: 6 }}
                       animate={isInView ? { opacity: 1, y: 0 } : {}}
                       transition={{
@@ -254,16 +236,16 @@ export function ReportPreviewSection() {
                         onClick={() => toggleIssue(i)}
                         aria-expanded={isOpen}
                         aria-controls={panelId}
-                        className="flex w-full items-center gap-3 p-3 text-left focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
+                        className="flex w-full items-start gap-3 p-3 text-left focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
                       >
                         <Icon
-                          className={`h-4 w-4 shrink-0 ${statusColor[issue.status]}`}
+                          className={`mt-0.5 h-4 w-4 shrink-0 ${statusColor[issue.status]}`}
                           aria-hidden="true"
                         />
                         <span className="sr-only">{t(statusLabelKey[issue.status])}:</span>
-                        <span className="flex-1 text-sm">{issue.label}</span>
+                        <span className="min-w-0 flex-1 text-sm">{issue.label}</span>
                         <ChevronDown
-                          className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                          className={`mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
                           aria-hidden="true"
                         />
                       </button>

@@ -66,7 +66,7 @@
     "subtitle": "Du f\u00e5r en betygsatt genomg\u00e5ng av din sida med specifika problem, varf\u00f6r de p\u00e5verkar ditt f\u00f6retag och vad som beh\u00f6ver \u00e4ndras.",
     "overallScore": "\u00d6vergripande betyg",
     "categoryScores": "Kategoriuppdelning",
-    "issuesFound": "Hittade problem",
+    "issuesFound": "Resultat",
     "scoreGood": "Bra",
     "scoreWarning": "Kan förbättras",
     "scoreCritical": "Kritiskt",
@@ -78,7 +78,7 @@
       "seo": "58",
       "accessibility": "41",
       "legal": "35",
-      "security": "84",
+      "security": "92",
       "standards": "67"
     }
   },
