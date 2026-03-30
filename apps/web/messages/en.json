@@ -14,6 +14,8 @@
     "privacyComplianceDescription": "Cookie consent, tracking rules, and how IMY enforces compliance",
     "howScanWorks": "How the Scan Works",
     "howScanWorksDescription": "Lighthouse, axe-core, and HTTP analysis under the hood",
+    "guides": "All Guides",
+    "guidesDescription": "Compliance, security, performance, and tool comparisons",
     "mobileMenu": "Open menu"
   },
   "hero": {
@@ -202,6 +204,7 @@
   },
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
+    "tagline": "Website audits for SEO, accessibility, privacy and performance.",
     "columnLegal": "Legal",
     "columnResources": "Resources",
     "columnLanguage": "Language",
@@ -211,7 +214,8 @@
     "switchLanguage": "Switch language to Svenska",
     "accessibility": "Accessibility",
     "privacyCompliance": "Privacy & GDPR",
-    "howScanWorks": "How the Scan Works"
+    "howScanWorks": "How the Scan Works",
+    "guides": "Guides"
   },
   "notFound": {
     "message": "This page does not exist.",
@@ -219,6 +223,27 @@
   },
   "content": {
     "backHome": "\u2190 Back to Vivotiv"
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "guides": "Guides"
+  },
+  "scanCta": {
+    "heading": "Check your website for free",
+    "description": "Run a scan to see how your website scores across performance, SEO, accessibility, compliance, and security.",
+    "button": "Start free scan"
+  },
+  "guides": {
+    "title": "Guides",
+    "description": "Resources on website compliance, performance, security, and audit tools.",
+    "families": {
+      "compliance": "Compliance",
+      "actions": "Website Problems",
+      "cms": "CMS Guides",
+      "checks": "Understanding Your Scan",
+      "comparisons": "Tool Comparisons",
+      "standalone": "Resources"
+    }
   },
   "legal": {
     "backHome": "\u2190 Back to Vivotiv"

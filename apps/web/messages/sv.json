@@ -14,6 +14,8 @@
     "privacyComplianceDescription": "Cookiesamtycke, spårningsregler och hur IMY övervakar efterlevnad",
     "howScanWorks": "Hur skanningen fungerar",
     "howScanWorksDescription": "Lighthouse, axe-core och HTTP-analys under huven",
+    "guides": "Alla guider",
+    "guidesDescription": "Efterlevnad, säkerhet, prestanda och verktygsjämförelser",
     "mobileMenu": "Öppna meny"
   },
   "hero": {
@@ -202,6 +204,7 @@
   },
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
+    "tagline": "Webbplatsanalyser f\u00f6r SEO, tillg\u00e4nglighet, integritet och prestanda.",
     "columnLegal": "Juridiskt",
     "columnResources": "Resurser",
     "columnLanguage": "Spr\u00e5k",
@@ -211,7 +214,8 @@
     "switchLanguage": "Byt spr\u00e5k till English",
     "accessibility": "Tillgänglighet",
     "privacyCompliance": "Integritet & GDPR",
-    "howScanWorks": "Hur skanningen fungerar"
+    "howScanWorks": "Hur skanningen fungerar",
+    "guides": "Guider"
   },
   "notFound": {
     "message": "Den h\u00e4r sidan finns inte.",
@@ -219,6 +223,27 @@
   },
   "content": {
     "backHome": "\u2190 Tillbaka till Vivotiv"
+  },
+  "breadcrumbs": {
+    "home": "Hem",
+    "guides": "Guider"
+  },
+  "scanCta": {
+    "heading": "Kontrollera er webbplats gratis",
+    "description": "Kör en skanning för att se hur er webbplats presterar inom prestanda, SEO, tillgänglighet, efterlevnad och säkerhet.",
+    "button": "Starta gratis skanning"
+  },
+  "guides": {
+    "title": "Guider",
+    "description": "Resurser om webbplatsefterlevnad, prestanda, säkerhet och granskningsverktyg.",
+    "families": {
+      "compliance": "Efterlevnad",
+      "actions": "Webbplatsproblem",
+      "cms": "CMS-guider",
+      "checks": "Förstå er skanning",
+      "comparisons": "Verktygsjämförelser",
+      "standalone": "Resurser"
+    }
   },
   "legal": {
     "backHome": "\u2190 Tillbaka till Vivotiv"

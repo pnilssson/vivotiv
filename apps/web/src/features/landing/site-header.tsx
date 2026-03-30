@@ -1,6 +1,12 @@
 "use client";
 
-import { MenuIcon } from "lucide-react";
+import {
+  Activity,
+  Eye,
+  MenuIcon,
+  Scale,
+  ShieldCheck,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import {
@@ -67,23 +73,44 @@ export function SiteHeader() {
                   {t("resources")}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[320px] gap-1 p-1">
+                  <div className="grid w-[480px] grid-cols-[0.8fr_1fr] gap-1 p-1">
+                    {/* Left: Featured guides card */}
+                    <NavigationMenuLink
+                      render={<Link href="/guides" />}
+                      className="row-span-3 flex h-full flex-col overflow-hidden rounded-md bg-depth-1 hover:bg-depth-2 focus:bg-depth-2"
+                    >
+                      <div className="flex flex-1 items-center justify-center gap-3 px-4 pt-4">
+                        <Scale className="size-5 text-muted-foreground/40" />
+                        <ShieldCheck className="size-7 text-muted-foreground/30" />
+                        <Eye className="size-5 text-muted-foreground/40" />
+                        <Activity className="size-6 text-muted-foreground/35" />
+                      </div>
+                      <div className="p-4 pt-3">
+                        <span className="text-sm font-medium">
+                          {t("guides")}
+                        </span>
+                        <span className="mt-1 block text-xs leading-snug text-muted-foreground">
+                          {t("guidesDescription")}
+                        </span>
+                      </div>
+                    </NavigationMenuLink>
+
+                    {/* Right: Individual page links */}
                     {contentPages.map((page) => (
-                      <li key={page.slug}>
-                        <NavigationMenuLink
-                          render={<Link href={`/${page.slug}`} />}
-                          className="flex flex-col items-start gap-0.5 hover:bg-depth-1 focus:bg-depth-1"
-                        >
-                          <span className="text-sm font-medium leading-none">
-                            {t(page.titleKey)}
-                          </span>
-                          <span className="line-clamp-2 text-xs leading-snug text-muted-foreground">
-                            {t(page.descriptionKey)}
-                          </span>
-                        </NavigationMenuLink>
-                      </li>
+                      <NavigationMenuLink
+                        key={page.slug}
+                        render={<Link href={`/${page.slug}`} />}
+                        className="flex flex-col items-start gap-0.5 hover:bg-depth-1 focus:bg-depth-1"
+                      >
+                        <span className="text-sm font-medium leading-none">
+                          {t(page.titleKey)}
+                        </span>
+                        <span className="line-clamp-2 text-xs leading-snug text-muted-foreground">
+                          {t(page.descriptionKey)}
+                        </span>
+                      </NavigationMenuLink>
                     ))}
-                  </ul>
+                  </div>
                 </NavigationMenuContent>
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -126,6 +153,12 @@ export function SiteHeader() {
                     {t(page.titleKey)}
                   </SheetClose>
                 ))}
+                <SheetClose
+                  render={<Link href="/guides" />}
+                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-depth-1 hover:text-foreground"
+                >
+                  {t("guides")}
+                </SheetClose>
               </nav>
             </SheetContent>
           </Sheet>

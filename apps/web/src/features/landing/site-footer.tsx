@@ -29,6 +29,9 @@ export function SiteFooter() {
             Vivotiv
           </span>
           <span className="text-sm text-muted-foreground">
+            {t("tagline")}
+          </span>
+          <span className="text-sm text-muted-foreground">
             {t("copyright", { year })}
           </span>
         </div>
@@ -44,6 +47,9 @@ export function SiteFooter() {
             </Link>
             <Link href="/how-scan-works" className={linkClasses}>
               {t("howScanWorks")}
+            </Link>
+            <Link href="/guides" className={linkClasses}>
+              {t("guides")}
             </Link>
           </div>
 
