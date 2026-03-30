@@ -391,6 +391,11 @@
     "scoreGood": "Bra",
     "scoreWarning": "Kan f\u00f6rb\u00e4ttras",
     "scoreCritical": "Kritiskt",
+    "categoryBreakdown": "Kategorifördelning",
+    "detailedResults": "Resultat",
+    "scoringToggle": "Hur vi beräknar dessa betyg",
+    "scoringExplanation": "Varje kategori poängsätts från 0 till 100. De flesta kategorier kör en fast uppsättning kontroller och beräknar ett viktat genomsnitt. Det övergripande betyget är ett viktat genomsnitt av alla sex kategorier.",
+    "scoringAccessibility": "Tillgänglighetspoängen fungerar annorlunda. Istället för en fast lista skannar vi er sida efter faktiska överträdelser. Poängen börjar på 100 och drar av poäng per överträdelse baserat på allvarlighetsgrad: kritiska problem drar av mest, mindre problem minst. Det innebär att ni kan se färre punkter listade under tillgänglighet, men varje punkt har direkt påverkan på poängen.",
     "scannedUrl": "Analyserad URL",
     "scannedAt": "Analyserad den",
     "metrics": "M\u00e4tv\u00e4rden",
@@ -400,6 +405,43 @@
     "statusWarn": "Varning",
     "statusPass": "Godk\u00e4nt",
     "statusError": "Fel",
-    "noChecks": "Inga kontroller i denna kategori."
+    "headlineCritical": "Er webbplats har kritiska problem som behöver åtgärdas",
+    "headlineWarning": "Er webbplats har förbättringspotential",
+    "headlineGood": "Er webbplats är i gott skick",
+    "issueSummary": "Vi hittade {total, plural, one {# problem} other {# problem}} i {categories, plural, one {# kategori} other {# kategorier}}, varav {critical, plural, one {# kritiskt} other {# kritiska}}.",
+    "summaryGood": "Er webbplats presterar bra överlag. Nedan hittar ni detaljerna för varje kategori om ni vill se exakt vad vi kontrollerade.",
+    "summaryWarning": "Er webbplats fungerar men har utrymme för förbättring inom flera områden. Problemen nedan påverkar hur besökare upplever er sida, hur Google rankar den, och om ni uppfyller gällande lagkrav.",
+    "summaryCritical": "Er webbplats har allvarliga brister som kan kosta er besökare, ranking i Google och i värsta fall leda till böter. Nedan ser ni exakt vad som behöver åtgärdas och varför det är viktigt.",
+    "impact": {
+      "performance": "Långsamma laddtider kostar dig besökare och sänker din Google-ranking",
+      "seo": "Sökmotorer har svårt att hitta och ranka dina sidor",
+      "accessibility": "Din webbplats uppfyller kanske inte EU:s tillgänglighetskrav",
+      "legal": "Bristande efterlevnad kan leda till böter upp till 10 miljoner kronor",
+      "security": "Saknade säkerhetsrubriker gör din webbplats sårbar",
+      "standards": "Föråldrad kod signalerar en försummad webbnärvaro"
+    },
+    "checkImpact": {
+      "performance": "Det här påverkar hur snabbt din sida laddar och hur Google rankar den.",
+      "seo": "Det här begränsar hur enkelt kunder kan hitta dig via sökmotorer.",
+      "accessibility": "Det här kan innebära att du inte uppfyller EU:s tillgänglighetsdirektiv.",
+      "legal": "Det här är en efterlevnadsbrist som kan leda till myndighetsingripande.",
+      "security": "Det här gör din webbplats mer sårbar för attacker och dataintrång.",
+      "standards": "Det här signalerar till besökare att webbplatsen inte underhålls aktivt."
+    },
+    "failCount": "{count, plural, one {# underkänd} other {# underkända}}",
+    "warnCount": "{count, plural, one {# varning} other {# varningar}}",
+    "passCount": "{count, plural, one {# godkänd} other {# godkända}}",
+    "noChecks": "Inga kontroller i denna kategori.",
+    "showPassing": "Visa godkända kontroller",
+    "hidePassing": "Dölj godkända kontroller",
+    "cta": {
+      "pretitle": "NÄSTA STEG",
+      "titleIssues": "De här problemen går att lösa",
+      "titleGood": "Håll din webbplats på den här nivån",
+      "descriptionIssues": "De flesta av de här problemen beror på föråldrad teknik och kan lösas med en modern ombyggnad. Vi hjälper svenska företag att åtgärda precis de här problemen.",
+      "descriptionGood": "En välskött webbplats förblir konkurrenskraftig. Vill du ha hjälp att hålla den så, finns vi här.",
+      "contactButton": "Diskutera dina resultat med oss",
+      "trust": "Vivotiv är ett svenskt företag som hjälper företag att modernisera sina webbplatser. hello@vivotiv.com"
+    }
   }
 }

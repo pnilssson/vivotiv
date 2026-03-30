@@ -391,6 +391,11 @@
     "scoreGood": "Good",
     "scoreWarning": "Needs improvement",
     "scoreCritical": "Critical",
+    "categoryBreakdown": "Category Breakdown",
+    "detailedResults": "Results",
+    "scoringToggle": "How we calculate these scores",
+    "scoringExplanation": "Each category is scored from 0 to 100. Most categories run a fixed set of checks and calculate a weighted average. The overall score is a weighted average across all six categories.",
+    "scoringAccessibility": "Accessibility scoring works differently. Instead of checking a fixed list, we scan your page for actual violations. The score starts at 100 and deducts points per violation based on severity: critical issues deduct the most, minor issues the least. This means you may see fewer items listed under accessibility, but each one has a direct impact on the score.",
     "scannedUrl": "Scanned URL",
     "scannedAt": "Scanned on",
     "metrics": "Metrics",
@@ -400,6 +405,43 @@
     "statusWarn": "Warning",
     "statusPass": "Passed",
     "statusError": "Error",
-    "noChecks": "No checks in this category."
+    "headlineCritical": "Your website has critical issues that need attention",
+    "headlineWarning": "Your website has room for improvement",
+    "headlineGood": "Your website is in good shape",
+    "issueSummary": "We found {total, plural, one {# issue} other {# issues}} across {categories, plural, one {# category} other {# categories}}, including {critical, plural, one {# critical} other {# critical}}.",
+    "summaryGood": "Your website is performing well overall. Below you will find the details for each category if you want to see exactly what we checked.",
+    "summaryWarning": "Your website works but has room for improvement in several areas. The issues below affect how visitors experience your site, how Google ranks it, and whether you meet current legal requirements.",
+    "summaryCritical": "Your website has serious issues that could be costing you visitors, search ranking, and in the worst case lead to fines. Below you will see exactly what needs to be fixed and why it matters.",
+    "impact": {
+      "performance": "Slow load times cost you visitors and lower your Google ranking",
+      "seo": "Search engines are having trouble finding and ranking your pages",
+      "accessibility": "Your site may not meet EU accessibility requirements",
+      "legal": "Missing compliance can lead to fines up to SEK 10M",
+      "security": "Missing security headers leave your site exposed",
+      "standards": "Outdated code signals a neglected online presence"
+    },
+    "checkImpact": {
+      "performance": "This affects how fast your site loads and how Google ranks it.",
+      "seo": "This limits how easily customers can find you through search.",
+      "accessibility": "This may put you out of compliance with the EU Accessibility Act.",
+      "legal": "This is a compliance gap that could lead to regulatory action.",
+      "security": "This makes your site more vulnerable to attacks and data breaches.",
+      "standards": "This signals to visitors that the site is not actively maintained."
+    },
+    "failCount": "{count, plural, one {# failed} other {# failed}}",
+    "warnCount": "{count, plural, one {# warning} other {# warnings}}",
+    "passCount": "{count, plural, one {# passed} other {# passed}}",
+    "noChecks": "No checks in this category.",
+    "showPassing": "Show passing checks",
+    "hidePassing": "Hide passing checks",
+    "cta": {
+      "pretitle": "WHAT'S NEXT",
+      "titleIssues": "These issues are fixable",
+      "titleGood": "Keep your site running at this level",
+      "descriptionIssues": "Most of these problems come from outdated technology and can be resolved with a modern rebuild. We help Swedish businesses fix exactly these issues.",
+      "descriptionGood": "A well-maintained website stays competitive. If you want help keeping it that way, we are here.",
+      "contactButton": "Discuss your results with us",
+      "trust": "Vivotiv is a Swedish company helping businesses modernize their websites. hello@vivotiv.com"
+    }
   }
 }

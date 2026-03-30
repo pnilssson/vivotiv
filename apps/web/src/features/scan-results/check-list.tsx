@@ -19,6 +19,7 @@ import { useState } from "react";
 
 type CheckListProps = {
   categories: Record<ScanCategoryKey, CategoryResult | null>;
+  showPassing: boolean;
 };
 
 const StatusIcon = {
@@ -55,34 +56,47 @@ function sortByStatus(checks: CheckResult[]): CheckResult[] {
   );
 }
 
-function CheckItem({ check, index }: { check: CheckResult; index: number }) {
+function CheckItem({
+  check,
+  index,
+  categoryKey,
+}: {
+  check: CheckResult;
+  index: number;
+  categoryKey: ScanCategoryKey;
+}) {
   const t = useTranslations("scanResults");
   const [open, setOpen] = useState(false);
   const Icon = StatusIcon[check.status];
   const panelId = `check-panel-${check.id}-${index}`;
+  const showImpact = check.status === "fail" || check.status === "warn";
 
   return (
-    <div className="border border-border bg-card">
+    <div
+      className={`border border-border ${check.status === "fail" ? "bg-red-500/5" : "bg-card"}`}
+    >
       <button
         type="button"
         onClick={() => setOpen(!open)}
         aria-expanded={open}
         aria-controls={panelId}
-        className="flex w-full items-center gap-3 p-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="flex w-full items-start gap-3 p-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         <Icon
-          className={`h-4 w-4 shrink-0 ${statusColor[check.status]}`}
+          className={`mt-0.5 h-4 w-4 shrink-0 ${statusColor[check.status]}`}
           aria-hidden="true"
         />
         <span className="sr-only">{t(statusLabelKey[check.status])}:</span>
-        <span className="flex-1 text-sm">{check.name}</span>
-        {check.value && (
-          <span className="shrink-0 text-xs text-muted-foreground">
-            {check.value}
-          </span>
-        )}
+        <div className="min-w-0 flex-1">
+          <span className="text-sm">{check.name}</span>
+          {check.value && (
+            <span className="mt-0.5 block text-xs text-muted-foreground sm:mt-0 sm:inline sm:ml-2">
+              {check.value}
+            </span>
+          )}
+        </div>
         <ChevronDown
-          className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 ${open ? "rotate-180" : ""}`}
           aria-hidden="true"
         />
       </button>
@@ -113,6 +127,11 @@ function CheckItem({ check, index }: { check: CheckResult; index: number }) {
                   ))}
                 </ul>
               )}
+              {showImpact && (
+                <p className="mt-2 text-xs font-medium text-foreground/70">
+                  {t(`checkImpact.${categoryKey}`)}
+                </p>
+              )}
             </div>
           </motion.div>
         )}
@@ -124,11 +143,18 @@ function CheckItem({ check, index }: { check: CheckResult; index: number }) {
 function CheckGroup({
   label,
   checks,
+  showPassing,
+  categoryKey,
 }: {
   label: string;
   checks: CheckResult[];
+  showPassing: boolean;
+  categoryKey: ScanCategoryKey;
 }) {
-  if (checks.length === 0) return null;
+  const visible = showPassing
+    ? checks
+    : checks.filter((c) => c.status !== "pass");
+  if (visible.length === 0) return null;
 
   return (
     <div>
@@ -136,39 +162,80 @@ function CheckGroup({
         {label}
       </p>
       <div className="flex flex-col gap-2">
-        {checks.map((check, i) => (
-          <CheckItem key={`${check.id}-${i}`} check={check} index={i} />
+        {visible.map((check, i) => (
+          <CheckItem key={`${check.id}-${i}`} check={check} index={i} categoryKey={categoryKey} />
         ))}
       </div>
     </div>
   );
 }
 
+function scoreColorClass(score: number): string {
+  if (score >= 90) return "text-emerald-600";
+  if (score >= 50) return "text-amber-500";
+  return "text-red-500";
+}
+
+function scoreBorderClass(score: number): string {
+  if (score >= 90) return "border-emerald-600";
+  if (score >= 50) return "border-amber-500";
+  return "border-red-500";
+}
+
 function CategorySection({
   categoryKey,
   result,
+  showPassing,
 }: {
   categoryKey: ScanCategoryKey;
   result: CategoryResult;
+  showPassing: boolean;
 }) {
   const t = useTranslations("scanResults");
   const tc = useTranslations("categories");
 
+  const allChecks = [...result.metrics, ...result.opportunities, ...result.diagnostics];
+  const failCount = allChecks.filter((c) => c.status === "fail").length;
+  const warnCount = allChecks.filter((c) => c.status === "warn").length;
+  const passCount = allChecks.filter((c) => c.status === "pass").length;
+
   return (
-    <div>
-      <h3 className="font-heading text-lg font-semibold tracking-tight">
-        {tc(`${categoryKey}.title`)}
-      </h3>
+    <div id={`category-${categoryKey}`} className="scroll-mt-28">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 className="font-heading text-lg font-semibold tracking-tight">
+            {tc(`${categoryKey}.title`)}
+          </h3>
+          <div className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
+            {failCount > 0 && (
+              <span className="text-red-500">{t("failCount", { count: failCount })}</span>
+            )}
+            {warnCount > 0 && (
+              <span className="text-amber-500">{t("warnCount", { count: warnCount })}</span>
+            )}
+            {passCount > 0 && (
+              <span className="text-emerald-600">{t("passCount", { count: passCount })}</span>
+            )}
+          </div>
+        </div>
+        <div
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 ${scoreBorderClass(result.score)}`}
+        >
+          <span className={`font-heading text-sm font-bold tabular-nums ${scoreColorClass(result.score)}`}>
+            {result.score}
+          </span>
+        </div>
+      </div>
       <div className="mt-4 flex flex-col gap-6">
-        <CheckGroup label={t("metrics")} checks={sortByStatus(result.metrics)} />
-        <CheckGroup label={t("opportunities")} checks={sortByStatus(result.opportunities)} />
-        <CheckGroup label={t("diagnostics")} checks={sortByStatus(result.diagnostics)} />
+        <CheckGroup label={t("metrics")} checks={sortByStatus(result.metrics)} showPassing={showPassing} categoryKey={categoryKey} />
+        <CheckGroup label={t("opportunities")} checks={sortByStatus(result.opportunities)} showPassing={showPassing} categoryKey={categoryKey} />
+        <CheckGroup label={t("diagnostics")} checks={sortByStatus(result.diagnostics)} showPassing={showPassing} categoryKey={categoryKey} />
       </div>
     </div>
   );
 }
 
-export function CheckList({ categories }: CheckListProps) {
+export function CheckList({ categories, showPassing }: CheckListProps) {
   const t = useTranslations("scanResults");
 
   const activeCategories = scanCategoryKeys.filter(
@@ -188,6 +255,7 @@ export function CheckList({ categories }: CheckListProps) {
           key={key}
           categoryKey={key}
           result={categories[key]!}
+          showPassing={showPassing}
         />
       ))}
     </div>
