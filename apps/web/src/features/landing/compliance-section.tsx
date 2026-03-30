@@ -4,6 +4,8 @@ import { motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
 
+import { ContentCard, ContentCardGrid } from "@/components/content-card";
+
 const stats = ["stat1", "stat2", "stat3"] as const;
 
 export function ComplianceSection() {
@@ -53,11 +55,10 @@ export function ComplianceSection() {
           </div>
 
           {/* Right: stats */}
-          <div className="flex flex-col gap-px border border-border bg-border">
+          <ContentCardGrid className="flex-col">
             {stats.map((stat, i) => (
               <motion.div
                 key={stat}
-                className="bg-card p-8 transition-colors hover:bg-depth-1"
                 initial={{ opacity: 0, y: 8 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{
@@ -66,15 +67,17 @@ export function ComplianceSection() {
                   ease: "easeOut",
                 }}
               >
-                <div className="font-heading text-3xl font-bold tracking-tight">
-                  {t(`${stat}.value`)}
-                </div>
-                <p className="mt-2 text-muted-foreground">
-                  {t(`${stat}.label`)}
-                </p>
+                <ContentCard>
+                  <div className="font-heading text-3xl font-bold tracking-tight">
+                    {t(`${stat}.value`)}
+                  </div>
+                  <p className="mt-2 text-muted-foreground">
+                    {t(`${stat}.label`)}
+                  </p>
+                </ContentCard>
               </motion.div>
             ))}
-          </div>
+          </ContentCardGrid>
         </div>
       </div>
     </section>

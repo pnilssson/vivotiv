@@ -12,6 +12,8 @@ import { motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
 
+import { ContentCard, ContentCardGrid } from "@/components/content-card";
+
 const categories = [
   { key: "performance", icon: Activity },
   { key: "seo", icon: FileSearch },
@@ -37,13 +39,13 @@ export function CategoriesSection() {
         <p className="mt-4 text-lg text-muted-foreground">{t("subtitle")}</p>
       </div>
 
-      <div className="mt-16 grid grid-cols-1 gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+      <ContentCardGrid className="mt-16 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((category, i) => {
           const Icon = category.icon;
           return (
             <motion.div
               key={category.key}
-              className="flex flex-col gap-3 bg-card p-8 transition-colors hover:bg-depth-1"
+              className="h-full"
               initial={{ opacity: 0, y: 12 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{
@@ -52,17 +54,19 @@ export function CategoriesSection() {
                 ease: "easeOut",
               }}
             >
-              <Icon className="h-5 w-5" aria-hidden="true" />
-              <h3 className="font-heading text-sm font-semibold">
-                {t(`${category.key}.title`)}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {t(`${category.key}.description`)}
-              </p>
+              <ContentCard className="flex flex-col gap-3">
+                <Icon className="h-5 w-5" aria-hidden="true" />
+                <h3 className="font-heading text-sm font-semibold">
+                  {t(`${category.key}.title`)}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {t(`${category.key}.description`)}
+                </p>
+              </ContentCard>
             </motion.div>
           );
         })}
-      </div>
+      </ContentCardGrid>
       </div>
     </section>
   );

@@ -2,6 +2,8 @@
 
 import { useTranslations } from "next-intl";
 
+import { Link } from "@/i18n/navigation";
+
 export function SiteHeader() {
   const t = useTranslations("nav");
 
@@ -14,9 +16,9 @@ export function SiteHeader() {
         {t("skipToContent")}
       </a>
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
-        <span className="font-heading text-lg font-bold tracking-tight">
+        <Link href="/" className="font-heading text-lg font-bold tracking-tight">
           Vivotiv
-        </span>
+        </Link>
         <nav aria-label={t("primaryNav")}>
           <a
             href="#scan"

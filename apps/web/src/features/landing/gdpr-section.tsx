@@ -4,6 +4,8 @@ import { motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
 
+import { ContentCard, ContentCardGrid } from "@/components/content-card";
+
 const stats = ["stat1", "stat2", "stat3"] as const;
 
 export function GdprSection() {
@@ -16,11 +18,10 @@ export function GdprSection() {
       <div className="mx-auto max-w-6xl px-6">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-2">
           {/* Left on desktop: stats */}
-          <div className="order-2 flex flex-col gap-px border border-border bg-border lg:order-1">
+          <ContentCardGrid className="order-2 flex-col lg:order-1">
             {stats.map((stat, i) => (
               <motion.div
                 key={stat}
-                className="bg-card p-8 transition-colors hover:bg-depth-1"
                 initial={{ opacity: 0, y: 8 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{
@@ -29,15 +30,17 @@ export function GdprSection() {
                   ease: "easeOut",
                 }}
               >
-                <div className="font-heading text-3xl font-bold tracking-tight">
-                  {t(`${stat}.value`)}
-                </div>
-                <p className="mt-2 text-muted-foreground">
-                  {t(`${stat}.label`)}
-                </p>
+                <ContentCard>
+                  <div className="font-heading text-3xl font-bold tracking-tight">
+                    {t(`${stat}.value`)}
+                  </div>
+                  <p className="mt-2 text-muted-foreground">
+                    {t(`${stat}.label`)}
+                  </p>
+                </ContentCard>
               </motion.div>
             ))}
-          </div>
+          </ContentCardGrid>
 
           {/* Right on desktop: copy */}
           <div className="order-1 lg:order-2">
