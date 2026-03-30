@@ -3,7 +3,7 @@ import type { Database } from "@vivotiv/db";
 import type { AverageScoresResponse } from "@vivotiv/shared";
 
 const CACHE_KEY = "scores:averages";
-const CACHE_TTL = 86400;
+const CACHE_TTL = 1800;
 
 export async function fetchAverageScores(
   db: Database,

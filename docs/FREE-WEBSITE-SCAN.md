@@ -97,6 +97,32 @@ Examples:
 
 Each category is scored from 0 to 100.
 
+### Two scoring models
+
+#### Checklist-based categories
+
+Legal, SEO, performance, security, and standards use a fixed checklist model:
+
+- A fixed set of checks runs every scan
+- Each check returns pass, warn, or fail
+- The category score is a weighted average of check scores
+- Users see the full check list regardless of outcome
+
+#### Deduction-based category (accessibility)
+
+Accessibility uses axe-core and follows a deduction model:
+
+- The score starts at 100
+- Points are deducted per violation by severity
+- axe-core reports violations and incomplete findings, not a full pass list for every rule
+
+Current deduction values:
+
+- Critical: -15 points (capped at 5 node multiplier)
+- Serious: -10 points
+- Moderate: -5 points
+- Minor: -2 points
+
 Traffic lights:
 
 - **Red**: 0 to 49
@@ -112,8 +138,20 @@ Overall score is a weighted average:
 - Security: 10%
 - Modern standards: 10%
 
-Most categories use weighted check scoring.
-Accessibility uses a deduction model based on violation severity, designed to surface severe issues clearly.
+### Result display behavior
+
+Because accessibility is deduction-based, it can show fewer visible items than checklist-based categories.
+
+- Checklist categories often show 8 to 10 checks
+- Accessibility can show 1 to 2 findings on a healthy site
+
+This can make accessibility results look thinner even when the category score is high.
+
+Current UX direction:
+
+- Show an accessibility summary line (rules evaluated and issues found)
+- Surface pass counts alongside violations where possible
+- Add contextual helper text when only a few findings are present
 
 ## Reliability and safety principles
 

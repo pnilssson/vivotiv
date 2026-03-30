@@ -38,6 +38,12 @@ Reference for writing all Vivotiv content. Follow these rules exactly.
 - Confident but not arrogant.
 - Swedish copy should feel natural, not translated from English.
 
+## Market Focus
+
+Sweden first. The regulations we surface (GDPR, ePrivacy, EU Accessibility Act) are EU-wide, but we frame them through the Swedish enforcement angle: IMY, Swedish fines, Swedish legal references. This makes the copy concrete and specific rather than generic. A Swedish business owner knows IMY. "EU data protection authorities" is abstract.
+
+The English site (vivotiv.com) can broaden to EU-wide framing when we expand. For now, one market, one language, one enforcement context.
+
 ## The Free Scan as Sales Tool
 
 The scan follows the "diagnose before you prescribe" pattern. Doctors don't sell surgery, they show you the X-ray. The scan is the X-ray.

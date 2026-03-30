@@ -14,7 +14,7 @@ export const scoresRoutes = new Hono<Env>().get(
     });
 
     return c.json(scores, 200, {
-      "Cache-Control": "public, max-age=86400",
+      "Cache-Control": "public, max-age=1800",
     });
   },
 );
