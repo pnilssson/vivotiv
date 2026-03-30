@@ -205,7 +205,7 @@
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
     "tagline": "Webbplatsanalyser f\u00f6r SEO, tillg\u00e4nglighet, integritet och prestanda.",
-    "columnLegal": "Juridiskt",
+    "columnLegal": "Vivotiv",
     "columnResources": "Resurser",
     "columnLanguage": "Spr\u00e5k",
     "privacy": "Integritetspolicy",
@@ -215,7 +215,9 @@
     "accessibility": "Tillgänglighet",
     "privacyCompliance": "Integritet & GDPR",
     "howScanWorks": "Hur skanningen fungerar",
-    "guides": "Guider"
+    "guides": "Guider",
+    "columnCompliance": "Efterlevnad",
+    "cookieConsent": "Cookie-samtycke"
   },
   "notFound": {
     "message": "Den h\u00e4r sidan finns inte.",

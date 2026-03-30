@@ -1,5 +1,6 @@
 "use client";
 
+import { GlobeIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
 import { useCookieConsent } from "@/features/cookies/cookie-consent-provider";
@@ -31,25 +32,41 @@ export function SiteFooter() {
           <span className="text-sm text-muted-foreground">
             {t("tagline")}
           </span>
+          <button
+            type="button"
+            onClick={switchLocale}
+            aria-label={t("switchLanguage")}
+            className={`${linkClasses} inline-flex w-fit cursor-pointer items-center gap-1.5 text-left`}
+          >
+            <GlobeIcon className="size-3.5" />
+            {locale === "sv" ? "English" : "Svenska"}
+          </button>
           <span className="text-sm text-muted-foreground">
             {t("copyright", { year })}
           </span>
         </div>
 
-        <div className="grid grid-cols-1 gap-x-24 gap-y-8 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-x-12 gap-y-8 sm:grid-cols-3">
           <div className="flex flex-col gap-3">
             <span className="text-sm font-medium">{t("columnResources")}</span>
+            <Link href="/how-scan-works" className={linkClasses}>
+              {t("howScanWorks")}
+            </Link>
+            <Link href="/guides" className={linkClasses}>
+              {t("guides")}
+            </Link>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <span className="text-sm font-medium">{t("columnCompliance")}</span>
             <Link href="/accessibility" className={linkClasses}>
               {t("accessibility")}
             </Link>
             <Link href="/privacy-compliance" className={linkClasses}>
               {t("privacyCompliance")}
             </Link>
-            <Link href="/how-scan-works" className={linkClasses}>
-              {t("howScanWorks")}
-            </Link>
-            <Link href="/guides" className={linkClasses}>
-              {t("guides")}
+            <Link href="/cookie-consent-requirements" className={linkClasses}>
+              {t("cookieConsent")}
             </Link>
           </div>
 
@@ -67,18 +84,6 @@ export function SiteFooter() {
               className={`${linkClasses} cursor-pointer text-left`}
             >
               {t("cookiePreferences")}
-            </button>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <span className="text-sm font-medium">{t("columnLanguage")}</span>
-            <button
-              type="button"
-              onClick={switchLocale}
-              aria-label={t("switchLanguage")}
-              className={`${linkClasses} cursor-pointer text-left`}
-            >
-              {locale === "sv" ? "English" : "Svenska"}
             </button>
           </div>
         </div>

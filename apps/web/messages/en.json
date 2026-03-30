@@ -205,7 +205,7 @@
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
     "tagline": "Website audits for SEO, accessibility, privacy and performance.",
-    "columnLegal": "Legal",
+    "columnLegal": "Vivotiv",
     "columnResources": "Resources",
     "columnLanguage": "Language",
     "privacy": "Privacy Policy",
@@ -215,7 +215,9 @@
     "accessibility": "Accessibility",
     "privacyCompliance": "Privacy & GDPR",
     "howScanWorks": "How the Scan Works",
-    "guides": "Guides"
+    "guides": "Guides",
+    "columnCompliance": "Compliance",
+    "cookieConsent": "Cookie Consent"
   },
   "notFound": {
     "message": "This page does not exist.",

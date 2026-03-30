@@ -1,0 +1,138 @@
+---
+title: "Cookie Consent Requirements in the EU"
+description: "EU law requires informed consent before setting non-essential cookies. Learn what counts as valid consent, which UI patterns violate the rules, and what enforcement looks like in Sweden."
+lastUpdated: "Last updated March 2026"
+family: "compliance"
+relatedChecks: ["cookie-banner", "reject-button", "pre-consent-scripts", "pre-consent-cookies"]
+relatedSlugs: ["privacy-compliance", "website-security-basics", "website-compliance-checklist"]
+---
+
+EU cookie consent rules require that non-essential cookies and tracking scripts are blocked until a visitor actively consents. This applies to any website serving EU visitors, regardless of where the business is based. The legal basis is [Article 5(3) of the ePrivacy Directive](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32002L0058), reinforced by the GDPR's consent requirements. In Sweden, these rules are implemented through [LEK (Lagen om elektronisk kommunikation)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2022482-om-elektronisk-kommunikation_sfs-2022-482/), Chapter 9, Section 28.
+
+For a broader overview of GDPR requirements for websites, including privacy policies and data processing obligations, see our [GDPR and cookie compliance guide](/privacy-compliance).
+
+## When you need a cookie banner
+
+You need a cookie banner if your website sets any cookies or runs any scripts that are not strictly necessary for the service the visitor requested. This includes:
+
+- Analytics (Google Analytics, Matomo with cookies, Plausible with cookies)
+- Advertising pixels (Meta Pixel, Google Ads, LinkedIn Insight)
+- Third-party chat widgets that set tracking cookies
+- Embedded content that loads tracking (YouTube with default settings, social media embeds)
+
+You do **not** need consent for cookies that are strictly necessary: session cookies, authentication tokens, shopping cart state, load balancing, and security cookies. If your site only uses these, you do not need a cookie banner at all.
+
+The [CJEU Planet49 ruling](https://curia.europa.eu/juris/liste.jsf?num=C-673/17) (October 2019) established that consent must be an active, affirmative action. Pre-ticked checkboxes do not count. Continued browsing does not count. The visitor must click or tap something that clearly means "I accept."
+
+## The reject button: what complies and what does not
+
+The [EDPB Cookie Banner Taskforce report](https://www.edpb.europa.eu/system/files/2023-01/edpb_20230118_report_cookie_banner_taskforce_en.pdf) (January 2023) made the requirements specific. A "vast majority" of EU privacy regulators agreed:
+
+- If an "Accept all" button exists on any layer of the banner, a "Reject all" button must exist on the **same layer**
+- The reject button must have **equal visual prominence**: same size, similar contrast, comparable positioning
+- A link for rejecting cookies (instead of a button) is only acceptable if it clearly draws the user's attention
+- Deceptive button colors, such as text that nearly matches the background, are explicitly non-compliant
+
+Enforcement has been aggressive. CNIL (France's data protection authority) has issued fines specifically for reject button violations:
+
+| Company | Fine | Year | Violation |
+|---------|------|------|-----------|
+| Google | EUR 150M | 2021 | 5+ clicks to refuse cookies, 1 click to accept |
+| Facebook | EUR 60M | 2021 | Several clicks to refuse, 1 to accept |
+| Microsoft (Bing) | EUR 60M | 2022 | 2 clicks to refuse, 1 to accept |
+| TikTok | EUR 5M | 2023 | No "Reject all" button on tiktok.com |
+| SHEIN | EUR 150M | 2025 | Clicking "Refuse all" still placed cookies |
+
+In Sweden, [IMY issued reprimands in April 2025](https://www.imy.se/nyheter/imy-riktar-kritik-mot-foretags-kakbanners/) to three companies for cookie banner dark patterns:
+
+- **ATG** displayed a green "Accept all" button prominently but hid the reject option behind an "Information and adaptation" link. Even after changes, the accept button had stronger visual contrast than the reject option.
+- **Aller Media (Recept.se)** used pre-checked boxes for marketing cookies and required multiple steps to reject.
+- **Warner Music Sweden** failed to explain specific cookie purposes, did not name third-party data recipients, and omitted storage duration information.
+
+## Pre-consent tracking: the most common violation
+
+Loading tracking scripts before the visitor has made a choice is the single most common cookie violation. It happens when Google Analytics, Meta Pixel, or advertising scripts are embedded directly in the page HTML or loaded through a tag manager without proper consent gating.
+
+Under the [EDPB Guidelines 2/2023](https://www.edpb.europa.eu/system/files/2024-10/edpb_guidelines_202302_technical_scope_art_53_eprivacydirective_v2_en_0.pdf) (finalized October 2024), the scope of what requires consent is broader than many site owners realize:
+
+- **Tracking pixels** (like Meta Pixel) constitute "storage" through browser caching
+- **Tracking URLs** with parameters that identify visitors require consent
+- **Device fingerprinting** is covered, even without cookies
+- **Any JavaScript** that collects information from the visitor's device requires consent before execution
+
+CNIL's EUR 150M fine against SHEIN in September 2025 was specifically for cookies that "were placed as soon as users arrived on the site, even before they interacted with the information banner."
+
+### How to verify what loads before consent
+
+Open your website in a browser with developer tools. Clear all cookies and site data. Reload the page without interacting with the cookie banner. Check:
+
+1. **Network tab:** Are requests going to google-analytics.com, facebook.com/tr, doubleclick.net, or similar domains?
+2. **Application tab (Cookies):** Are any non-essential cookies already set?
+3. **Console:** Are tracking scripts logging activity?
+
+If any of these show activity before you have clicked "Accept," your site has a pre-consent tracking violation.
+
+## Consent management platforms: what they solve and what they miss
+
+A CMP (consent management platform) handles the cookie banner UI, consent storage, and script blocking. The major platforms in the EU market:
+
+- **Cookiebot (Usercentrics):** Popular with SMBs. Automatic cookie scanning. 700,000+ websites.
+- **OneTrust:** Enterprise-grade. 14,000+ customers. Starts around EUR 10,000/year.
+- **CookieYes:** Self-serve, lower cost. Popular with smaller sites.
+- **Cookie Information:** Scandinavian focus. Commonly used in Sweden.
+
+### What CMPs do not guarantee
+
+Installing a CMP does not mean your site is compliant. Common gaps:
+
+**Incomplete cookie detection.** Cookiebot's automatic scanner runs once per month. Cookies added between scans are not captured until the next cycle. Dynamically loaded scripts, single-page application routes, and scripts injected through tag managers can be missed entirely.
+
+**Script blocking failures.** CMPs typically disable the HTML element that sets a cookie, not the network request itself. If the CMP script loads slowly, if JavaScript errors occur on the page, or if a script is loaded inline rather than through the CMP's managed list, cookies can fire before consent.
+
+**Misconfigured "legitimate interest."** Some CMPs allow setting cookies under "legitimate interest" by default. IMY's April 2025 enforcement action against Aller Media specifically cited this: the company claimed legitimate interest for marketing cookies without a documented balancing test, which IMY found non-compliant.
+
+**No post-rejection verification.** A CMP may correctly block scripts when a user rejects cookies, but few CMPs verify that rejection actually works. SHEIN's CMP displayed a "Refuse all" button, but clicking it still resulted in cookies being placed.
+
+## LEK: Sweden's cookie law
+
+The [LEK (Lag om elektronisk kommunikation, SFS 2022:482)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2022482-om-elektronisk-kommunikation_sfs-2022-482/) entered into force on 3 June 2022. Chapter 9, Section 28 implements Article 5(3) of the ePrivacy Directive in Swedish law.
+
+The key difference from the GDPR: LEK covers **all information** stored on or accessed from a visitor's device, not just personal data. Even a cookie that stores no personal data (like a pure preference cookie for layout settings) technically requires consent under LEK, unless it falls under the strictly necessary exemption.
+
+In practice, the distinction rarely matters because most tracking cookies involve personal data, triggering both LEK and the GDPR. But it means the legal basis for cookie consent in Sweden is LEK (for the storage/access act), with the GDPR defining what counts as valid consent.
+
+Supervision is split: [PTS](https://pts.se/) oversees LEK compliance, while [IMY](https://www.imy.se/) handles GDPR violations. When a cookie violation also constitutes a GDPR breach (which is almost always the case for tracking cookies), IMY can enforce and take the ePrivacy rules into account.
+
+## What is changing: the EU Digital Omnibus
+
+The European Commission proposed the [Digital Omnibus package](https://commission.europa.eu/strategy-and-policy/priorities-2019-2024/europe-fit-digital-age_en) in November 2025, which includes targeted amendments to cookie consent rules:
+
+- **Single-click reject requirement:** Cookie banners must include a one-click button to refuse all cookies (codifying existing enforcement practice)
+- **6-month cool-down:** Once a visitor rejects cookies, the site cannot re-prompt for at least 6 months
+- **Browser consent signals:** Visitors should be able to transmit privacy preferences automatically through standardized signals from browsers or operating systems
+- **First-party analytics exemption:** Aggregated audience measurement by the website operator, solely for its own use, would not require consent (narrowly drafted: cross-site tracking and third-party analytics are excluded)
+
+These proposals entered the EU legislative process in November 2025. Adoption is expected no earlier than late 2026, with entry into force potentially in 2027.
+
+## How the scan checks cookie consent
+
+The Vivotiv scan analyzes your site's cookie consent implementation by detecting your consent management platform (15+ CMP implementations recognized, including shadow DOM-based banners), checking whether a visible reject option exists, and monitoring which scripts and cookies load before any consent interaction occurs.
+
+The scan flags:
+
+- Cookie banners without a reject button
+- Tracking scripts that fire before consent
+- Third-party cookies set before consent
+- Missing or incomplete cookie policies
+
+[Check your cookie consent implementation for free](/)
+
+## Sources
+
+- [ePrivacy Directive, Article 5(3)](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32002L0058) - EUR-Lex
+- [LEK (SFS 2022:482)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2022482-om-elektronisk-kommunikation_sfs-2022-482/) - Riksdagen
+- [EDPB Cookie Banner Taskforce Report](https://www.edpb.europa.eu/system/files/2023-01/edpb_20230118_report_cookie_banner_taskforce_en.pdf) - January 2023
+- [EDPB Guidelines 2/2023 on Technical Scope of Art. 5(3)](https://www.edpb.europa.eu/system/files/2024-10/edpb_guidelines_202302_technical_scope_art_53_eprivacydirective_v2_en_0.pdf) - October 2024
+- [IMY cookie banner enforcement](https://www.imy.se/nyheter/imy-riktar-kritik-mot-foretags-kakbanners/) - April 2025
+- [CNIL SHEIN decision](https://www.cnil.fr/en/cookies-placed-without-consent-shein-fined-150-million-euros-cnil) - September 2025
+- [CJEU Planet49 (Case C-673/17)](https://curia.europa.eu/juris/liste.jsf?num=C-673/17) - October 2019

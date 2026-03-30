@@ -1,0 +1,139 @@
+---
+title: "Krav på cookie-samtycke i EU"
+description: "EU-lagstiftning kräver aktivt samtycke innan icke-nödvändiga cookies sätts. Läs vad som gäller, vilka lösningar som inte håller, och hur IMY bedriver tillsyn i Sverige."
+lastUpdated: "Senast uppdaterad mars 2026"
+family: "compliance"
+localeSlug: "krav-cookie-samtycke"
+relatedChecks: ["cookie-banner", "reject-button", "pre-consent-scripts", "pre-consent-cookies"]
+relatedSlugs: ["privacy-compliance", "website-security-basics", "website-compliance-checklist"]
+---
+
+Reglerna för cookie-samtycke i EU innebär att icke-nödvändiga cookies och spårningsskript ska vara blockerade tills besökaren aktivt samtycker. Det gäller alla webbplatser som riktar sig till besökare i EU. Den rättsliga grunden är [artikel 5.3 i ePrivacy-direktivet](https://eur-lex.europa.eu/legal-content/SV/TXT/HTML/?uri=CELEX:32002L0058), förstärkt av GDPR:s samtyckeskrav. I Sverige implementeras dessa regler genom [LEK (Lagen om elektronisk kommunikation, SFS 2022:482)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2022482-om-elektronisk-kommunikation_sfs-2022-482/), 9 kap. 28 ss.
+
+För en bredare översikt av GDPR-krav för webbplatser, inklusive integritetspolicyer och databehandling, se vår [guide om GDPR och cookieefterlevnad](/privacy-compliance).
+
+## När behöver ni en cookie-banner?
+
+Ni behöver en cookie-banner om er webbplats sätter cookies eller kör skript som inte är strikt nödvändiga för den tjänst besökaren begärt. Det inkluderar:
+
+- Analysverktyg (Google Analytics, Matomo med cookies, Plausible med cookies)
+- Annonspixlar (Meta Pixel, Google Ads, LinkedIn Insight)
+- Chattwidgetar från tredje part som sätter spårningscookies
+- Inbäddat innehåll som laddar spårning (YouTube med standardinställningar, sociala medier-inbäddningar)
+
+Ni behöver **inte** samtycke för strikt nödvändiga cookies: sessionscookies, autentiseringstoken, kundvagnsdata, lastbalansering och säkerhetscookies. Om er webbplats bara använder dessa behöver ni ingen cookie-banner alls.
+
+[EU-domstolens Planet49-dom](https://curia.europa.eu/juris/liste.jsf?num=C-673/17) (oktober 2019) slog fast att samtycke måste vara en aktiv handling. Förkryssade rutor räknas inte. Fortsatt surfande räknas inte. Besökaren måste klicka eller trycka på något som tydligt betyder "Jag accepterar."
+
+## Avvisningsknappen: vad som gäller och vad som inte håller
+
+[EDPB:s rapport från Cookie Banner Taskforce](https://www.edpb.europa.eu/system/files/2023-01/edpb_20230118_report_cookie_banner_taskforce_en.pdf) (januari 2023) konkretiserade kraven. En "stor majoritet" av EU:s tillsynsmyndigheter enades om:
+
+- Om en "Acceptera alla"-knapp finns på något lager i bannern måste en "Avvisa alla"-knapp finnas på **samma lager**
+- Avvisningsknappen måste ha **jämförbar visuell tyngd**: liknande storlek, kontrast och placering
+- En länk för att avvisa (istället för en knapp) godtas bara om den tydligt fångar besökarens uppmärksamhet
+- Vilseledande knappfärger, till exempel text som nästan smälter samman med bakgrunden, är uttryckligen icke-godtagbara
+
+CNIL (Frankrikes dataskyddsmyndighet) har utfärdat stora böter specifikt för avvisningsknappens utformning:
+
+| Företag | Böter | År | Överträdelse |
+|---------|-------|-----|-------------|
+| Google | 150 MEUR | 2021 | 5+ klick för att avvisa, 1 klick för att acceptera |
+| Facebook | 60 MEUR | 2021 | Flera klick för att avvisa, 1 för att acceptera |
+| Microsoft (Bing) | 60 MEUR | 2022 | 2 klick för att avvisa, 1 för att acceptera |
+| TikTok | 5 MEUR | 2023 | Ingen "Avvisa alla"-knapp på tiktok.com |
+| SHEIN | 150 MEUR | 2025 | "Avvisa alla" satte fortfarande cookies |
+
+I Sverige [utfärdade IMY reprimander i april 2025](https://www.imy.se/nyheter/imy-riktar-kritik-mot-foretags-kakbanners/) mot tre företag för vilseledande cookie-banners:
+
+- **ATG** visade en grön "Acceptera alla"-knapp framträdande men gömde avvisningsalternativet bakom en länk med texten "Information och anpassning." Även efter ändringar hade acceptera-knappen starkare visuell kontrast än avvisningsalternativet.
+- **Aller Media (Recept.se)** använde förkryssade rutor för marknadsföringscookies och krävde flera steg för att avvisa.
+- **Warner Music Sweden** förklarade inte specifika cookie-ändamål, angav inte tredjepartsmottagare och utelämnade lagringsperioder.
+
+## Spårning innan samtycke: den vanligaste överträdelsen
+
+Att ladda spårningsskript innan besökaren gjort ett val är den enskilt vanligaste cookie-överträdelsen. Det sker när Google Analytics, Meta Pixel eller annonsskript är inbäddade direkt i sidans HTML eller laddas via en tagghanterare utan korrekt samtyckesspärr.
+
+Enligt [EDPB:s riktlinjer 2/2023](https://www.edpb.europa.eu/system/files/2024-10/edpb_guidelines_202302_technical_scope_art_53_eprivacydirective_v2_en_0.pdf) (slutgiltiga oktober 2024) är omfattningen bredare än många webbplatsägare tror:
+
+- **Spårningspixlar** (som Meta Pixel) utgör "lagring" genom webbläsarens cachemekanism
+- **Spårnings-URL:er** med parametrar som identifierar besökare kräver samtycke
+- **Enhetsfingeravtryck** omfattas, även utan cookies
+- **Alla JavaScript** som samlar information från besökarens enhet kräver samtycke innan exekvering
+
+CNIL:s böter på 150 MEUR mot SHEIN i september 2025 gällde specifikt att cookies "sattes så snart besökare anlände till webbplatsen, redan innan de interagerat med informationsbannern."
+
+### Hur ni kontrollerar vad som laddas innan samtycke
+
+Öppna er webbplats i en webbläsare med utvecklarverktyg. Rensa alla cookies och webbplatsdata. Ladda om sidan utan att interagera med cookie-bannern. Kontrollera:
+
+1. **Nätverksfliken:** Går förfrågningar till google-analytics.com, facebook.com/tr, doubleclick.net eller liknande domäner?
+2. **Applikationsfliken (Cookies):** Är några icke-nödvändiga cookies redan satta?
+3. **Konsolen:** Loggar spårningsskript aktivitet?
+
+Om något av detta visar aktivitet innan ni klickat "Acceptera" har er webbplats en överträdelse gällande spårning innan samtycke.
+
+## Samtyckesplattformar: vad de löser och vad de missar
+
+En CMP (consent management platform) hanterar cookie-bannerns gränssnitt, samtyckeslagring och skriptblockering. De stora plattformarna på EU-marknaden:
+
+- **Cookiebot (Usercentrics):** Populär bland mindre företag. Automatisk cookie-skanning. 700 000+ webbplatser.
+- **OneTrust:** Företagsanpassad. 14 000+ kunder. Kostar från cirka 100 000 SEK/år.
+- **CookieYes:** Självbetjäning, lägre kostnad. Populär bland mindre webbplatser.
+- **Cookie Information:** Skandinaviskt fokus. Vanlig i Sverige.
+
+### Vad en CMP inte garanterar
+
+Att installera en CMP betyder inte att er webbplats är lagenlig. Vanliga brister:
+
+**Ofullständig cookie-detektering.** Cookiebots automatiska skanner körs en gång per månad. Cookies som läggs till mellan skanningarna fångas inte upp förrän nästa cykel. Dynamiskt laddade skript, rutter i single-page-applikationer och skript som injiceras via tagghanterare kan missas helt.
+
+**Misslyckad skriptblockering.** CMP:er blockerar vanligtvis HTML-elementet som sätter en cookie, inte nätverksförfrågan i sig. Om CMP-skriptet laddas långsamt, om JavaScript-fel uppstår på sidan, eller om ett skript laddas inline istället för via CMP:ens hanterade lista, kan cookies aktiveras innan samtycke.
+
+**Felkonfigurerat "berättigat intresse."** Vissa CMP:er tillåter att cookies sätts med "berättigat intresse" som standard. IMY:s tillsynsåtgärd i april 2025 mot Aller Media pekade specifikt på detta: företaget åberopade berättigat intresse för marknadsföringscookies utan en dokumenterad intresseavvägning, vilket IMY fann icke-lagenligt.
+
+**Ingen verifiering efter avvisning.** En CMP kan korrekt blockera skript när en besökare avvisar cookies, men få CMP:er verifierar att avvisningen faktiskt fungerar. SHEIN:s CMP visade en "Avvisa alla"-knapp, men att klicka på den resulterade fortfarande i att cookies sattes.
+
+## LEK: Sveriges cookie-lag
+
+[LEK (Lag om elektronisk kommunikation, SFS 2022:482)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2022482-om-elektronisk-kommunikation_sfs-2022-482/) trädde i kraft den 3 juni 2022. Kapitel 9, paragraf 28 implementerar artikel 5.3 i ePrivacy-direktivet i svensk rätt.
+
+Den viktigaste skillnaden mot GDPR: LEK omfattar **all information** som lagras i eller hämtas från besökarens enhet, inte bara personuppgifter. Även en cookie som inte lagrar personuppgifter (som en ren inställningscookie för sidlayout) kräver tekniskt sett samtycke enligt LEK, om den inte faller under undantaget för strikt nödvändiga cookies.
+
+I praktiken spelar skillnaden sällan roll eftersom de flesta spårningscookies involverar personuppgifter, vilket utlöser både LEK och GDPR. Men det innebär att den rättsliga grunden för cookie-samtycke i Sverige är LEK (för själva lagringsåtgärden), medan GDPR definierar vad som utgör giltigt samtycke.
+
+Tillsynen är delad: [PTS](https://pts.se/) övervakar LEK-efterlevnad, medan [IMY](https://www.imy.se/) hanterar GDPR-överträdelser. När en cookie-överträdelse också utgör ett GDPR-brott (vilket nästan alltid är fallet för spårningscookies) kan IMY genomdriva reglerna och beakta ePrivacy-bestämmelserna.
+
+## Vad som är på väg att ändras: EU Digital Omnibus
+
+Europeiska kommissionen föreslog [Digital Omnibus-paketet](https://commission.europa.eu/strategy-and-policy/priorities-2019-2024/europe-fit-digital-age_en) i november 2025, som inkluderar riktade ändringar av reglerna för cookie-samtycke:
+
+- **Krav på ett-klicks-avvisning:** Cookie-banners måste innehålla en knapp för att avvisa alla cookies med ett enda klick (kodifierar befintlig tillsynspraxis)
+- **6 månaders karensperiod:** När en besökare avvisat cookies får webbplatsen inte fråga igen på minst 6 månader
+- **Webbläsarsignaler:** Besökare ska kunna överföra integritetspreferenser automatiskt genom standardiserade signaler från webbläsare eller operativsystem
+- **Undantag för förstapartsanalys:** Aggregerad publikmätning av webbplatsoperatören, uteslutande för eget bruk, skulle inte kräva samtycke (snävt formulerat: spårning mellan webbplatser och tredjepartsanalys omfattas inte)
+
+Förslagen inledde EU:s lagstiftningsprocess i november 2025. Antagande väntas tidigast i slutet av 2026, med ikraftträdande potentiellt 2027.
+
+## Hur skanningen kontrollerar cookie-samtycke
+
+Vivotiv-skanningen analyserar er webbplats cookie-samtycke genom att identifiera er samtyckesplattform (15+ CMP-implementationer, inklusive shadow DOM-baserade banners), kontrollera om ett synligt avvisningsalternativ finns, och övervaka vilka skript och cookies som laddas innan någon samtyckesinteraktion sker.
+
+Skanningen flaggar:
+
+- Cookie-banners utan avvisningsknapp
+- Spårningsskript som aktiveras innan samtycke
+- Tredjepartscookies som sätts innan samtycke
+- Saknad eller ofullständig cookiepolicy
+
+[Kontrollera er cookie-implementation gratis](/)
+
+## Källor
+
+- [ePrivacy-direktivet, artikel 5.3](https://eur-lex.europa.eu/legal-content/SV/TXT/HTML/?uri=CELEX:32002L0058) - EUR-Lex
+- [LEK (SFS 2022:482)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2022482-om-elektronisk-kommunikation_sfs-2022-482/) - Riksdagen
+- [EDPB Cookie Banner Taskforce-rapport](https://www.edpb.europa.eu/system/files/2023-01/edpb_20230118_report_cookie_banner_taskforce_en.pdf) - januari 2023
+- [EDPB:s riktlinjer 2/2023 om teknisk räckvidd för art. 5.3](https://www.edpb.europa.eu/system/files/2024-10/edpb_guidelines_202302_technical_scope_art_53_eprivacydirective_v2_en_0.pdf) - oktober 2024
+- [IMY:s tillsyn av cookie-banners](https://www.imy.se/nyheter/imy-riktar-kritik-mot-foretags-kakbanners/) - april 2025
+- [CNIL:s beslut om SHEIN](https://www.cnil.fr/en/cookies-placed-without-consent-shein-fined-150-million-euros-cnil) - september 2025
+- [EU-domstolen Planet49 (mål C-673/17)](https://curia.europa.eu/juris/liste.jsf?num=C-673/17) - oktober 2019
