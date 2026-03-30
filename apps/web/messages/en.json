@@ -478,6 +478,8 @@
     "noChecks": "No checks in this category.",
     "showPassing": "Show passing checks",
     "hidePassing": "Hide passing checks",
+    "dismissBar": "Dismiss",
+    "opensNewTab": "opens in new tab",
     "cta": {
       "pretitle": "WHAT'S NEXT",
       "titleIssues": "These issues are fixable",

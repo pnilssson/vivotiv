@@ -53,7 +53,7 @@ export function StickyResultsBar({ overallScore }: StickyResultsBarProps) {
           transition={{ duration: 0.2, ease: "easeOut" }}
           className="fixed bottom-6 left-1/2 z-40 hidden -translate-x-1/2 md:flex"
         >
-          <div className="flex items-center gap-4 rounded-lg border border-border bg-background/95 px-4 py-2.5 shadow-lg backdrop-blur-sm">
+          <div role="region" aria-label={t("cta.contactButton")} className="flex items-center gap-4 rounded-lg border border-border bg-background/95 px-4 py-2.5 shadow-lg backdrop-blur-sm">
             <div className="flex items-center gap-2">
               <div
                 className={`flex h-7 w-7 items-center justify-center rounded-full border-2 ${scoreBorderColor(overallScore)}`}
@@ -71,7 +71,7 @@ export function StickyResultsBar({ overallScore }: StickyResultsBarProps) {
                   score: overallScore,
                 })
               }
-              className="text-sm font-medium text-foreground transition-colors hover:text-foreground/80"
+              className="text-sm font-medium text-foreground transition-colors hover:text-foreground/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               {t("cta.contactButton")}
             </a>
@@ -79,7 +79,7 @@ export function StickyResultsBar({ overallScore }: StickyResultsBarProps) {
               type="button"
               onClick={() => setDismissed(true)}
               className="ml-1 text-muted-foreground transition-colors hover:text-foreground"
-              aria-label={t("hidePassing")}
+              aria-label={t("dismissBar")}
             >
               <X className="h-3.5 w-3.5" />
             </button>

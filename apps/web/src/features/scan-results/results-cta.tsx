@@ -1,7 +1,7 @@
 "use client";
 
 import { usePostHog } from "@posthog/next";
-import { ArrowRight, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 type ResultsCtaProps = {
@@ -13,12 +13,12 @@ export function ResultsCta({ overallScore }: ResultsCtaProps) {
   const posthog = usePostHog();
 
   return (
-    <section className="mt-16 border-t border-border pt-12">
+    <section className="mt-16 border-t border-border pt-12" aria-labelledby="results-cta-heading">
       <div className="mx-auto max-w-2xl text-center">
         <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
           {t("pretitle")}
         </p>
-        <h2 className="mt-3 font-heading text-2xl font-bold tracking-tight sm:text-3xl">
+        <h2 id="results-cta-heading" className="mt-3 font-heading text-2xl font-bold tracking-tight sm:text-3xl">
           {overallScore < 90 ? t("titleIssues") : t("titleGood")}
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">

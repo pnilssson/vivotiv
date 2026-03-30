@@ -220,8 +220,10 @@ function CategorySection({
         </div>
         <div
           className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 ${scoreBorderClass(result.score)}`}
+          role="img"
+          aria-label={`${tc(`${categoryKey}.title`)}: ${result.score}/100`}
         >
-          <span className={`font-heading text-sm font-bold tabular-nums ${scoreColorClass(result.score)}`}>
+          <span className={`font-heading text-sm font-bold tabular-nums ${scoreColorClass(result.score)}`} aria-hidden="true">
             {result.score}
           </span>
         </div>

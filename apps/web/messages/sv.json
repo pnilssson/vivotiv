@@ -478,6 +478,8 @@
     "noChecks": "Inga kontroller i denna kategori.",
     "showPassing": "Visa godkända kontroller",
     "hidePassing": "Dölj godkända kontroller",
+    "dismissBar": "Stäng",
+    "opensNewTab": "öppnas i ny flik",
     "cta": {
       "pretitle": "NÄSTA STEG",
       "titleIssues": "De här problemen går att lösa",

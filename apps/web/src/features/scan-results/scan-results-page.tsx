@@ -197,9 +197,10 @@ export function ScanResultsPage({ scanId }: ScanResultsPageProps) {
               href={scan.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-1 inline-block max-w-full truncate text-sm text-primary underline underline-offset-2 transition-colors hover:text-primary/80"
+              className="mt-1 inline-block max-w-full truncate text-sm text-primary underline underline-offset-2 transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               {scan.url}
+              <span className="sr-only"> ({t("opensNewTab")})</span>
             </a>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               {issues.total > 0 &&
@@ -219,6 +220,7 @@ export function ScanResultsPage({ scanId }: ScanResultsPageProps) {
             type="button"
             onClick={() => setScoringOpen(!scoringOpen)}
             aria-expanded={scoringOpen}
+            aria-controls="scoring-explanation"
             className="flex w-full items-center gap-2 text-left text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <ChevronDown
@@ -230,6 +232,8 @@ export function ScanResultsPage({ scanId }: ScanResultsPageProps) {
           <AnimatePresence>
             {scoringOpen && (
               <motion.div
+                id="scoring-explanation"
+                role="region"
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
