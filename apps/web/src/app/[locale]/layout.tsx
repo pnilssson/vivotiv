@@ -41,6 +41,11 @@ export async function generateMetadata({
   return {
     title,
     description,
+    ...(locale === "sv" && {
+      verification: {
+        google: "7X7Lvw8WJZrACqeicQU4_BXtMSQJ1nqeg-qyEePhkL4",
+      },
+    }),
     alternates: {
       canonical: domain,
       languages: {
