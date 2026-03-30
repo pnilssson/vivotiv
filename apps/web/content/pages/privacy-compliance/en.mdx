@@ -1,0 +1,97 @@
+---
+title: "GDPR and Cookie Compliance for Websites"
+description: "GDPR requires explicit consent before tracking visitors, a visible reject option, and a clear privacy policy. Learn what the rules are, how IMY enforces them, and what common violations look like."
+lastUpdated: "Last updated March 2026"
+---
+
+## What GDPR requires from your website
+
+The [General Data Protection Regulation](https://eur-lex.europa.eu/eli/reg/2016/679/oj) (GDPR) has been in force since May 2018, but enforcement has intensified significantly since 2023. For website owners, the core obligations are:
+
+- **Explicit consent before tracking.** You cannot load analytics scripts, advertising pixels, or third-party cookies until the visitor has actively clicked "Accept" or equivalent.
+- **A clear reject option.** The option to decline cookies must be as visible and accessible as the option to accept. A small "Manage preferences" link buried in fine print does not meet the standard.
+- **A privacy policy.** Every website must have a clear, accessible privacy policy explaining what data is collected, why, how long it is stored, and who processes it.
+- **A cookie policy.** Visitors must be informed about which cookies are used, their purpose, and their retention period.
+
+These are not suggestions. They are legal requirements with real enforcement behind them.
+
+## How cookie consent actually works
+
+The most common violation is loading tracking scripts before the visitor has given consent. This includes:
+
+- Google Analytics scripts that fire on page load
+- Facebook Pixel or Meta tracking
+- Advertising network scripts
+- Third-party chat widgets that set tracking cookies
+- Embedded YouTube or social media widgets with tracking
+
+If any of these load before the visitor clicks "Accept" in your cookie banner, it is a breach of the [ePrivacy Directive](https://eur-lex.europa.eu/eli/dir/2002/58/oj) for non-essential tracking, and of the GDPR where personal data is processed without a valid legal basis.
+
+A compliant cookie consent flow works like this:
+
+1. Page loads with **only essential cookies** (session, security, load balancing)
+2. Cookie banner appears with clear Accept and Reject options
+3. **No tracking scripts load** until the visitor makes a choice
+4. If the visitor rejects, no tracking cookies are set and no tracking scripts run
+5. The visitor's choice is stored and respected on subsequent visits
+
+## The reject button requirement
+
+EU data protection authorities have increasingly enforced the principle that rejecting non-essential cookies should be as easy as accepting them. In practice, this means:
+
+- If "Accept all" is a prominent button, a comparable "Reject all" option should be equally accessible
+- Designs that make rejection materially harder or less visible than acceptance are considered non-compliant
+- Burying the reject option behind additional steps or settings screens has led to enforcement actions
+
+Several large companies have faced fines specifically for cookie consent designs that made rejection harder than acceptance.
+
+## How IMY enforces this in Sweden
+
+[IMY](https://www.imy.se/) (Integritetsskyddsmyndigheten) is Sweden's data protection authority. Since April 2025, IMY has [issued formal reprimands](https://www.imy.se/nyheter/imy-riktar-kritik-mot-foretags-kakbanners/) to Swedish companies for cookie and tracking violations.
+
+IMY's enforcement powers include:
+
+- **Fines up to €20 million or 4% of annual global turnover**, whichever is higher
+- Orders to stop processing personal data
+- Formal warnings and reprimands
+- Requirements to bring processing into compliance within a set timeframe
+
+IMY has specifically targeted:
+
+- Pre-consent loading of Google Analytics and similar tools
+- Cookie banners without a clear reject option
+- Insufficient or missing privacy policies
+- Transfer of personal data to third countries without adequate safeguards
+
+## Common violations we see in scans
+
+The most frequent issues we encounter in scans are:
+
+1. **Tracking scripts loading before consent**
+2. **No reject option** on the cookie banner, or reject hidden behind extra steps
+3. **Third-party cookies set before consent** by embedded content or advertising scripts
+4. **Missing or incomplete privacy policy** that does not cover all required information
+5. **No cookie policy** explaining which cookies are used and why
+
+Most of these are straightforward to fix once identified. The problem is that many site owners do not know the violations exist.
+
+## What we check
+
+Our free scan analyzes your site's cookie and privacy compliance by:
+
+- **Detecting cookie banners** and checking for a visible reject option
+- **Monitoring pre-consent behavior** to see which scripts and cookies load before any consent is given
+- **Checking for privacy and cookie policy pages** and whether they are discoverable from the main site
+- **Verifying SSL/TLS** certificate status and trust chain
+- **Looking for contact and business identification** information required by e-commerce and consumer protection rules
+
+The scan gives you a clear compliance score and specific findings you can act on.
+
+## Sources
+
+- [General Data Protection Regulation (GDPR)](https://eur-lex.europa.eu/eli/reg/2016/679/oj) - Full regulation text on EUR-Lex
+- [ePrivacy Directive (2002/58/EC)](https://eur-lex.europa.eu/eli/dir/2002/58/oj) - Cookie and electronic communications rules on EUR-Lex
+- [IMY](https://www.imy.se/) - Swedish Authority for Privacy Protection
+- [IMY cookie banner enforcement](https://www.imy.se/nyheter/imy-riktar-kritik-mot-foretags-kakbanners/) - Formal reprimands issued to Swedish companies
+
+[Check your website's privacy compliance for free](/)

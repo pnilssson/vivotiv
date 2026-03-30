@@ -1,0 +1,90 @@
+---
+title: "How Our Website Scan Works"
+description: "Our free scan uses Lighthouse, axe-core, and HTTP header analysis to check your website across six categories. Learn what each tool does, why they are trustworthy, and how we interpret the results."
+lastUpdated: "Last updated March 2026"
+---
+
+## Three tools, one report
+
+Our scan combines three complementary analysis approaches to give you a complete picture of your website's health. Each tool is purpose-built for specific types of checks, and together they cover performance, SEO, accessibility, privacy compliance, security, and modern web standards.
+
+The entire scan runs in the background and typically completes in 15 to 20 seconds.
+
+## Lighthouse: performance, SEO, and best practices
+
+[Lighthouse](https://developer.chrome.com/docs/lighthouse) is an open-source tool developed by Google. It is the same engine that powers the audits in Chrome DevTools and Google's PageSpeed Insights.
+
+We use Lighthouse to measure:
+
+- **Core Web Vitals** including Largest Contentful Paint (LCP), Total Blocking Time (TBT), and Cumulative Layout Shift (CLS)
+- **Loading performance** including First Contentful Paint, Speed Index, and Time to First Byte
+- **SEO fundamentals** including meta tags, canonical URLs, viewport configuration, and crawlability
+- **Best practices** including HTTPS usage, safe JavaScript patterns, and modern API usage
+
+Lighthouse is widely used as an industry standard for measuring web quality. Some Lighthouse metrics, particularly Core Web Vitals, overlap with Google's page experience signals used in search ranking.
+
+## axe-core: accessibility testing
+
+[axe-core](https://github.com/dequelabs/axe-core) is developed by Deque Systems and is one of the most widely used accessibility testing engines. It is integrated into tools like Chrome DevTools and is used by many accessibility auditing platforms.
+
+We run axe-core using [Playwright](https://playwright.dev/), a browser automation framework, which lets us test your site in a real browser environment rather than against static HTML. This matters because many accessibility issues only appear after JavaScript has rendered the page.
+
+We test against both desktop and mobile viewport sizes, and check all WCAG 2.1 A and AA rules. The scan reports:
+
+- **Violations** categorized by severity (critical, serious, moderate, minor)
+- **Incomplete findings** that need manual verification
+- **The number of affected elements** per violation
+
+axe-core is used by organizations including Microsoft and Google, and is designed to minimize false positives. When it reports a violation, it is highly likely to be a real issue.
+
+## HTTP and TLS header analysis
+
+The third component inspects your server's response headers and SSL/TLS configuration. This does not require loading the page in a browser, so it runs in parallel with the other two analyses.
+
+We check:
+
+- **Content Security Policy (CSP)** quality and whether overly permissive policies (like `unsafe-inline` or `unsafe-eval`) are present
+- **HSTS (HTTP Strict Transport Security)** configuration including `max-age` value and `includeSubDomains` presence
+- **Security headers** including X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy
+- **Server exposure** headers that may reveal technology versions to potential attackers
+- **SSL/TLS certificate** validity and trust chain status
+
+These headers are your first line of defense against common web attacks. Missing or misconfigured headers leave your site and your visitors exposed.
+
+## How we score results
+
+Each of the six categories receives a score from 0 to 100.
+
+**Checklist-based categories** (performance, SEO, legal, security, modern standards) use a fixed set of checks. Each check returns pass, warn, or fail, and the category score is a weighted average.
+
+**Accessibility** uses a deduction model. The score starts at 100 and points are deducted for each violation based on severity:
+
+- Critical: -15 points
+- Serious: -10 points
+- Moderate: -5 points
+- Minor: -2 points
+
+The overall score is a weighted average across all six categories:
+
+- Performance: 20%
+- SEO: 20%
+- Accessibility: 20%
+- Legal compliance: 20%
+- Security: 10%
+- Modern standards: 10%
+
+## What the scores mean
+
+- **90 to 100 (green):** Good. The category meets or exceeds current standards.
+- **50 to 89 (orange):** Needs attention. There are issues that should be addressed.
+- **0 to 49 (red):** Significant problems. Immediate action is recommended.
+
+The scan is designed to surface real, actionable issues. We do not inflate scores to make results look better, and we do not suppress findings to avoid alarming you. The report shows what the tools found, scored according to how much each finding impacts your site.
+
+## Sources
+
+- [Lighthouse](https://developer.chrome.com/docs/lighthouse) - Google's open-source web auditing tool
+- [axe-core](https://github.com/dequelabs/axe-core) - Deque Systems' accessibility testing engine
+- [Playwright](https://playwright.dev/) - Browser automation framework by Microsoft
+
+[Run a free scan on your website](/)

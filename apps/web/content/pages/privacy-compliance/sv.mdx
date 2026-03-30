@@ -1,0 +1,97 @@
+---
+title: "GDPR och cookieefterlevnad för webbplatser"
+description: "GDPR kräver uttryckligt samtycke innan spårning av besökare, ett synligt avvisningsalternativ och en tydlig integritetspolicy. Läs vad reglerna innebär, hur IMY tillämpar dem och hur vanliga överträdelser ser ut."
+lastUpdated: "Senast uppdaterad mars 2026"
+---
+
+## Vad GDPR kräver av er webbplats
+
+[Dataskyddsförordningen](https://eur-lex.europa.eu/eli/reg/2016/679/oj) (GDPR) har gällt sedan maj 2018, men tillsynen har intensifierats markant sedan 2023. För webbplatsägare är de centrala skyldigheterna:
+
+- **Uttryckligt samtycke före spårning.** Ni får inte ladda analysskript, annonspixlar eller tredjepartscookies förrän besökaren aktivt har klickat "Acceptera" eller motsvarande.
+- **Ett tydligt avvisningsalternativ.** Möjligheten att neka cookies måste vara lika synlig och tillgänglig som möjligheten att acceptera. En liten "Hantera inställningar"-länk i finstilt uppfyller inte kravet.
+- **En integritetspolicy.** Varje webbplats måste ha en tydlig, tillgänglig integritetspolicy som förklarar vilka data som samlas in, varför, hur länge de lagras och vem som behandlar dem.
+- **En cookiepolicy.** Besökare måste informeras om vilka cookies som används, deras syfte och lagringsperiod.
+
+Det här är inte rekommendationer. Det är lagkrav med verklig tillsyn bakom sig.
+
+## Hur cookiesamtycke faktiskt fungerar
+
+Den vanligaste överträdelsen är att ladda spårningsskript innan besökaren har gett sitt samtycke. Det omfattar:
+
+- Google Analytics-skript som körs vid sidladdning
+- Facebook Pixel eller Meta-spårning
+- Annonsnätverksskript
+- Chattwidgets från tredje part som sätter spårningscookies
+- Inbäddade YouTube- eller sociala medie-widgets med spårning
+
+Om något av dessa laddas innan besökaren klickar "Acceptera" i er cookiebanner bryter ni mot [ePrivacy-direktivet](https://eur-lex.europa.eu/eli/dir/2002/58/oj) gällande icke-nödvändig spårning, och mot GDPR i de fall personuppgifter behandlas utan giltig rättslig grund.
+
+Ett lagenligt cookiesamtycke fungerar så här:
+
+1. Sidan laddas med **enbart nödvändiga cookies** (session, säkerhet, lastbalansering)
+2. Cookiebannern visas med tydliga alternativ för Acceptera och Avvisa
+3. **Inga spårningsskript laddas** förrän besökaren gör ett val
+4. Om besökaren avvisar sätts inga spårningscookies och inga spårningsskript körs
+5. Besökarens val lagras och respekteras vid efterföljande besök
+
+## Kravet på avvisningsknapp
+
+EU:s dataskyddsmyndigheter har i allt högre grad hävdat principen att det ska vara lika enkelt att avvisa icke-nödvändiga cookies som att acceptera dem. I praktiken innebär det:
+
+- Om "Acceptera alla" är en framträdande knapp bör ett jämförbart "Avvisa alla"-alternativ vara lika tillgängligt
+- Designer som gör avvisning väsentligt svårare eller mindre synlig än acceptans anses inte uppfylla kraven
+- Att gömma avvisningsalternativet bakom extra steg eller inställningsskärmar har lett till tillsynsåtgärder
+
+Flera stora företag har bötfällts specifikt för cookiesamtycke-designer som gjorde avvisning svårare än acceptans.
+
+## Hur IMY tillämpar detta i Sverige
+
+[IMY](https://www.imy.se/) (Integritetsskyddsmyndigheten) är Sveriges dataskyddsmyndighet. Sedan april 2025 har IMY [utfärdat formella reprimander](https://www.imy.se/nyheter/imy-riktar-kritik-mot-foretags-kakbanners/) till svenska företag för cookie- och spårningsöverträdelser.
+
+IMY:s tillsynsbefogenheter omfattar:
+
+- **Böter upp till 20 miljoner euro eller 4% av den årliga globala omsättningen**, beroende på vilket som är högst
+- Förelägganden om att upphöra med behandling av personuppgifter
+- Formella varningar och reprimander
+- Krav på att bringa behandlingen i överensstämmelse inom en fastställd tidsram
+
+IMY har specifikt riktat in sig på:
+
+- Församtyckes-laddning av Google Analytics och liknande verktyg
+- Cookiebanners utan tydligt avvisningsalternativ
+- Bristfälliga eller saknade integritetspolicyer
+- Överföring av personuppgifter till tredje land utan tillräckliga skyddsåtgärder
+
+## Vanliga överträdelser vi ser vid skanningar
+
+De vanligaste problemen vi stöter på vid skanningar är:
+
+1. **Spårningsskript som laddas före samtycke**
+2. **Inget avvisningsalternativ** på cookiebannern, eller avvisning gömd bakom extra steg
+3. **Tredjepartscookies satta före samtycke** av inbäddat innehåll eller annonsskript
+4. **Saknad eller ofullständig integritetspolicy** som inte täcker all obligatorisk information
+5. **Ingen cookiepolicy** som förklarar vilka cookies som används och varför
+
+De flesta av dessa är enkla att åtgärda när de väl identifierats. Problemet är att många webbplatsägare inte vet att överträdelserna existerar.
+
+## Vad vi kontrollerar
+
+Vår kostnadsfria skanning analyserar er webbplats cookie- och integritetsefterlevnad genom att:
+
+- **Upptäcka cookiebanners** och kontrollera om det finns ett synligt avvisningsalternativ
+- **Övervaka beteende före samtycke** för att se vilka skript och cookies som laddas innan något samtycke ges
+- **Kontrollera integritets- och cookiepolicysidor** och om de är upptäckbara från huvudsidan
+- **Verifiera SSL/TLS**-certifikatstatus och förtroendekedja
+- **Söka efter kontakt- och företagsidentifikation** som krävs enligt e-handels- och konsumentskyddsregler
+
+Skanningen ger er ett tydligt efterlevnadsbetyg och specifika resultat som ni kan agera på.
+
+## Källor
+
+- [Dataskyddsförordningen (GDPR)](https://eur-lex.europa.eu/eli/reg/2016/679/oj) - Fullständig förordningstext på EUR-Lex
+- [ePrivacy-direktivet (2002/58/EG)](https://eur-lex.europa.eu/eli/dir/2002/58/oj) - Regler om cookies och elektronisk kommunikation på EUR-Lex
+- [IMY](https://www.imy.se/) - Integritetsskyddsmyndigheten
+- [IMY:s kritik mot cookiebanners](https://www.imy.se/nyheter/imy-riktar-kritik-mot-foretags-kakbanners/) - Formella reprimander till svenska företag
+
+[Kontrollera er webbplats integritetsefterlevnad gratis](/)

@@ -1,0 +1,89 @@
+---
+title: "The EU Accessibility Act and Your Website"
+description: "The European Accessibility Act requires WCAG 2.1 AA compliance for most business websites since June 2025. Learn what this means, who must comply, and the consequences of non-compliance."
+lastUpdated: "Last updated March 2026"
+---
+
+## What the EU Accessibility Act requires
+
+The [European Accessibility Act](https://eur-lex.europa.eu/eli/dir/2019/882/oj) (EAA) has been enforceable since June 28, 2025. It requires that digital products and services, including websites and mobile apps, meet accessibility requirements. Compliance is typically demonstrated through the harmonized standard EN 301 549, which for websites maps closely to [WCAG 2.1 AA](https://www.w3.org/TR/WCAG21/).
+
+This is not a guideline. It is law across all EU member states.
+
+## Who must comply
+
+The directive exempts micro-enterprises, defined as businesses that have **both**:
+
+- Fewer than 10 employees
+- Annual turnover or balance sheet total not exceeding €2 million
+
+If your business exceeds either threshold, the exemption does not apply. Voluntary compliance is recommended even for exempt businesses, as the exemption may narrow over time.
+
+The following types of digital services are explicitly covered:
+
+- E-commerce websites and apps
+- Banking and financial services
+- Telecommunications
+- Transport services
+- E-books and e-readers
+- Public sector websites (already covered under earlier directives)
+
+If your business provides covered services to EU customers and is not a micro-enterprise, the directive likely applies to you.
+
+## What WCAG 2.1 AA means in practice
+
+WCAG (Web Content Accessibility Guidelines) is a set of technical standards published by the W3C. Level AA is the middle tier and the level referenced by EN 301 549, the harmonized standard used to demonstrate EAA compliance.
+
+In concrete terms, WCAG 2.1 AA compliance means:
+
+- **All images** have descriptive alt text
+- **All interactive elements** (buttons, forms, links) are operable with a keyboard
+- **Color contrast** between text and background meets minimum ratios (4.5:1 for normal text, 3:1 for large text)
+- **Form fields** have associated labels
+- **Error messages** are clear and linked to the relevant field
+- **Page structure** uses semantic headings, landmarks, and a logical reading order
+- **Videos** have captions and audio descriptions where needed
+- **Content** does not rely solely on color, shape, or position to convey meaning
+
+These are not edge cases. They directly affect how users with visual, motor, cognitive, or auditory impairments interact with your site.
+
+## How Sweden enforces it
+
+In Sweden, the primary enforcement authority for private sector accessibility is [PTS](https://pts.se/digital-inkludering/lagen-om-vissa-produkters-och-tjansters-tillganglighet/) (Post- och telestyrelsen). PTS oversees compliance for e-commerce, banking, telecommunications, and most digital products and services. For public sector websites, [DIGG](https://www.digg.se/kunskap-och-stod/digital-tillganglighet) (Myndigheten for digital forvaltning) handles enforcement.
+
+PTS has the power to:
+
+- Conduct proactive audits of websites and digital services
+- Investigate complaints from users
+- Issue orders to fix accessibility deficiencies
+- Impose fines up to **10 million SEK** for non-compliance
+
+Enforcement is ramping up as the directive matures. Early compliance reduces legal risk and avoids the cost of retroactive fixes.
+
+## The business case beyond compliance
+
+Accessibility improvements directly affect business metrics:
+
+- **An estimated 16% of the global population** has some form of disability, according to the WHO. Inaccessible sites exclude them entirely.
+- Accessible sites tend to rank better in search engines because semantic HTML, clear headings, and proper link structure are also SEO signals.
+- Fixing accessibility issues improves the experience for all users, not just those with disabilities. Keyboard navigation, readable contrast, and clear forms benefit everyone.
+
+## What we check
+
+Our free scan runs [axe-core](https://github.com/dequelabs/axe-core), the industry-standard accessibility testing engine, against your site in both desktop and mobile viewport contexts. It checks your site against WCAG 2.1 A and AA rules and reports:
+
+- **Critical violations** that block access entirely (e.g., missing form labels, images without alt text)
+- **Serious violations** that significantly impair usability (e.g., insufficient contrast, broken keyboard navigation)
+- **Moderate and minor issues** that degrade the experience but may not fully block access
+
+Automated testing cannot catch every accessibility issue, but it reliably identifies the most common and impactful ones. Our scan gives you a concrete starting point and a clear picture of where your site stands today.
+
+## Sources
+
+- [European Accessibility Act (Directive 2019/882)](https://eur-lex.europa.eu/eli/dir/2019/882/oj) - Full directive text on EUR-Lex
+- [WCAG 2.1](https://www.w3.org/TR/WCAG21/) - W3C Web Content Accessibility Guidelines
+- [PTS - Lagen om tillgänglighet](https://pts.se/digital-inkludering/lagen-om-vissa-produkters-och-tjansters-tillganglighet/) - Swedish enforcement authority for private sector
+- [DIGG - Digital tillgänglighet](https://www.digg.se/kunskap-och-stod/digital-tillganglighet) - Swedish enforcement authority for public sector
+- [axe-core](https://github.com/dequelabs/axe-core) - Open-source accessibility testing engine
+
+[Check your website's accessibility for free](/)

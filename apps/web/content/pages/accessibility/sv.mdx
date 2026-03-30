@@ -1,0 +1,89 @@
+---
+title: "EU:s tillgänglighetsdirektiv och er webbplats"
+description: "EU:s tillgänglighetsdirektiv kräver WCAG 2.1 AA-efterlevnad för de flesta företagswebbplatser sedan juni 2025. Läs vad det innebär, vem som omfattas och konsekvenserna vid bristande efterlevnad."
+lastUpdated: "Senast uppdaterad mars 2026"
+---
+
+## Vad EU:s tillgänglighetsdirektiv kräver
+
+[EU:s tillgänglighetsdirektiv](https://eur-lex.europa.eu/eli/dir/2019/882/oj) (European Accessibility Act, EAA) har varit verkställbart sedan 28 juni 2025. Det kräver att digitala produkter och tjänster, inklusive webbplatser och mobilappar, uppfyller tillgänglighetskrav. Efterlevnad visas normalt genom den harmoniserade standarden EN 301 549, som för webbplatser i stort motsvarar [WCAG 2.1 AA](https://www.w3.org/TR/WCAG21/).
+
+Det här är inte en rekommendation. Det är lag i alla EU:s medlemsstater.
+
+## Vem som omfattas
+
+Direktivet undantar mikroföretag, definierade som företag som uppfyller **båda** dessa villkor:
+
+- Färre än 10 anställda
+- Årlig omsättning eller balansomslutning som inte överstiger 2 miljoner euro
+
+Om ert företag överstiger något av tröskelvärdena gäller inte undantaget. Frivillig efterlevnad rekommenderas även för undantagna företag, eftersom undantaget kan snävas in över tid.
+
+Följande typer av digitala tjänster omfattas uttryckligen:
+
+- E-handelswebbplatser och appar
+- Bank- och finanstjänster
+- Telekommunikation
+- Transporttjänster
+- E-böcker och e-läsare
+- Webbplatser inom offentlig sektor (redan täckta av tidigare direktiv)
+
+Om ert företag tillhandahåller tjänster som omfattas av direktivet till EU-kunder och inte är ett mikroföretag, omfattas ni sannolikt.
+
+## Vad WCAG 2.1 AA innebär i praktiken
+
+WCAG (Web Content Accessibility Guidelines) är en uppsättning tekniska standarder publicerade av W3C. Nivå AA är mellannivån och den nivå som EN 301 549, den harmoniserade standard som används för att visa EAA-efterlevnad, hänvisar till.
+
+Konkret innebär WCAG 2.1 AA-efterlevnad att:
+
+- **Alla bilder** har beskrivande alt-text
+- **Alla interaktiva element** (knappar, formulär, länkar) kan användas med tangentbord
+- **Färgkontrasten** mellan text och bakgrund uppfyller minimikrav (4.5:1 för normal text, 3:1 för stor text)
+- **Formulärfält** har tillhörande etiketter
+- **Felmeddelanden** är tydliga och kopplade till rätt fält
+- **Sidstrukturen** använder semantiska rubriker, landmärken och en logisk läsordning
+- **Videor** har undertexter och syntolkning vid behov
+- **Innehåll** inte enbart förlitar sig på färg, form eller position för att förmedla betydelse
+
+Det här är inte undantagsfall. De påverkar direkt hur användare med synnedsättning, motorisk funktionsnedsättning, kognitiva svårigheter eller hörselnedsättning interagerar med er webbplats.
+
+## Hur Sverige tillämpar direktivet
+
+I Sverige är den primära tillsynsmyndigheten för privat sektor [PTS](https://pts.se/digital-inkludering/lagen-om-vissa-produkters-och-tjansters-tillganglighet/) (Post- och telestyrelsen). PTS övervakar efterlevnad för e-handel, bank, telekommunikation och de flesta digitala produkter och tjänster. För offentlig sektor ansvarar [DIGG](https://www.digg.se/kunskap-och-stod/digital-tillganglighet) (Myndigheten för digital förvaltning) för tillsynen.
+
+PTS har befogenhet att:
+
+- Genomföra proaktiva granskningar av webbplatser och digitala tjänster
+- Utreda klagomål från användare
+- Utfärda förelägganden om att åtgärda tillgänglighetsbrister
+- Utdöma böter upp till **10 miljoner SEK** vid bristande efterlevnad
+
+Tillsynen ökar i takt med att direktivet mognar. Tidig efterlevnad minskar er juridiska risk och undviker kostnaden för retroaktiva åtgärder.
+
+## Affärsnyttan bortom regelefterlevnad
+
+Tillgänglighetsförbättringar påverkar affärsresultat direkt:
+
+- **Uppskattningsvis 16% av världens befolkning** har någon form av funktionsnedsättning, enligt WHO. Otillgängliga webbplatser utesluter dem helt.
+- Tillgängliga webbplatser tenderar att ranka bättre i sökmotorer eftersom semantisk HTML, tydliga rubriker och korrekt länkstruktur också är SEO-signaler.
+- Att åtgärda tillgänglighetsproblem förbättrar upplevelsen för alla användare, inte bara de med funktionsnedsättningar. Tangentbordsnavigering, läsbar kontrast och tydliga formulär gynnar alla.
+
+## Vad vi kontrollerar
+
+Vår kostnadsfria skanning kör [axe-core](https://github.com/dequelabs/axe-core), den branschledande testmotorn för tillgänglighet, mot er webbplats i både desktop- och mobilvy. Den kontrollerar er webbplats mot WCAG 2.1 A- och AA-regler och rapporterar:
+
+- **Kritiska överträdelser** som helt blockerar åtkomst (t.ex. saknade formuläretiketter, bilder utan alt-text)
+- **Allvarliga överträdelser** som väsentligt försämrar användbarheten (t.ex. otillräcklig kontrast, trasig tangentbordsnavigering)
+- **Måttliga och mindre problem** som försämrar upplevelsen men kanske inte helt blockerar åtkomst
+
+Automatiserad testning kan inte fånga alla tillgänglighetsproblem, men identifierar tillförlitligt de vanligaste och mest påverkande. Vår skanning ger er en konkret startpunkt och en tydlig bild av var er webbplats står idag.
+
+## Källor
+
+- [EU:s tillgänglighetsdirektiv (Direktiv 2019/882)](https://eur-lex.europa.eu/eli/dir/2019/882/oj) - Fullständig direktivtext på EUR-Lex
+- [WCAG 2.1](https://www.w3.org/TR/WCAG21/) - W3C:s riktlinjer för tillgängligt webbinnehåll
+- [PTS - Lagen om tillgänglighet](https://pts.se/digital-inkludering/lagen-om-vissa-produkters-och-tjansters-tillganglighet/) - Svensk tillsynsmyndighet för privat sektor
+- [DIGG - Digital tillgänglighet](https://www.digg.se/kunskap-och-stod/digital-tillganglighet) - Svensk tillsynsmyndighet för offentlig sektor
+- [axe-core](https://github.com/dequelabs/axe-core) - Testmotor för tillgänglighet (öppen källkod)
+
+[Kontrollera er webbplats tillgänglighet gratis](/)

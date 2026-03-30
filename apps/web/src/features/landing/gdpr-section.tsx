@@ -4,7 +4,9 @@ import { motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
 
+import { Button } from "@/components/ui/button";
 import { ContentCard, ContentCardGrid } from "@/components/content-card";
+import { Link } from "@/i18n/navigation";
 
 const stats = ["stat1", "stat2", "stat3"] as const;
 
@@ -70,12 +72,9 @@ export function GdprSection() {
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.4, delay: 0.3 }}
             >
-              <a
-                href="#scan"
-                className="text-sm font-medium text-brand transition-colors hover:opacity-70 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
-              >
+              <Button variant="outline" nativeButton={false} className="border-brand text-brand hover:bg-brand/10 hover:text-brand" render={<Link href="/privacy-compliance" />}>
                 {t("cta")}
-              </a>
+              </Button>
             </motion.div>
           </div>
         </div>

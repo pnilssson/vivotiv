@@ -1,0 +1,90 @@
+---
+title: "Hur vår webbplatsskanning fungerar"
+description: "Vår kostnadsfria skanning använder Lighthouse, axe-core och HTTP-headeranalys för att kontrollera er webbplats inom sex kategorier. Läs vad varje verktyg gör, varför de är tillförlitliga och hur vi tolkar resultaten."
+lastUpdated: "Senast uppdaterad mars 2026"
+---
+
+## Tre verktyg, en rapport
+
+Vår skanning kombinerar tre kompletterande analysmetoder för att ge er en fullständig bild av er webbplats hälsa. Varje verktyg är specialbyggt för specifika typer av kontroller, och tillsammans täcker de prestanda, SEO, tillgänglighet, integritetsefterlevnad, säkerhet och moderna webbstandarder.
+
+Hela skanningen körs i bakgrunden och tar vanligtvis 15 till 20 sekunder.
+
+## Lighthouse: prestanda, SEO och bästa praxis
+
+[Lighthouse](https://developer.chrome.com/docs/lighthouse) är ett open source-verktyg utvecklat av Google. Det är samma motor som driver granskningarna i Chrome DevTools och Googles PageSpeed Insights.
+
+Vi använder Lighthouse för att mäta:
+
+- **Core Web Vitals** inklusive Largest Contentful Paint (LCP), Total Blocking Time (TBT) och Cumulative Layout Shift (CLS)
+- **Laddningsprestanda** inklusive First Contentful Paint, Speed Index och Time to First Byte
+- **SEO-grunder** inklusive metataggar, canonical-URL:er, viewport-konfiguration och crawlbarhet
+- **Bästa praxis** inklusive HTTPS-användning, säkra JavaScript-mönster och modern API-användning
+
+Lighthouse används brett som branschstandard för att mäta webbkvalitet. Vissa Lighthouse-mätvärden, särskilt Core Web Vitals, överlappar med Googles sidupplevelsesignaler som används vid sökranking.
+
+## axe-core: tillgänglighetstestning
+
+[axe-core](https://github.com/dequelabs/axe-core) utvecklas av Deque Systems och är en av de mest använda testmotorerna för tillgänglighet. Det är integrerat i verktyg som Chrome DevTools och används av många tillgänglighetsgranskningsplattformar.
+
+Vi kör axe-core med [Playwright](https://playwright.dev/), ett ramverk för webbläsarautomatisering, vilket gör att vi kan testa er webbplats i en riktig webbläsarmiljö istället för mot statisk HTML. Det är viktigt eftersom många tillgänglighetsproblem bara uppstår efter att JavaScript har renderat sidan.
+
+Vi testar mot både desktop- och mobilvyer och kontrollerar alla WCAG 2.1 A- och AA-regler. Skanningen rapporterar:
+
+- **Överträdelser** kategoriserade efter allvarlighetsgrad (kritisk, allvarlig, måttlig, mindre)
+- **Ofullständiga fynd** som kräver manuell verifiering
+- **Antalet påverkade element** per överträdelse
+
+axe-core används av organisationer som Microsoft och Google, och är utformat för att minimera falska positiva resultat. När verktyget rapporterar en överträdelse är det med stor sannolikhet ett faktiskt problem.
+
+## HTTP- och TLS-headeranalys
+
+Den tredje komponenten inspekterar er servers svarsheaders och SSL/TLS-konfiguration. Det kräver inte att sidan laddas i en webbläsare, så den körs parallellt med de andra två analyserna.
+
+Vi kontrollerar:
+
+- **Content Security Policy (CSP)** kvalitet och om alltför tillåtande policyer (som `unsafe-inline` eller `unsafe-eval`) förekommer
+- **HSTS (HTTP Strict Transport Security)** konfiguration inklusive `max-age`-värde och förekomst av `includeSubDomains`
+- **Säkerhetsheaders** inklusive X-Frame-Options, X-Content-Type-Options, Referrer-Policy och Permissions-Policy
+- **Serverexponerings-headers** som kan avslöja teknologiversioner för potentiella angripare
+- **SSL/TLS-certifikats** giltighet och förtroendekedjas status
+
+Dessa headers är ert första försvarslinje mot vanliga webbattacker. Saknade eller felkonfigurerade headers lämnar er webbplats och era besökare exponerade.
+
+## Hur vi poängsätter resultat
+
+Var och en av de sex kategorierna får ett betyg från 0 till 100.
+
+**Checklistbaserade kategorier** (prestanda, SEO, juridisk, säkerhet, moderna standarder) använder en fast uppsättning kontroller. Varje kontroll returnerar godkänd, varning eller underkänd, och kategoribetyget är ett viktat genomsnitt.
+
+**Tillgänglighet** använder en avdragsmodell. Betyget startar på 100 och poäng dras av för varje överträdelse baserat på allvarlighetsgrad:
+
+- Kritisk: -15 poäng
+- Allvarlig: -10 poäng
+- Måttlig: -5 poäng
+- Mindre: -2 poäng
+
+Det sammanlagda betyget är ett viktat genomsnitt över alla sex kategorier:
+
+- Prestanda: 20%
+- SEO: 20%
+- Tillgänglighet: 20%
+- Juridisk efterlevnad: 20%
+- Säkerhet: 10%
+- Moderna standarder: 10%
+
+## Vad betygen betyder
+
+- **90 till 100 (grönt):** Bra. Kategorin uppfyller eller överträffar gällande standarder.
+- **50 till 89 (orange):** Behöver uppmärksamhet. Det finns problem som bör åtgärdas.
+- **0 till 49 (rött):** Betydande problem. Omedelbar åtgärd rekommenderas.
+
+Skanningen är utformad för att visa verkliga, åtgärdbara problem. Vi blåser inte upp betyg för att få resultat att se bättre ut, och vi döljer inte fynd för att undvika att oroa er. Rapporten visar vad verktygen hittade, poängsatt efter hur mycket varje fynd påverkar er webbplats.
+
+## Källor
+
+- [Lighthouse](https://developer.chrome.com/docs/lighthouse) - Googles granskningsverktyg för webben (öppen källkod)
+- [axe-core](https://github.com/dequelabs/axe-core) - Deque Systems testmotor för tillgänglighet
+- [Playwright](https://playwright.dev/) - Ramverk för webbläsarautomatisering av Microsoft
+
+[Kör en kostnadsfri skanning av er webbplats](/)

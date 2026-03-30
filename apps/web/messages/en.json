@@ -6,7 +6,15 @@
   "nav": {
     "scanCta": "Free scan",
     "skipToContent": "Skip to content",
-    "primaryNav": "Main navigation"
+    "primaryNav": "Main navigation",
+    "resources": "Resources",
+    "accessibility": "Accessibility",
+    "accessibilityDescription": "EU Accessibility Act, WCAG 2.1 AA, and what it means for your website",
+    "privacyCompliance": "Privacy & GDPR",
+    "privacyComplianceDescription": "Cookie consent, tracking rules, and how IMY enforces compliance",
+    "howScanWorks": "How the Scan Works",
+    "howScanWorksDescription": "Lighthouse, axe-core, and HTTP analysis under the hood",
+    "mobileMenu": "Open menu"
   },
   "hero": {
     "headline": "Get a free health check of your website",
@@ -127,7 +135,7 @@
   "compliance": {
     "pretitle": "ACCESSIBILITY",
     "title": "The EU Accessibility Act is law",
-    "description": "Since June 2025, businesses with 10+ employees or \u20ac2M+ turnover must meet WCAG 2.1 AA. Non-compliance means fines up to SEK 10M in Sweden. Most Swedish businesses don't know this applies to them yet.",
+    "description": "Since June 2025, most businesses above micro-enterprise size must meet EU accessibility requirements. Non-compliance means fines up to SEK 10M in Sweden. Most Swedish businesses don't know this applies to them yet.",
     "stat1": {
       "value": "SEK 10M",
       "label": "Maximum fine in Sweden for non-compliance"
@@ -140,7 +148,7 @@
       "value": "10+ / \u20ac2M+",
       "label": "Employees or annual turnover threshold for enforcement"
     },
-    "cta": "Check your compliance for free"
+    "cta": "Read more"
   },
   "gdpr": {
     "pretitle": "PRIVACY",
@@ -158,7 +166,7 @@
       "value": "Symmetry",
       "label": "Rejecting cookies must be as easy as accepting them"
     },
-    "cta": "Scan your site for cookie issues"
+    "cta": "Read more"
   },
   "faq": {
     "pretitle": "FAQ",
@@ -195,15 +203,22 @@
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
     "columnLegal": "Legal",
+    "columnResources": "Resources",
     "columnLanguage": "Language",
     "privacy": "Privacy Policy",
     "cookiePolicy": "Cookie Policy",
     "cookiePreferences": "Cookie Preferences",
-    "switchLanguage": "Switch language to Svenska"
+    "switchLanguage": "Switch language to Svenska",
+    "accessibility": "Accessibility",
+    "privacyCompliance": "Privacy & GDPR",
+    "howScanWorks": "How the Scan Works"
   },
   "notFound": {
     "message": "This page does not exist.",
     "backHome": "Back to homepage"
+  },
+  "content": {
+    "backHome": "\u2190 Back to Vivotiv"
   },
   "legal": {
     "backHome": "\u2190 Back to Vivotiv"

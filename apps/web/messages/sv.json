@@ -6,7 +6,15 @@
   "nav": {
     "scanCta": "Gratis analys",
     "skipToContent": "Hoppa till innehåll",
-    "primaryNav": "Huvudnavigering"
+    "primaryNav": "Huvudnavigering",
+    "resources": "Resurser",
+    "accessibility": "Tillgänglighet",
+    "accessibilityDescription": "EU:s tillgänglighetsdirektiv, WCAG 2.1 AA och vad det innebär för er webbplats",
+    "privacyCompliance": "Integritet & GDPR",
+    "privacyComplianceDescription": "Cookiesamtycke, spårningsregler och hur IMY övervakar efterlevnad",
+    "howScanWorks": "Hur skanningen fungerar",
+    "howScanWorksDescription": "Lighthouse, axe-core och HTTP-analys under huven",
+    "mobileMenu": "Öppna meny"
   },
   "hero": {
     "headline": "F\u00e5 en gratis h\u00e4lsokontroll av din webbplats",
@@ -127,7 +135,7 @@
   "compliance": {
     "pretitle": "TILLG\u00c4NGLIGHET",
     "title": "EU:s tillg\u00e4nglighetsdirektiv \u00e4r lag",
-    "description": "Sedan juni 2025 m\u00e5ste f\u00f6retag med 10+ anst\u00e4llda eller \u20ac2M+ i oms\u00e4ttning uppfylla WCAG 2.1 AA. Bristande efterlevnad inneb\u00e4r b\u00f6ter upp till 10 miljoner SEK i Sverige. De flesta svenska f\u00f6retag vet inte \u00e4n att det g\u00e4ller dem.",
+    "description": "Sedan juni 2025 m\u00e5ste alla utom de minsta f\u00f6retagen uppfylla EU:s tillg\u00e4nglighetskrav. Bristande efterlevnad inneb\u00e4r b\u00f6ter upp till 10 miljoner SEK i Sverige. De flesta svenska f\u00f6retag vet inte \u00e4n att det g\u00e4ller dem.",
     "stat1": {
       "value": "10 Mkr",
       "label": "Maximala b\u00f6ter i Sverige f\u00f6r bristande efterlevnad"
@@ -140,7 +148,7 @@
       "value": "10+ / \u20ac2M+",
       "label": "Anst\u00e4llda eller \u00e5rsoms\u00e4ttning f\u00f6r att lagen ska g\u00e4lla"
     },
-    "cta": "Kontrollera din efterlevnad gratis"
+    "cta": "Läs mer"
   },
   "gdpr": {
     "pretitle": "INTEGRITET",
@@ -158,7 +166,7 @@
       "value": "Symmetri",
       "label": "Att avvisa cookies m\u00e5ste vara lika enkelt som att acceptera"
     },
-    "cta": "Skanna din sida efter cookieproblem"
+    "cta": "Läs mer"
   },
   "faq": {
     "pretitle": "FAQ",
@@ -195,15 +203,22 @@
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
     "columnLegal": "Juridiskt",
+    "columnResources": "Resurser",
     "columnLanguage": "Spr\u00e5k",
     "privacy": "Integritetspolicy",
     "cookiePolicy": "Cookiepolicy",
     "cookiePreferences": "Cookieinst\u00e4llningar",
-    "switchLanguage": "Byt spr\u00e5k till English"
+    "switchLanguage": "Byt spr\u00e5k till English",
+    "accessibility": "Tillgänglighet",
+    "privacyCompliance": "Integritet & GDPR",
+    "howScanWorks": "Hur skanningen fungerar"
   },
   "notFound": {
     "message": "Den h\u00e4r sidan finns inte.",
     "backHome": "Tillbaka till startsidan"
+  },
+  "content": {
+    "backHome": "\u2190 Tillbaka till Vivotiv"
   },
   "legal": {
     "backHome": "\u2190 Tillbaka till Vivotiv"

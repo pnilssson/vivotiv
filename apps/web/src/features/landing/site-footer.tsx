@@ -35,6 +35,19 @@ export function SiteFooter() {
 
         <div className="grid grid-cols-1 gap-x-24 gap-y-8 sm:grid-cols-3">
           <div className="flex flex-col gap-3">
+            <span className="text-sm font-medium">{t("columnResources")}</span>
+            <Link href="/accessibility" className={linkClasses}>
+              {t("accessibility")}
+            </Link>
+            <Link href="/privacy-compliance" className={linkClasses}>
+              {t("privacyCompliance")}
+            </Link>
+            <Link href="/how-scan-works" className={linkClasses}>
+              {t("howScanWorks")}
+            </Link>
+          </div>
+
+          <div className="flex flex-col gap-3">
             <span className="text-sm font-medium">{t("columnLegal")}</span>
             <Link href="/privacy" className={linkClasses}>
               {t("privacy")}
