@@ -1,0 +1,109 @@
+---
+title: "Checklista för webbplatsefterlevnad"
+description: "En praktisk checklista med lagkrav och tekniska krav för företagswebbplatser i Sverige. Täcker GDPR, tillgänglighet, cookie-samtycke, säkerhet och mer."
+lastUpdated: "Senast uppdaterad mars 2026"
+family: "compliance"
+localeSlug: "checklista-webbplats-efterlevnad"
+relatedChecks: ["cookie-banner", "reject-button", "pre-consent-scripts", "pre-consent-cookies", "privacy-policy", "cookie-policy", "accessibility", "csp", "hsts", "ssl-certificate", "server-exposure", "powered-by-exposure"]
+relatedSlugs: ["privacy-compliance", "cookie-consent-requirements", "accessibility", "website-security-basics"]
+---
+
+Svenska företag som driver webbplatser måste följa EU-regler och nationell lagstiftning inom integritet, tillgänglighet, cookie-samtycke och säkerhet. Brister inom något av dessa områden medför ekonomisk risk: [IMY](https://www.imy.se/) kan utfärda GDPR-böter på upp till 20 miljoner EUR, [PTS](https://pts.se/) kan bötfälla tillgänglighetsbrister med upp till 10 miljoner SEK, och den nya [cybersäkerhetslagen (SFS 2025:1506)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/cybersakerhetslag-20251506_sfs-2025-1506/) inför sanktioner för bristfälliga säkerhetsåtgärder. Denna checklista täcker de krav som gäller för de flesta företagswebbplatser, med länkar till detaljerade guider för varje område.
+
+## Integritet och GDPR
+
+[GDPR](https://eur-lex.europa.eu/legal-content/SV/TXT/HTML/?uri=CELEX:32016R0679) har gällt sedan 2018, men tillsynen i Sverige har skärpts. IMY mottog rekordmånga [12 276 anmälningar om personuppgiftsincidenter](https://www.imy.se/nyheter/rekordmanga-personuppgiftsincidenter-under-2025/) under 2025, nästan dubbelt så många som föregående år.
+
+Er webbplats måste:
+
+- **Ha en integritetspolicy** som förklarar vilka personuppgifter ni samlar in, varför, vem som behandlar dem, hur länge de lagras och hur besökare kan utöva sina rättigheter (tillgång, radering, portabilitet)
+- **Ha en cookiepolicy** som listar alla cookies, deras syfte och lagringstid
+- **Inte ladda spårningsskript innan samtycke.** Google Analytics, Meta Pixel, annonsskript och liknande verktyg måste vara blockerade tills besökaren aktivt accepterat
+- **Visa företagsidentifikation** med företagsnamn, organisationsnummer, fysisk adress och kontaktuppgifter (krav enligt [e-handelsdirektivet](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX:32000L0031) och lagen om elektronisk handel)
+
+För en detaljerad genomgång av GDPR-kraven, se vår [guide om GDPR och cookieefterlevnad](/privacy-compliance).
+
+## Cookie-samtycke
+
+Cookie-samtycke handlar om mer än att ha en banner. [ePrivacy-direktivet](https://eur-lex.europa.eu/legal-content/SV/TXT/HTML/?uri=CELEX:32002L0058) och [LEK (SFS 2022:482)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2022482-om-elektronisk-kommunikation_sfs-2022-482/) kräver aktivt, informerat samtycke innan icke-nödvändiga cookies eller skript laddas.
+
+Er cookie-implementation måste:
+
+- **Visa avvisningsalternativet lika framträdande som acceptknappen.** Samma lager i bannern, samma storlek, jämförbar kontrast
+- **Blockera alla icke-nödvändiga skript tills samtycke ges.** Det inkluderar analys, annonspixlar, chattwidgetar och inbäddningar från sociala medier
+- **Faktiskt sluta sätta cookies när en besökare avvisar.** Verifiera att det fungerar genom att kontrollera med webbläsarens utvecklarverktyg, inte bara lita på att knappen finns
+- **Respektera besökarens val vid återbesök.** Lagra samtyckesbeslutet och fråga inte igen förrän det har löpt ut
+
+[IMY utfärdade reprimander](https://www.imy.se/nyheter/imy-riktar-kritik-mot-foretags-kakbanners/) mot svenska företag i april 2025 specifikt för vilseledande cookie-banners, bland annat dolda avvisningsalternativ och förkryssade marknadsföringscookies.
+
+För jämförelser av samtyckesplattformar, avvisningsknappens utformning och LEK-specifika krav, se vår [guide om krav på cookie-samtycke](/cookie-consent-requirements).
+
+## Tillgänglighet
+
+[EU:s tillgänglighetsdirektiv](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX:32019L0882) är verkställbart sedan den 28 juni 2025 och kräver WCAG 2.1 AA-efterlevnad för digitala tjänster som omfattas. I Sverige [inledde PTS tillsyn av e-handelswebbplatser](https://pts.se/digital-inkludering/lagen-om-vissa-produkters-och-tjansters-tillganglighet/) i oktober 2025.
+
+Er webbplats måste:
+
+- **Vara fullt navigerbar med tangentbord.** Alla interaktiva element (knappar, formulär, länkar, menyer) måste fungera utan mus
+- **Uppfylla kontrastkrav.** 4,5:1 för brödtext, 3:1 för stor text
+- **Ha alt-text på alla bilder.** Beskrivande text för innehållsbilder, tom (`alt=""`) för dekorativa
+- **Använda semantisk HTML.** Korrekt rubrikhierarki (`h1` till `h6`), formuläretiketter och landmärkesregioner (`nav`, `main`, `footer`)
+- **Ha textning på videoinnehåll** och syntolkning vid behov
+
+Undantaget för mikroföretag gäller om ert företag har både färre än 10 anställda och under 2 miljoner EUR i omsättning. Om ni överstiger endera tröskeln gäller direktivet.
+
+För tillsynsdetaljer, WCAG-kriterier och affärsnyttan, se vår [tillgänglighetsguide](/accessibility).
+
+## Säkerhet
+
+[GDPR artikel 32](https://eur-lex.europa.eu/legal-content/SV/TXT/HTML/?uri=CELEX:32016R0679) kräver "lämpliga tekniska och organisatoriska åtgärder" för att skydda personuppgifter. [IMY bötfällde Trygg-Hansa med 35 miljoner kronor](https://www.imy.se/nyheter/sanktionsavgift-pa-35-miljoner-mot-trygg-hansa/) 2023 efter att en sårbarhet exponerade 650 000 kunders uppgifter.
+
+Er webbplats måste:
+
+- **Använda HTTPS med ett giltigt TLS-certifikat.** TLS 1.3 är nuvarande standard. TLS 1.0 och 1.1 är utfasade
+- **Ha säkerhetsheaders.** Som minst: HSTS, X-Content-Type-Options och Referrer-Policy. Helst även CSP, X-Frame-Options och Permissions-Policy
+- **Inte exponera serverversion.** Dölj versionsnummer i `Server`- och `X-Powered-By`-headers
+- **Hålla CMS, plugins och teman uppdaterade.** Opatchade plugins är den vanligaste attackvektorn för små företags webbplatser ([96 % av WordPress-sårbarheterna](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/) 2025 fanns i plugins och teman)
+
+För detaljer om säkerhetsheaders, TLS-krav och aktuella sårbarhetsdata, se vår [guide om webbplatssäkerhet](/website-security-basics).
+
+## SEO-grunder
+
+SEO är inte ett lagkrav, men det är ett affärskrav. Ungefär hälften av all webbplatstrafik kommer från organisk sökning. Tekniska SEO-problem hindrar sökmotorer från att indexera er webbplats korrekt, vilket innebär att potentiella kunder aldrig hittar er.
+
+Er webbplats bör:
+
+- **Ha en XML-sitemap** inskickad till Google Search Console
+- **Ha unika titlar och metabeskrivningar** på varje sida
+- **Använda strukturerad data** (Schema.org JSON-LD) för er verksamhetstyp, produkter eller tjänster
+- **Vara mobilanpassad.** Google använder mobilversionen av er webbplats som primär version för indexering och rankning
+
+## Prestanda
+
+Laddningstid påverkar både besökarupplevelsen och synligheten i sökmotorer. Sidor som laddas inom 2 sekunder har en genomsnittlig avvisningsfrekvens på 9 %. Vid 5 sekunder stiger den till 38 %.
+
+Er webbplats bör:
+
+- **Uppfylla Core Web Vitals-tröskelvärdena.** LCP (Largest Contentful Paint) under 2,5 sekunder, INP (Interaction to Next Paint) under 200 millisekunder, CLS (Cumulative Layout Shift) under 0,1
+- **Optimera bilder.** Använd moderna format (WebP, AVIF) och servera rätt dimensioner
+- **Minimera renderingsblockerande resurser.** Skjut upp icke-kritisk JavaScript och CSS som blockerar den initiala sidladdningen
+- **Använda webbläsarcachning** för statiska resurser som bilder, typsnitt och stilmallar
+
+## Kör hela kontrollen automatiskt
+
+Att manuellt verifiera varje punkt i denna checklista tar tid och teknisk kunskap. Vivotiv-skanningen automatiserar processen: den kontrollerar er webbplats inom alla sex kategorier (integritet, cookies, tillgänglighet, säkerhet, SEO och prestanda) och returnerar specifika fynd med förklaringar i klartext och åtgärdsförslag.
+
+[Kör en kostnadsfri kontroll av er webbplats](/)
+
+## Källor
+
+- [GDPR (förordning 2016/679)](https://eur-lex.europa.eu/legal-content/SV/TXT/HTML/?uri=CELEX:32016R0679) - EUR-Lex
+- [ePrivacy-direktivet (2002/58/EG)](https://eur-lex.europa.eu/legal-content/SV/TXT/HTML/?uri=CELEX:32002L0058) - EUR-Lex
+- [EU:s tillgänglighetsdirektiv (2019/882)](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX:32019L0882) - EUR-Lex
+- [E-handelsdirektivet (2000/31/EG)](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX:32000L0031) - EUR-Lex
+- [Cybersäkerhetslag (SFS 2025:1506)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/cybersakerhetslag-20251506_sfs-2025-1506/) - Riksdagen
+- [IMY: Rekordmånga personuppgiftsincidenter under 2025](https://www.imy.se/nyheter/rekordmanga-personuppgiftsincidenter-under-2025/) - IMY
+- [IMY: Tillsyn av cookie-banners april 2025](https://www.imy.se/nyheter/imy-riktar-kritik-mot-foretags-kakbanners/) - IMY
+- [IMY: Sanktionsavgift mot Trygg-Hansa](https://www.imy.se/nyheter/sanktionsavgift-pa-35-miljoner-mot-trygg-hansa/) - IMY
+- [PTS: Tillsyn av tillgänglighet](https://pts.se/digital-inkludering/lagen-om-vissa-produkters-och-tjansters-tillganglighet/) - PTS
+- [State of WordPress Security in 2026](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/) - Patchstack

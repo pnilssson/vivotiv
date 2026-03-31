@@ -9,6 +9,16 @@ const nextConfig: NextConfig = {
   experimental: {
     clientTraceMetadata: ["sentry-trace", "baggage"],
   },
+  async redirects() {
+    return [
+      {
+        source: "/guides",
+        destination: "/guider",
+        permanent: true,
+        has: [{ type: "host", value: "vivotiv.se" }],
+      },
+    ];
+  },
   async headers() {
     return [
       {

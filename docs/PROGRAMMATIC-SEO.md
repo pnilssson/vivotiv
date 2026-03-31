@@ -5,18 +5,18 @@
 | Phase | Status | Description |
 |-------|--------|-------------|
 | 0 | Done | Infrastructure: content model, sitemap, localized slugs, OG tags, JSON-LD |
-| 1 | Not started | Compliance guides (3 new pages, both locales) |
+| 1 | Done | Compliance guides (3 new pages, both locales) |
 | 2 | Not started | Action and problem pages (5 pages, both locales) |
 | 3 | Not started | CMS-specific pages (3 pages, both locales) |
 | 4 | Not started | Issue explainer pages (8 pages, both locales) |
 | 5 | Not started | Comparison and tool pages (5 pages, both locales) |
 | 6 | Not started | Measurement, iteration, content refresh |
 
-**Current state:** Content model extended. Sitemap includes all content pages with hreflang. Localized slug resolution works. Guides hub page live. Breadcrumbs and Article/BreadcrumbList JSON-LD on all content pages. ScanCta MDX component registered. Existing pages reclassified with new frontmatter.
+**Current state:** Phase 1 complete. All 5 compliance family pages live in both locales (accessibility, privacy-compliance, cookie-consent-requirements, website-security-basics, website-compliance-checklist). Cross-links updated across all compliance pages. Sitemap, guides hub, and breadcrumbs working for all pages.
 
 **Total planned:** 24 new pages across 5 families. 2 existing pages (accessibility, privacy-compliance) reclassified as compliance. 1 existing page (how-scan-works) stays standalone.
 
-**Next step:** Phase 1.
+**Next step:** Phase 2.
 
 ### Phase 0 implementation notes
 

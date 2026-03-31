@@ -1,0 +1,115 @@
+---
+title: "Säkerhetskrav för företagswebbplatser"
+description: "GDPR kräver tekniska säkerhetsåtgärder för webbplatser som behandlar personuppgifter. Läs vad säkerhetsheaders, HTTPS och serverhantering skyddar mot."
+lastUpdated: "Senast uppdaterad mars 2026"
+family: "compliance"
+localeSlug: "sakerhetskrav-hemsida"
+relatedChecks: ["csp", "hsts", "x-frame-options", "x-content-type-options", "referrer-policy", "permissions-policy", "server-exposure", "powered-by-exposure", "ssl-certificate"]
+relatedSlugs: ["privacy-compliance", "cookie-consent-requirements", "website-compliance-checklist"]
+---
+
+Webbsäkerhet för företag i EU är en rättslig skyldighet, inte en teknisk bonus. [GDPR artikel 32](https://eur-lex.europa.eu/legal-content/SV/TXT/HTML/?uri=CELEX:32016R0679) kräver att organisationer som behandlar personuppgifter vidtar "lämpliga tekniska och organisatoriska åtgärder" för att skydda dem. För webbplatser innebär det HTTPS med ett giltigt TLS-certifikat, säkerhetsheaders som styr hur webbläsare hanterar ert innehåll, och serverkonfigurationer som inte exponerar er teknikstack. [IMY bötfällde Trygg-Hansa med 35 miljoner kronor](https://www.imy.se/nyheter/sanktionsavgift-pa-35-miljoner-mot-trygg-hansa/) 2023 efter att en sårbarhet i deras webbapplikation lämnade 650 000 kunders person- och hälsouppgifter tillgängliga för obehöriga i över två år.
+
+För integritetskrav och cookies, se vår [guide om GDPR och cookieefterlevnad](/privacy-compliance). För cookie-samtycke specifikt, se vår [guide om krav på cookie-samtycke](/cookie-consent-requirements).
+
+## Varför det spelar roll för mindre företag
+
+Webbattacker drabbar mindre företag oproportionerligt hårt. [IBM Cost of a Data Breach Report 2025](https://www.ibm.com/reports/data-breach) anger den globala genomsnittskostnaden för ett dataintrång till 4,44 miljoner USD, men även mindre incidenter kostar små och medelstora företag uppskattningsvis 120 000-164 000 USD per intrång i sanering, juridiska kostnader, kundnotifiering och skadat förtroende.
+
+I EU förstärks den finansiella risken av GDPR:s sanktioner. Böter för bristande säkerhetsåtgärder kan uppgå till 10 miljoner EUR eller 2 % av den globala årsomsättningen. IMY mottog rekordmånga [12 276 anmälningar om personuppgiftsincidenter](https://www.imy.se/nyheter/rekordmanga-personuppgiftsincidenter-under-2025/) under 2025, nästan dubbelt så många som föregående år.
+
+Sveriges [cybersäkerhetslag (SFS 2025:1506)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/cybersakerhetslag-20251506_sfs-2025-1506/), som trädde i kraft den 15 januari 2026, implementerar [EU:s NIS2-direktiv](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX:32022L2555). Lagen riktar sig i första hand till organisationer med minst 50 anställda eller 10 miljoner EUR i omsättning, men den inför krav på leveranskedjans säkerhet. Om ert företag levererar digitala tjänster till en större organisation kan de behöva verifiera att ni uppfyller grundläggande säkerhetskrav som del av sin egen efterlevnad.
+
+## HTTPS och TLS: grundkravet
+
+HTTPS krypterar anslutningen mellan besökarens webbläsare och er server. Utan HTTPS skickas formulärdata, inloggningsuppgifter och all information besökaren anger i klartext över nätverket, läsbar för alla däremellan.
+
+**Vad ni behöver ha på plats:**
+
+- **TLS 1.3** är nuvarande standard. TLS 1.0 och 1.1 är utfasade och anses inte längre säkra. [Microsoft avvecklade TLS 1.0/1.1 för molntjänster](https://learn.microsoft.com/en-us/lifecycle/announcements/tls-support-ending-10-31-2024) i början av 2026. TLS 1.2 godtas fortfarande med starka krypteringssviter men fasas ut.
+- **Certifikatets giltighet spelar roll.** Ett utgånget certifikat utlöser helsidevarningar i webbläsaren som skrämmer bort besökare. De flesta webbhotell och certifikatutgivare erbjuder automatisk förnyelse.
+- **Omdirigera HTTP till HTTPS.** Att ha ett certifikat installerat räcker inte om er webbplats fortfarande serverar sidor via HTTP.
+
+Google Chrome rullar successivt ut HTTPS-läge under 2026, vilket innebär att besökare kommer att se en varning innan HTTP-sidor laddas. Webbplatser utan HTTPS förlorar trafik direkt.
+
+## Säkerhetsheaders: instruktioner till webbläsaren
+
+Säkerhetsheaders är HTTP-svarsheaders som talar om för webbläsare hur ert innehåll ska hanteras. De förhindrar vanliga attacker utan att kräva ändringar i er applikationskod. Trots deras effektivitet saknas de på de flesta webbplatser: bara 27,3 % av de 10 000 största webbplatserna använder Content Security Policy och 51,7 % använder HSTS ([AppSecSanta, februari 2026](https://appsecsanta.com/research/application-security-statistics)).
+
+### Content Security Policy (CSP)
+
+CSP styr vilka skript, stilmallar, bilder och resurser som får köras på era sidor. Utan CSP kan en angripare som lyckas injicera kod på er webbplats (via ett formulär, en komprometterad plugin eller ett tredjepartsskript) exekvera den med full tillgång till besökarnas sessioner och data.
+
+Cross-site scripting (XSS) stod för [53,3 % av alla WordPress-sårbarheter](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/) som upptäcktes under 2025. En korrekt konfigurerad CSP blockerar de flesta sådana attacker.
+
+**Vad bra ser ut:** En policy som specificerar exakt vilka domäner som får servera skript, undviker `unsafe-inline` och `unsafe-eval`, och använder ett rapporteringsdirektiv för att fånga överträdelser. Börja i report-only-läge för att undvika att oavsiktligt bryta er webbplats.
+
+### HTTP Strict Transport Security (HSTS)
+
+HSTS talar om för webbläsare att alltid ansluta via HTTPS, även om besökaren skriver `http://` eller klickar på en HTTP-länk. Utan HSTS kan en angripare på samma nätverk (exempelvis publikt Wi-Fi) fånga upp den initiala HTTP-förfrågan innan omdirigeringen till HTTPS hinner ske.
+
+**Vad bra ser ut:** `max-age=31536000; includeSubDomains`. Värdet bör vara minst ett år (31 536 000 sekunder). Lägg bara till `preload` om ni är säkra på att alla subdomäner serveras via HTTPS.
+
+### X-Content-Type-Options
+
+Hindrar webbläsare från att gissa filtypen på ett svar. Utan denna header kan en webbläsare tolka en textfil som körbar kod, vilket möjliggör vissa injektionsattacker. Lösningen är ett enda headervärde: `nosniff`. Ingen konfiguration behövs, ingen risk att bryta något.
+
+### Referrer-Policy
+
+Styr hur mycket URL-information er webbplats delar när besökare klickar på utgående länkar. Utan den skickas hela sidans URL (inklusive eventuella känsliga parametrar) till destinationen. Sätt till `strict-origin-when-cross-origin` för att enbart dela domännamnet med externa sajter och behålla fullständiga URL:er för navigering inom er egen webbplats.
+
+### X-Frame-Options
+
+Förhindrar andra webbplatser från att bädda in era sidor i en dold ram. Utan den kan angripare lägga er webbplats osynligt ovanpå sin egen och lura besökare att klicka på knappar de inte ser (clickjacking). Sätt till `DENY` eller `SAMEORIGIN`. CSP:s `frame-ancestors`-direktiv är den moderna ersättaren, men X-Frame-Options ger bakåtkompatibilitet med äldre webbläsare.
+
+### Permissions-Policy
+
+Styr vilka webbläsarfunktioner er webbplats kan komma åt: kamera, mikrofon, geolokalisering och betal-API:er. Utan den kan ett komprometterat tredjepartsskript begära åtkomst till känsliga enhetsfunktioner. Inaktivera allt ni inte använder: `camera=(), microphone=(), geolocation=()`.
+
+## Exponering av serverteknik
+
+När er server svarar med headers som `Server: Apache/2.4.41` eller `X-Powered-By: PHP/7.4` berättar den för alla exakt vilken programvara och version ni kör. Automatiserade skannrar indexerar kontinuerligt dessa headers över hela internet. Angripare söker efter servrar med specifika versioner som har kända sårbarheter och lanserar riktade attacker inom timmar efter att en ny sårbarhet offentliggörs.
+
+Exponering av serverteknik faller under kategorin säkerhetsfelkonfiguration i [OWASP Top 10](https://owasp.org/Top10/), en av de vanligaste sårbarhetskategorierna. Lösningen är enkel: konfigurera er server att inte visa versionsinformation i svarsheaders.
+
+Vivotiv-skanningen kontrollerar två typer av exponering:
+
+- **Serverversion:** `Server`-headern som visar ert webbserverprogram och versionsnummer
+- **Teknikstack:** Headers som `X-Powered-By`, `X-AspNet-Version` eller `X-Generator` som avslöjar ert applikationsramverk
+
+## Föråldrade CMS-installationer
+
+Om er webbplats körs på ett innehållshanteringssystem som WordPress beror er säkerhet på att hela stacken hålls uppdaterad: kärnprogramvara, teman och varje plugin.
+
+[Patchstack dokumenterade 11 334 nya sårbarheter](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/) i WordPress-ekosystemet under 2025, en ökning med 42 % jämfört med föregående år. 96 % fanns i plugins och teman, inte i WordPress kärna. Problemet förvärras av att mediantiden för att installera kritiska uppdateringar är 14 dagar, medan angripare börjar skanna efter nyupptäckta sårbarheter inom timmar.
+
+Under slutet av 2025 ledde kritiska sårbarheter i populära plugins till massexploatering. En sårbarhet för fjärrkodexekvering i Sneeit Framework (CVSS 9.8) utnyttjades samma dag som den offentliggjordes, med över 131 000 blockerade attackförsök de första veckorna. En sårbarhet för behörighetseskalering i ACF Extended (januari 2026) påverkade över 100 000 webbplatser och gav oautentiserade angripare möjlighet att skapa administratörskonton.
+
+Slutsatsen är inte att undvika CMS-plattformar utan att underhålla dem: uppdatera regelbundet, ta bort oanvända plugins och teman, och utgå inte från att en plugins popularitet garanterar dess säkerhet.
+
+## Hur skanningen kontrollerar er webbplats säkerhet
+
+Vivotiv-skanningen inspekterar er webbplats HTTP-svarsheaders, validerar ert TLS-certifikat och detekterar exponering av serverteknik. Den kontrollerar:
+
+- HTTPS med ett giltigt TLS-certifikat som inte har löpt ut (flaggar certifikat som löper ut inom 30 dagar)
+- TLS-protokollversion (varnar om er server fortfarande accepterar TLS 1.0 eller 1.1)
+- Alla sex säkerhetsheaders: CSP, HSTS, X-Content-Type-Options, Referrer-Policy, X-Frame-Options och Permissions-Policy
+- Serverversionsinformation i `Server`-headern
+- Teknikstackexponering via `X-Powered-By` och liknande headers
+
+Varje kontroll returnerar godkänt, varning eller underkänt med en förklaring i klartext om vad problemet innebär och hur det åtgärdas.
+
+[Kontrollera er webbplats säkerhet gratis](/)
+
+## Källor
+
+- [GDPR artikel 32: Säkerhet i samband med behandling](https://eur-lex.europa.eu/legal-content/SV/TXT/HTML/?uri=CELEX:32016R0679) - EUR-Lex
+- [IMY: Sanktionsavgift på 35 miljoner mot Trygg-Hansa](https://www.imy.se/nyheter/sanktionsavgift-pa-35-miljoner-mot-trygg-hansa/) - IMY
+- [IMY: Rekordmånga personuppgiftsincidenter under 2025](https://www.imy.se/nyheter/rekordmanga-personuppgiftsincidenter-under-2025/) - IMY
+- [NIS2-direktivet (2022/2555)](https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX:32022L2555) - EUR-Lex
+- [Cybersäkerhetslag (SFS 2025:1506)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/cybersakerhetslag-20251506_sfs-2025-1506/) - Riksdagen
+- [IBM Cost of a Data Breach Report 2025](https://www.ibm.com/reports/data-breach) - IBM Security
+- [OWASP Top 10](https://owasp.org/Top10/) - OWASP Foundation
+- [OWASP HTTP Headers Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html) - OWASP
+- [State of WordPress Security in 2026](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/) - Patchstack
+- [Application Security Statistics 2026](https://appsecsanta.com/research/application-security-statistics) - AppSecSanta

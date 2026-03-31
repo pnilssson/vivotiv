@@ -128,7 +128,7 @@ export default async function ContentPage({ params }: ContentPageProps) {
             "@type": "ListItem",
             position: 2,
             name: locale === "sv" ? "Guider" : "Guides",
-            item: `${domain}/guides`,
+            item: `${domain}${locale === "sv" ? "/guider" : "/guides"}`,
           },
           {
             "@type": "ListItem",

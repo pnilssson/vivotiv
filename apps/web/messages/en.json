@@ -217,7 +217,9 @@
     "howScanWorks": "How the Scan Works",
     "guides": "Guides",
     "columnCompliance": "Compliance",
-    "cookieConsent": "Cookie Consent"
+    "cookieConsent": "Cookie Consent",
+    "websiteSecurity": "Website Security",
+    "complianceChecklist": "Compliance Checklist"
   },
   "notFound": {
     "message": "This page does not exist.",
@@ -236,8 +238,9 @@
     "button": "Start free scan"
   },
   "guides": {
-    "title": "Guides",
-    "description": "Resources on website compliance, performance, security, and audit tools.",
+    "pretitle": "Guides",
+    "title": "Website Compliance Guides",
+    "description": "Practical guides on GDPR, accessibility, cookie consent, and security for business websites in the EU.",
     "families": {
       "compliance": "Compliance",
       "actions": "Website Problems",

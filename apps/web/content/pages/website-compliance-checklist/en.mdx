@@ -1,0 +1,108 @@
+---
+title: "Website Compliance Checklist for Swedish Businesses"
+description: "A practical checklist of legal and technical requirements for business websites in Sweden. Covers GDPR, accessibility, cookie consent, security, and more."
+lastUpdated: "Last updated March 2026"
+family: "compliance"
+relatedChecks: ["cookie-banner", "reject-button", "pre-consent-scripts", "pre-consent-cookies", "privacy-policy", "cookie-policy", "accessibility", "csp", "hsts", "ssl-certificate", "server-exposure", "powered-by-exposure"]
+relatedSlugs: ["privacy-compliance", "cookie-consent-requirements", "accessibility", "website-security-basics"]
+---
+
+Swedish businesses operating websites must comply with EU and national regulations covering privacy, accessibility, cookie consent, and security. Failing any one of these carries financial risk: [IMY](https://www.imy.se/) can impose GDPR fines up to EUR 20 million, [PTS](https://pts.se/) can fine accessibility violations up to SEK 10 million, and the [Cybersecurity Act (SFS 2025:1506)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/cybersakerhetslag-20251506_sfs-2025-1506/) introduces sanctions for inadequate security measures. This checklist covers the requirements that apply to most business websites, with links to detailed guides for each area.
+
+## Privacy and GDPR
+
+[GDPR](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679) has been in force since 2018, but Swedish enforcement has intensified. IMY received a record [12,276 breach notifications](https://www.imy.se/nyheter/rekordmanga-personuppgiftsincidenter-under-2025/) in 2025, nearly double the previous year.
+
+Your website must:
+
+- **Have a privacy policy** that explains what personal data you collect, why, who processes it, how long it is stored, and how visitors can exercise their rights (access, deletion, portability)
+- **Have a cookie policy** listing all cookies used, their purpose, and their retention period
+- **Not load tracking scripts before consent.** Google Analytics, Meta Pixel, advertising scripts, and similar tools must be blocked until the visitor has actively accepted
+- **Display business identification** including company name, organization number, physical address, and contact details (required under the [E-Commerce Directive](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32000L0031) and Sweden's Lag om elektronisk handel)
+
+For a detailed breakdown of GDPR requirements, see our [GDPR and cookie compliance guide](/privacy-compliance).
+
+## Cookie consent
+
+Cookie consent goes beyond having a banner. The [ePrivacy Directive](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32002L0058) and Sweden's [LEK (SFS 2022:482)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/lag-2022482-om-elektronisk-kommunikation_sfs-2022-482/) require active, informed consent before any non-essential cookies or scripts load.
+
+Your cookie implementation must:
+
+- **Show a reject option as prominently as the accept option.** Same layer of the banner, same size, comparable contrast
+- **Block all non-essential scripts until consent is given.** This includes analytics, advertising pixels, chat widgets, and social media embeds
+- **Actually stop setting cookies when a visitor rejects.** Verify this works by checking with browser developer tools, not just trusting that the button is there
+- **Respect the visitor's choice on return visits.** Store the consent decision and do not re-prompt until it expires
+
+[IMY issued reprimands](https://www.imy.se/nyheter/imy-riktar-kritik-mot-foretags-kakbanners/) to Swedish companies in April 2025 specifically for cookie banner dark patterns, including hidden reject options and pre-checked marketing cookies.
+
+For CMP comparisons, reject button patterns, and LEK specifics, see our [cookie consent requirements guide](/cookie-consent-requirements).
+
+## Accessibility
+
+The [European Accessibility Act](https://eur-lex.europa.eu/eli/dir/2019/882/oj) has been enforceable since June 28, 2025. It requires WCAG 2.1 AA compliance for covered digital services. In Sweden, [PTS began auditing e-commerce websites](https://pts.se/digital-inkludering/lagen-om-vissa-produkters-och-tjansters-tillganglighet/) in October 2025.
+
+Your website must:
+
+- **Be fully navigable by keyboard.** All interactive elements (buttons, forms, links, menus) must work without a mouse
+- **Meet color contrast ratios.** 4.5:1 for normal text, 3:1 for large text
+- **Include alt text on all images.** Descriptive for content images, empty (`alt=""`) for decorative ones
+- **Use semantic HTML.** Proper heading hierarchy (`h1` through `h6`), form labels, and landmark regions (`nav`, `main`, `footer`)
+- **Provide captions for video content** and audio descriptions where needed
+
+The micro-enterprise exemption applies if your business has both fewer than 10 employees and under EUR 2 million in turnover. If you exceed either threshold, the EAA applies.
+
+For enforcement details, WCAG criteria, and the business case, see our [accessibility guide](/accessibility).
+
+## Security
+
+[GDPR Article 32](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679) requires "appropriate technical and organizational measures" to protect personal data. [IMY fined Trygg-Hansa SEK 35 million](https://www.imy.se/en/news/administrative-fine-of-sek-35-million-against-trygg-hansa/) in 2023 after a vulnerability exposed 650,000 customers' data.
+
+Your website must:
+
+- **Use HTTPS with a valid TLS certificate.** TLS 1.3 is the current standard. TLS 1.0 and 1.1 are deprecated
+- **Set security headers.** At minimum: HSTS, X-Content-Type-Options, and Referrer-Policy. Ideally also CSP, X-Frame-Options, and Permissions-Policy
+- **Not expose server version information.** Suppress version numbers in `Server` and `X-Powered-By` response headers
+- **Keep CMS, plugins, and themes updated.** Unpatched plugins are the most common attack vector for small business websites ([96% of WordPress vulnerabilities](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/) in 2025 were in plugins and themes)
+
+For security header details, TLS requirements, and the latest vulnerability data, see our [website security guide](/website-security-basics).
+
+## SEO fundamentals
+
+SEO is not a legal requirement, but it is a business one. Around half of all website traffic comes from organic search. Technical SEO issues prevent search engines from indexing your site properly, which means potential customers never find you.
+
+Your website should:
+
+- **Have an XML sitemap** submitted to Google Search Console
+- **Include unique title tags and meta descriptions** on every page
+- **Use structured data** (Schema.org JSON-LD) for your business type, products, or services
+- **Be mobile-friendly.** Google uses the mobile version of your site as the primary version for indexing and ranking
+
+## Performance
+
+Site speed affects both visitor experience and search visibility. Pages that load within 2 seconds have an average bounce rate of 9%. At 5 seconds, bounce rate jumps to 38%.
+
+Your website should:
+
+- **Meet Core Web Vitals thresholds.** LCP (Largest Contentful Paint) under 2.5 seconds, INP (Interaction to Next Paint) under 200 milliseconds, CLS (Cumulative Layout Shift) under 0.1
+- **Optimize images.** Use modern formats (WebP, AVIF) and serve appropriately sized versions
+- **Minimize render-blocking resources.** Defer non-critical JavaScript and CSS that block the initial page render
+- **Use browser caching** for static assets like images, fonts, and stylesheets
+
+## Run the full check automatically
+
+Manually verifying each item on this checklist takes time and technical knowledge. The Vivotiv scan automates the process: it checks your website across all six categories (privacy, cookies, accessibility, security, SEO, and performance) and returns specific findings with plain-language explanations and remediation guidance.
+
+[Run a free compliance check on your website](/)
+
+## Sources
+
+- [GDPR (Regulation 2016/679)](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679) - EUR-Lex
+- [ePrivacy Directive (2002/58/EC)](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32002L0058) - EUR-Lex
+- [European Accessibility Act (Directive 2019/882)](https://eur-lex.europa.eu/eli/dir/2019/882/oj) - EUR-Lex
+- [E-Commerce Directive (2000/31/EC)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32000L0031) - EUR-Lex
+- [Swedish Cybersecurity Act (SFS 2025:1506)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/cybersakerhetslag-20251506_sfs-2025-1506/) - Riksdagen
+- [IMY: Record breach notifications in 2025](https://www.imy.se/nyheter/rekordmanga-personuppgiftsincidenter-under-2025/) - IMY
+- [IMY: Cookie banner enforcement April 2025](https://www.imy.se/nyheter/imy-riktar-kritik-mot-foretags-kakbanners/) - IMY
+- [IMY: Trygg-Hansa fine](https://www.imy.se/en/news/administrative-fine-of-sek-35-million-against-trygg-hansa/) - IMY
+- [PTS: Accessibility enforcement](https://pts.se/digital-inkludering/lagen-om-vissa-produkters-och-tjansters-tillganglighet/) - PTS
+- [State of WordPress Security in 2026](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/) - Patchstack

@@ -12,6 +12,7 @@ export function Breadcrumbs({ family, title }: BreadcrumbsProps) {
   const t = useTranslations("breadcrumbs");
   const locale = useLocale();
   const isStandalone = !family || family === "standalone";
+  const guidesHref = locale === "sv" ? "/guider" : "/guides";
 
   return (
     <nav
@@ -34,7 +35,7 @@ export function Breadcrumbs({ family, title }: BreadcrumbsProps) {
             </li>
             <li className="!text-muted-foreground">
               <Link
-                href="/guides"
+                href={guidesHref}
                 className="!text-muted-foreground !no-underline transition-colors hover:!text-foreground"
               >
                 {t("guides")}

@@ -13,6 +13,7 @@ export function SiteFooter() {
   const router = useRouter();
   const { openPreferences } = useCookieConsent();
   const year = new Date().getFullYear();
+  const guidesHref = locale === "sv" ? "/guider" : "/guides";
 
   function switchLocale() {
     const next = locale === "sv" ? "en" : "sv";
@@ -52,7 +53,7 @@ export function SiteFooter() {
             <Link href="/how-scan-works" className={linkClasses}>
               {t("howScanWorks")}
             </Link>
-            <Link href="/guides" className={linkClasses}>
+            <Link href={guidesHref} className={linkClasses}>
               {t("guides")}
             </Link>
           </div>
@@ -67,6 +68,12 @@ export function SiteFooter() {
             </Link>
             <Link href="/cookie-consent-requirements" className={linkClasses}>
               {t("cookieConsent")}
+            </Link>
+            <Link href="/website-security-basics" className={linkClasses}>
+              {t("websiteSecurity")}
+            </Link>
+            <Link href="/website-compliance-checklist" className={linkClasses}>
+              {t("complianceChecklist")}
             </Link>
           </div>
 

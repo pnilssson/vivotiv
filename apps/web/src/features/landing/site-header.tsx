@@ -7,7 +7,7 @@ import {
   Scale,
   ShieldCheck,
 } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import {
   NavigationMenu,
@@ -47,6 +47,8 @@ const contentPages = [
 
 export function SiteHeader() {
   const t = useTranslations("nav");
+  const locale = useLocale();
+  const guidesHref = locale === "sv" ? "/guider" : "/guides";
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-sm">
@@ -76,7 +78,7 @@ export function SiteHeader() {
                   <div className="grid w-[480px] grid-cols-[0.8fr_1fr] gap-1 p-1">
                     {/* Left: Featured guides card */}
                     <NavigationMenuLink
-                      render={<Link href="/guides" />}
+                      render={<Link href={guidesHref} />}
                       className="row-span-3 flex h-full flex-col overflow-hidden rounded-md bg-depth-1 hover:bg-depth-2 focus:bg-depth-2"
                     >
                       <div className="flex flex-1 items-center justify-center gap-3 px-4 pt-4">
@@ -154,7 +156,7 @@ export function SiteHeader() {
                   </SheetClose>
                 ))}
                 <SheetClose
-                  render={<Link href="/guides" />}
+                  render={<Link href={guidesHref} />}
                   className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-depth-1 hover:text-foreground"
                 >
                   {t("guides")}

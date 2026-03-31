@@ -1,0 +1,114 @@
+---
+title: "Website Security Requirements for Businesses"
+description: "GDPR requires appropriate security measures for websites handling personal data. Learn what security headers, HTTPS, and server hardening protect against."
+lastUpdated: "Last updated March 2026"
+family: "compliance"
+relatedChecks: ["csp", "hsts", "x-frame-options", "x-content-type-options", "referrer-policy", "permissions-policy", "server-exposure", "powered-by-exposure", "ssl-certificate"]
+relatedSlugs: ["privacy-compliance", "cookie-consent-requirements", "website-compliance-checklist"]
+---
+
+Website security for businesses in the EU is a legal obligation, not a technical nice-to-have. [GDPR Article 32](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679) requires any organization that processes personal data to implement "appropriate technical and organizational measures" to protect it. For websites, this means HTTPS with a valid TLS certificate, security headers that instruct browsers how to handle your content, and server configurations that do not expose your technology stack. [IMY fined Trygg-Hansa SEK 35 million](https://www.imy.se/en/news/administrative-fine-of-sek-35-million-against-trygg-hansa/) in 2023 after a web application vulnerability left 650,000 customers' personal and health data accessible to unauthorized users for over two years.
+
+For privacy and cookie requirements, see our [GDPR and cookie compliance guide](/privacy-compliance). For cookie consent implementation specifically, see our [cookie consent requirements guide](/cookie-consent-requirements).
+
+## Why this matters for small businesses
+
+Website attacks disproportionately affect smaller companies. The [IBM Cost of a Data Breach Report 2025](https://www.ibm.com/reports/data-breach) puts the global average breach cost at USD 4.44 million, but even smaller incidents cost SMBs an estimated USD 120,000-164,000 per breach in cleanup, legal fees, customer notification, and reputational damage.
+
+In the EU, the financial risk extends to regulatory fines. GDPR penalties for inadequate security measures can reach EUR 10 million or 2% of global annual turnover. IMY received a record [12,276 personal data breach notifications](https://www.imy.se/nyheter/rekordmanga-personuppgiftsincidenter-under-2025/) in 2025, nearly double the previous year.
+
+Sweden's [Cybersecurity Act (SFS 2025:1506)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/cybersakerhetslag-20251506_sfs-2025-1506/), which entered into force on 15 January 2026, implements the [EU NIS2 Directive](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022L2555). While it primarily targets organizations with 50 or more employees or EUR 10 million in turnover, it introduces supply chain security requirements. If your business provides digital services to a larger organization, they may require you to demonstrate adequate security measures as part of their own compliance.
+
+## HTTPS and TLS: the baseline
+
+HTTPS encrypts the connection between a visitor's browser and your server. Without it, form submissions, login credentials, and any data the visitor enters travel in plain text across the network, readable by anyone in between.
+
+**What to get right:**
+
+- **TLS 1.3** is the current standard. TLS 1.0 and 1.1 are deprecated and no longer considered secure. [Microsoft retired TLS 1.0/1.1 across cloud services](https://learn.microsoft.com/en-us/lifecycle/announcements/tls-support-ending-10-31-2024) in early 2026. TLS 1.2 is still acceptable with strong cipher suites but is being phased out.
+- **Certificate validity matters.** An expired certificate triggers full-page browser warnings that scare visitors away. Most hosting providers and certificate authorities offer automatic renewal.
+- **Redirect HTTP to HTTPS.** Having a certificate installed is not enough if your site still serves some pages over HTTP.
+
+Google Chrome is progressively rolling out HTTPS-only browsing mode through 2026, which means visitors will see a warning before any HTTP page loads. Sites without HTTPS will lose traffic directly.
+
+## Security headers: instructions for the browser
+
+Security headers are HTTP response headers that tell browsers how to handle your site's content. They prevent common attacks without requiring changes to your application code. Despite their effectiveness, most websites are missing them: only 27.3% of the top 10,000 websites use Content Security Policy, and 51.7% use HSTS ([AppSecSanta, February 2026](https://appsecsanta.com/research/application-security-statistics)).
+
+### Content Security Policy (CSP)
+
+CSP controls which scripts, styles, images, and resources can run on your pages. Without it, if an attacker injects code into your site (through a form, a compromised plugin, or a third-party script), the injected code executes with full access to your visitors' sessions and data.
+
+Cross-site scripting (XSS) accounted for [53.3% of all WordPress vulnerabilities](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/) discovered in 2025. A properly configured CSP blocks most of these attacks.
+
+**What good looks like:** A policy that specifies exactly which domains can serve scripts, avoids `unsafe-inline` and `unsafe-eval`, and uses a reporting directive to catch violations. Start in report-only mode to avoid accidentally breaking your site.
+
+### HTTP Strict Transport Security (HSTS)
+
+HSTS tells browsers to always connect over HTTPS, even if the visitor types `http://` or clicks an HTTP link. Without it, an attacker on the same network (public Wi-Fi, for example) can intercept the initial HTTP request before the redirect to HTTPS kicks in.
+
+**What good looks like:** `max-age=31536000; includeSubDomains`. The max-age value should be at least one year (31,536,000 seconds). Only add `preload` if you are certain every subdomain serves HTTPS.
+
+### X-Content-Type-Options
+
+Prevents browsers from guessing the type of a file. Without this header, a browser might treat a text file as executable code, enabling certain injection attacks. The fix is a single header value: `nosniff`. No configuration needed, no risk of breaking anything.
+
+### Referrer-Policy
+
+Controls how much URL information your site shares when visitors click outbound links. Without it, the full page URL (including any sensitive parameters) is sent to the destination site. Set to `strict-origin-when-cross-origin` to share only the domain with external sites while keeping full URLs for same-site navigation.
+
+### X-Frame-Options
+
+Prevents other websites from embedding your pages in a hidden frame. Without it, attackers can overlay your site invisibly, tricking visitors into clicking buttons they cannot see (clickjacking). Set to `DENY` or `SAMEORIGIN`. CSP's `frame-ancestors` directive is the modern replacement, but X-Frame-Options provides backward compatibility with older browsers.
+
+### Permissions-Policy
+
+Controls which browser features your site can access: camera, microphone, geolocation, and payment APIs. Without it, a compromised third-party script could request access to sensitive device capabilities. Disable everything you do not use: `camera=(), microphone=(), geolocation=()`.
+
+## Server technology exposure
+
+When your server responds with headers like `Server: Apache/2.4.41` or `X-Powered-By: PHP/7.4`, it tells anyone exactly what software and version you run. Automated scanners continuously index these headers across the internet. Attackers search for servers running specific versions with known vulnerabilities, then launch targeted exploits within hours of a new vulnerability disclosure.
+
+Server technology exposure falls under security misconfiguration in the [OWASP Top 10](https://owasp.org/Top10/), one of the most common vulnerability categories. The fix is straightforward: configure your server to suppress version information in response headers.
+
+The Vivotiv scan checks two types of exposure:
+
+- **Server version:** The `Server` header revealing your web server software and version number
+- **Technology stack:** Headers like `X-Powered-By`, `X-AspNet-Version`, or `X-Generator` revealing your application framework
+
+## Outdated CMS installations
+
+If your website runs on a content management system like WordPress, your security depends on keeping the entire stack updated: core software, themes, and every plugin.
+
+[Patchstack documented 11,334 new vulnerabilities](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/) in the WordPress ecosystem in 2025, a 42% increase from the previous year. 96% were in plugins and themes, not WordPress core. The problem compounds: the median time for administrators to apply critical patches is 14 days, but attackers begin scanning for newly disclosed vulnerabilities within hours.
+
+In late 2025, critical vulnerabilities in widely used plugins led to mass exploitation. A remote code execution flaw in the Sneeit Framework (CVSS 9.8) was exploited on the same day it was publicly disclosed, with over 131,000 attack attempts blocked in the first weeks. A privilege escalation vulnerability in ACF Extended (January 2026) affected over 100,000 sites and allowed unauthenticated attackers to create administrator accounts.
+
+The takeaway is not to avoid CMS platforms, but to maintain them: update regularly, remove unused plugins and themes, and do not assume that a plugin's popularity guarantees its security.
+
+## How the scan checks your website's security
+
+The Vivotiv scan inspects your site's HTTP response headers, validates your TLS certificate, and detects server technology exposure. It checks:
+
+- HTTPS with a valid, non-expired TLS certificate (flags certificates expiring within 30 days)
+- TLS protocol version (warns if your server still accepts TLS 1.0 or 1.1)
+- All six security headers: CSP, HSTS, X-Content-Type-Options, Referrer-Policy, X-Frame-Options, and Permissions-Policy
+- Server version disclosure in the `Server` header
+- Technology stack exposure through `X-Powered-By` and similar headers
+
+Each check returns a pass, warning, or fail with a plain-language explanation of the issue and how to address it.
+
+[Check your website's security for free](/)
+
+## Sources
+
+- [GDPR Article 32: Security of processing](https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32016R0679) - EUR-Lex
+- [IMY: Administrative fine of SEK 35 million against Trygg-Hansa](https://www.imy.se/en/news/administrative-fine-of-sek-35-million-against-trygg-hansa/) - IMY
+- [IMY: Record breach notifications in 2025](https://www.imy.se/nyheter/rekordmanga-personuppgiftsincidenter-under-2025/) - IMY
+- [NIS2 Directive (2022/2555)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022L2555) - EUR-Lex
+- [Swedish Cybersecurity Act (SFS 2025:1506)](https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/cybersakerhetslag-20251506_sfs-2025-1506/) - Riksdagen
+- [IBM Cost of a Data Breach Report 2025](https://www.ibm.com/reports/data-breach) - IBM Security
+- [OWASP Top 10](https://owasp.org/Top10/) - OWASP Foundation
+- [OWASP HTTP Headers Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html) - OWASP
+- [State of WordPress Security in 2026](https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/) - Patchstack
+- [Application Security Statistics 2026](https://appsecsanta.com/research/application-security-statistics) - AppSecSanta

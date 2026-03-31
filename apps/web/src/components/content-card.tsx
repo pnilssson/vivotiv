@@ -9,7 +9,7 @@ function ContentCardGrid({ children, className }: ContentCardGridProps) {
   return (
     <div
       className={cn(
-        "grid gap-px border border-border bg-border",
+        "grid gap-px",
         className,
       )}
     >
@@ -27,7 +27,7 @@ function ContentCard({ children, className }: ContentCardProps) {
   return (
     <div
       className={cn(
-        "h-full bg-card p-8 transition-colors hover:bg-depth-1",
+        "h-full bg-card p-8 ring-1 ring-border transition-colors hover:bg-depth-1",
         className,
       )}
     >

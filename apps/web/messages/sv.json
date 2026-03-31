@@ -217,7 +217,9 @@
     "howScanWorks": "Hur skanningen fungerar",
     "guides": "Guider",
     "columnCompliance": "Efterlevnad",
-    "cookieConsent": "Cookie-samtycke"
+    "cookieConsent": "Cookie-samtycke",
+    "websiteSecurity": "Webbplatssäkerhet",
+    "complianceChecklist": "Checklista efterlevnad"
   },
   "notFound": {
     "message": "Den h\u00e4r sidan finns inte.",
@@ -236,8 +238,9 @@
     "button": "Starta gratis skanning"
   },
   "guides": {
-    "title": "Guider",
-    "description": "Resurser om webbplatsefterlevnad, prestanda, säkerhet och granskningsverktyg.",
+    "pretitle": "Guider",
+    "title": "Guider om webbplatsefterlevnad",
+    "description": "Praktiska guider om GDPR, tillgänglighet, cookie-samtycke och säkerhet för företagswebbplatser i EU.",
     "families": {
       "compliance": "Efterlevnad",
       "actions": "Webbplatsproblem",

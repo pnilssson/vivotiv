@@ -64,7 +64,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     alternates: {
       languages: {
         en: `${domainsByLocale.en}/guides`,
-        sv: `${domainsByLocale.sv}/guides`,
+        sv: `${domainsByLocale.sv}/guider`,
       },
     },
   });
