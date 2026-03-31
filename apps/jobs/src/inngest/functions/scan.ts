@@ -15,29 +15,6 @@ const db = createDb(env.DATABASE_URL);
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
 
-type TrackResults<L, D, H> = {
-  lighthouse: L | null;
-  dom: D | null;
-  headers: H | null;
-  errors: Record<"lighthouse" | "dom" | "headers", string | null>;
-};
-
-function settleTrack<T>(
-  name: string,
-  result: PromiseSettledResult<T>,
-  url: string,
-  logger: { error: (msg: string, ctx: object) => void },
-): { value: T | null; error: string | null } {
-  if (result.status === "fulfilled") {
-    return { value: result.value, error: null };
-  }
-
-  const error = String(result.reason);
-  logger.error(`${name} track failed`, { url, error });
-  Sentry.logger.warn(`${name} track failed`, { url, error });
-  return { value: null, error };
-}
-
 export const scanFunction = inngest.createFunction(
   {
     id: "scan-website",
@@ -66,45 +43,54 @@ export const scanFunction = inngest.createFunction(
       }),
     );
 
-    /* 2. Run scan tracks in parallel */
-    const tracks = await step.run("run-scan-tracks", async () => {
-      const [lh, dom, hdr] = await Promise.allSettled([
+    /* 2. Run scan tracks in parallel (each step retries independently) */
+    const lighthousePromise = step
+      .run("run-lighthouse", () =>
         runLighthouse(validatedUrl, ["performance", "seo", "best-practices"]),
-        runDomChecks(validatedUrl),
-        runHeaderChecks(validatedUrl),
-      ]);
+      )
+      .catch((err) => {
+        logger.error("Lighthouse track failed", { url: validatedUrl, error: String(err) });
+        Sentry.logger.warn("Lighthouse track failed", { url: validatedUrl, error: String(err) });
+        return null;
+      });
 
-      const lighthouse = settleTrack("Lighthouse", lh, validatedUrl, logger);
-      const domChecks = settleTrack("DOM checks", dom, validatedUrl, logger);
-      const headers = settleTrack("Header checks", hdr, validatedUrl, logger);
+    const domPromise = step
+      .run("run-dom-checks", () => runDomChecks(validatedUrl))
+      .catch((err) => {
+        logger.error("DOM checks track failed", { url: validatedUrl, error: String(err) });
+        Sentry.logger.warn("DOM checks track failed", { url: validatedUrl, error: String(err) });
+        return null;
+      });
 
-      if (!lighthouse.value && !domChecks.value && !headers.value) {
-        throw new Error("All scan tracks failed, no results to store");
-      }
+    const headersPromise = step
+      .run("run-header-checks", () => runHeaderChecks(validatedUrl))
+      .catch((err) => {
+        logger.error("Header checks track failed", { url: validatedUrl, error: String(err) });
+        Sentry.logger.warn("Header checks track failed", { url: validatedUrl, error: String(err) });
+        return null;
+      });
 
-      return {
-        lighthouse: lighthouse.value,
-        dom: domChecks.value,
-        headers: headers.value,
-        errors: {
-          lighthouse: lighthouse.error,
-          dom: domChecks.error,
-          headers: headers.error,
-        },
-      } satisfies TrackResults<
-        Awaited<ReturnType<typeof runLighthouse>>,
-        Awaited<ReturnType<typeof runDomChecks>>,
-        Awaited<ReturnType<typeof runHeaderChecks>>
-      >;
-    });
+    const [lighthouse, dom, headers] = await Promise.all([
+      lighthousePromise,
+      domPromise,
+      headersPromise,
+    ]);
+
+    if (!lighthouse && !dom && !headers) {
+      throw new Error("All scan tracks failed, no results to store");
+    }
 
     /* 3. Aggregate scores */
     const result = await step.run("aggregate", () =>
       aggregate(validatedUrl, {
-        lighthouse: tracks.lighthouse,
-        dom: tracks.dom,
-        headers: tracks.headers,
-        trackErrors: tracks.errors,
+        lighthouse,
+        dom,
+        headers,
+        trackErrors: {
+          lighthouse: lighthouse ? null : "Track failed after retries",
+          dom: dom ? null : "Track failed after retries",
+          headers: headers ? null : "Track failed after retries",
+        },
       }),
     );
 
@@ -125,17 +111,10 @@ export const scanFunction = inngest.createFunction(
       }),
     );
 
-    /* 5. Send results email */
-    await inngest.send({
+    /* 5. Notify - consumer fetches details from DB via scanId */
+    await step.sendEvent("notify-scan-completed", {
       name: "scan.completed",
-      data: {
-        leadId,
-        scanId: scan.id,
-        url: result.finalUrl,
-        locale,
-        overallScore: result.overallScore,
-        details,
-      },
+      data: { leadId, scanId: scan.id, locale },
     });
 
     const durationMs = Date.now() - scanStartedAt;
