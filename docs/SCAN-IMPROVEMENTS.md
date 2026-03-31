@@ -6,153 +6,50 @@ Working document for expanding the website scan based on analysis of squirrelsca
 
 Our scan targets Swedish SMBs with aging websites. It runs a single-page scan in 15-20 seconds and returns a scorecard designed to start a sales conversation. We are not building a comprehensive SEO audit tool. Every addition must pass this filter: **does this finding make a business owner think "I need to fix this"?**
 
-Squirrelscan is an HTTP-based multi-page crawler with 230+ rules across 21 categories. It cannot run a browser, so it cannot measure real Core Web Vitals, run axe-core, or detect pre-consent tracking behavior. But it covers ground we do not touch at all, and some of those gaps matter for our audience.
+The initial gap analysis was done against squirrelscan (230+ rules, 21 categories, HTTP-only crawler). That analysis is complete and the decisions are captured in this document.
 
-## What we already do well
+## Guiding principle: official tools over heuristics
 
-These are genuine advantages over squirrelscan that we should protect, not dilute:
+We only add checks that produce reliable, deterministic results. That means:
 
-- **Real Lighthouse performance** with actual Core Web Vitals
-- **axe-core accessibility** across desktop and mobile viewports
-- **Pre-consent tracking detection** via Playwright network interception
-- **CMP detection** with 30+ cookie banner selectors including shadow DOM
-- **TLS certificate inspection** with protocol version and expiry
-- **EU Legal Compliance** as a distinct, business-relevant category
+- **Use official tools and APIs** (Lighthouse, axe-core, MDN Observatory, W3C Validator, Google Web Risk) over hand-rolled pattern matching
+- **Use established libraries** (linkinator for broken links) over custom HTTP request management
+- **Drop checks that rely on heuristic guessing** (trust signal detection, secret scanning patterns) where false positives/negatives undermine credibility
+- If no reliable tool exists for a check, we skip it rather than ship something fragile
 
 ## Category reframing
 
-### Problem: "Modern Web Standards" is weak
+### "Modern Web Standards" becomes "Website Quality"
 
-Currently 4 checks: responsive viewport, deprecated HTML, favicon, third-party script count. The name is vague, the checks are thin, and "modern web standards" does not create urgency for a business owner. A plumber in Gothenburg does not care about "modern web standards."
+Current Standards category has 4 thin checks (responsive viewport, deprecated HTML, favicon, third-party script count). "Modern web standards" does not create urgency for a business owner.
 
-### Proposal: Rename to "Website Quality"
+Rename to "Website Quality" and add checks that answer "Is this website built and maintained properly?":
 
-Absorb the existing 4 standards checks and add new checks that answer: "Is this website built and maintained properly?" This becomes the catch-all for tangible quality signals that do not fit in the other five categories.
-
-New checks for this category (details in implementation section below):
-
-- Broken links on page
-- Image issues (missing dimensions, oversized files, no modern formats)
+- Broken links on page (via linkinator)
+- W3C HTML validation (via Nu HTML Checker, replaces deprecated HTML heuristic)
 - Heading structure (multiple H1s, skipped levels)
 - Content signals (thin content, missing lang attribute)
 - URL hygiene (uppercase, underscores, excessive parameters)
 
-This turns a filler category into something with 9-10 visible checks and clear business relevance.
+### Proposal: Rename "EU Legal Compliance" to "Trust & Compliance"
 
-### Problem: Trust signals buried across categories
-
-We check privacy policy and contact info in Legal. Squirrelscan has an entire E-E-A-T category (14 rules) covering about pages, trust signals, physical addresses, content dates. For SMBs, "does your website look trustworthy?" is a powerful question.
-
-### Proposal: Add trust checks to Legal, rename to "Trust & Compliance"
-
-Rather than creating a new category (which changes scoring weights, frontend layout, and database schema), enrich the existing Legal category:
+Enrich the existing Legal category without adding a new one (avoids scoring weight, frontend layout, and database schema changes):
 
 - Keep all current legal checks (cookie banner, reject option, tracking, privacy/cookie policy, contact info, SSL)
-- Add: about page detection
-- Add: physical address visibility (extend existing contact check)
-- Add: trust signals (reviews, certifications, social proof)
+- Add: about page detection (scan links for about/om-oss/om/about-us patterns)
 - Rename "EU Legal Compliance" to "Trust & Compliance" in the UI
 
-This keeps the architecture stable (still 6 categories) while making the category feel more complete and the name more compelling.
+### Scoring weights
 
-### Scoring weight adjustment
-
-Current weights:
-
-| Category | Current weight |
-|---|---|
-| Performance | 20% |
-| SEO | 20% |
-| Accessibility | 20% |
-| Legal | 20% |
-| Security | 10% |
-| Standards | 10% |
-
-Proposed weights after reframing:
-
-| Category | Proposed weight | Rationale |
-|---|---|---|
-| Performance | 20% | Unchanged, core signal |
-| SEO | 20% | Unchanged, core signal |
-| Accessibility | 20% | Unchanged, EU Accessibility Act |
-| Trust & Compliance | 20% | Unchanged, renamed from Legal |
-| Security | 10% | Unchanged |
-| Website Quality | 10% | Unchanged weight, renamed from Standards, but now denser with checks |
-
-No weight changes needed. The categories get richer, not restructured.
+No weight changes. Categories get richer, not restructured. Weights stay: Performance 20%, SEO 20%, Accessibility 20%, Trust & Compliance (was Legal) 20%, Security 10%, Website Quality (was Standards) 10%.
 
 ## New checks: implementation plan
 
-### Priority 1: High impact, fits existing architecture
+### Priority 1: High impact, reliable tools
 
-These checks use the Playwright page object we already have and follow the exact `buildCheck()` pattern. No new tracks, no new dependencies.
+These checks use either the Playwright page object we already have (deterministic DOM queries) or official external tools/APIs. No heuristic pattern matching.
 
-#### 1.1 Leaked secrets scan (add to Security)
-
-**What:** Regex scan of page HTML and inline/external JS for exposed API keys, database credentials, and tokens.
-
-**Why:** This is the single most shocking finding a scan can produce. A business owner seeing "Your Google Maps API key is exposed in your source code" immediately understands the problem. Squirrelscan checks 96 patterns. We do not need all of them. Start with the 20-25 most common patterns found on SMB sites.
-
-**Patterns to check (initial set):**
-- Google Maps API keys (`AIza[0-9A-Za-z-_]{35}`)
-- AWS access keys (`AKIA[0-9A-Z]{16}`)
-- Generic API keys/secrets in HTML comments or data attributes
-- Database connection strings (`mysql://`, `postgres://`, `mongodb://`)
-- Private keys (`-----BEGIN.*PRIVATE KEY-----`)
-- Slack webhooks, Stripe secret keys, SendGrid keys, Mailchimp keys
-- Environment variable dumps (common in misconfigured frameworks)
-- `.env` file content accidentally rendered
-
-**Implementation:**
-- New check function in `checks/security-headers.ts` or a new `checks/secrets.ts`
-- Runs `page.content()` to get full HTML, then scans `<script>` tags with inline content
-- Also checks `page.evaluate()` for `window.__ENV` and similar global config objects
-- Weight: 3 (this is critical if found)
-- Status: fail if any pattern matches, pass if clean
-- Items: list of matched patterns (redacted values, just the type)
-
-**Estimated effort:** Small. Regex matching on already-available page content.
-
-#### 1.2 Broken links check (add to Website Quality)
-
-**What:** Check all `<a href>` links on the page for 404/5xx responses. Check all `<img src>` for broken images.
-
-**Why:** Broken links are the most universally understood website problem. Every business owner has encountered a 404 page. "Your website has 7 broken links" needs no explanation.
-
-**Implementation:**
-- New check function in `checks/standards.ts` (renamed to quality)
-- Uses `page.evaluate()` to collect all unique href/src URLs
-- Filters to same-origin + external HTTP(S) links (skip mailto:, tel:, javascript:, #anchors)
-- Sends HEAD requests in parallel with a concurrency limit (5-10 concurrent)
-- Timeout per request: 5 seconds
-- Weight: 2
-- Status: fail if any broken, warn if slow responses (>3s), pass if all resolve
-- Items: list of broken URLs with status codes
-
-**Estimated effort:** Medium. Need to manage parallel HTTP requests within the scan timeout budget. Must not let a slow external site blow up our scan time. Cap at checking first 50 links, 5s timeout per link, abort remaining after 15s total.
-
-**Risk:** This is the check most likely to slow down scans. Need strict timeouts and a cap on checked URLs.
-
-#### 1.3 Image issues (add to Website Quality)
-
-**What:** Check images on the page for missing dimensions, oversized files, and lack of modern formats.
-
-**Why:** "Your hero image is 4.2 MB and takes 6 seconds to load" is concrete and actionable. Swedish SMBs with aging WordPress sites often have unoptimized JPEG photos from 2015.
-
-**Implementation:**
-- New check function in `checks/standards.ts`
-- Uses `page.evaluate()` to collect `<img>` elements: src, width/height attributes, naturalWidth/naturalHeight, loading attribute
-- HEAD requests to get Content-Length and Content-Type for largest images
-- Checks:
-  - Missing width/height attributes (CLS contributor)
-  - Large file sizes (>500KB warning, >1MB fail)
-  - No modern format usage (all JPEG/PNG, no WebP/AVIF)
-- Weight: 2
-- Items: list of problematic image URLs with sizes
-
-**Estimated effort:** Medium. Similar HTTP request pattern to broken links. Can batch with link checking.
-
-#### 1.4 Heading structure (add to Website Quality)
+#### 1.1 Heading structure (add to Website Quality)
 
 **What:** Check for multiple H1 tags, skipped heading levels, empty headings.
 
@@ -170,9 +67,9 @@ These checks use the Playwright page object we already have and follow the exact
 
 **Estimated effort:** Small. Pure DOM query, no external requests.
 
-#### 1.5 Content basics (add to Website Quality)
+#### 1.2 Content basics (add to Website Quality)
 
-**What:** Check for thin content (very low word count), missing lang attribute, missing meta description length quality.
+**What:** Check for thin content (very low word count), missing lang attribute.
 
 **Why:** "Your page has 43 words of content" signals an abandoned or placeholder page. Very common on aging SMB sites with "Lorem ipsum" still lurking.
 
@@ -187,43 +84,7 @@ These checks use the Playwright page object we already have and follow the exact
 
 **Estimated effort:** Small. Pure DOM query.
 
-### Priority 2: Medium impact, moderate effort
-
-#### 2.1 About page and trust signals (add to Trust & Compliance)
-
-**What:** Check if the site has a discoverable about/om-oss page and visible trust indicators.
-
-**Why:** "Your website has no about page" tells a business owner their site looks untrustworthy. E-E-A-T is a ranking factor, and for local businesses, trust is conversion-critical.
-
-**Implementation:**
-- New check function in `checks/legal.ts`
-- Scans all `<a href>` for about/om-oss/om/about-us patterns
-- Optionally: HEAD request to verify the page exists (200)
-- Trust signals: look for common patterns like review widgets, certification badges, social media profile links
-- Weight: 1 (about page), 1 (trust signals)
-- Status: warn if missing (not fail, since some businesses legitimately skip this)
-
-**Estimated effort:** Small-medium. Link scanning is straightforward. Trust signal detection is heuristic-based.
-
-#### 2.2 Enhanced structured data validation (upgrade existing SEO check)
-
-**What:** Go beyond "structured data exists" to "structured data is valid and useful."
-
-**Why:** Many aging sites have broken or incomplete JSON-LD copied from a tutorial in 2018. Checking that LocalBusiness schema has name, address, and telephone tells a much better story than just "structured data found."
-
-**Implementation:**
-- Upgrade `checkStructuredData()` in `checks/seo-dom.ts`
-- Parse JSON-LD content and validate required properties per @type:
-  - LocalBusiness: name, address, telephone (very relevant for Swedish SMBs)
-  - Organization: name, url, logo
-  - Article: headline, datePublished, author
-  - Product: name, offers
-- Weight: stays at 1, but now produces more specific pass/warn/fail signals
-- Items: list of missing required properties per schema type
-
-**Estimated effort:** Medium. JSON-LD parsing and per-type validation logic.
-
-#### 2.3 URL structure check (add to Website Quality)
+#### 1.3 URL structure (add to Website Quality)
 
 **What:** Check the current page URL for common hygiene issues.
 
@@ -242,45 +103,105 @@ These checks use the Playwright page object we already have and follow the exact
 
 **Estimated effort:** Small. String regex on a single URL.
 
-### Priority 3: Nice to have, lower urgency
+#### 1.4 MDN HTTP Observatory (upgrade Security category)
 
-#### 3.1 Local SEO signals
+**What:** Use Mozilla's official MDN HTTP Observatory API to get an authoritative security header grade.
 
-**What:** Check for hreflang tags, geo meta tags, and LocalBusiness structured data presence.
+**Why:** We already check security headers manually in `security-headers.ts`. The MDN Observatory does the same thing but returns a standardized letter grade (A+ to F), checks additional things we do not (cookie security, CORS, subresource integrity, HTTP-to-HTTPS redirect quality), and is maintained by Mozilla/MDN staff. Despite low GitHub stars (~116), it is the official successor to Mozilla Observatory, hosted on Mozilla infrastructure, and linked from MDN docs.
 
-**Why:** Relevant for Swedish local businesses. But overlaps with structured data validation (2.2) and is somewhat niche.
+**Implementation:**
+- Single API call: `POST https://observatory-api.mdn.mozilla.net/api/v2/scan?host=<HOST>`
+- Free, no auth required
+- Rate limit: one scan per host per 60 seconds (returns cached result otherwise)
+- Returns: grade (A+ to F), score (0-135), pass/fail for 10 security tests
+- Run as part of a new API track in parallel with Lighthouse, DOM, and Headers
+- Weight: 2
+- Status: map grade to pass (A/A+), warn (B/C), fail (D/F)
+- Items: list of failed tests with descriptions
 
-**Implementation:** Extend SEO DOM checks with hreflang detection and geo meta tag checks. Small effort but lower impact on the average scan.
+**Estimated effort:** Small. Single HTTP call, parse JSON response.
 
-#### 3.2 Social sharing quality
+#### 1.5 Google Web Risk API (add to Security)
 
-**What:** Check OG image dimensions (1200x630 recommended), OG URL matching canonical, social profile links.
+**What:** Check if the scanned URL is flagged by Google as malware, social engineering, or unwanted software.
 
-**Why:** Useful but not urgent-feeling. "Your social sharing image is too small" does not drive the same urgency as "Your API keys are exposed."
+**Why:** "Your website is flagged by Google as potentially dangerous" is a devastating finding for a business owner. This checks against the same database Chrome uses to show red warning pages.
 
-**Implementation:** Extend existing OG/Twitter card checks with dimension and URL validation. Would require a HEAD request to the og:image URL to check dimensions.
+**Implementation:**
+- Single API call to Google Web Risk API
+- Free tier: 100,000 lookups/month (more than enough)
+- Requires a Google Cloud API key
+- Returns: threat types if flagged, empty if clean
+- Weight: 3 (this is critical if found)
+- Status: fail if any threat detected, pass if clean
+- Items: list of threat types
 
-#### 3.3 Form security (if forms are present)
+**Estimated effort:** Small. Single API call.
 
-**What:** Check if forms submit over HTTPS, check for CAPTCHA on public forms.
+#### 1.6 Broken links (add to Website Quality)
 
-**Why:** Relevant but only applies to pages with forms. Many SMB homepages do not have forms.
+**What:** Check all links on the page for 404/5xx responses.
 
-**Implementation:** DOM query for `<form>` elements, check action URLs. Small effort but conditional applicability.
+**Why:** Broken links are the most universally understood website problem. Every business owner has encountered a 404 page. "Your website has 7 broken links" needs no explanation.
+
+**Implementation:**
+- Use **linkinator** npm library (800+ stars, actively maintained) instead of hand-rolling HTTP request management
+- Linkinator handles concurrency, timeouts, redirect following, and checks links, images, scripts, and stylesheets
+- Configure with: concurrency limit, timeout per request, recurse: false (single page only)
+- Weight: 2
+- Status: fail if any broken, warn if slow responses, pass if all resolve
+- Items: list of broken URLs with status codes
+
+**Estimated effort:** Medium. Library integration + timeout management to stay within scan budget.
+
+**Timeout:** 30 seconds total cap. Return partial results (broken links found so far) if timeout hits. If no response at all, skip this check silently.
+
+### Priority 2: Medium impact, moderate effort
+
+#### 2.1 W3C HTML validation (upgrade Website Quality, replace deprecated HTML check)
+
+**What:** Validate the page HTML against the W3C HTML spec using the official Nu HTML Checker.
+
+**Why:** Our current "deprecated HTML" check is a heuristic DOM query. The W3C's own validator catches far more: malformed HTML, spec violations, missing required attributes, nesting errors. "Your website has 23 HTML validation errors" is concrete and authoritative.
+
+**Implementation:**
+- Public endpoint: `POST https://validator.w3.org/nu/?out=json` with `Content-Type: text/html`
+- POST the HTML content directly (already available from Playwright via `page.content()`)
+- Parse JSON response: count errors vs warnings, extract message text
+- Log errors to Sentry. If validator is down or rate-limited, skip check silently (never report a fail because of our tooling)
+- Weight: 2
+- Status: fail if >10 errors, warn if 1-10 errors, pass if 0 errors
+- Items: list of error messages (capped at most impactful)
+- Replaces the current deprecated HTML check entirely
+
+**Estimated effort:** Medium. HTTP call + response parsing + fallback strategy for rate limits.
+
+#### 2.2 About page detection (add to Trust & Compliance)
+
+**What:** Check if the site has a discoverable about/om-oss page.
+
+**Why:** "Your website has no about page" tells a business owner their site looks untrustworthy. For local businesses, trust is conversion-critical.
+
+**Implementation:**
+- New check function in `checks/legal.ts`
+- Scans all `<a href>` for about/om-oss/om/about-us patterns
+- Optionally: HEAD request to verify the page exists (200)
+- Weight: 1
+- Status: warn if missing (not fail, since some businesses legitimately skip this)
+
+**Estimated effort:** Small. Link text/href scanning is straightforward and deterministic.
 
 ## Implementation approach
 
-### Architecture: no new tracks needed
+### Architecture: new API track for external services
 
-All Priority 1 and 2 checks fit into the existing three-track architecture:
+The three existing tracks (Lighthouse, DOM, Headers) remain unchanged. Add a fourth parallel track for external API calls:
 
-- **Leaked secrets, broken links, image checks, heading structure, content basics, trust signals, URL structure** all run in the DOM track via Playwright
-- **Enhanced structured data** runs in the existing SEO DOM sub-track
-- No new Inngest steps, no new browser instances, no new external dependencies
+- **API track:** MDN Observatory, Google Web Risk, W3C Validator (all independent HTTP calls, run concurrently within the track)
+- **DOM track additions:** heading structure, content basics, about page detection, URL structure
+- **Library track:** linkinator for broken links (runs in parallel with everything else)
 
-The DOM track already runs 4 sub-checks in parallel via `Promise.allSettled()`. The new checks either:
-1. Get added to existing sub-check functions (heading structure into standards, trust signals into legal)
-2. Get added as new entries in the parallel array (broken links, image checks, secrets)
+All tracks run concurrently via `Promise.allSettled()`. Each external API call wrapped in a 10-second timeout. Failures treated as "could not check" rather than scan errors.
 
 ### Timing budget
 
@@ -290,29 +211,34 @@ Current scan: ~15-20 seconds. The DOM track runs in parallel with Lighthouse and
 - Heading structure
 - Content basics
 - URL structure
-- Leaked secrets (page content already loaded)
 
-**Checks with HTTP overhead** (need timeout management):
-- Broken links: cap at 50 links, 5s per request, 15s total budget, parallel
-- Image file sizes: cap at 10 largest images, 5s per request, parallel with links
-- About page detection: 1 HEAD request
-- Structured data validation: no extra requests (parse existing JSON-LD)
+**External API calls** (run in parallel, new API track):
+- MDN Observatory: ~2-5 seconds typical
+- Google Web Risk: <1 second
+- W3C Validator: ~2-5 seconds typical
 
-Worst case for HTTP-based checks: 15 seconds if external sites are slow. This runs in parallel with Lighthouse, so it should not extend total scan time unless Lighthouse finishes unusually fast.
+**Library-based checks** (run in parallel):
+- Broken links via linkinator: 30 second cap, partial results on timeout
 
-**Safeguard:** Wrap all HTTP-based checks in `Promise.race()` with a 15-second category-level timeout. If links/images are still being checked when the timeout hits, return partial results with a "some links could not be checked" diagnostic.
+Worst case: 30 seconds for broken links. Lighthouse typically finishes in 10-15 seconds, so broken links may extend total scan time to ~30 seconds. All other checks finish well within that window.
 
 ### File changes
 
-**Renamed/modified files:**
-- `checks/standards.ts` - rename internal references, add 5 new checks (broken links, images, headings, content, URL)
-- `checks/legal.ts` - add about page and trust signal checks
-- `checks/seo-dom.ts` - upgrade structured data validation
-- `checks/security-headers.ts` or new `checks/secrets.ts` - add leaked secrets scan
-- `scanner/dom-checks.ts` - add new check to parallel array if creating separate file
-- `scanner/aggregate.ts` - update category names in aggregation (if renaming)
+**Modified files:**
+- `checks/standards.ts` - add heading structure, content basics, URL structure checks; replace deprecated HTML check with W3C validator results
+- `checks/legal.ts` - add about page detection
+- `scanner/dom-checks.ts` - add new checks to parallel array
+- `scanner/aggregate.ts` - update category names in aggregation
+
+**New files:**
+- `scanner/api-checks.ts` - new track for MDN Observatory + Google Web Risk + W3C Validator
+- `checks/observatory.ts` - MDN Observatory API integration
+- `checks/web-risk.ts` - Google Web Risk API integration
+- `checks/html-validation.ts` - W3C Nu HTML Checker integration
+- `checks/broken-links.ts` - linkinator integration
+
+**Shared package changes:**
 - `packages/shared/src/scan/categories.ts` - rename category keys if changing names
-- `packages/shared/src/scan/results.ts` - no schema changes needed (CheckResult is flexible enough)
 
 **Frontend changes (not in scope for this plan but will be needed):**
 - Category display names
@@ -321,47 +247,46 @@ Worst case for HTTP-based checks: 15 seconds if external sites are slow. This ru
 
 ### Rollout order
 
-**Phase 1: New checks, no renaming**
-Add all Priority 1 checks to existing categories with existing names. This is pure backend work with no frontend changes needed (new CheckResults appear automatically in results).
+**Phase 1: New checks + category rename (ship together)**
 
-1. Leaked secrets scan (Security)
-2. Heading structure (Standards)
-3. Content basics (Standards)
-4. URL structure (Standards)
-5. Broken links (Standards)
-6. Image issues (Standards)
+1. Rename "Modern Web Standards" to "Website Quality" and "EU Legal Compliance" to "Trust & Compliance" across all projects
+2. Heading structure (Website Quality) - pure DOM
+3. Content basics (Website Quality) - pure DOM
+4. URL structure (Website Quality) - pure string analysis
+5. MDN Observatory (Security) - API call
+6. Google Web Risk (Security) - API call
+7. Broken links via linkinator (Website Quality) - library
 
-**Phase 2: Category enrichment**
-Add Priority 2 checks:
+**Phase 2: W3C validator + about page**
 
-1. About page + trust signals (Legal)
-2. Enhanced structured data validation (SEO)
-3. URL structure (Standards)
+1. W3C HTML validation, replaces deprecated HTML check (Website Quality)
+2. About page detection (Trust & Compliance)
 
-**Phase 3: Rename and reframe**
-Coordinate frontend + backend rename:
+## Decisions log
 
-1. "Modern Web Standards" becomes "Website Quality"
-2. "EU Legal Compliance" becomes "Trust & Compliance"
-3. Update scoring descriptions and helper text
-4. Update docs and marketing copy
+Checks evaluated and dropped:
 
-## What we are explicitly not doing
+| Check | Reason dropped |
+|---|---|
+| **Trust signal detection** | Too fragile. Review widgets, certification badges, and social proof look completely different across sites. No reliable way to detect without high false positive/negative rates. |
+| **Leaked secrets scan** | Not relevant for SMB audience. Service companies and small businesses rarely use API keys in frontend code. Would mostly produce false positives (e.g. intentionally public Google Maps keys). |
+| **Enhanced structured data validation** | No reliable tooling exists. Adobe's validator is unmaintained (9 stars). Google's schemarama is abandoned. Google Rich Results Test has no public API. Current "does JSON-LD exist?" check is sufficient. |
+| **Image issues check** | Lighthouse already covers this via `uses-webp-avif`, `uses-optimized-images`, `uses-responsive-images`, `offscreen-images`, and `unsized-images` audits. Adding a separate check would be redundant. |
 
-- **Multi-page crawling.** Our scan is a single-page snapshot. Squirrelscan's strength in finding cross-page issues (orphan pages, duplicate titles, sitemap coverage) requires a fundamentally different architecture and would blow our 15-20 second time budget.
-- **AI content detection.** Politically risky for a sales tool. We do not want to insult prospects.
-- **Analytics tracking detection.** "You don't have Google Analytics" is not a finding that drives urgency.
-- **Adblock detection.** Irrelevant for our audience.
-- **Adding new categories.** Staying at 6 categories keeps the scorecard clean and avoids database schema changes. Enrich, don't expand.
+## Constraints
 
-## Open questions
+- **Single-page scan only.** No multi-page crawling. Must stay within 15-20 second time budget.
+- **6 categories, no new ones.** Keeps scorecard clean, avoids schema changes.
+- **No heuristic pattern matching.** If there is no official tool or deterministic method, we skip the check.
 
-1. **Broken links timeout budget.** How aggressive should we be? 50 links with 5s timeout each could take up to 15 seconds in serial. With 10 concurrent requests, ~7.5 seconds worst case. Is that acceptable if it runs in parallel with Lighthouse?
+## Resolved decisions
 
-2. **Leaked secrets: false positive risk.** Google Maps API keys in frontend code are intentional (they are restricted by HTTP referrer). Should we still flag them as "exposed" with a nuance in the description, or skip known-frontend patterns?
+1. **Broken links timeout:** 30 seconds total cap. Report whatever broken links were found by then, ignore the rest. If linkinator returns no response at all (full timeout, no partial results), ignore this check entirely and do not report it.
 
-3. **Category renaming: timing.** Should we rename categories before or after adding new checks? Renaming first makes the categories feel empty. Adding checks first means a brief period where "Modern Web Standards" contains link and image checks, which is semantically odd.
+2. **W3C Validator:** Use public endpoint (`validator.w3.org/nu`). Log errors to Sentry. Fail gracefully: if the validator is down or rate-limited, skip this check silently. Never report a fail to the user because our tooling had an issue.
 
-4. **Image dimension checking.** Getting actual file sizes requires HEAD requests. Getting rendered dimensions vs natural dimensions can be done via `page.evaluate()`. Should we check both, or just the DOM-available information?
+3. **Category renaming:** Rename at the same time as adding checks (not phased). **IMPORTANT: the rename must be applied across the entire codebase and all connected projects (web, API, jobs, shared package, database seeds, email templates, marketing copy). Do a full search for old category names before considering the rename complete.**
 
-5. **Trust signals: what counts?** Review widgets (Google, Trustpilot), certification badges, social media links, testimonials. How broad should we cast the net? False negatives (missing a trust signal we should have caught) are less harmful than false positives (flagging something that is not a trust signal).
+4. **MDN Observatory caching:** Acceptable. The API caches results per host for 60 seconds. No action needed.
+
+5. **Google Web Risk API key:** Existing Google Cloud project. Key stored in `.env.local` locally and env vars on Railway.
