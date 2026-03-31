@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch --env-file=.env.local src/app.ts",
+    "dev:inngest": "npx inngest-cli dev -u http://127.0.0.1:3001/api/inngest --no-discovery",
     "build": "tsup",
     "start": "node dist/app.js",
     "lint": "eslint",

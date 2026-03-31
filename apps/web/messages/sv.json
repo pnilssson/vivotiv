@@ -35,6 +35,9 @@
     "trustPills": ["Alltid gratis", "Ingen registrering", "150+ kontrollpunkter"],
     "averageScoresLabel": "Genomsnittliga resultat från analyserade webbplatser",
     "success": "Analys skickad. Vi mejlar n\u00e4r resultaten \u00e4r klara.",
+    "confirmationTitle": "Analys skickad",
+    "confirmationSubtitle": "Vi mejlar er n\u00e4r resultaten \u00e4r klara.",
+    "scanAnother": "Analysera en till webbplats",
     "error": "N\u00e5got gick fel. F\u00f6rs\u00f6k igen."
   },
   "socialProof": {

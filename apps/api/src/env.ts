@@ -7,6 +7,7 @@ export type Env = {
     DATABASE_URL: string;
     VIVOTIV_CACHE: KVNamespace;
     INNGEST_EVENT_KEY: string;
+    INNGEST_BASE_URL?: string;
     SENTRY_DSN: string;
     CF_VERSION_METADATA: { id: string; tag: string };
     POSTHOG_KEY: string;

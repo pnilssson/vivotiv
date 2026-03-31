@@ -14,10 +14,10 @@ export const env = {
     return requireEnv("DATABASE_URL");
   },
   get INNGEST_EVENT_KEY() {
-    return requireEnv("INNGEST_EVENT_KEY");
+    return process.env.INNGEST_EVENT_KEY ?? "";
   },
   get INNGEST_SIGNING_KEY() {
-    return requireEnv("INNGEST_SIGNING_KEY");
+    return process.env.INNGEST_SIGNING_KEY ?? "";
   },
   get SENTRY_DSN() {
     return process.env.SENTRY_DSN ?? "";

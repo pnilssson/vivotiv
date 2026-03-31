@@ -35,6 +35,9 @@
     "trustPills": ["Always free", "No signup", "150+ checks"],
     "averageScoresLabel": "Average scores from scanned websites",
     "success": "Scan submitted. We'll email you when results are ready.",
+    "confirmationTitle": "Scan submitted",
+    "confirmationSubtitle": "We'll email you when your results are ready.",
+    "scanAnother": "Scan another website",
     "error": "Something went wrong. Please try again."
   },
   "socialProof": {

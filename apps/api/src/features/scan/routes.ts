@@ -19,6 +19,7 @@ export const scanRoutes = new Hono<Env>()
         c.var.db,
         payload,
         c.env.INNGEST_EVENT_KEY,
+        c.env.INNGEST_BASE_URL,
       );
 
       Sentry.logger.info("Scan submitted", { url: payload.url });

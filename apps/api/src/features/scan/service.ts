@@ -6,15 +6,20 @@ export async function submitScan(
   db: Database,
   payload: ScanSubmission,
   inngestEventKey: string,
+  inngestBaseUrl?: string,
 ) {
   const lead = await upsertLead(db, {
     email: payload.email,
   });
 
-  await sendInngestEvent(inngestEventKey, {
-    name: "scan.requested",
-    data: { leadId: lead.id, url: payload.url, locale: payload.locale },
-  });
+  await sendInngestEvent(
+    inngestEventKey,
+    {
+      name: "scan.requested",
+      data: { leadId: lead.id, url: payload.url, locale: payload.locale },
+    },
+    inngestBaseUrl,
+  );
 
   return {
     status: "accepted" as const,
@@ -66,8 +71,12 @@ export async function fetchScan(
 async function sendInngestEvent(
   eventKey: string,
   event: { name: string; data: Record<string, unknown> },
+  baseUrl?: string,
 ) {
-  const response = await fetch(`https://inn.gs/e/${eventKey}`, {
+  const url = baseUrl
+    ? `${baseUrl}/e/${eventKey}`
+    : `https://inn.gs/e/${eventKey}`;
+  const response = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(event),
