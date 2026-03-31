@@ -41,11 +41,6 @@ COPY --from=build /deploy/node_modules ./node_modules
 COPY --from=build /app/apps/jobs/dist ./dist
 COPY --from=build /deploy/package.json ./
 
-# Non-root user for security (Chromium sandbox)
-RUN groupadd -r appuser && useradd -r -g appuser -G audio,video appuser \
-    && mkdir -p /home/appuser && chown -R appuser:appuser /home/appuser /app /ms-playwright
-USER appuser
-
 EXPOSE 3001
 ENV NODE_ENV=production
 
