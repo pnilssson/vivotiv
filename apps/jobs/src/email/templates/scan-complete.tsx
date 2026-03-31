@@ -55,12 +55,6 @@ function scoreColorClass(score: number): string {
   return "text-[#ef4444]";
 }
 
-function scoreLabel(score: number): string {
-  if (score >= 90) return "Good";
-  if (score >= 50) return "Needs work";
-  return "Critical";
-}
-
 function stripUrl(url: string): string {
   try {
     return new URL(url).hostname;
@@ -109,15 +103,8 @@ export function ScanCompleteEmail({
         <Preview>{`${domain} scored ${overallScore} across 6 categories`}</Preview>
         <Body className="m-0 bg-bg p-0 font-sans">
           <Container className="mx-auto max-w-[560px] py-[40px]">
-            {/* Header */}
-            <Section className="px-[32px] py-[24px]">
-              <Text className="m-0 font-heading text-[18px] font-bold text-fg">
-                Vivotiv
-              </Text>
-            </Section>
-
             {/* Main card */}
-            <Section className="border border-border bg-card px-[32px] pb-[32px] pt-[32px]">
+            <Section className="border border-border bg-card px-[32px] pb-[32px] pt-[24px]">
               {/* Hero */}
               <Text className="m-0 mb-[8px] text-center text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-fg">
                 Scan complete
@@ -163,7 +150,7 @@ export function ScanCompleteEmail({
                       </Column>
                       <Column className="w-1/2 text-right align-middle">
                         <Text className={`m-0 text-[14px] font-semibold ${scoreColorClass(score)}`}>
-                          {score} - {scoreLabel(score)}
+                          {score}
                         </Text>
                       </Column>
                     </Row>
