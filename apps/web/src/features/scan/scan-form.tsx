@@ -190,23 +190,13 @@ export function ScanForm({ variant = "hero" }: ScanFormProps) {
             )}
           </AnimatePresence>
 
-          <AnimatePresence>
-            {showEmail && (
-              <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.1, ease: "easeOut" }}
-              >
-                <Button
-                  type="submit"
-                  disabled={mutation.isPending}
-                  className={isHero ? "h-12 w-full text-base" : "w-full"}
-                >
-                  {mutation.isPending ? t("pending") : t("submit")}
-                </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <Button
+            type="submit"
+            disabled={mutation.isPending}
+            className={isHero ? "h-12 w-full text-base" : "w-full"}
+          >
+            {mutation.isPending ? t("pending") : t("submit")}
+          </Button>
 
           {mutation.isError && (
             <p ref={statusRef} tabIndex={-1} role="alert" className="text-left text-sm text-destructive outline-none">
