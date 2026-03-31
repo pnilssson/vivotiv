@@ -1,6 +1,8 @@
 import type { Page } from "playwright";
 import type { CheckResult } from "@vivotiv/shared";
 
+import { buildCheck } from "./build-check";
+
 export interface SeoDomResults {
   checks: CheckResult[];
 }
@@ -277,26 +279,3 @@ async function checkTwitterCards(page: Page): Promise<CheckResult> {
   );
 }
 
-function buildCheck(
-  id: string,
-  name: string,
-  status: "pass" | "warn" | "fail",
-  value: string,
-  weight: 1 | 2 | 3,
-  description = "",
-  items: string[] | null = null,
-): CheckResult {
-  return {
-    id,
-    name,
-    status,
-    score: status === "pass" ? 100 : status === "warn" ? 50 : 0,
-    value,
-    rawValue: null,
-    rawUnit: null,
-    scoreThresholds: null,
-    weight,
-    description,
-    items,
-  };
-}

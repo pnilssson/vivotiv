@@ -11,9 +11,11 @@ import {
   extractSecurityHeaderChecks,
   extractSeoChecks,
 } from "./checks";
+import type { ApiCheckResults } from "./api-checks";
 import type { DomCheckResults } from "./dom-checks";
 import type { HeaderCheckResults } from "./header-checks";
 import type { LighthouseResult } from "./lighthouse";
+import type { LinkCheckResults } from "./link-checks";
 import {
   buildAccessibilityResult,
   buildCategoryResult,
@@ -25,6 +27,8 @@ interface RawResults {
   lighthouse: LighthouseResult | null;
   dom: DomCheckResults | null;
   headers: HeaderCheckResults | null;
+  api: ApiCheckResults | null;
+  links: LinkCheckResults | null;
   trackErrors?: {
     lighthouse?: string | null;
     dom?: string | null;
@@ -211,6 +215,9 @@ export function aggregate(url: string, raw: RawResults) {
     if (raw.headers) {
       secMetrics.push(...extractSecurityHeaderChecks(raw.headers));
     }
+    if (raw.api) {
+      secMetrics.push(...raw.api.securityChecks);
+    }
     const securitySplit = splitErrorChecks(secMetrics);
 
     if (securitySplit.scored.length > 0) {
@@ -255,10 +262,14 @@ export function aggregate(url: string, raw: RawResults) {
     }
   }
 
-  // Standards: DOM checks only
+  // Standards: DOM checks + link checks
   let standards: CategoryResult | null = null;
-  if (raw.dom) {
-    const standardsSplit = splitErrorChecks(raw.dom.standards.checks);
+  {
+    const standardsDomChecks = raw.dom?.standards.checks ?? [];
+    const linkChecks = raw.links?.checks ?? [];
+    const allStandardsChecks = [...standardsDomChecks, ...linkChecks];
+    const standardsSplit = splitErrorChecks(allStandardsChecks);
+
     if (standardsSplit.scored.length > 0) {
       standards = buildCategoryResult({
         metrics: standardsSplit.scored,
@@ -284,13 +295,13 @@ export function aggregate(url: string, raw: RawResults) {
           .filter(Boolean)
           .join("; "),
       );
+    } else if (domError) {
+      standards = buildErrorCategory(
+        "standards-track-error",
+        "Standards scan failed",
+        domError,
+      );
     }
-  } else if (domError) {
-    standards = buildErrorCategory(
-      "standards-track-error",
-      "Standards scan failed",
-      domError,
-    );
   }
 
   const categories = {

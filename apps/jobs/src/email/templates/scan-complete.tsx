@@ -32,9 +32,9 @@ const categoryLabels: Record<ScanCategoryKey, string> = {
   performance: "Performance",
   seo: "SEO",
   accessibility: "Accessibility",
-  legal: "EU Legal",
+  legal: "Trust & Compliance",
   security: "Security",
-  standards: "Modern Standards",
+  standards: "Website Quality",
 };
 
 function scoreColor(score: number): string {

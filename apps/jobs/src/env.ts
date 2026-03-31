@@ -37,4 +37,7 @@ export const env = {
   get SMTP_FROM() {
     return requireEnv("SMTP_FROM");
   },
+  get GOOGLE_CLOUD_API_KEY() {
+    return process.env.GOOGLE_CLOUD_API_KEY ?? "";
+  },
 };

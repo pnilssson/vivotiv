@@ -20,11 +20,11 @@ The scan analyzes your website across six categories. Each one covers a differen
 
 **Accessibility.** Whether your site works for people with visual, motor, cognitive, or auditory impairments. The scan runs [axe-core](https://github.com/dequelabs/axe-core), an industry-standard testing engine, against WCAG 2.1 A and AA rules in both desktop and mobile viewports. [94.8% of the top million websites](https://webaim.org/projects/million/) have at least one detectable accessibility failure.
 
-**Legal compliance.** Whether your site meets GDPR and ePrivacy requirements. The scan detects your cookie consent platform, checks for a visible reject option, monitors which scripts and cookies load before consent, and looks for privacy policy links and business identification.
+**Trust and compliance.** Whether your site meets GDPR and ePrivacy requirements. The scan detects your cookie consent platform, checks for a visible reject option, monitors which scripts and cookies load before consent, and looks for privacy policy links and business identification.
 
 **Security.** Whether your server is configured to protect visitors. The scan inspects your TLS certificate, six security headers (CSP, HSTS, X-Content-Type-Options, Referrer-Policy, X-Frame-Options, Permissions-Policy), and whether your server exposes its software version.
 
-**Modern standards.** Whether your site follows current web development practices, including responsive design, deprecated HTML elements, favicon presence, and third-party script load.
+**Website quality.** Whether your site is built and maintained properly, including broken links, HTML validation, heading structure, responsive design, and third-party script load.
 
 ## How scoring works
 
@@ -34,7 +34,7 @@ Each category receives a score from 0 to 100:
 - **50 to 89 (orange):** Issues that should be addressed
 - **0 to 49 (red):** Significant problems requiring immediate attention
 
-The overall score is a weighted average across all six categories, with performance, SEO, accessibility, and legal compliance each weighted at 20%, and security and standards at 10% each.
+The overall score is a weighted average across all six categories, with performance, SEO, accessibility, and trust and compliance each weighted at 20%, and security and website quality at 10% each.
 
 Accessibility uses a deduction model: the score starts at 100 and points are subtracted for each violation based on severity. All other categories use a weighted average of individual checks, where each check contributes based on its importance.
 

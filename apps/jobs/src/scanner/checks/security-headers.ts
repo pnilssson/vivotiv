@@ -1,5 +1,6 @@
 import type { CheckResult } from "@vivotiv/shared";
 
+import { buildCheck } from "./build-check";
 import type { HeaderCheckResults } from "../header-checks";
 
 export function extractSecurityHeaderChecks(
@@ -252,25 +253,3 @@ function checkPoweredByExposure(h: HeaderCheckResults): CheckResult {
   );
 }
 
-function buildCheck(
-  id: string,
-  name: string,
-  status: "pass" | "warn" | "fail",
-  value: string,
-  weight: 1 | 2 | 3,
-  description: string,
-): CheckResult {
-  return {
-    id,
-    name,
-    status,
-    score: status === "pass" ? 100 : status === "warn" ? 50 : 0,
-    value,
-    rawValue: null,
-    rawUnit: null,
-    scoreThresholds: null,
-    weight,
-    description,
-    items: null,
-  };
-}

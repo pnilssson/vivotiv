@@ -6,9 +6,9 @@ It scans any public website URL and returns a clear scorecard across six busines
 - Performance and speed
 - SEO
 - Accessibility
-- EU legal compliance
+- Trust and compliance
 - Security
-- Modern web standards
+- Website quality
 
 The goal is simple: show real issues quickly, explain why they matter, and create a natural next step toward a modern rebuild.
 
@@ -20,15 +20,17 @@ The goal is simple: show real issues quickly, explain why they matter, and creat
 4. Background scan runs in parallel tracks
 5. Results page shows category scores, issue highlights, and clear CTA
 
-Typical scan time is around 15 to 20 seconds depending on target site behavior.
+Typical scan time is 15 to 30 seconds depending on target site behavior and broken link checking.
 
 ## Technology stack
 
-The scan pipeline combines three complementary analysis approaches:
+The scan pipeline combines five parallel tracks:
 
 - **Lighthouse** for performance, SEO, and browser best-practices signals
 - **Playwright + axe-core** for DOM-level checks, accessibility, legal, and standards analysis
 - **HTTP/TLS header inspection** for security headers and SSL/TLS status
+- **External API checks** using MDN HTTP Observatory and Google Web Risk API for authoritative security grading and threat detection
+- **Link checking** via linkinator for broken link detection
 
 Job orchestration is handled by **Inngest**, with execution in the `apps/jobs` service.
 
@@ -61,7 +63,7 @@ Examples:
 - Critical, serious, moderate, and minor violations
 - Incomplete findings surfaced as manual-review diagnostics
 
-### 4) EU legal compliance
+### 4) Trust and compliance
 
 Checks common GDPR/ePrivacy implementation patterns from the rendered page and network behavior.
 
@@ -75,19 +77,25 @@ Examples:
 
 ### 5) Security
 
-Combines browser best-practices findings with server header analysis.
+Combines browser best-practices findings, server header analysis, and external security APIs.
 
 Examples:
 - CSP quality and permissive policy warnings
 - HSTS quality (`max-age`, `includeSubDomains`)
 - X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
 - Server and technology exposure headers
+- MDN HTTP Observatory grade (A+ to F security header assessment)
+- Google Web Risk threat detection (malware, social engineering, unwanted software)
 
-### 6) Modern web standards
+### 6) Website quality
 
-Assesses maintainability and modernization signals in page markup and external dependencies.
+Assesses whether the site is built and maintained properly through markup analysis, link validation, and content signals.
 
 Examples:
+- Broken link detection across all page links
+- Heading structure (H1 count, level hierarchy, empty headings)
+- Content quality (word count, lang attribute)
+- URL hygiene (uppercase, underscores, excessive parameters)
 - Responsive viewport setup
 - Deprecated HTML usage
 - Favicon presence
@@ -101,7 +109,7 @@ Each category is scored from 0 to 100.
 
 #### Checklist-based categories
 
-Legal, SEO, performance, security, and standards use a fixed checklist model:
+Trust and compliance, SEO, performance, security, and website quality use a fixed checklist model:
 
 - A fixed set of checks runs every scan
 - Each check returns pass, warn, or fail
@@ -134,9 +142,9 @@ Overall score is a weighted average:
 - Performance: 20%
 - SEO: 20%
 - Accessibility: 20%
-- EU legal: 20%
+- Trust and compliance: 20%
 - Security: 10%
-- Modern standards: 10%
+- Website quality: 10%
 
 ### Result display behavior
 
@@ -157,8 +165,10 @@ Current UX direction:
 
 The scan is designed to be trustworthy even on unstable targets:
 
-- Parallel tracks with failure isolation
-- Partial-result support when one track fails
+- Five parallel tracks with failure isolation
+- Partial-result support when any track fails
+- External API failures (Observatory, Web Risk, W3C Validator) are silently skipped with Sentry logging
+- Broken link checking returns partial results on timeout (30s cap)
 - Explicit error diagnostics in affected categories
 - DNS and redirect-chain validation against private/local IP targets
 - Request and runtime timeouts to avoid hanging scans

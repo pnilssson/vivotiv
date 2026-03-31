@@ -4,10 +4,12 @@ import type { Locale } from "@vivotiv/shared";
 
 import { env } from "../../env";
 import { aggregate } from "../../scanner/aggregate";
+import { runApiChecks } from "../../scanner/api-checks";
 import { validatePublicRedirectChain } from "../../scanner/dns-validation";
 import { runDomChecks } from "../../scanner/dom-checks";
 import { runHeaderChecks } from "../../scanner/header-checks";
 import { runLighthouse } from "../../scanner/lighthouse";
+import { runLinkChecks } from "../../scanner/link-checks";
 import { inngest } from "../client";
 
 const db = createDb(env.DATABASE_URL);
@@ -70,10 +72,32 @@ export const scanFunction = inngest.createFunction(
         return null;
       });
 
-    const [lighthouse, dom, headers] = await Promise.all([
+    const apiPromise = step
+      .run("run-api-checks", () =>
+        runApiChecks(validatedUrl, {
+          googleCloudApiKey: env.GOOGLE_CLOUD_API_KEY || undefined,
+        }),
+      )
+      .catch((err) => {
+        logger.error("API checks track failed", { url: validatedUrl, error: String(err) });
+        Sentry.logger.warn("API checks track failed", { url: validatedUrl, error: String(err) });
+        return null;
+      });
+
+    const linksPromise = step
+      .run("run-link-checks", () => runLinkChecks(validatedUrl))
+      .catch((err) => {
+        logger.error("Link checks track failed", { url: validatedUrl, error: String(err) });
+        Sentry.logger.warn("Link checks track failed", { url: validatedUrl, error: String(err) });
+        return null;
+      });
+
+    const [lighthouse, dom, headers, api, links] = await Promise.all([
       lighthousePromise,
       domPromise,
       headersPromise,
+      apiPromise,
+      linksPromise,
     ]);
 
     if (!lighthouse && !dom && !headers) {
@@ -86,6 +110,8 @@ export const scanFunction = inngest.createFunction(
         lighthouse,
         dom,
         headers,
+        api: api ?? null,
+        links: links ?? null,
         trackErrors: {
           lighthouse: lighthouse ? null : "Track failed after retries",
           dom: dom ? null : "Track failed after retries",

@@ -1,6 +1,8 @@
 import type { Page } from "playwright";
 import type { CheckResult } from "@vivotiv/shared";
 
+import { buildCheck } from "./build-check";
+
 export interface StandardsDomResults {
   checks: CheckResult[];
 }
@@ -13,6 +15,9 @@ export async function extractStandardsDomChecks(
     { id: "deprecated-html", promise: checkDeprecatedHtml(page) },
     { id: "favicon", promise: checkFavicon(page) },
     { id: "third-party-scripts", promise: checkThirdPartyScripts(page) },
+    { id: "heading-structure", promise: checkHeadingStructure(page) },
+    { id: "content-basics", promise: checkContentBasics(page) },
+    { id: "url-structure", promise: checkUrlStructure(page) },
   ];
 
   const results = await Promise.allSettled(entries.map((e) => e.promise));
@@ -291,26 +296,185 @@ async function checkThirdPartyScripts(page: Page): Promise<CheckResult> {
     );
 }
 
-function buildCheck(
-  id: string,
-  name: string,
-  status: "pass" | "warn" | "fail",
-  value: string,
-  weight: 1 | 2 | 3,
-  description: string,
-  items: string[] | null = null,
-): CheckResult {
-  return {
-    id,
-    name,
-    status,
-    score: status === "pass" ? 100 : status === "warn" ? 50 : 0,
-    value,
-    rawValue: null,
-    rawUnit: null,
-    scoreThresholds: null,
-    weight,
-    description,
-    items,
-  };
+async function checkHeadingStructure(page: Page): Promise<CheckResult> {
+  const headings = await page.evaluate(() => {
+    const elements = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
+    return Array.from(elements).map((el) => ({
+      tag: el.tagName.toLowerCase(),
+      level: Number(el.tagName[1]),
+      text: (el.textContent ?? "").trim(),
+    }));
+  });
+
+  const issues: string[] = [];
+  const h1Count = headings.filter((h) => h.tag === "h1").length;
+
+  if (h1Count === 0) {
+    issues.push("No H1 heading found");
+  } else if (h1Count > 1) {
+    issues.push(`${h1Count} H1 headings found (should be exactly 1)`);
+  }
+
+  for (let i = 1; i < headings.length; i++) {
+    const prev = headings[i - 1].level;
+    const curr = headings[i].level;
+    if (curr > prev + 1) {
+      issues.push(`Skipped heading level: <${headings[i - 1].tag}> followed by <${headings[i].tag}>`);
+    }
+  }
+
+  const emptyCount = headings.filter((h) => h.text === "").length;
+  if (emptyCount > 0) {
+    issues.push(`${emptyCount} empty heading${emptyCount === 1 ? "" : "s"}`);
+  }
+
+  if (h1Count === 0 || h1Count > 1) {
+    return buildCheck(
+      "heading-structure",
+      "Heading Structure",
+      "fail",
+      `${issues.length} heading issue${issues.length === 1 ? "" : "s"} found`,
+      1,
+      "A clear heading hierarchy helps search engines and screen readers understand your page structure. Every page should have exactly one H1.",
+      issues,
+    );
+  }
+
+  if (issues.length > 0) {
+    return buildCheck(
+      "heading-structure",
+      "Heading Structure",
+      "warn",
+      `${issues.length} heading issue${issues.length === 1 ? "" : "s"} found`,
+      1,
+      "A clear heading hierarchy helps search engines and screen readers understand your page structure. Every page should have exactly one H1.",
+      issues,
+    );
+  }
+
+  return buildCheck(
+    "heading-structure",
+    "Heading Structure",
+    "pass",
+    "Heading structure is correct",
+    1,
+    "A clear heading hierarchy helps search engines and screen readers understand your page structure. Every page should have exactly one H1.",
+  );
 }
+
+async function checkContentBasics(page: Page): Promise<CheckResult> {
+  const result = await page.evaluate(() => {
+    const lang = document.documentElement.lang?.trim() ?? "";
+
+    const main =
+      document.querySelector("main") ??
+      document.querySelector("article") ??
+      document.querySelector('[role="main"]') ??
+      document.body;
+
+    const clone = main.cloneNode(true) as HTMLElement;
+    for (const el of clone.querySelectorAll(
+      "nav, header, footer, script, style, noscript, svg",
+    )) {
+      el.remove();
+    }
+
+    const text = (clone.textContent ?? "").trim();
+    const wordCount = text.split(/\s+/).filter((w) => w.length > 0).length;
+
+    return { lang, wordCount };
+  });
+
+  const issues: string[] = [];
+
+  if (!result.lang) {
+    issues.push("Missing lang attribute on <html> element");
+  }
+
+  if (result.wordCount < 50) {
+    issues.push(`Only ${result.wordCount} words of content`);
+  } else if (result.wordCount < 200) {
+    issues.push(`${result.wordCount} words of content (thin page)`);
+  }
+
+  if (result.wordCount < 50) {
+    return buildCheck(
+      "content-basics",
+      "Content Quality",
+      "fail",
+      `${result.wordCount} words${!result.lang ? ", no lang attribute" : ""}`,
+      1,
+      "Pages with very little content appear abandoned or incomplete. A missing lang attribute hurts SEO and accessibility for non-English sites.",
+      issues,
+    );
+  }
+
+  if (issues.length > 0) {
+    return buildCheck(
+      "content-basics",
+      "Content Quality",
+      "warn",
+      `${result.wordCount} words${!result.lang ? ", no lang attribute" : ""}`,
+      1,
+      "Pages with very little content appear abandoned or incomplete. A missing lang attribute hurts SEO and accessibility for non-English sites.",
+      issues,
+    );
+  }
+
+  return buildCheck(
+    "content-basics",
+    "Content Quality",
+    "pass",
+    `${result.wordCount} words, lang="${result.lang}"`,
+    1,
+    "Pages with very little content appear abandoned or incomplete. A missing lang attribute hurts SEO and accessibility for non-English sites.",
+  );
+}
+
+async function checkUrlStructure(page: Page): Promise<CheckResult> {
+  const url = new URL(page.url());
+  const issues: string[] = [];
+
+  if (url.pathname !== url.pathname.toLowerCase()) {
+    issues.push("URL path contains uppercase characters");
+  }
+
+  if (url.pathname.includes("_")) {
+    issues.push("URL path uses underscores instead of hyphens");
+  }
+
+  if (/\/\//.test(url.pathname.slice(1))) {
+    issues.push("URL path contains double slashes");
+  }
+
+  if (url.pathname.length > 200) {
+    issues.push(`URL path is ${url.pathname.length} characters (over 200)`);
+  }
+
+  const paramCount = Array.from(url.searchParams).length;
+  if (paramCount > 3) {
+    issues.push(`URL has ${paramCount} query parameters`);
+  }
+
+  if (issues.length > 0) {
+    return buildCheck(
+      "url-structure",
+      "URL Structure",
+      "warn",
+      `${issues.length} URL issue${issues.length === 1 ? "" : "s"} found`,
+      1,
+      "Clean URLs improve SEO and user trust. Avoid uppercase, underscores, excessive parameters, and overly long paths.",
+      issues,
+    );
+  }
+
+  return buildCheck(
+    "url-structure",
+    "URL Structure",
+    "pass",
+    "URL structure is clean",
+    1,
+    "Clean URLs improve SEO and user trust. Avoid uppercase, underscores, excessive parameters, and overly long paths.",
+  );
+}
+

@@ -21,11 +21,11 @@ Skanningen analyserar er webbplats inom sex kategorier. Varje kategori täcker e
 
 **Tillgänglighet.** Om er webbplats fungerar för personer med syn-, motorik-, kognitiva eller hörselnedsättningar. Skanningen kör [axe-core](https://github.com/dequelabs/axe-core), en branschstandard för tillgänglighetstestning, mot WCAG 2.1 A- och AA-regler i både dator- och mobilvyer. [94,8 % av de en miljon största webbplatserna](https://webaim.org/projects/million/) har minst en detekterbar tillgänglighetsbrist.
 
-**Juridisk efterlevnad.** Om er webbplats uppfyller GDPR och ePrivacy-kraven. Skanningen identifierar er samtyckesplattform, kontrollerar om ett synligt avvisningsalternativ finns, övervakar vilka skript och cookies som laddas innan samtycke, och letar efter integritetspolicy och företagsidentifikation.
+**Förtroende och efterlevnad.** Om er webbplats uppfyller GDPR och ePrivacy-kraven. Skanningen identifierar er samtyckesplattform, kontrollerar om ett synligt avvisningsalternativ finns, övervakar vilka skript och cookies som laddas innan samtycke, och letar efter integritetspolicy och företagsidentifikation.
 
 **Säkerhet.** Om er server är konfigurerad för att skydda besökare. Skanningen inspekterar ert TLS-certifikat, sex säkerhetsheaders (CSP, HSTS, X-Content-Type-Options, Referrer-Policy, X-Frame-Options, Permissions-Policy) och om er server exponerar sin programvaruversion.
 
-**Moderna standarder.** Om er webbplats följer aktuella webbutvecklingsmetoder, inklusive responsiv design, föråldrade HTML-element, favicon och tredjepartsskript.
+**Webbplatskvalitet.** Om er webbplats är korrekt byggd och underhållen, inklusive trasiga länkar, HTML-validering, rubrikstruktur, responsiv design och tredjepartsskript.
 
 ## Hur poängsättningen fungerar
 
@@ -35,7 +35,7 @@ Varje kategori får en poäng från 0 till 100:
 - **50 till 89 (orange):** Problem som bör åtgärdas
 - **0 till 49 (rött):** Allvarliga brister som kräver omedelbar åtgärd
 
-Den totala poängen är ett viktat genomsnitt av alla sex kategorier, där prestanda, SEO, tillgänglighet och juridisk efterlevnad viktas 20 % vardera, och säkerhet och standarder 10 % vardera.
+Den totala poängen är ett viktat genomsnitt av alla sex kategorier, där prestanda, SEO, tillgänglighet och förtroende och efterlevnad viktas 20 % vardera, och säkerhet och webbplatskvalitet 10 % vardera.
 
 Tillgänglighet använder en avdragsmodell: poängen börjar på 100 och poäng dras av för varje överträdelse baserat på allvarlighetsgrad. Alla andra kategorier använder ett viktat genomsnitt av enskilda kontroller, där varje kontroll bidrar baserat på sin betydelse.
 

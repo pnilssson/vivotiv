@@ -23,6 +23,7 @@
     "hono": "^4.12.9",
     "inngest": "^3.35.0",
     "lighthouse": "^13.0.3",
+    "linkinator": "^7.6.1",
     "nodemailer": "^8.0.4",
     "playwright": "1.58.2",
     "react": "19.2.4"

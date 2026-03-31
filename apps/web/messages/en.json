@@ -61,7 +61,7 @@
       "description": "Since June 2025, most EU businesses are legally required to have accessible websites. We check if yours meets the requirements."
     },
     "legal": {
-      "title": "EU Legal Compliance",
+      "title": "Trust & Compliance",
       "description": "Missing cookie consent, no privacy policy, tracking before user approval. This can potentially lead to fines."
     },
     "security": {
@@ -69,8 +69,8 @@
       "description": "Outdated software and missing security headers make your site an easy target. Most of these issues are invisible until something breaks."
     },
     "standards": {
-      "title": "Modern Web Standards",
-      "description": "Broken mobile layouts, deprecated code, missing pages. These signal to visitors that your business doesn't invest in its online presence."
+      "title": "Website Quality",
+      "description": "Broken links, HTML errors, poor heading structure, and outdated code. These signal to visitors that your business doesn't invest in its online presence."
     }
   },
   "reportPreview": {
@@ -510,7 +510,7 @@
       "accessibility": "Your site may not meet EU accessibility requirements",
       "legal": "Missing compliance can lead to fines up to SEK 10M",
       "security": "Missing security headers leave your site exposed",
-      "standards": "Outdated code signals a neglected online presence"
+      "standards": "Broken links and code errors signal a neglected online presence"
     },
     "checkImpact": {
       "performance": "This affects how fast your site loads and how Google ranks it.",
@@ -518,7 +518,7 @@
       "accessibility": "This may put you out of compliance with the EU Accessibility Act.",
       "legal": "This is a compliance gap that could lead to regulatory action.",
       "security": "This makes your site more vulnerable to attacks and data breaches.",
-      "standards": "This signals to visitors that the site is not actively maintained."
+      "standards": "This signals to visitors that the site is not actively maintained or built properly."
     },
     "failCount": "{count, plural, one {# failed} other {# failed}}",
     "warnCount": "{count, plural, one {# warning} other {# warnings}}",

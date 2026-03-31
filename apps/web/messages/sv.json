@@ -61,7 +61,7 @@
       "description": "Sedan juni 2025 \u00e4r de flesta EU-f\u00f6retag skyldiga att ha tillg\u00e4ngliga webbplatser. Vi kontrollerar om din uppfyller kraven."
     },
     "legal": {
-      "title": "EU-r\u00e4ttslig efterlevnad",
+      "title": "F\u00f6rtroende & efterlevnad",
       "description": "Saknat cookiesamtycke, ingen integritetspolicy, sp\u00e5rning innan godk\u00e4nnande. Det h\u00e4r kan potentiellt leda till b\u00f6ter."
     },
     "security": {
@@ -69,8 +69,8 @@
       "description": "F\u00f6r\u00e5ldrad mjukvara och saknade s\u00e4kerhetsrubriker g\u00f6r din sida till ett enkelt m\u00e5l. De flesta av dessa problem \u00e4r osynliga tills n\u00e5got g\u00e5r s\u00f6nder."
     },
     "standards": {
-      "title": "Moderna webbstandarder",
-      "description": "Trasiga mobillayouter, f\u00f6r\u00e5ldrad kod, saknade sidor. Det signalerar till bes\u00f6kare att ditt f\u00f6retag inte investerar i sin n\u00e4rvaro online."
+      "title": "Webbplatskvalitet",
+      "description": "Trasiga l\u00e4nkar, HTML-fel, d\u00e5lig rubrikstruktur och f\u00f6r\u00e5ldrad kod. Det signalerar till bes\u00f6kare att ert f\u00f6retag inte investerar i sin n\u00e4rvaro online."
     }
   },
   "reportPreview": {
@@ -510,7 +510,7 @@
       "accessibility": "Din webbplats uppfyller kanske inte EU:s tillgänglighetskrav",
       "legal": "Bristande efterlevnad kan leda till böter upp till 10 miljoner kronor",
       "security": "Saknade säkerhetsrubriker gör din webbplats sårbar",
-      "standards": "Föråldrad kod signalerar en försummad webbnärvaro"
+      "standards": "Trasiga länkar och kodfel signalerar en försummad webbnärvaro"
     },
     "checkImpact": {
       "performance": "Det här påverkar hur snabbt din sida laddar och hur Google rankar den.",
@@ -518,7 +518,7 @@
       "accessibility": "Det här kan innebära att du inte uppfyller EU:s tillgänglighetsdirektiv.",
       "legal": "Det här är en efterlevnadsbrist som kan leda till myndighetsingripande.",
       "security": "Det här gör din webbplats mer sårbar för attacker och dataintrång.",
-      "standards": "Det här signalerar till besökare att webbplatsen inte underhålls aktivt."
+      "standards": "Det här signalerar till besökare att webbplatsen inte underhålls eller är korrekt byggd."
     },
     "failCount": "{count, plural, one {# underkänd} other {# underkända}}",
     "warnCount": "{count, plural, one {# varning} other {# varningar}}",
