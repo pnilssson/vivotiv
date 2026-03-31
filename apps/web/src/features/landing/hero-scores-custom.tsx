@@ -82,9 +82,9 @@ export function HeroScoresCustom() {
       className="mx-auto grid w-full max-w-2xl grid-cols-1 gap-px border border-border bg-border sm:grid-cols-3"
     >
       <div className="col-span-1 bg-card p-5 transition-colors hover:bg-depth-1 sm:col-span-3">
-        <h3 className="font-heading text-sm font-semibold">
+        <h2 className="font-heading text-sm font-semibold">
           {tHero("averageScoresLabel")}
-        </h3>
+        </h2>
       </div>
       {categories.map((key, i) => (
         <ScoreCard

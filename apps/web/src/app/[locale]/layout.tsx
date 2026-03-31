@@ -60,11 +60,20 @@ export async function generateMetadata({
       siteName: "Vivotiv",
       locale: locale === "sv" ? "sv_SE" : "en_US",
       type: "website",
+      images: [
+        {
+          url: `${domain}/opengraph-image`,
+          width: 1200,
+          height: 630,
+          alt: "Vivotiv - Free website scan",
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [`${domain}/opengraph-image`],
     },
     robots: {
       index: true,

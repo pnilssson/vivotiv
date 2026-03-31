@@ -6,4 +6,7 @@ export default defineConfig({
   target: "node22",
   clean: true,
   noExternal: ["@vivotiv/db", "@vivotiv/shared"],
+  esbuildOptions(options) {
+    options.keepNames = false;
+  },
 });
