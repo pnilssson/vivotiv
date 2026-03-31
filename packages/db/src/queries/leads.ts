@@ -7,6 +7,15 @@ type CreateLeadInput = {
   email: string;
 };
 
+export async function getLeadById(db: Database, id: string) {
+  const [lead] = await db
+    .select({ id: leads.id, email: leads.email })
+    .from(leads)
+    .where(eq(leads.id, id));
+
+  return lead ?? null;
+}
+
 export async function upsertLead(db: Database, input: CreateLeadInput) {
   const [lead] = await db
     .insert(leads)

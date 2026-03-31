@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/node";
 import { createDb, createScan } from "@vivotiv/db";
+import type { Locale } from "@vivotiv/shared";
 
 import { env } from "../../env";
 import { aggregate } from "../../scanner/aggregate";
@@ -14,6 +15,29 @@ const db = createDb(env.DATABASE_URL);
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36";
 
+type TrackResults<L, D, H> = {
+  lighthouse: L | null;
+  dom: D | null;
+  headers: H | null;
+  errors: Record<"lighthouse" | "dom" | "headers", string | null>;
+};
+
+function settleTrack<T>(
+  name: string,
+  result: PromiseSettledResult<T>,
+  url: string,
+  logger: { error: (msg: string, ctx: object) => void },
+): { value: T | null; error: string | null } {
+  if (result.status === "fulfilled") {
+    return { value: result.value, error: null };
+  }
+
+  const error = String(result.reason);
+  logger.error(`${name} track failed`, { url, error });
+  Sentry.logger.warn(`${name} track failed`, { url, error });
+  return { value: null, error };
+}
+
 export const scanFunction = inngest.createFunction(
   {
     id: "scan-website",
@@ -24,11 +48,16 @@ export const scanFunction = inngest.createFunction(
   },
   { event: "scan.requested" },
   async ({ event, step, logger }) => {
-    const { leadId, url } = event.data as { leadId: string; url: string };
+    const { leadId, url, locale } = event.data as {
+      leadId: string;
+      url: string;
+      locale: Locale;
+    };
     const scanStartedAt = Date.now();
     logger.info("Scan started", { leadId, url });
     Sentry.logger.info("Scan started", { leadId, url });
 
+    /* 1. Validate URL */
     const validatedUrl = await step.run("validate-dns-redirect-chain", () =>
       validatePublicRedirectChain(url, {
         userAgent: USER_AGENT,
@@ -37,77 +66,49 @@ export const scanFunction = inngest.createFunction(
       }),
     );
 
-    // Assign step promises first, then await (Inngest parallel pattern)
-    const lighthouseStep = step.run("run-lighthouse", () =>
-      runLighthouse(validatedUrl, ["performance", "seo", "best-practices"]),
-    );
-    const domStep = step.run("run-dom-checks", () => runDomChecks(validatedUrl));
-    const headersStep = step.run("run-header-checks", () =>
-      runHeaderChecks(validatedUrl),
-    );
+    /* 2. Run scan tracks in parallel */
+    const tracks = await step.run("run-scan-tracks", async () => {
+      const [lh, dom, hdr] = await Promise.allSettled([
+        runLighthouse(validatedUrl, ["performance", "seo", "best-practices"]),
+        runDomChecks(validatedUrl),
+        runHeaderChecks(validatedUrl),
+      ]);
 
-    const [lighthouseResult, domResult, headersResult] =
-      await Promise.allSettled([lighthouseStep, domStep, headersStep]);
+      const lighthouse = settleTrack("Lighthouse", lh, validatedUrl, logger);
+      const domChecks = settleTrack("DOM checks", dom, validatedUrl, logger);
+      const headers = settleTrack("Header checks", hdr, validatedUrl, logger);
 
-    const lighthouse =
-      lighthouseResult.status === "fulfilled" ? lighthouseResult.value : null;
-    const dom =
-      domResult.status === "fulfilled" ? domResult.value : null;
-    const headers =
-      headersResult.status === "fulfilled" ? headersResult.value : null;
+      if (!lighthouse.value && !domChecks.value && !headers.value) {
+        throw new Error("All scan tracks failed, no results to store");
+      }
 
-    if (lighthouseResult.status === "rejected") {
-      logger.error("Lighthouse track failed", {
-        error: String(lighthouseResult.reason),
-      });
-      Sentry.logger.warn("Lighthouse track failed", {
-        url,
-        error: String(lighthouseResult.reason),
-      });
-    }
-    if (domResult.status === "rejected") {
-      logger.error("DOM checks track failed", {
-        error: String(domResult.reason),
-      });
-      Sentry.logger.warn("DOM checks track failed", {
-        url,
-        error: String(domResult.reason),
-      });
-    }
-    if (headersResult.status === "rejected") {
-      logger.error("Header checks track failed", {
-        error: String(headersResult.reason),
-      });
-      Sentry.logger.warn("Header checks track failed", {
-        url,
-        error: String(headersResult.reason),
-      });
-    }
+      return {
+        lighthouse: lighthouse.value,
+        dom: domChecks.value,
+        headers: headers.value,
+        errors: {
+          lighthouse: lighthouse.error,
+          dom: domChecks.error,
+          headers: headers.error,
+        },
+      } satisfies TrackResults<
+        Awaited<ReturnType<typeof runLighthouse>>,
+        Awaited<ReturnType<typeof runDomChecks>>,
+        Awaited<ReturnType<typeof runHeaderChecks>>
+      >;
+    });
 
-    // All three tracks failed, nothing to store
-    if (!lighthouse && !dom && !headers) {
-      throw new Error("All scan tracks failed, no results to store");
-    }
-
+    /* 3. Aggregate scores */
     const result = await step.run("aggregate", () =>
       aggregate(validatedUrl, {
-        lighthouse,
-        dom,
-        headers,
-        trackErrors: {
-          lighthouse:
-            lighthouseResult.status === "rejected"
-              ? String(lighthouseResult.reason)
-              : null,
-          dom: domResult.status === "rejected" ? String(domResult.reason) : null,
-          headers:
-            headersResult.status === "rejected"
-              ? String(headersResult.reason)
-              : null,
-        },
+        lighthouse: tracks.lighthouse,
+        dom: tracks.dom,
+        headers: tracks.headers,
+        trackErrors: tracks.errors,
       }),
     );
 
+    /* 4. Store scan */
     const { details } = result;
     const scan = await step.run("store", () =>
       createScan(db, {
@@ -124,12 +125,21 @@ export const scanFunction = inngest.createFunction(
       }),
     );
 
-    const durationMs = Date.now() - scanStartedAt;
-    logger.info("Scan completed", {
-      leadId,
-      scanId: scan.id,
-      overallScore: result.overallScore,
+    /* 5. Send results email */
+    await inngest.send({
+      name: "scan.completed",
+      data: {
+        leadId,
+        scanId: scan.id,
+        url: result.finalUrl,
+        locale,
+        overallScore: result.overallScore,
+        details,
+      },
     });
+
+    const durationMs = Date.now() - scanStartedAt;
+    logger.info("Scan completed", { leadId, scanId: scan.id, overallScore: result.overallScore });
     Sentry.logger.info("Scan completed", {
       leadId,
       scanId: scan.id,

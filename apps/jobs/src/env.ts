@@ -22,4 +22,19 @@ export const env = {
   get SENTRY_DSN() {
     return process.env.SENTRY_DSN ?? "";
   },
+  get SMTP_HOST() {
+    return requireEnv("SMTP_HOST");
+  },
+  get SMTP_PORT() {
+    return Number(process.env.SMTP_PORT) || 587;
+  },
+  get SMTP_USER() {
+    return requireEnv("SMTP_USER");
+  },
+  get SMTP_PASS() {
+    return requireEnv("SMTP_PASS");
+  },
+  get SMTP_FROM() {
+    return requireEnv("SMTP_FROM");
+  },
 };

@@ -13,7 +13,7 @@ export async function submitScan(
 
   await sendInngestEvent(inngestEventKey, {
     name: "scan.requested",
-    data: { leadId: lead.id, url: payload.url },
+    data: { leadId: lead.id, url: payload.url, locale: payload.locale },
   });
 
   return {
