@@ -77,7 +77,7 @@ export function ScanConfirmation({ onReset }: ScanConfirmationProps) {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.3 }}
       >
-        <Button variant="outline" onClick={onReset}>
+        <Button onClick={onReset}>
           {t("scanAnother")}
         </Button>
       </motion.div>
