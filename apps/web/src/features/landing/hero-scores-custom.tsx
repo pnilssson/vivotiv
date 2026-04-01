@@ -9,9 +9,9 @@ import { useTickingNumber } from "@/lib/use-ticking-number";
 import { useAverageScores } from "./use-average-scores";
 
 function scoreColor(score: number) {
-  if (score >= 90) return "text-emerald-600";
-  if (score >= 50) return "text-amber-500";
-  return "text-red-500";
+  if (score >= 90) return "text-emerald-700";
+  if (score >= 50) return "text-amber-700";
+  return "text-red-700";
 }
 
 function barColor(score: number) {

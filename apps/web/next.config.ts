@@ -10,6 +10,18 @@ const nextConfig: NextConfig = {
   experimental: {
     clientTraceMetadata: ["sentry-trace", "baggage"],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/ingest/static/:path*",
+        destination: "https://eu-assets.i.posthog.com/static/:path*",
+      },
+      {
+        source: "/ingest/:path*",
+        destination: "https://eu.i.posthog.com/:path*",
+      },
+    ];
+  },
   async redirects() {
     return [
       {

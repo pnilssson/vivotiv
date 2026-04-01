@@ -30,9 +30,9 @@ const StatusIcon = {
 };
 
 const statusColor = {
-  fail: "text-red-500",
-  warn: "text-amber-500",
-  pass: "text-emerald-600",
+  fail: "text-red-700",
+  warn: "text-amber-700",
+  pass: "text-emerald-700",
   error: "text-muted-foreground",
 };
 
@@ -171,15 +171,15 @@ function CheckGroup({
 }
 
 function scoreColorClass(score: number): string {
-  if (score >= 90) return "text-emerald-600";
-  if (score >= 50) return "text-amber-500";
-  return "text-red-500";
+  if (score >= 90) return "text-emerald-700";
+  if (score >= 50) return "text-amber-700";
+  return "text-red-700";
 }
 
 function scoreBorderClass(score: number): string {
-  if (score >= 90) return "border-emerald-600";
-  if (score >= 50) return "border-amber-500";
-  return "border-red-500";
+  if (score >= 90) return "border-emerald-700";
+  if (score >= 50) return "border-amber-700";
+  return "border-red-700";
 }
 
 function CategorySection({
@@ -208,13 +208,13 @@ function CategorySection({
           </h3>
           <div className="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
             {failCount > 0 && (
-              <span className="text-red-500">{t("failCount", { count: failCount })}</span>
+              <span className="text-red-700">{t("failCount", { count: failCount })}</span>
             )}
             {warnCount > 0 && (
-              <span className="text-amber-500">{t("warnCount", { count: warnCount })}</span>
+              <span className="text-amber-700">{t("warnCount", { count: warnCount })}</span>
             )}
             {passCount > 0 && (
-              <span className="text-emerald-600">{t("passCount", { count: passCount })}</span>
+              <span className="text-emerald-700">{t("passCount", { count: passCount })}</span>
             )}
           </div>
         </div>

@@ -60,15 +60,15 @@ function summaryKey(score: number): "summaryCritical" | "summaryWarning" | "summ
 }
 
 function scoreColor(score: number): string {
-  if (score >= 90) return "text-emerald-600";
-  if (score >= 50) return "text-amber-500";
-  return "text-red-500";
+  if (score >= 90) return "text-emerald-700";
+  if (score >= 50) return "text-amber-700";
+  return "text-red-700";
 }
 
 function scoreStroke(score: number): string {
-  if (score >= 90) return "stroke-emerald-600";
-  if (score >= 50) return "stroke-amber-500";
-  return "stroke-red-500";
+  if (score >= 90) return "stroke-emerald-700";
+  if (score >= 50) return "stroke-amber-700";
+  return "stroke-red-700";
 }
 
 const RING_RADIUS = 42;

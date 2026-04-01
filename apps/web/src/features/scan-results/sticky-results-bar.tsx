@@ -11,15 +11,15 @@ type StickyResultsBarProps = {
 };
 
 function scoreColor(score: number): string {
-  if (score >= 90) return "text-emerald-600";
-  if (score >= 50) return "text-amber-500";
-  return "text-red-500";
+  if (score >= 90) return "text-emerald-700";
+  if (score >= 50) return "text-amber-700";
+  return "text-red-700";
 }
 
 function scoreBorderColor(score: number): string {
-  if (score >= 90) return "border-emerald-600";
-  if (score >= 50) return "border-amber-500";
-  return "border-red-500";
+  if (score >= 90) return "border-emerald-700";
+  if (score >= 50) return "border-amber-700";
+  return "border-red-700";
 }
 
 export function StickyResultsBar({ overallScore }: StickyResultsBarProps) {
