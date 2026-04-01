@@ -1,14 +1,14 @@
 ---
 title: "How Our Website Scan Works"
-description: "Our free scan uses Lighthouse, axe-core, and HTTP header analysis to check your website across six categories. Learn what each tool does, why they are trustworthy, and how we interpret the results."
-lastUpdated: "Last updated March 2026"
+description: "Our free scan uses Lighthouse, axe-core, HTTP header analysis, Google Web Risk, and broken link detection to check your website across six categories. Learn what each tool does and how we interpret the results."
+lastUpdated: "Last updated April 2026"
 family: "standalone"
 relatedSlugs: ["accessibility", "privacy-compliance"]
 ---
 
-## Three tools, one report
+## Five analysis tracks, one report
 
-Our scan combines three complementary analysis approaches to give you a complete picture of your website's health. Each tool is purpose-built for specific types of checks, and together they cover performance, SEO, accessibility, trust and compliance, security, and website quality.
+Our scan combines five complementary analysis tracks to give you a complete picture of your website's health. Each track is purpose-built for specific types of checks, and together they cover performance, SEO, accessibility, trust and compliance, security, and website quality.
 
 The entire scan runs in the background and typically completes in 15 to 20 seconds.
 
@@ -41,7 +41,7 @@ axe-core is used by organizations including Microsoft and Google, and is designe
 
 ## HTTP and TLS header analysis
 
-The third component inspects your server's response headers and SSL/TLS configuration. This does not require loading the page in a browser, so it runs in parallel with the other two analyses.
+This track inspects your server's response headers and SSL/TLS configuration. It does not require loading the page in a browser, so it runs in parallel with the other tracks.
 
 We check:
 
@@ -52,6 +52,19 @@ We check:
 - **SSL/TLS certificate** validity and trust chain status
 
 These headers are your first line of defense against common web attacks. Missing or misconfigured headers leave your site and your visitors exposed.
+
+## External security checks
+
+We cross-reference your site against external security databases to detect threats that internal analysis cannot catch:
+
+- **Google Web Risk** checks whether your URL has been flagged for malware, social engineering, or unwanted software
+- **MDN Observatory** grades your site's security configuration against Mozilla's recommended standards
+
+These checks run via external APIs and complement the header analysis with an outside-in perspective on your site's security posture.
+
+## Broken link detection
+
+We crawl the links on your page and verify that they resolve correctly. Broken links hurt both user experience and SEO, as search engines treat dead links as a signal of poor site maintenance. The scan reports the number of broken links found and which URLs are affected.
 
 ## How we score results
 
@@ -88,5 +101,7 @@ The scan is designed to surface real, actionable issues. We do not inflate score
 - [Lighthouse](https://developer.chrome.com/docs/lighthouse) - Google's open-source web auditing tool
 - [axe-core](https://github.com/dequelabs/axe-core) - Deque Systems' accessibility testing engine
 - [Playwright](https://playwright.dev/) - Browser automation framework by Microsoft
+- [Google Web Risk](https://cloud.google.com/web-risk) - Google's threat detection API
+- [MDN Observatory](https://observatory.mozilla.org/) - Mozilla's security grading tool
 
 [Run a free scan on your website](/)

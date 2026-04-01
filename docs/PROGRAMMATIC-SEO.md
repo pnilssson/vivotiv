@@ -6,17 +6,21 @@
 |-------|--------|-------------|
 | 0 | Done | Infrastructure: content model, sitemap, localized slugs, OG tags, JSON-LD |
 | 1 | Done | Compliance guides (3 new pages, both locales) |
-| 2 | Not started | Action and problem pages (5 pages, both locales) |
+| 2 | In progress | Action and problem pages (5 pages, both locales) |
 | 3 | Not started | CMS-specific pages (3 pages, both locales) |
 | 4 | Not started | Issue explainer pages (8 pages, both locales) |
 | 5 | Not started | Comparison and tool pages (5 pages, both locales) |
 | 6 | Not started | Measurement, iteration, content refresh |
 
-**Current state:** Phase 1 complete. All 5 compliance family pages live in both locales (accessibility, privacy-compliance, cookie-consent-requirements, website-security-basics, website-compliance-checklist). Cross-links updated across all compliance pages. Sitemap, guides hub, and breadcrumbs working for all pages.
+**Current state:** Phase 2 in progress. All 5 compliance pages live. 2 of 5 action/problem pages live (free-website-test, website-health-check). Guides hub redesigned with card grid layout and localized Swedish slug (`/guider`). Footer updated with all compliance pages.
+
+**Scan category names (updated):** Performance, SEO, Accessibility, Trust and compliance, Security, Website quality. These replaced the earlier names "Legal compliance" and "Modern standards."
+
+**Scan analysis tracks (updated April 2026):** The scan now runs five analysis tracks: Lighthouse, DOM checks (axe-core via Playwright), HTTP/TLS header analysis, external security checks (Google Web Risk, MDN Observatory), and broken link detection. Content pages referencing the scan should reflect this.
 
 **Total planned:** 24 new pages across 5 families. 2 existing pages (accessibility, privacy-compliance) reclassified as compliance. 1 existing page (how-scan-works) stays standalone.
 
-**Next step:** Phase 2.
+**Next step:** Phase 2, page 3 of 5 (slow-website).
 
 ### Phase 0 implementation notes
 
@@ -30,7 +34,7 @@
 - Article + BreadcrumbList JSON-LD structured data on all content pages
 - Visual breadcrumbs component (`features/content/breadcrumbs.tsx`)
 - Scan CTA MDX component (`features/content/scan-cta.tsx`), use `<ScanCta />` in any MDX file
-- Guides hub page at `/guides` grouping content by family
+- Guides hub page at `/guides` (`/guider` on vivotiv.se) grouping content by family, redesigned with ContentCardGrid layout
 - Sitemap dynamically generates entries for all non-noindex content pages
 - Footer and header updated with guides link
 - Message files updated with `breadcrumbs`, `scanCta`, `guides` namespaces (both locales)
@@ -208,7 +212,7 @@ Only checks that meet ALL of these criteria:
 
 **Intent:** Someone comparing website audit tools or searching for the best option.
 
-**Why it fits:** High-intent traffic from people actively evaluating tools. The key insight: nobody searches "Vivotiv vs Lighthouse" because they don't know Vivotiv yet. But "Lighthouse vs PageSpeed Insights" has real search volume. We capture that traffic with an honest comparison, then position Vivotiv as the tool that covers what both are missing (legal compliance, accessibility depth, business-readable output).
+**Why it fits:** High-intent traffic from people actively evaluating tools. The key insight: nobody searches "Vivotiv vs Lighthouse" because they don't know Vivotiv yet. But "Lighthouse vs PageSpeed Insights" has real search volume. We capture that traffic with an honest comparison, then position Vivotiv as the tool that covers what both are missing (trust and compliance checks, accessibility depth, business-readable output).
 
 **Two types of comparison pages:**
 
@@ -229,7 +233,7 @@ Only checks that meet ALL of these criteria:
 **Content approach for Type A pages:**
 - Open with what both tools do well (fair, factual)
 - Explain the key differences between them
-- Show what neither tool covers (EU legal compliance, unified business scoring)
+- Show what neither tool covers (EU trust and compliance, unified business scoring)
 - Close with: "If you need a complete picture, not just performance or accessibility in isolation, run a free scan"
 - Vivotiv enters naturally as the answer to a gap, not as the main subject
 
@@ -614,11 +618,11 @@ The existing `privacy-compliance` page covers GDPR cookie basics. This page goes
 **SV slug:** `checklista-webbplats-efterlevnad`
 
 **Content outline:**
-- A structured checklist covering all six Vivotiv categories from a compliance angle
+- A structured checklist covering all six scan categories (performance, SEO, accessibility, trust and compliance, security, website quality)
 - GDPR and privacy (links to /privacy-compliance)
 - Accessibility and the EU Accessibility Act (links to /accessibility)
 - Cookie consent (links to /cookie-consent-requirements)
-- Security basics (links to website-security-basics)
+- Security basics (links to /website-security-basics)
 - SEO as a business requirement (brief, links to scan)
 - Performance as a business requirement (brief, links to scan)
 - Section: "Run the full check automatically" with scan CTA
@@ -654,7 +658,7 @@ The existing `privacy-compliance` page covers GDPR cookie basics. This page goes
 ```
 ## What gets tested
 
-Brief overview of the six categories and 150+ checks.
+Brief overview of the six categories (performance, SEO, accessibility, trust and compliance, security, website quality).
 Not a feature list. Focus on what the reader will learn about their site.
 
 ## How scoring works
@@ -827,7 +831,7 @@ Specific, factual comparison on the dimensions that matter.
 
 ## What neither tool covers
 
-EU legal compliance, unified business scoring, or other gaps
+EU trust and compliance checks, unified business scoring, or other gaps
 that matter for businesses (not just developers).
 Keep this section honest and brief. Not a sales pitch.
 

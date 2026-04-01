@@ -1,15 +1,15 @@
 ---
 title: "Hur vår webbplatsskanning fungerar"
-description: "Vår kostnadsfria skanning använder Lighthouse, axe-core och HTTP-headeranalys för att kontrollera er webbplats inom sex kategorier. Läs vad varje verktyg gör, varför de är tillförlitliga och hur vi tolkar resultaten."
-lastUpdated: "Senast uppdaterad mars 2026"
+description: "Vår kostnadsfria skanning använder Lighthouse, axe-core, HTTP-headeranalys, Google Web Risk och länkkontroll för att granska er webbplats inom sex kategorier. Läs vad varje verktyg gör och hur vi tolkar resultaten."
+lastUpdated: "Senast uppdaterad april 2026"
 family: "standalone"
 localeSlug: "hur-skanningen-fungerar"
 relatedSlugs: ["accessibility", "privacy-compliance"]
 ---
 
-## Tre verktyg, en rapport
+## Fem analysspår, en rapport
 
-Vår skanning kombinerar tre kompletterande analysmetoder för att ge er en fullständig bild av er webbplats hälsa. Varje verktyg är specialbyggt för specifika typer av kontroller, och tillsammans täcker de prestanda, SEO, tillgänglighet, förtroende och efterlevnad, säkerhet och webbplatskvalitet.
+Vår skanning kombinerar fem kompletterande analysspår för att ge er en fullständig bild av er webbplats hälsa. Varje spår är specialbyggt för specifika typer av kontroller, och tillsammans täcker de prestanda, SEO, tillgänglighet, förtroende och efterlevnad, säkerhet och webbplatskvalitet.
 
 Hela skanningen körs i bakgrunden och tar vanligtvis 15 till 20 sekunder.
 
@@ -42,7 +42,7 @@ axe-core används av organisationer som Microsoft och Google, och är utformat f
 
 ## HTTP- och TLS-headeranalys
 
-Den tredje komponenten inspekterar er servers svarsheaders och SSL/TLS-konfiguration. Det kräver inte att sidan laddas i en webbläsare, så den körs parallellt med de andra två analyserna.
+Detta spår inspekterar er servers svarsheaders och SSL/TLS-konfiguration. Det kräver inte att sidan laddas i en webbläsare, så det körs parallellt med de andra spåren.
 
 Vi kontrollerar:
 
@@ -53,6 +53,19 @@ Vi kontrollerar:
 - **SSL/TLS-certifikats** giltighet och förtroendekedjas status
 
 Dessa headers är ert första försvarslinje mot vanliga webbattacker. Saknade eller felkonfigurerade headers lämnar er webbplats och era besökare exponerade.
+
+## Externa säkerhetskontroller
+
+Vi korsrefererar er webbplats mot externa säkerhetsdatabaser för att upptäcka hot som intern analys inte kan fånga:
+
+- **Google Web Risk** kontrollerar om er URL har flaggats för skadlig programvara, social manipulering eller oönskad programvara
+- **MDN Observatory** betygsätter er webbplats säkerhetskonfiguration mot Mozillas rekommenderade standarder
+
+Dessa kontroller körs via externa API:er och kompletterar headeranalysen med ett utifrån-in-perspektiv på er webbplats säkerhet.
+
+## Länkkontroll
+
+Vi genomsöker länkarna på er sida och verifierar att de fungerar korrekt. Trasiga länkar skadar både användarupplevelsen och SEO, eftersom sökmotorer tolkar döda länkar som ett tecken på bristande underhåll. Skanningen rapporterar antalet trasiga länkar och vilka URL:er som berörs.
 
 ## Hur vi poängsätter resultat
 
@@ -89,5 +102,7 @@ Skanningen är utformad för att visa verkliga, åtgärdbara problem. Vi blåser
 - [Lighthouse](https://developer.chrome.com/docs/lighthouse) - Googles granskningsverktyg för webben (öppen källkod)
 - [axe-core](https://github.com/dequelabs/axe-core) - Deque Systems testmotor för tillgänglighet
 - [Playwright](https://playwright.dev/) - Ramverk för webbläsarautomatisering av Microsoft
+- [Google Web Risk](https://cloud.google.com/web-risk) - Googles API för hotdetektering
+- [MDN Observatory](https://observatory.mozilla.org/) - Mozillas verktyg för säkerhetsbetyg
 
 [Kör en kostnadsfri skanning av er webbplats](/)
