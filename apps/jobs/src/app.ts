@@ -1,3 +1,8 @@
+import dns from "node:dns";
+
+// Railway has no outbound IPv6 — force IPv4-first DNS resolution
+dns.setDefaultResultOrder("ipv4first");
+
 import { serve as serveHttp } from "@hono/node-server";
 import * as Sentry from "@sentry/node";
 import { Hono } from "hono";
