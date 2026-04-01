@@ -1,0 +1,77 @@
+---
+title: "Varför er hemsida inte syns på Google"
+description: "Om er webbplats inte dyker upp i Googles sökresultat är tekniska problem troligtvis orsaken. Läs om de vanligaste skälen och hur ni diagnostiserar dem."
+lastUpdated: "Senast uppdaterad april 2026"
+family: "actions"
+localeSlug: "syns-inte-pa-google"
+relatedSlugs: ["free-website-test", "slow-website", "website-health-check"]
+---
+
+Om er webbplats inte visas i Googles sökresultat är orsaken nästan alltid teknisk. Google behöver hitta er webbplats, crawla dess sidor och bedöma att de är värda att indexera. En felkonfigurerad robots.txt, en saknad sitemap, en noindex-tagg kvar från utvecklingen, eller en webbplats som laddar för långsamt på mobilen kan var och en förhindra era sidor från att visas. De goda nyheterna: det handlar om specifika, identifierbara problem med konkreta lösningar.
+
+## Vad osynlighet kostar er
+
+Över [53 % av all webbtrafik](https://www.seoinc.com/seo-blog/much-traffic-comes-organic-search/) kommer från organisk sökning. Om er webbplats inte syns på Google missar ni den enskilt största källan till besökare.
+
+Första sidan med resultat fångar nästan all denna trafik. [Data från Ahrefs (augusti 2025)](https://ahrefs.com/blog/almost-all-clicks-happen-in-the-top-10-results/) visar att 97 % av klick på dator och 98 % på mobil går till de tio översta resultaten. Att hamna på sida två är i praktiken samma sak som att inte vara indexerad alls.
+
+I Sverige har [Google över 90 % av sökmarknaden](https://gs.statcounter.com/search-engine-market-share/all/sweden) på alla enheter. Det finns ingen alternativ sökmotor som på ett meningsfullt sätt kompenserar för dålig synlighet på Google. Om svenska kunder inte hittar er på Google hittar de era konkurrenter istället.
+
+## De vanligaste orsakerna
+
+### Er webbplats är inte indexerad
+
+Innan Google kan ranka era sidor måste sökmotorn veta att de finns. En helt ny webbplats tar vanligtvis 1-4 veckor innan den dyker upp i sökresultat. Om er webbplats har varit aktiv längre än så och fortfarande inte syns, blockerar något indexeringen.
+
+Kontrollera först: sök `site:erdomän.se` i Google. Om inga resultat visas har Google inte indexerat er webbplats. Vanliga blockerare:
+
+- **robots.txt blockerar crawlers.** En enda rad (`Disallow: /`) i er robots.txt-fil säger åt Google att inte crawla någon sida. Det lämnas ibland kvar från en staging-miljö eller sätts av ett CMS-plugin.
+- **noindex-metataggar.** En `<meta name="robots" content="noindex">`-tagg säger åt Google att inte indexera en specifik sida. Vissa CMS-plattformar sätter detta som standard under utveckling och det måste manuellt tas bort innan lansering.
+- **Ingen sitemap inskickad.** En XML-sitemap talar om för Google vilka sidor som finns och när de senast uppdaterades. Utan en sådan förlitar sig Google helt på att följa länkar, vilket innebär att sidor utan interna länkar kanske aldrig upptäcks.
+
+### Bristfällig teknisk SEO
+
+Även om er webbplats är indexerad kan tekniska problem förhindra den från att ranka för meningsfulla sökfrågor.
+
+**Saknade eller duplicerade metatitlar.** Title-taggen är den viktigaste on-page-rankningssignalen. Sidor utan unika, beskrivande titlar ger Google lite information om vad sidan handlar om. Sidor med identiska titlar över hela webbplatsen (en vanlig standard i vissa CMS-plattformar) signalerar lågkvalitativt, odifferentierat innehåll.
+
+**Ingen strukturerad data.** [Schema.org-uppmärkning](https://schema.org/) (vanligtvis implementerad som JSON-LD) hjälper Google förstå vad er sida handlar om: en produkt, ett lokalt företag, en artikel, en FAQ. Sidor med strukturerad data är kvalificerade för förbättrade sökfunktioner (stjärnbetyg, FAQ-rullgardiner, breadcrumbs) som ökar klickfrekvensen. Strukturerad data förbättrar inte rankningen direkt, men sidor med rika resultat får [betydligt fler klick](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data) än vanliga listor.
+
+**Trasiga eller saknade Open Graph-taggar.** Open Graph-taggar används främst för delning i sociala medier, men de signalerar innehållskvalitet för sökmotorer. Saknade taggar innebär att Google inte kan generera rika förhandsvisningar när ert innehåll delas.
+
+### Mobilproblem
+
+Google använder [mobile-first indexing](https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing), vilket innebär att sökmotorn utvärderar mobilversionen av er webbplats för rankning, även för sökresultat på datorer. Om er webbplats inte fungerar bra på mobilen rankas den inte bra någonstans.
+
+Vanliga mobilproblem som skadar rankningen:
+
+- Ingen viewport-metatag (sidan anpassar sig inte till mobilskärmar)
+- Text för liten att läsa utan att zooma
+- Tryckytor (knappar, länkar) för nära varandra
+- Innehåll bredare än skärmen, kräver horisontell scrollning
+- Långsam laddning på mobilnätverk (se vår guide om [varför webbplatser är långsamma](/slow-website))
+
+### Långsam prestanda
+
+Google använder [Core Web Vitals](https://web.dev/articles/vitals) som rankningssignal. Bara [48 % av mobilsajter](https://almanac.httparchive.org/en/2025/performance) klarar alla tre mätvärden. Webbplatser som misslyckas tas inte bort från sökningen, men de tappar mark mot konkurrenter med liknande innehåll som laddar snabbare.
+
+Prestanda spelar störst roll i konkurrensutsatta sökfrågor där flera sidor erbjuder liknande innehåll. I de fallen vinner den snabbare, bättre optimerade sidan.
+
+## Hur ni diagnostiserar problemet
+
+Det mest direkta sättet att kontrollera er webbplats indexeringsstatus är [Google Search Console](https://search.google.com/search-console/about). Den visar vilka sidor som är indexerade, vilka som inte är det, och varför. Sidindexeringsrapporten listar specifika fel: blockerad av robots.txt, exkluderad av noindex, crawlad men inte indexerad, och dubbletter utan canonical-tagg.
+
+För de tekniska SEO-faktorer som påverkar rankning (metataggar, strukturerad data, sitemap, robots.txt, Open Graph, mobilkonfiguration och prestanda) identifierar en diagnostisk skanning de specifika problemen på er webbplats. Skanningen kontrollerar allt detta tillsammans med tillgänglighet, säkerhet och efterlevnad, så ni får en komplett bild av vad som behöver åtgärdas och i vilken ordning.
+
+[Kontrollera varför er webbplats inte rankas](/)
+
+## Källor
+
+- [Organic search traffic share](https://www.seoinc.com/seo-blog/much-traffic-comes-organic-search/) - SEO Inc / BrightEdge
+- [Almost all clicks happen in the top 10 results](https://ahrefs.com/blog/almost-all-clicks-happen-in-the-top-10-results/) - Ahrefs, augusti 2025
+- [Search engine market share Sweden](https://gs.statcounter.com/search-engine-market-share/all/sweden) - StatCounter
+- [Mobile-first indexing](https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing) - Google Search Central
+- [Core Web Vitals](https://web.dev/articles/vitals) - Google web.dev
+- [HTTP Archive Web Almanac 2025: Performance](https://almanac.httparchive.org/en/2025/performance) - HTTP Archive
+- [Introduction to structured data](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data) - Google Search Central
+- [Google Search Console](https://search.google.com/search-console/about) - Google

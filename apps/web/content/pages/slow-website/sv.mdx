@@ -1,0 +1,75 @@
+---
+title: "Varför er hemsida är långsam (och vad det kostar er)"
+description: "En långsam webbplats kostar er besökare, konverteringar och sökrankning. Läs om de vanligaste orsakerna och hur ni tar reda på vad som bromsar er."
+lastUpdated: "Senast uppdaterad april 2026"
+family: "actions"
+localeSlug: "langsam-hemsida"
+relatedSlugs: ["free-website-test", "website-health-check"]
+---
+
+En långsam webbplats orsakas nästan alltid av en kombination av ooptimerade bilder, för mycket JavaScript, för många tredjepartsskript och en server som svarar för långsamt. Dessa problem byggs upp över tid i takt med att innehåll läggs till och plugins ackumuleras, och de förvärras på mobila enheter där processorer är svagare och nätverk mindre tillförlitliga. Lösningen börjar med att identifiera vilka av dessa faktorer som faktiskt orsakar problemet på just er webbplats.
+
+## Vad en långsam webbplats kostar er
+
+Hastighet är inte en teknisk detalj. Den påverkar direkt om besökare stannar, om de köper, och om sökmotorer visar er webbplats för någon överhuvudtaget.
+
+[Deloittes studie "Milliseconds Make Millions"](https://www.deloitte.com/ie/en/services/consulting/research/milliseconds-make-millions.html) visade att en förbättring på 0,1 sekunder i mobilhastighet ökade konverteringen för detaljhandeln med 8,4 % och genomsnittligt ordervärde med 9,2 %. Konverteringar för resebranschen ökade med 10,1 %. Studien analyserade verklig trafikdata från europeiska och amerikanska varumärken och isolerade hastighet som variabel.
+
+Googles forskning visar att när laddningstiden går från 1 till 3 sekunder ökar sannolikheten att besökaren lämnar sidan med 32 %. Över hälften av mobilbesökare lämnar om en sida tar mer än 3 sekunder att ladda.
+
+Google använder [Core Web Vitals](https://web.dev/articles/vitals) som sökrankningssignal. Webbplatser som inte klarar hastighetströskelvärdena tappar synlighet till konkurrenter som klarar dem. Bara [48 % av alla mobilsajter](https://almanac.httparchive.org/en/2025/performance) klarar idag alla tre Core Web Vitals-mätvärden, där laddningstid (LCP) är det som flest misslyckas med: bara 62 % klarar det på mobil.
+
+## De vanligaste orsakerna
+
+### Ooptimerade bilder
+
+Bilder är den enskilt största bidragaren till sidvikt. På den genomsnittliga webbplatsen utgör bilder över 1 MB data, ungefär 37 % av den totala sidstorleken ([HTTP Archive 2025](https://almanac.httparchive.org/en/2025/page-weight)). De flesta företagswebbplatser serverar fortfarande bilder som JPEG eller PNG när moderna format som WebP och AVIF ger samma visuella kvalitet i 25-50 % mindre filstorlek.
+
+Vanliga bildproblem:
+
+- Foton uppladdade direkt från telefon eller kamera i full upplösning (2-6 MB styck)
+- Ingen lazy loading, så alla bilder laddas ner direkt även om de ligger under den synliga ytan
+- Ingen responsiv dimensionering, så mobila enheter laddar ner samma stora bild som datorer
+
+### För mycket JavaScript
+
+JavaScript som blockerar webbläsaren från att rendera sidan är en av de primära orsakerna till långsam Largest Contentful Paint (LCP). Varje skript webbläsaren stöter på i sidans head måste laddas ner, tolkas och exekveras innan något visas på skärmen, om inte skriptet är uppskjutet eller asynkront laddat.
+
+[HTTP Archive](https://almanac.httparchive.org/en/2025/page-weight) rapporterar att den genomsnittliga sidan nu laddar 697 KB JavaScript. På mobila enheter, där processorer är betydligt svagare än på datorer, tar denna JavaScript mycket längre tid att bearbeta. Medianvärdet för Total Blocking Time på mobil steg till 1 916 millisekunder under 2025, en ökning med 58 % jämfört med föregående år.
+
+### Tredjepartsskript
+
+Analys, annonspixlar, chattwidgetar, inbäddningar från sociala medier och samtyckesplattformar lägger alla till externa skript på er webbplats. Den genomsnittliga webbplatsen laddar skript från ungefär [23 olika tredjepartsdomäner](https://www.speedcurve.com/web-performance-guide/third-party-web-performance/).
+
+Varje tredjepartsskript kräver en separat nätverksanslutning, lägger till kod som webbläsaren måste exekvera och kan blockera användarinteraktion. Sidor med färre än 5 tredjepartsskript klarar Googles interaktivitetsmått (INP) till ungefär 88 %, jämfört med bara [64 % för sidor med 15 eller fler](https://www.debugbear.com/blog/reduce-the-impact-of-third-party-code).
+
+### Långsam serverrespons
+
+Innan webbläsaren ens kan börja ladda er sida måste servern svara på förfrågan. Om ert webbhotell delar server med hundratals andra webbplatser konkurrerar er server om CPU, minne och bandbredd. Google Lighthouse flaggar serversvarstider över 600 millisekunder.
+
+Långsamt webbhotell är ett av få hastighetsproblem som inte kan lösas genom att optimera er webbplats kod eller innehåll. Det kräver att ni uppgraderar ert webbhotell eller byter leverantör.
+
+## Varför mobilen är värre
+
+De flesta företagare kollar sin webbplats från en stationär dator med snabb uppkoppling. Mobilen ger en helt annan upplevelse.
+
+Mobila enheter har svagare processorer som tar längre tid att exekvera samma JavaScript. Mobilnätverk lägger till fördröjning: en 4G-anslutning adderar vanligtvis 100-300 millisekunders latens innan någon data börjar överföras. Och mobiltrafik står nu för över 60 % av alla webbbesök globalt.
+
+En webbplats som laddar på 2 sekunder på datorn kan ta 4-6 sekunder på en mobiltelefon via 4G. Samma bilder, samma skript, men på hårdvara och ett nätverk som hanterar dem mindre effektivt. Eftersom skanningen testar både dator- och mobilvyer avslöjar den prestandaproblem som bara uppstår på de enheter de flesta av era besökare faktiskt använder.
+
+## Hur ni tar reda på vad som bromsar er
+
+Ett prestandaproblem kan ha en orsak eller flera som samverkar. Att gissa slösar tid. En diagnostisk skanning identifierar de specifika flaskhalsarna: vilka bilder som är för stora, vilka skript som blockerar rendering, hur er servers svarstid jämförs med tröskelvärdet och om era Core Web Vitals godkänns eller underkänns.
+
+Skanningen kontrollerar prestanda tillsammans med fem andra kategorier (SEO, tillgänglighet, förtroende och efterlevnad, säkerhet och webbplatskvalitet), så ni får hela bilden i ett enda test. För en bredare översikt av vad skanningen täcker, se sidan om [gratis webbplatstest](/free-website-test).
+
+[Ta reda på vad som bromsar er webbplats](/)
+
+## Källor
+
+- [Milliseconds Make Millions](https://www.deloitte.com/ie/en/services/consulting/research/milliseconds-make-millions.html) - Deloitte, mars 2020
+- [HTTP Archive Web Almanac 2025: Page Weight](https://almanac.httparchive.org/en/2025/page-weight) - HTTP Archive
+- [HTTP Archive Web Almanac 2025: Performance](https://almanac.httparchive.org/en/2025/performance) - HTTP Archive
+- [Core Web Vitals](https://web.dev/articles/vitals) - Google web.dev
+- [Third-party web performance](https://www.speedcurve.com/web-performance-guide/third-party-web-performance/) - SpeedCurve
+- [Reduce the impact of third-party code](https://www.debugbear.com/blog/reduce-the-impact-of-third-party-code) - DebugBear

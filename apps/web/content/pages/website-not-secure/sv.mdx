@@ -1,0 +1,75 @@
+---
+title: "Varningen \"inte säker\" på er hemsida"
+description: "Varningen 'inte säker' betyder att er webbplats saknar HTTPS-kryptering. Läs varför webbläsare visar den, vad det kostar er och hur ni åtgärdar det."
+lastUpdated: "Senast uppdaterad april 2026"
+family: "actions"
+localeSlug: "hemsida-inte-saker"
+relatedSlugs: ["website-security-basics", "website-compliance-checklist", "free-website-test"]
+---
+
+Varningen "inte säker" i webbläsarens adressfält innebär att er webbplats inte använder HTTPS-kryptering. All data besökare anger (kontaktformulär, inloggningsuppgifter, betalinformation) skickas i klartext över nätverket, läsbar för alla som fångar upp den. Alla stora webbläsare visar denna varning: Chrome, Firefox, Safari och Edge. Från oktober 2026 [går Chrome längre](https://security.googleblog.com/2025/10/https-by-default.html) och visar en helsidevarning som blockerar åtkomst innan HTTP-sidor laddas, inte bara en etikett i adressfältet.
+
+## Vad det kostar er
+
+### Besökare lämnar
+
+När besökare ser "inte säker" bredvid er URL lämnar många direkt. [Baymard Institutes forskning](https://baymard.com/blog/cart-abandonment-statistics) visar att 18 % av nätshoppare överger sin varukorg specifikt för att de inte litade på webbplatsen med sina betaluppgifter. Etiketten "inte säker" är en av de mest synliga förtroendesignalerna en webbläsare ger, och den arbetar emot er.
+
+Ett utgånget eller felkonfigurerat certifikat är värre. Istället för en liten etikett visar webbläsaren en helsidevarning ("Din anslutning är inte privat") som blockerar åtkomst helt. De flesta besökare klickar inte vidare förbi den.
+
+### Sökmotorer nedprioriterar er
+
+Google [bekräftade HTTPS som rankningssignal](https://developers.google.com/search/blog/2014/08/https-as-ranking-signal) 2014. Det fungerar som ett grundkrav: att ha HTTPS garanterar inte högre rankning, men att sakna det innebär att konkurrenter med HTTPS rankas högre när innehållskvaliteten i övrigt är likvärdig. HTTPS ingår i Googles Page Experience-rankningssystem tillsammans med Core Web Vitals och mobilanpassning.
+
+### Det är en efterlevnadsrisk
+
+[GDPR artikel 32](https://eur-lex.europa.eu/legal-content/SV/TXT/HTML/?uri=CELEX:32016R0679) kräver "lämpliga tekniska och organisatoriska åtgärder" för att skydda personuppgifter och nämner specifikt kryptering som en sådan åtgärd. En webbplats som samlar in personuppgifter via kontaktformulär, nyhetsbrev eller användarkonton utan HTTPS-kryptering riskerar att bryta mot detta krav.
+
+I Sverige har IMY [bötfällt organisationer för bristfällig webbsäkerhet](https://www.imy.se/en/about-us/swedish-authority-for-privacy-protections-assignment/sa-arbetar-vi-med-tillsyn/fines-and-warnings/). Region Uppsala fick 1,9 miljoner kronor i sanktionsavgift för att ha överfört känsliga personuppgifter utan kryptering. Diskrimineringsombudsmannen fick 100 000 kronor i böter efter att ett webbformulär läckte personuppgifter till en analysprocessor på grund av otillräckliga säkerhetsåtgärder.
+
+## Varför varningen visas
+
+Varningen "inte säker" handlar inte alltid om ett saknat certifikat. Flera olika problem kan utlösa den:
+
+**Inget SSL/TLS-certifikat installerat.** Det vanligaste fallet. Webbplatsen körs helt på HTTP utan kryptering. Alla stora webbhotell erbjuder nu gratis SSL-certifikat via [Let's Encrypt](https://letsencrypt.org/), som har över 63 % av den globala certifikatmarknaden.
+
+**Certifikatet har löpt ut.** SSL-certifikat har begränsad giltighetstid. Let's Encrypt-certifikat löper ut var 90:e dag och kräver förnyelse (de flesta webbhotell hanterar detta automatiskt, men felkonfiguration eller byten av webbhotell kan bryta förnyelseprocessen). Ett utgånget certifikat utlöser en helsidevarning, inte bara etiketten "inte säker."
+
+**Blandat innehåll.** Er webbplats har HTTPS, men vissa resurser (bilder, skript, stilmallar) laddas fortfarande via HTTP. Detta försämrar säkerhetsindikatorn och kan leda till att webbläsare blockerar de osäkra resurserna helt. Det inträffar ofta efter SSL-installation när interna länkar och inbäddat innehåll fortfarande refererar till HTTP-adresser.
+
+**Omdirigering från HTTP till HTTPS saknas.** Certifikatet är installerat, men besökare som skriver er domän utan `https://` eller följer gamla länkar hamnar fortfarande på HTTP-versionen. Utan omdirigering ser de den okrypterade versionen och varningen "inte säker."
+
+**Föråldrad TLS-version.** TLS 1.0 och 1.1 är utfasade. Webbplatser som fortfarande använder dessa versioner kan utlösa varningar eller anslutningsfel i moderna webbläsare. TLS 1.2 med starka krypteringssviter är minimum; TLS 1.3 är nuvarande rekommendation.
+
+## Vad som ändras i oktober 2026
+
+[Google meddelade](https://security.googleblog.com/2025/10/https-by-default.html) att Chrome 154 (oktober 2026) aktiverar "Använd alltid säkra anslutningar" som standard för alla användare. Det innebär att Chrome försöker ansluta via HTTPS först och visar en helsidevarning innan HTTP-sidor laddas.
+
+Det är en betydande förändring jämfört med nuvarande beteende. Idag laddas HTTP-sidor normalt med en liten "inte säker"-etikett. Efter oktober 2026 visas en helsidevarning som besökare aktivt måste klicka förbi. För de flesta användare kommer varningen i praktiken att göra webbplatsen oåtkomlig.
+
+Chrome har redan aktiverat detta i inkognitoläge (sedan Chrome 127 i juni 2024) och för användare med utökat säkert surfande (Chrome 147, april 2026).
+
+## Hur ni kontrollerar om er webbplats är drabbad
+
+Skanningen kontrollerar er webbplats SSL/TLS-konfiguration som del av säkerhetskategorin. Den verifierar:
+
+- Om er webbplats använder HTTPS
+- Om ert TLS-certifikat är giltigt och betrott
+- Om certifikatet närmar sig utgång (flaggar certifikat som löper ut inom 30 dagar)
+- Vilken TLS-protokollversion er server använder (varnar för TLS 1.0 och 1.1)
+- Om HSTS-headern är satt (som instruerar webbläsare att alltid använda HTTPS)
+
+Om er webbplats har blandat innehåll detekterar skanningen även om resurser laddas via osäkra anslutningar.
+
+För en fullständig översikt av säkerhetskontrollerna, se vår [guide om webbplatssäkerhet](/website-security-basics). För en bredare bedömning inom alla sex kategorier, prova det [gratis webbplatstestet](/free-website-test).
+
+[Kontrollera om er webbplats utlöser säkerhetsvarningar](/)
+
+## Källor
+
+- [HTTPS by default](https://security.googleblog.com/2025/10/https-by-default.html) - Google Security Blog, oktober 2025
+- [HTTPS as a ranking signal](https://developers.google.com/search/blog/2014/08/https-as-ranking-signal) - Google Search Central, 2014
+- [Cart abandonment statistics](https://baymard.com/blog/cart-abandonment-statistics) - Baymard Institute
+- [GDPR artikel 32](https://eur-lex.europa.eu/legal-content/SV/TXT/HTML/?uri=CELEX:32016R0679) - EUR-Lex
+- [IMY:s böter och varningar](https://www.imy.se/en/about-us/swedish-authority-for-privacy-protections-assignment/sa-arbetar-vi-med-tillsyn/fines-and-warnings/) - IMY
+- [Let's Encrypt](https://letsencrypt.org/) - Kostnadsfri SSL-certifikatutfärdare

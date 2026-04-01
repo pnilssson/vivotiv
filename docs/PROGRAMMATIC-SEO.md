@@ -6,13 +6,13 @@
 |-------|--------|-------------|
 | 0 | Done | Infrastructure: content model, sitemap, localized slugs, OG tags, JSON-LD |
 | 1 | Done | Compliance guides (3 new pages, both locales) |
-| 2 | In progress | Action and problem pages (5 pages, both locales) |
+| 2 | Done | Action and problem pages (5 pages, both locales) |
 | 3 | Not started | CMS-specific pages (3 pages, both locales) |
 | 4 | Not started | Issue explainer pages (8 pages, both locales) |
 | 5 | Not started | Comparison and tool pages (5 pages, both locales) |
 | 6 | Not started | Measurement, iteration, content refresh |
 
-**Current state:** Phase 2 in progress. All 5 compliance pages live. 2 of 5 action/problem pages live (free-website-test, website-health-check). Guides hub redesigned with card grid layout and localized Swedish slug (`/guider`). Footer updated with all compliance pages.
+**Current state:** Phase 2 complete. All 5 compliance pages and all 5 action/problem pages live in both locales (10 new pages total). Guides hub redesigned with card grid layout and localized Swedish slug (`/guider`). Footer updated with all compliance pages.
 
 **Scan category names (updated):** Performance, SEO, Accessibility, Trust and compliance, Security, Website quality. These replaced the earlier names "Legal compliance" and "Modern standards."
 
@@ -20,7 +20,7 @@
 
 **Total planned:** 24 new pages across 5 families. 2 existing pages (accessibility, privacy-compliance) reclassified as compliance. 1 existing page (how-scan-works) stays standalone.
 
-**Next step:** Phase 2, page 3 of 5 (slow-website).
+**Next step:** Phase 3.
 
 ### Phase 0 implementation notes
 
@@ -973,6 +973,16 @@ relatedSlugs: ["related-page-slug-1", "related-page-slug-2"]
 3. Confirm the search intent is real (would a Swedish SMB actually search for this?)
 4. Check that enough unique, specific content exists to fill 500+ words without padding
 5. Identify authoritative sources to cite before starting
+
+### Research and fact-checking process
+
+Every article must go through this process before writing begins. No exceptions.
+
+1. **Web search the topic.** Look up the latest data, stats, regulations, and industry context relevant to the article. Do not rely on cached knowledge. Search for what has changed in the last 12 months.
+2. **Verify every fact.** Every statistic, fine amount, regulation reference, or technical claim must trace back to a credible, verifiable source. If a stat cannot be confirmed, do not include it. Conservative and correct beats impressive and wrong.
+3. **Make it genuinely valuable.** The article must teach the reader something useful even if they never use the scan. Someone who lands from search should leave better informed than when they arrived. If the content would not be worth reading without the scan CTA, it is not good enough.
+4. **Connect back to the scan naturally.** Every article should have a clear path to the scan, but the connection must be earned, not forced. The pattern: explain the problem or topic thoroughly, then show how the scan helps identify or diagnose the specific issues discussed. The reader should feel "that would be useful to check" rather than "this is an ad."
+5. **No unverifiable claims.** Do not state numbers, percentages, or enforcement outcomes that cannot be traced to a named source. "Research shows" without a citation is not acceptable.
 
 ---
 

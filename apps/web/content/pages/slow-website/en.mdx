@@ -1,0 +1,74 @@
+---
+title: "Why Your Website Is Slow (and What It Costs You)"
+description: "A slow website costs you visitors, conversions, and search rankings. Learn the most common causes and how to identify what is slowing your site down."
+lastUpdated: "Last updated April 2026"
+family: "actions"
+relatedSlugs: ["free-website-test", "website-health-check"]
+---
+
+A slow website is almost always caused by a combination of unoptimized images, too much JavaScript, excessive third-party scripts, and a server that responds too slowly. These issues build up over time as content is added and plugins accumulate, and they compound on mobile devices where processors are weaker and networks are less reliable. The fix starts with identifying which of these factors is actually causing the problem on your specific site.
+
+## What a slow website costs your business
+
+Speed is not a technical detail. It directly affects whether visitors stay, whether they buy, and whether search engines show your site to anyone at all.
+
+The [Deloitte "Milliseconds Make Millions" study](https://www.deloitte.com/ie/en/services/consulting/research/milliseconds-make-millions.html) found that a 0.1-second improvement in mobile site speed increased retail conversions by 8.4% and average order value by 9.2%. Travel site conversions increased by 10.1%. The study analyzed real traffic data across European and US brands and isolated speed as the variable.
+
+Google research found that when page load time goes from 1 to 3 seconds, the probability of a visitor leaving increases by 32%. Over half of mobile visitors leave if a page takes more than 3 seconds to load.
+
+Google uses [Core Web Vitals](https://web.dev/articles/vitals) as a search ranking signal. Sites that fail the speed thresholds lose visibility to competitors that pass them. Only [48% of mobile websites](https://almanac.httparchive.org/en/2025/performance) currently pass all three Core Web Vitals metrics, with loading speed (LCP) being the most commonly failed at just 62% passing on mobile.
+
+## The most common causes
+
+### Unoptimized images
+
+Images are the single largest contributor to page weight. On the median website, images account for over 1 MB of data, roughly 37% of the total page size ([HTTP Archive 2025](https://almanac.httparchive.org/en/2025/page-weight)). Most business websites still serve images as JPEG or PNG when modern formats like WebP and AVIF deliver the same visual quality at 25-50% smaller file sizes.
+
+Common image problems:
+
+- Photos uploaded directly from a phone or camera at full resolution (2-6 MB each)
+- No lazy loading, so all images download immediately even if they are below the visible area
+- No responsive sizing, so mobile devices download the same large image as desktop
+
+### Too much JavaScript
+
+JavaScript that blocks the browser from rendering the page is one of the primary causes of slow Largest Contentful Paint (LCP). Every script the browser encounters in the page head must be downloaded, parsed, and executed before anything appears on screen, unless the script is deferred or loaded asynchronously.
+
+The [HTTP Archive](https://almanac.httparchive.org/en/2025/page-weight) reports that the median page now loads 697 KB of JavaScript. On mobile devices, where processors are significantly weaker than desktop, this JavaScript takes much longer to process. Median mobile Total Blocking Time rose to 1,916 milliseconds in 2025, up 58% from the previous year.
+
+### Third-party scripts
+
+Analytics, advertising pixels, chat widgets, social media embeds, and consent management platforms all add external scripts to your site. The median website loads scripts from roughly [23 different third-party domains](https://www.speedcurve.com/web-performance-guide/third-party-web-performance/).
+
+Each third-party script requires a separate network connection, adds code the browser must execute, and can block user interaction. Pages with fewer than 5 third-party scripts pass Google's interactivity metric (INP) at roughly 88%, compared to only [64% for pages loading 15 or more](https://www.debugbear.com/blog/reduce-the-impact-of-third-party-code).
+
+### Slow server response
+
+Before the browser can even begin loading your page, the server must respond to the request. If your hosting is shared with hundreds of other websites, your server competes for CPU, memory, and bandwidth. Google Lighthouse flags server response times above 600 milliseconds.
+
+Slow hosting is one of the few speed problems that cannot be solved by optimizing your site's code or content. It requires upgrading your hosting plan or switching providers.
+
+## Why mobile is worse
+
+Most business owners check their website from a desktop computer on a fast network. Mobile is a different experience.
+
+Mobile devices have weaker processors that take longer to execute the same JavaScript. Mobile networks add latency: a 4G connection typically adds 100-300 milliseconds of delay before any data starts transferring. And mobile traffic now accounts for over 60% of web visits globally.
+
+A site that loads in 2 seconds on desktop might take 4-6 seconds on a mobile phone over 4G. The same images, the same scripts, but on hardware and a network that handles them less efficiently. Since the scan tests both desktop and mobile viewports, it surfaces performance issues that only appear on the devices most of your visitors actually use.
+
+## How to find out what is slowing your site down
+
+A performance problem can have one cause or several acting together. Guessing wastes time. A diagnostic scan identifies the specific bottlenecks: which images are too large, which scripts block rendering, how your server response time compares to the threshold, and whether your Core Web Vitals pass or fail.
+
+The scan checks performance alongside five other categories (SEO, accessibility, trust and compliance, security, and website quality), so you see the full picture in a single test. For a broader overview of what the scan covers, see the [free website test](/free-website-test) page.
+
+[Find out what is slowing your website down](/)
+
+## Sources
+
+- [Milliseconds Make Millions](https://www.deloitte.com/ie/en/services/consulting/research/milliseconds-make-millions.html) - Deloitte, March 2020
+- [HTTP Archive Web Almanac 2025: Page Weight](https://almanac.httparchive.org/en/2025/page-weight) - HTTP Archive
+- [HTTP Archive Web Almanac 2025: Performance](https://almanac.httparchive.org/en/2025/performance) - HTTP Archive
+- [Core Web Vitals](https://web.dev/articles/vitals) - Google web.dev
+- [Third-party web performance](https://www.speedcurve.com/web-performance-guide/third-party-web-performance/) - SpeedCurve
+- [Reduce the impact of third-party code](https://www.debugbear.com/blog/reduce-the-impact-of-third-party-code) - DebugBear

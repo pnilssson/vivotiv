@@ -1,0 +1,76 @@
+---
+title: "Why Your Website Doesn't Show Up on Google"
+description: "If your website isn't appearing in Google search results, technical issues are likely the cause. Learn the most common reasons and how to diagnose them."
+lastUpdated: "Last updated April 2026"
+family: "actions"
+relatedSlugs: ["free-website-test", "slow-website", "website-health-check"]
+---
+
+If your website does not appear in Google search results, the cause is almost always technical. Google needs to find your site, crawl its pages, and decide they are worth indexing. A misconfigured robots.txt file, a missing sitemap, a noindex tag left in from development, or a site that loads too slowly on mobile can each prevent your pages from appearing. The good news: these are specific, identifiable problems with concrete fixes.
+
+## What invisibility costs your business
+
+Over [53% of all website traffic](https://www.seoinc.com/seo-blog/much-traffic-comes-organic-search/) comes from organic search. If your site does not appear in Google, you are missing the single largest source of visitors.
+
+The first page of results captures nearly all of this traffic. [Ahrefs data from August 2025](https://ahrefs.com/blog/almost-all-clicks-happen-in-the-top-10-results/) shows that 97% of clicks on desktop and 98% on mobile go to the top 10 results. Being on page two is functionally the same as not being indexed at all.
+
+In Sweden, [Google holds over 90% of the search market](https://gs.statcounter.com/search-engine-market-share/all/sweden) across all devices. There is no alternative search engine that meaningfully compensates for poor Google visibility. If Swedish customers cannot find you on Google, they are finding your competitors instead.
+
+## The most common causes
+
+### Your site is not indexed
+
+Before Google can rank your pages, it must know they exist. A brand new website typically takes 1-4 weeks to appear in search results. If your site has been live for longer than that and still does not appear, something is blocking indexation.
+
+Check first: search `site:yourdomain.com` in Google. If no results appear, Google has not indexed your site. Common blockers:
+
+- **robots.txt blocking crawlers.** A single line (`Disallow: /`) in your robots.txt file tells Google not to crawl any page. This sometimes gets left in from a staging environment or set by a CMS plugin.
+- **noindex meta tags.** A `<meta name="robots" content="noindex">` tag tells Google not to index a specific page. Some CMS platforms set this by default during development and it must be manually removed before launch.
+- **No sitemap submitted.** An XML sitemap tells Google which pages exist and when they were last updated. Without one, Google relies entirely on following links, which means pages without internal links may never be discovered.
+
+### Poor technical SEO
+
+Even if your site is indexed, technical problems can prevent it from ranking for any meaningful queries.
+
+**Missing or duplicate meta titles.** The title tag is the most important on-page ranking signal. Pages without unique, descriptive titles give Google little information about what the page covers. Pages with identical titles across the site (a common default in some CMS platforms) signal low-quality, undifferentiated content.
+
+**No structured data.** [Schema.org markup](https://schema.org/) (typically implemented as JSON-LD) helps Google understand what your page is about: a product, a local business, an article, a FAQ. Pages with structured data are eligible for enhanced search features (star ratings, FAQ dropdowns, breadcrumbs) that increase click-through rates. Structured data does not directly boost rankings, but pages with rich results get [significantly more clicks](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data) than plain listings.
+
+**Broken or missing Open Graph tags.** While Open Graph tags are primarily for social media sharing, they signal content quality to search engines. Missing tags mean Google cannot generate rich previews when your content is shared.
+
+### Mobile problems
+
+Google uses [mobile-first indexing](https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing), meaning it evaluates the mobile version of your site for ranking, even for desktop search results. If your site does not work well on mobile, it will not rank well anywhere.
+
+Common mobile issues that hurt rankings:
+
+- No viewport meta tag (the page does not resize for mobile screens)
+- Text too small to read without zooming
+- Tap targets (buttons, links) too close together
+- Content wider than the screen, requiring horizontal scrolling
+- Slow loading on mobile networks (see our guide on [why websites are slow](/slow-website))
+
+### Slow performance
+
+Google uses [Core Web Vitals](https://web.dev/articles/vitals) as a ranking signal. Only [48% of mobile websites](https://almanac.httparchive.org/en/2025/performance) pass all three metrics. Sites that fail are not removed from search, but they lose ground to competitors with similar content that load faster.
+
+Performance matters most in competitive queries where multiple pages offer similar content. In those cases, the faster, better-optimized page wins.
+
+## How to diagnose the problem
+
+The most direct way to check your site's indexation status is [Google Search Console](https://search.google.com/search-console/about). It shows which pages are indexed, which are not, and why. The Page Indexing report lists specific errors: blocked by robots.txt, excluded by noindex, crawled but not indexed, and duplicate pages without a canonical tag.
+
+For the technical SEO factors that affect ranking (meta tags, structured data, sitemap, robots.txt, Open Graph, mobile configuration, and performance), a diagnostic scan identifies the specific issues on your site. The scan checks all of these alongside accessibility, security, and compliance, so you get a complete picture of what needs fixing and in what order.
+
+[Check why your website isn't ranking](/)
+
+## Sources
+
+- [Organic search traffic share](https://www.seoinc.com/seo-blog/much-traffic-comes-organic-search/) - SEO Inc / BrightEdge
+- [Almost all clicks happen in the top 10 results](https://ahrefs.com/blog/almost-all-clicks-happen-in-the-top-10-results/) - Ahrefs, August 2025
+- [Search engine market share Sweden](https://gs.statcounter.com/search-engine-market-share/all/sweden) - StatCounter
+- [Mobile-first indexing](https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing) - Google Search Central
+- [Core Web Vitals](https://web.dev/articles/vitals) - Google web.dev
+- [HTTP Archive Web Almanac 2025: Performance](https://almanac.httparchive.org/en/2025/performance) - HTTP Archive
+- [Introduction to structured data](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data) - Google Search Central
+- [Google Search Console](https://search.google.com/search-console/about) - Google
