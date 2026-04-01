@@ -10,11 +10,11 @@ import { Link } from "@/i18n/navigation";
 import type { Locale } from "@vivotiv/shared";
 
 import {
-  domainsByLocale,
   getAllContentPages,
   getLocaleSlug,
   type ContentFamily,
 } from "@/lib/content";
+import { domainsByLocale } from "@/lib/site-domains";
 
 type GuidesPageProps = {
   params: Promise<{ locale: string }>;

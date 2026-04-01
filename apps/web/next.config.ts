@@ -28,6 +28,12 @@ const nextConfig: NextConfig = {
         source: "/guides",
         destination: "/guider",
         permanent: true,
+        has: [{ type: "host", value: "www.vivotiv.se" }],
+      },
+      {
+        source: "/guides",
+        destination: "/guider",
+        permanent: true,
         has: [{ type: "host", value: "vivotiv.se" }],
       },
     ];

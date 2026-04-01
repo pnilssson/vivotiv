@@ -8,12 +8,12 @@ export const routing = defineRouting({
   localePrefix: "as-needed",
   domains: [
     {
-      domain: "vivotiv.com",
+      domain: "www.vivotiv.com",
       defaultLocale: "en",
       locales: ["en"],
     },
     {
-      domain: "vivotiv.se",
+      domain: "www.vivotiv.se",
       defaultLocale: "sv",
       locales: ["sv"],
     },

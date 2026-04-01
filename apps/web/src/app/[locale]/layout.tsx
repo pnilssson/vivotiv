@@ -9,6 +9,7 @@ import { PostHogConsentBridge } from "@/features/analytics/posthog-consent-bridg
 import { CookieBanner } from "@/features/cookies/cookie-banner";
 import { CookieConsentProvider } from "@/features/cookies/cookie-consent-provider";
 import { routing } from "@/i18n/routing";
+import { domainsByLocale } from "@/lib/site-domains";
 import { MotionProvider } from "@/providers/motion-provider";
 import { AppQueryClientProvider } from "@/providers/query-client-provider";
 
@@ -16,11 +17,6 @@ type LocaleLayoutProps = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 };
-
-const domainsByLocale = {
-  en: "https://vivotiv.com",
-  sv: "https://vivotiv.se",
-} as const;
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

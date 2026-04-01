@@ -12,11 +12,7 @@ import { ReportPreviewSection } from "@/features/landing/report-preview-section"
 import { SectionDivider } from "@/features/landing/section-divider";
 import { SiteFooter } from "@/features/landing/site-footer";
 import { SiteHeader } from "@/features/landing/site-header";
-
-const domainsByLocale = {
-  en: "https://vivotiv.com",
-  sv: "https://vivotiv.se",
-} as const;
+import { domainsByLocale } from "@/lib/site-domains";
 
 export default async function LocaleLandingPage() {
   const locale = await getLocale();

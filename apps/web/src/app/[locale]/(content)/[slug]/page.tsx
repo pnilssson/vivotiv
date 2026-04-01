@@ -6,13 +6,13 @@ import type { Locale } from "@vivotiv/shared";
 
 import { Breadcrumbs } from "@/features/content/breadcrumbs";
 import {
-  domainsByLocale,
   getAllContentPages,
   getContentPage,
   getLocaleSlug,
   locales,
   resolveSlug,
 } from "@/lib/content";
+import { domainsByLocale } from "@/lib/site-domains";
 
 type ContentPageProps = {
   params: Promise<{ locale: string; slug: string }>;

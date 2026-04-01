@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm";
 import { locales, type Locale } from "@vivotiv/shared";
 
 import { ScanCta } from "@/features/content/scan-cta";
+import { domainsByLocale } from "./site-domains";
 
 const mdxComponents = {
   ScanCta,
@@ -146,9 +147,5 @@ export async function getAllContentPages(locale: Locale) {
   return pages;
 }
 
-export const domainsByLocale: Record<Locale, string> = {
-  en: "https://vivotiv.com",
-  sv: "https://vivotiv.se",
-};
-
 export { locales };
+export { domainsByLocale };

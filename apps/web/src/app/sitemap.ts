@@ -1,33 +1,33 @@
 import type { MetadataRoute } from "next";
 
 import {
-  domainsByLocale,
   getAllContentPages,
   getLocaleSlug,
   locales,
 } from "@/lib/content";
+import { domainsByLocale } from "@/lib/site-domains";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [
     {
-      url: "https://vivotiv.com",
+      url: domainsByLocale.en,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
       alternates: {
         languages: {
-          sv: "https://vivotiv.se",
+          sv: domainsByLocale.sv,
         },
       },
     },
     {
-      url: "https://vivotiv.se",
+      url: domainsByLocale.sv,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
       alternates: {
         languages: {
-          en: "https://vivotiv.com",
+          en: domainsByLocale.en,
         },
       },
     },
