@@ -13,6 +13,21 @@ export const sendScanEmailFunction = inngest.createFunction(
   {
     id: "send-scan-email",
     retries: 3,
+    onFailure: async ({ error, event }) => {
+      const { leadId, scanId } = event.data.event.data as {
+        leadId: string;
+        scanId: string;
+      };
+      Sentry.captureException(error, {
+        tags: { function: "send-scan-email" },
+        extra: { leadId, scanId },
+      });
+      Sentry.logger.error("send-scan-email failed permanently", {
+        leadId,
+        scanId,
+        error: String(error),
+      });
+    },
   },
   { event: "scan.completed" },
   async ({ event, step, logger }) => {

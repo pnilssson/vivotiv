@@ -4,7 +4,7 @@ import { scanCategoryKeys } from "@vivotiv/shared";
 import type { Locale } from "@vivotiv/shared";
 
 import { env } from "../env";
-import { transporter } from "./client";
+import { resend } from "./client";
 import { ScanCompleteEmail } from "./templates/scan-complete";
 
 const domainByLocale: Record<Locale, string> = {
@@ -46,10 +46,14 @@ export async function sendScanCompleteEmail(
     }),
   );
 
-  await transporter.sendMail({
-    from: env.SMTP_FROM,
+  const { error } = await resend.emails.send({
+    from: env.EMAIL_FROM,
     to: input.to,
     subject: `Your website scored ${input.overallScore}/100`,
     html,
   });
+
+  if (error) {
+    throw new Error(`Resend error: ${error.message}`);
+  }
 }

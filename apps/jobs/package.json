@@ -24,14 +24,13 @@
     "inngest": "^3.35.0",
     "lighthouse": "^13.0.3",
     "linkinator": "^7.6.1",
-    "nodemailer": "^8.0.4",
     "playwright": "1.58.2",
-    "react": "19.2.4"
+    "react": "19.2.4",
+    "resend": "^6.10.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.0",
     "@types/node": "^22.16.0",
-    "@types/nodemailer": "^7.0.11",
     "@types/react": "^19.2.14",
     "eslint": "^10.1.0",
     "tsup": "^8.5.0",

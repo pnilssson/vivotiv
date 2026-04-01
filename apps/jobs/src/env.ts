@@ -22,20 +22,11 @@ export const env = {
   get SENTRY_DSN() {
     return process.env.SENTRY_DSN ?? "";
   },
-  get SMTP_HOST() {
-    return requireEnv("SMTP_HOST");
+  get RESEND_API_KEY() {
+    return requireEnv("RESEND_API_KEY");
   },
-  get SMTP_PORT() {
-    return Number(process.env.SMTP_PORT) || 587;
-  },
-  get SMTP_USER() {
-    return requireEnv("SMTP_USER");
-  },
-  get SMTP_PASS() {
-    return requireEnv("SMTP_PASS");
-  },
-  get SMTP_FROM() {
-    return requireEnv("SMTP_FROM");
+  get EMAIL_FROM() {
+    return requireEnv("EMAIL_FROM");
   },
   get GOOGLE_CLOUD_API_KEY() {
     return process.env.GOOGLE_CLOUD_API_KEY ?? "";

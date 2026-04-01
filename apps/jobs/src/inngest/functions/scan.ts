@@ -24,6 +24,21 @@ export const scanFunction = inngest.createFunction(
     timeouts: { finish: "5m" },
     concurrency: [{ limit: 5 }],
     throttle: { limit: 1, period: "10s", key: "event.data.leadId" },
+    onFailure: async ({ error, event }) => {
+      const { leadId, url } = event.data.event.data as {
+        leadId: string;
+        url: string;
+      };
+      Sentry.captureException(error, {
+        tags: { function: "scan-website" },
+        extra: { leadId, url },
+      });
+      Sentry.logger.error("scan-website failed permanently", {
+        leadId,
+        url,
+        error: String(error),
+      });
+    },
   },
   { event: "scan.requested" },
   async ({ event, step, logger }) => {
