@@ -1,7 +1,9 @@
-import { lookup } from "node:dns";
+import dns from "node:dns";
 import nodemailer from "nodemailer";
 
 import { env } from "../env";
+
+dns.setDefaultResultOrder("ipv4first");
 
 export const transporter = nodemailer.createTransport({
   host: env.SMTP_HOST,
@@ -11,6 +13,4 @@ export const transporter = nodemailer.createTransport({
     user: env.SMTP_USER,
     pass: env.SMTP_PASS,
   },
-  dnsLookup: (hostname, options, callback) =>
-    lookup(hostname, { ...options, family: 4 }, callback),
 });
