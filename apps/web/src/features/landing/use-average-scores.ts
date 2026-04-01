@@ -18,6 +18,8 @@ const FALLBACK_SCORES: AverageScoresResponse = {
   scanCount: 0,
 };
 
+const MIN_SCANS_FOR_LIVE_SCORES = 50;
+
 export function useAverageScores() {
   const query = useQuery({
     queryKey: ["scores", "averages"],
@@ -42,7 +44,8 @@ export function useAverageScores() {
     staleTime: Infinity,
   });
 
-  const useFallback = !query.data || query.data.scanCount === 0;
+  const useFallback =
+    !query.data || query.data.scanCount <= MIN_SCANS_FOR_LIVE_SCORES;
 
   return {
     scores: useFallback ? FALLBACK_SCORES : query.data,
