@@ -22,7 +22,10 @@ export const scanRoutes = new Hono<Env>()
         c.env.INNGEST_BASE_URL,
       );
 
-      Sentry.logger.info("Scan submitted", { url: payload.url });
+      Sentry.logger.info("Scan submitted", {
+        leadId: result.leadId,
+        url: payload.url,
+      });
       c.var.posthog.capture({
         distinctId: payload.email,
         event: "scan_submitted",

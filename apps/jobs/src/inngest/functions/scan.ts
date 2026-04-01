@@ -41,14 +41,13 @@ export const scanFunction = inngest.createFunction(
     },
   },
   { event: "scan.requested" },
-  async ({ event, step, logger }) => {
+  async ({ event, step }) => {
     const { leadId, url, locale } = event.data as {
       leadId: string;
       url: string;
       locale: Locale;
     };
     const scanStartedAt = Date.now();
-    logger.info("Scan started", { leadId, url });
     Sentry.logger.info("Scan started", { leadId, url });
 
     /* 1. Validate URL */
@@ -60,30 +59,29 @@ export const scanFunction = inngest.createFunction(
       }),
     );
 
+    Sentry.logger.info("DNS validation completed", { leadId, url, validatedUrl });
+
     /* 2. Run scan tracks in parallel (each step retries independently) */
     const lighthousePromise = step
       .run("run-lighthouse", () =>
         runLighthouse(validatedUrl, ["performance", "seo", "best-practices"]),
       )
       .catch((err) => {
-        logger.error("Lighthouse track failed", { url: validatedUrl, error: String(err) });
-        Sentry.logger.warn("Lighthouse track failed", { url: validatedUrl, error: String(err) });
+        Sentry.logger.warn("Lighthouse track failed", { leadId, url: validatedUrl, error: String(err) });
         return null;
       });
 
     const domPromise = step
       .run("run-dom-checks", () => runDomChecks(validatedUrl))
       .catch((err) => {
-        logger.error("DOM checks track failed", { url: validatedUrl, error: String(err) });
-        Sentry.logger.warn("DOM checks track failed", { url: validatedUrl, error: String(err) });
+        Sentry.logger.warn("DOM checks track failed", { leadId, url: validatedUrl, error: String(err) });
         return null;
       });
 
     const headersPromise = step
       .run("run-header-checks", () => runHeaderChecks(validatedUrl))
       .catch((err) => {
-        logger.error("Header checks track failed", { url: validatedUrl, error: String(err) });
-        Sentry.logger.warn("Header checks track failed", { url: validatedUrl, error: String(err) });
+        Sentry.logger.warn("Header checks track failed", { leadId, url: validatedUrl, error: String(err) });
         return null;
       });
 
@@ -94,16 +92,14 @@ export const scanFunction = inngest.createFunction(
         }),
       )
       .catch((err) => {
-        logger.error("API checks track failed", { url: validatedUrl, error: String(err) });
-        Sentry.logger.warn("API checks track failed", { url: validatedUrl, error: String(err) });
+        Sentry.logger.warn("API checks track failed", { leadId, url: validatedUrl, error: String(err) });
         return null;
       });
 
     const linksPromise = step
       .run("run-link-checks", () => runLinkChecks(validatedUrl))
       .catch((err) => {
-        logger.error("Link checks track failed", { url: validatedUrl, error: String(err) });
-        Sentry.logger.warn("Link checks track failed", { url: validatedUrl, error: String(err) });
+        Sentry.logger.warn("Link checks track failed", { leadId, url: validatedUrl, error: String(err) });
         return null;
       });
 
@@ -118,6 +114,15 @@ export const scanFunction = inngest.createFunction(
     if (!lighthouse && !dom && !headers) {
       throw new Error("All scan tracks failed, no results to store");
     }
+
+    Sentry.logger.info("Scan tracks completed", {
+      leadId,
+      lighthouse: !!lighthouse,
+      dom: !!dom,
+      headers: !!headers,
+      api: !!api,
+      links: !!links,
+    });
 
     /* 3. Aggregate scores */
     const result = await step.run("aggregate", () =>
@@ -152,6 +157,8 @@ export const scanFunction = inngest.createFunction(
       }),
     );
 
+    Sentry.logger.info("Scan stored", { leadId, scanId: scan.id, overallScore: result.overallScore });
+
     /* 5. Notify - consumer fetches details from DB via scanId */
     await step.sendEvent("notify-scan-completed", {
       name: "scan.completed",
@@ -159,7 +166,6 @@ export const scanFunction = inngest.createFunction(
     });
 
     const durationMs = Date.now() - scanStartedAt;
-    logger.info("Scan completed", { leadId, scanId: scan.id, overallScore: result.overallScore });
     Sentry.logger.info("Scan completed", {
       leadId,
       scanId: scan.id,

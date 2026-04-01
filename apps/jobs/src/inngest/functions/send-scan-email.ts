@@ -30,12 +30,14 @@ export const sendScanEmailFunction = inngest.createFunction(
     },
   },
   { event: "scan.completed" },
-  async ({ event, step, logger }) => {
+  async ({ event, step }) => {
     const { leadId, scanId, locale } = event.data as {
       leadId: string;
       scanId: string;
       locale: Locale;
     };
+
+    Sentry.logger.info("Sending scan email", { leadId, scanId });
 
     const lead = await step.run("get-lead", async () => {
       const l = await getLeadById(db, leadId);
@@ -61,7 +63,6 @@ export const sendScanEmailFunction = inngest.createFunction(
       }),
     );
 
-    logger.info("Scan email sent", { leadId, scanId });
-    Sentry.logger.info("Scan email sent", { leadId, scanId });
+    Sentry.logger.info("Scan email sent", { leadId, scanId, to: lead.email });
   },
 );
