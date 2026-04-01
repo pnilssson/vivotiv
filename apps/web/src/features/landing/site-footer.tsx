@@ -47,7 +47,7 @@ export function SiteFooter() {
           </span>
         </div>
 
-        <div className="grid grid-cols-2 gap-x-12 gap-y-8 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-x-12 gap-y-8 sm:grid-cols-4">
           <div className="flex flex-col gap-3">
             <span className="text-sm font-medium">{t("columnResources")}</span>
             <Link href="/how-scan-works" className={linkClasses}>
@@ -74,6 +74,25 @@ export function SiteFooter() {
             </Link>
             <Link href="/website-compliance-checklist" className={linkClasses}>
               {t("complianceChecklist")}
+            </Link>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            <span className="text-sm font-medium">{t("columnActions")}</span>
+            <Link href="/free-website-test" className={linkClasses}>
+              {t("freeWebsiteTest")}
+            </Link>
+            <Link href="/website-health-check" className={linkClasses}>
+              {t("websiteHealthCheck")}
+            </Link>
+            <Link href="/slow-website" className={linkClasses}>
+              {t("slowWebsite")}
+            </Link>
+            <Link href="/website-not-secure" className={linkClasses}>
+              {t("websiteNotSecure")}
+            </Link>
+            <Link href="/website-not-ranking" className={linkClasses}>
+              {t("websiteNotRanking")}
             </Link>
           </div>
 

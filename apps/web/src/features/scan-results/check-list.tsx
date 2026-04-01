@@ -17,6 +17,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import { scoreBorder, scoreColor } from "@/lib/score-color";
+
 type CheckListProps = {
   categories: Record<ScanCategoryKey, CategoryResult | null>;
   showPassing: boolean;
@@ -31,7 +33,7 @@ const StatusIcon = {
 
 const statusColor = {
   fail: "text-red-700",
-  warn: "text-amber-700",
+  warn: "text-yellow-800",
   pass: "text-emerald-700",
   error: "text-muted-foreground",
 };
@@ -73,7 +75,7 @@ function CheckItem({
 
   return (
     <div
-      className={`border border-border ${check.status === "fail" ? "bg-red-500/5" : "bg-card"}`}
+      className={`border border-border ${check.status === "fail" ? "bg-red-700/5" : "bg-card"}`}
     >
       <button
         type="button"
@@ -170,18 +172,6 @@ function CheckGroup({
   );
 }
 
-function scoreColorClass(score: number): string {
-  if (score >= 90) return "text-emerald-700";
-  if (score >= 50) return "text-amber-700";
-  return "text-red-700";
-}
-
-function scoreBorderClass(score: number): string {
-  if (score >= 90) return "border-emerald-700";
-  if (score >= 50) return "border-amber-700";
-  return "border-red-700";
-}
-
 function CategorySection({
   categoryKey,
   result,
@@ -211,7 +201,7 @@ function CategorySection({
               <span className="text-red-700">{t("failCount", { count: failCount })}</span>
             )}
             {warnCount > 0 && (
-              <span className="text-amber-700">{t("warnCount", { count: warnCount })}</span>
+              <span className="text-yellow-800">{t("warnCount", { count: warnCount })}</span>
             )}
             {passCount > 0 && (
               <span className="text-emerald-700">{t("passCount", { count: passCount })}</span>
@@ -219,11 +209,11 @@ function CategorySection({
           </div>
         </div>
         <div
-          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 ${scoreBorderClass(result.score)}`}
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 ${scoreBorder(result.score)}`}
           role="img"
           aria-label={`${tc(`${categoryKey}.title`)}: ${result.score}/100`}
         >
-          <span className={`font-heading text-sm font-bold tabular-nums ${scoreColorClass(result.score)}`} aria-hidden="true">
+          <span className={`font-heading text-sm font-bold tabular-nums ${scoreColor(result.score)}`} aria-hidden="true">
             {result.score}
           </span>
         </div>

@@ -222,7 +222,13 @@
     "columnCompliance": "Compliance",
     "cookieConsent": "Cookie Consent",
     "websiteSecurity": "Website Security",
-    "complianceChecklist": "Compliance Checklist"
+    "complianceChecklist": "Compliance Checklist",
+    "columnActions": "Website Problems",
+    "freeWebsiteTest": "Free Website Test",
+    "websiteHealthCheck": "Website Health Check",
+    "slowWebsite": "Slow Website",
+    "websiteNotSecure": "Website Not Secure",
+    "websiteNotRanking": "Website Not Ranking"
   },
   "notFound": {
     "message": "This page does not exist.",

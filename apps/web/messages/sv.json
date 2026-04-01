@@ -222,7 +222,13 @@
     "columnCompliance": "Efterlevnad",
     "cookieConsent": "Cookie-samtycke",
     "websiteSecurity": "Webbplatssäkerhet",
-    "complianceChecklist": "Checklista efterlevnad"
+    "complianceChecklist": "Checklista efterlevnad",
+    "columnActions": "Webbplatsproblem",
+    "freeWebsiteTest": "Gratis webbplatstest",
+    "websiteHealthCheck": "Webbplats hälsokontroll",
+    "slowWebsite": "Långsam hemsida",
+    "websiteNotSecure": "Hemsida inte säker",
+    "websiteNotRanking": "Syns inte på Google"
   },
   "notFound": {
     "message": "Den h\u00e4r sidan finns inte.",

@@ -4,25 +4,13 @@ import { type ScanCategoryKey, scanCategoryKeys } from "@vivotiv/shared";
 import { ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 
+import { scoreBg, scoreColor } from "@/lib/score-color";
+
 type ScoreOverviewProps = {
-  overallScore: number;
   categoryScores: Record<ScanCategoryKey, number | null>;
 };
 
-function scoreColor(score: number): string {
-  if (score >= 90) return "text-emerald-700";
-  if (score >= 50) return "text-amber-700";
-  return "text-red-700";
-}
-
-function scoreBg(score: number): string {
-  if (score >= 90) return "bg-emerald-600";
-  if (score >= 50) return "bg-amber-500";
-  return "bg-red-500";
-}
-
 export function ScoreOverview({
-  overallScore,
   categoryScores,
 }: ScoreOverviewProps) {
   const t = useTranslations("scanResults");

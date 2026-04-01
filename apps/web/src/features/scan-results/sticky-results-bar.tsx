@@ -1,26 +1,16 @@
 "use client";
 
 import { usePostHog } from "@posthog/next";
-import { Mail, X } from "lucide-react";
+import { X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
+import { scoreBorder, scoreColor } from "@/lib/score-color";
+
 type StickyResultsBarProps = {
   overallScore: number;
 };
-
-function scoreColor(score: number): string {
-  if (score >= 90) return "text-emerald-700";
-  if (score >= 50) return "text-amber-700";
-  return "text-red-700";
-}
-
-function scoreBorderColor(score: number): string {
-  if (score >= 90) return "border-emerald-700";
-  if (score >= 50) return "border-amber-700";
-  return "border-red-700";
-}
 
 export function StickyResultsBar({ overallScore }: StickyResultsBarProps) {
   const t = useTranslations("scanResults");
@@ -56,7 +46,7 @@ export function StickyResultsBar({ overallScore }: StickyResultsBarProps) {
           <div role="region" aria-label={t("cta.contactButton")} className="flex items-center gap-4 rounded-lg border border-border bg-background/95 px-4 py-2.5 shadow-lg backdrop-blur-sm">
             <div className="flex items-center gap-2">
               <div
-                className={`flex h-7 w-7 items-center justify-center rounded-full border-2 ${scoreBorderColor(overallScore)}`}
+                className={`flex h-7 w-7 items-center justify-center rounded-full border-2 ${scoreBorder(overallScore)}`}
               >
                 <span className={`font-heading text-xs font-bold tabular-nums ${scoreColor(overallScore)}`}>
                   {overallScore}

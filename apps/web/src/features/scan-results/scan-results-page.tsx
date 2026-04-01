@@ -13,6 +13,7 @@ import { useState } from "react";
 
 import { Switch } from "@/components/ui/switch";
 import { Link } from "@/i18n/navigation";
+import { scoreColor, scoreStroke } from "@/lib/score-color";
 
 import { CheckList } from "./check-list";
 import { ResultsCta } from "./results-cta";
@@ -57,18 +58,6 @@ function summaryKey(score: number): "summaryCritical" | "summaryWarning" | "summ
   if (score < 50) return "summaryCritical";
   if (score < 90) return "summaryWarning";
   return "summaryGood";
-}
-
-function scoreColor(score: number): string {
-  if (score >= 90) return "text-emerald-700";
-  if (score >= 50) return "text-amber-700";
-  return "text-red-700";
-}
-
-function scoreStroke(score: number): string {
-  if (score >= 90) return "stroke-emerald-700";
-  if (score >= 50) return "stroke-amber-700";
-  return "stroke-red-700";
 }
 
 const RING_RADIUS = 42;
@@ -253,7 +242,6 @@ export function ScanResultsPage({ scanId }: ScanResultsPageProps) {
       <div className="grid gap-12 md:grid-cols-5">
         <div className="md:col-span-2 md:sticky md:top-24 md:self-start">
           <ScoreOverview
-            overallScore={overallScore}
             categoryScores={categoryScores}
           />
         </div>

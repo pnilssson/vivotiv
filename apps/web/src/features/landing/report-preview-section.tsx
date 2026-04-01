@@ -11,6 +11,8 @@ import { AnimatePresence, motion, useInView } from "motion/react";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 
+import { scoreBg, scoreColor } from "@/lib/score-color";
+
 const categoryKeys = [
   "legal",
   "accessibility",
@@ -19,18 +21,6 @@ const categoryKeys = [
   "security",
   "standards",
 ] as const;
-
-function scoreColor(score: number): string {
-  if (score >= 90) return "text-emerald-700";
-  if (score >= 50) return "text-amber-700";
-  return "text-red-700";
-}
-
-function scoreBg(score: number): string {
-  if (score >= 90) return "bg-emerald-600";
-  if (score >= 50) return "bg-amber-500";
-  return "bg-red-500";
-}
 
 const statusLabelKey = {
   fail: "statusFail",
@@ -91,7 +81,7 @@ const StatusIcon = {
 
 const statusColor = {
   fail: "text-red-700",
-  warn: "text-amber-700",
+  warn: "text-yellow-800",
   pass: "text-emerald-700",
 };
 
@@ -107,10 +97,6 @@ export function ReportPreviewSection() {
     label: tc(`${key}.title`),
     score: Number(t(`example.${key}`)),
   }));
-
-  const overall = Math.round(
-    scores.reduce((sum, s) => sum + s.score, 0) / scores.length,
-  );
 
   function toggleIssue(index: number) {
     setOpenIndex(openIndex === index ? null : index);
@@ -222,7 +208,7 @@ export function ReportPreviewSection() {
                   return (
                     <motion.div
                       key={i}
-                      className={`border border-border ${issue.status === "fail" ? "bg-red-500/5" : "bg-background"}`}
+                      className={`border border-border ${issue.status === "fail" ? "bg-red-700/5" : "bg-background"}`}
                       initial={{ opacity: 0, y: 6 }}
                       animate={isInView ? { opacity: 1, y: 0 } : {}}
                       transition={{

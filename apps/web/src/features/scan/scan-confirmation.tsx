@@ -17,7 +17,7 @@ function AnimatedCheckmark() {
       viewBox="0 0 48 48"
       fill="none"
       aria-hidden="true"
-      className="text-emerald-600"
+      className="text-emerald-700"
     >
       <motion.circle
         cx="24"

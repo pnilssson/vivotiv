@@ -5,20 +5,9 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import type { ScanCategoryKey } from "@vivotiv/shared";
 
+import { scoreBg, scoreColor } from "@/lib/score-color";
 import { useTickingNumber } from "@/lib/use-ticking-number";
 import { useAverageScores } from "./use-average-scores";
-
-function scoreColor(score: number) {
-  if (score >= 90) return "text-emerald-700";
-  if (score >= 50) return "text-amber-700";
-  return "text-red-700";
-}
-
-function barColor(score: number) {
-  if (score >= 90) return "bg-emerald-600";
-  if (score >= 50) return "bg-amber-500";
-  return "bg-red-500";
-}
 
 const categories: ScanCategoryKey[] = [
   "legal",
@@ -52,7 +41,7 @@ function ScoreCard({
       </div>
       <div className="h-1.5 w-full rounded-full bg-muted">
         <motion.div
-          className={`h-full rounded-full ${barColor(score)}`}
+          className={`h-full rounded-full ${scoreBg(score)}`}
           initial={{ width: 0 }}
           animate={isInView ? { width: `${score}%` } : { width: 0 }}
           transition={{
