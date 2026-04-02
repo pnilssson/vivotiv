@@ -1,13 +1,8 @@
 "use client";
 
-import {
-  Activity,
-  Eye,
-  MenuIcon,
-  Scale,
-  ShieldCheck,
-} from "lucide-react";
-import { useLocale, useTranslations } from "next-intl";
+import { MenuIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
 
 import {
   NavigationMenu,
@@ -19,7 +14,6 @@ import {
 } from "@/components/ui/navigation-menu";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -27,28 +21,63 @@ import {
 } from "@/components/ui/sheet";
 import { Link } from "@/i18n/navigation";
 
-const contentPages = [
-  {
-    slug: "accessibility",
-    titleKey: "accessibility",
-    descriptionKey: "accessibilityDescription",
-  },
-  {
-    slug: "privacy-compliance",
-    titleKey: "privacyCompliance",
-    descriptionKey: "privacyComplianceDescription",
-  },
-  {
-    slug: "how-scan-works",
-    titleKey: "howScanWorks",
-    descriptionKey: "howScanWorksDescription",
-  },
+const compliancePages = [
+  { slug: "accessibility", titleKey: "accessibility", descriptionKey: "accessibilityDescription" },
+  { slug: "privacy-compliance", titleKey: "privacyCompliance", descriptionKey: "privacyComplianceDescription" },
+  { slug: "cookie-consent-requirements", titleKey: "cookieConsent", descriptionKey: "cookieConsentDescription" },
+  { slug: "website-security-basics", titleKey: "websiteSecurity", descriptionKey: "websiteSecurityDescription" },
+  { slug: "website-compliance-checklist", titleKey: "complianceChecklist", descriptionKey: "complianceChecklistDescription" },
 ] as const;
+
+const websiteProblemPages = [
+  { slug: "free-website-test", titleKey: "freeWebsiteTest", descriptionKey: "freeWebsiteTestDescription" },
+  { slug: "website-health-check", titleKey: "websiteHealthCheck", descriptionKey: "websiteHealthCheckDescription" },
+  { slug: "slow-website", titleKey: "slowWebsite", descriptionKey: "slowWebsiteDescription" },
+  { slug: "website-not-secure", titleKey: "websiteNotSecure", descriptionKey: "websiteNotSecureDescription" },
+  { slug: "website-not-ranking", titleKey: "websiteNotRanking", descriptionKey: "websiteNotRankingDescription" },
+] as const;
+
+function DropdownLinks({
+  pages,
+  t,
+}: {
+  pages: ReadonlyArray<{ slug: string; titleKey: string; descriptionKey: string }>;
+  t: (key: string) => string;
+}) {
+  return (
+    <div className="grid w-[320px] gap-1 p-1">
+      {pages.map((page) => (
+        <NavigationMenuLink
+          key={page.slug}
+          render={<Link href={`/${page.slug}`} />}
+          className="flex flex-col items-start gap-0.5 hover:bg-depth-1 focus:bg-depth-1"
+        >
+          <span className="text-sm font-medium leading-none">
+            {t(page.titleKey)}
+          </span>
+          <span className="line-clamp-2 text-xs leading-snug text-muted-foreground">
+            {t(page.descriptionKey)}
+          </span>
+        </NavigationMenuLink>
+      ))}
+    </div>
+  );
+}
 
 export function SiteHeader() {
   const t = useTranslations("nav");
-  const locale = useLocale();
-  const guidesHref = locale === "sv" ? "/guider" : "/guides";
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const mobileLink = (href: string, label: string, key: string) => (
+    <Link
+      key={key}
+      href={href}
+      onClick={() => setMobileOpen(false)}
+      className="rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:bg-depth-1"
+    >
+      {label}
+    </Link>
+  );
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-sm">
@@ -72,48 +101,29 @@ export function SiteHeader() {
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-sm">
-                  {t("resources")}
+                  {t("compliance")}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="grid w-[480px] grid-cols-[0.8fr_1fr] gap-1 p-1">
-                    {/* Left: Featured guides card */}
-                    <NavigationMenuLink
-                      render={<Link href={guidesHref} />}
-                      className="row-span-3 flex h-full flex-col overflow-hidden rounded-md bg-depth-1 hover:bg-depth-2 focus:bg-depth-2"
-                    >
-                      <div className="flex flex-1 items-center justify-center gap-3 px-4 pt-4">
-                        <Scale className="size-5 text-muted-foreground/40" />
-                        <ShieldCheck className="size-7 text-muted-foreground/30" />
-                        <Eye className="size-5 text-muted-foreground/40" />
-                        <Activity className="size-6 text-muted-foreground/35" />
-                      </div>
-                      <div className="p-4 pt-3">
-                        <span className="text-sm font-medium">
-                          {t("guides")}
-                        </span>
-                        <span className="mt-1 block text-xs leading-snug text-muted-foreground">
-                          {t("guidesDescription")}
-                        </span>
-                      </div>
-                    </NavigationMenuLink>
-
-                    {/* Right: Individual page links */}
-                    {contentPages.map((page) => (
-                      <NavigationMenuLink
-                        key={page.slug}
-                        render={<Link href={`/${page.slug}`} />}
-                        className="flex flex-col items-start gap-0.5 hover:bg-depth-1 focus:bg-depth-1"
-                      >
-                        <span className="text-sm font-medium leading-none">
-                          {t(page.titleKey)}
-                        </span>
-                        <span className="line-clamp-2 text-xs leading-snug text-muted-foreground">
-                          {t(page.descriptionKey)}
-                        </span>
-                      </NavigationMenuLink>
-                    ))}
-                  </div>
+                  <DropdownLinks pages={compliancePages} t={t} />
                 </NavigationMenuContent>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="text-sm">
+                  {t("websiteProblems")}
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <DropdownLinks pages={websiteProblemPages} t={t} />
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuLink
+                  render={<Link href="/how-scan-works" />}
+                  className="text-sm"
+                >
+                  {t("howScanWorks")}
+                </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
@@ -134,7 +144,7 @@ export function SiteHeader() {
           >
             {t("scanCta")}
           </a>
-          <Sheet>
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger
               aria-label={t("mobileMenu")}
               className="inline-flex h-7 w-7 items-center justify-center rounded-[min(var(--radius-md),12px)] text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -146,21 +156,24 @@ export function SiteHeader() {
                 <SheetTitle>Vivotiv</SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4">
-                {contentPages.map((page) => (
-                  <SheetClose
-                    key={page.slug}
-                    render={<Link href={`/${page.slug}`} />}
-                    className="rounded-lg px-3 py-2.5 text-sm font-medium transition-colors hover:bg-depth-1"
-                  >
-                    {t(page.titleKey)}
-                  </SheetClose>
-                ))}
-                <SheetClose
-                  render={<Link href={guidesHref} />}
-                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-depth-1 hover:text-foreground"
-                >
-                  {t("guides")}
-                </SheetClose>
+                <span className="px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  {t("compliance")}
+                </span>
+                {compliancePages.map((page) => mobileLink(`/${page.slug}`, t(page.titleKey), page.slug))}
+
+                <hr className="my-3 border-border" />
+
+                <span className="px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  {t("websiteProblems")}
+                </span>
+                {websiteProblemPages.map((page) => mobileLink(`/${page.slug}`, t(page.titleKey), page.slug))}
+
+                <hr className="my-3 border-border" />
+
+                <span className="px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                  {t("resources")}
+                </span>
+                {mobileLink("/how-scan-works", t("howScanWorks"))}
               </nav>
             </SheetContent>
           </Sheet>
