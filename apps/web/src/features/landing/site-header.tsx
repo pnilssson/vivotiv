@@ -120,7 +120,7 @@ export function SiteHeader() {
               <NavigationMenuItem>
                 <NavigationMenuLink
                   render={<Link href="/how-scan-works" />}
-                  className="text-sm"
+                  className="h-9 px-2.5 py-1.5 text-sm font-medium"
                 >
                   {t("howScanWorks")}
                 </NavigationMenuLink>
