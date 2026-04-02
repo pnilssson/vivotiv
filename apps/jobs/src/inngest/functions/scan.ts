@@ -42,12 +42,12 @@ export const scanFunction = inngest.createFunction(
   },
   { event: "scan.requested" },
   async ({ event, step }) => {
-    const { leadId, url, locale, source = DEFAULT_SCAN_SOURCE, ...extraData } = event.data as {
+    const { leadId, url, locale, source = DEFAULT_SCAN_SOURCE, businessName } = event.data as {
       leadId: string;
       url: string;
       locale: Locale;
       source?: ScanSource;
-      [key: string]: unknown;
+      businessName?: string;
     };
     const scanStartedAt = Date.now();
     Sentry.logger.info("Scan started", { leadId, url });
@@ -165,7 +165,7 @@ export const scanFunction = inngest.createFunction(
     /* 5. Notify - consumer fetches details from DB via scanId */
     await step.sendEvent("notify-scan-completed", {
       name: "scan.completed",
-      data: { leadId, scanId: scan.id, locale, source, ...extraData },
+      data: { leadId, scanId: scan.id, locale, source, businessName },
     });
 
     const durationMs = Date.now() - scanStartedAt;

@@ -1,3 +1,4 @@
+// Web Crypto implementation (CF Workers). Node.js counterpart: apps/jobs/src/outreach/unsubscribe-token.ts
 const encoder = new TextEncoder();
 
 async function getKey(secret: string) {

@@ -1,4 +1,4 @@
-import { eq, like } from "drizzle-orm";
+import { eq, or, like } from "drizzle-orm";
 
 import type { Database } from "../client";
 import { scans } from "../schema";
@@ -39,11 +39,17 @@ export async function createScan(db: Database, input: CreateScanInput) {
 }
 
 export async function hasScanForDomain(db: Database, domain: string) {
-  const pattern = `%${domain}%`;
   const [scan] = await db
     .select({ id: scans.id })
     .from(scans)
-    .where(like(scans.url, pattern))
+    .where(
+      or(
+        like(scans.url, `%://${domain}/%`),
+        like(scans.url, `%://${domain}`),
+        like(scans.url, `%://www.${domain}/%`),
+        like(scans.url, `%://www.${domain}`),
+      ),
+    )
     .limit(1);
 
   return !!scan;

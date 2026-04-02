@@ -12,3 +12,7 @@ export const OutreachSubmissionSchema = z.object({
 });
 
 export type OutreachSubmission = z.infer<typeof OutreachSubmissionSchema>;
+
+export const UnsubscribeSchema = z.object({
+  token: z.string().min(1),
+});

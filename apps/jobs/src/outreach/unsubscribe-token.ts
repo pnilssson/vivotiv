@@ -1,3 +1,4 @@
+// Node.js implementation. Web Crypto counterpart: apps/api/src/features/unsubscribe/token.ts
 import { createHmac } from "node:crypto";
 
 export function createUnsubscribeToken(
