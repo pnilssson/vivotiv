@@ -1,10 +1,23 @@
 import * as Sentry from "@sentry/node";
-import { createDb, getLeadById, getScanById } from "@vivotiv/db";
+import {
+  createDb,
+  createOutreachEmail,
+  getLeadById,
+  getScanById,
+  markOutreachEmailFailed,
+  markOutreachEmailSent,
+} from "@vivotiv/db";
 import type { ScanDetailsV1 } from "@vivotiv/shared";
 import { OUTREACH_SCAN_SOURCE } from "@vivotiv/shared";
 import { NonRetriableError } from "inngest";
 
-import { sendOutreachEmail } from "../../email/send-outreach-email";
+import {
+  getOutreachFromEmail,
+  getOutreachReplyTo,
+  OUTREACH_EMAIL_PROVIDER,
+  OUTREACH_EMAIL_SUBJECT,
+  sendOutreachEmail,
+} from "../../email/send-outreach-email";
 import { env } from "../../env";
 import { generateOutreachEmail } from "../../outreach/generate-email";
 import { selectFindings } from "../../outreach/select-findings";
@@ -115,14 +128,45 @@ export const sendOutreachEmailFunction = inngest.createFunction(
       }),
     );
 
-    await step.run("send-email", () =>
-      sendOutreachEmail({
-        to: lead.email,
+    const outreachEmail = await step.run("log-email-pending", () =>
+      createOutreachEmail(db, {
+        leadId,
+        scanId,
+        toEmail: lead.email,
+        fromEmail: getOutreachFromEmail(),
+        replyTo: getOutreachReplyTo(),
+        subject: OUTREACH_EMAIL_SUBJECT,
         body: emailBody,
         resultsUrl,
         unsubscribeUrl,
+        provider: OUTREACH_EMAIL_PROVIDER,
       }),
     );
+
+    try {
+      const sendResult = await step.run("send-email", () =>
+        sendOutreachEmail({
+          to: lead.email,
+          body: emailBody,
+          resultsUrl,
+          unsubscribeUrl,
+        }),
+      );
+
+      await step.run("log-email-sent", () =>
+        markOutreachEmailSent(db, outreachEmail.id, {
+          providerMessageId: sendResult.providerMessageId,
+        }),
+      );
+    } catch (error) {
+      await step.run("log-email-failed", () =>
+        markOutreachEmailFailed(db, outreachEmail.id, {
+          failureReason: String(error),
+        }),
+      );
+
+      throw error;
+    }
 
     Sentry.logger.info("Outreach email sent", { leadId, scanId, to: lead.email });
 

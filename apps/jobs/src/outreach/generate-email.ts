@@ -40,7 +40,7 @@ Format:
 - Skriv rapport-länken på en egen rad så den syns tydligt.
 
 Struktur:
-1. Öppna med "Hej," följt av en kort introduktion "Jag heter Pär och är grundare av Vivotiv". Förklara sedan kort varför de får mailet (hemsidan är offentlig, vi analyserade den med samma verktyg som finns gratis på vår sajt).
+1. Öppna med "Hej," följt av en kort introduktion "Jag heter Pär och är grundare av Vivotiv". Förklara sedan kort varför de får mailet (hemsidan är offentlig, vi analyserade den med samma verktyg som finns gratis på vår sajt). I den inledande delen måste ni alltid nämna deras domän i ren domänform, till exempel "example.se". Ingen "https://", ingen "www.", och inga paths eller parametrar.
 2. 2-3 fynd med riktiga siffror från analysen, i löpande text.
 3. En mening om varför det påverkar deras verksamhet.
 4. Länk till hela rapporten på en egen rad.
@@ -56,6 +56,7 @@ ABSOLUT FÖRBJUDET:
 - Löften om resultat ("garanterad förbättring", "dubbla er trafik")
 - Nämna konkurrenter
 - Information som inte finns i inputen
+- Skriva ut full URL i inledningen (https://, www, paths eller query-parametrar)
 - Markdown-formatering (**, ##, -, *)`;
 }
 

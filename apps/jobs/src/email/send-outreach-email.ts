@@ -4,6 +4,17 @@ import { env } from "../env";
 import { resend } from "./client";
 import { OutreachEmail } from "./templates/outreach-email";
 
+export const OUTREACH_EMAIL_PROVIDER = "resend";
+export const OUTREACH_EMAIL_SUBJECT = "Öka förtroendet hos era hemsidebesökare";
+
+export function getOutreachFromEmail() {
+  return `Pär från ${env.EMAIL_FROM}`;
+}
+
+export function getOutreachReplyTo() {
+  return env.OUTREACH_REPLY_TO;
+}
+
 type SendOutreachEmailInput = {
   to: string;
   body: string;
@@ -11,9 +22,13 @@ type SendOutreachEmailInput = {
   unsubscribeUrl: string;
 };
 
+type SendOutreachEmailResult = {
+  providerMessageId: string | null;
+};
+
 export async function sendOutreachEmail(
   input: SendOutreachEmailInput,
-): Promise<void> {
+): Promise<SendOutreachEmailResult> {
   const html = await render(
     OutreachEmail({
       body: input.body,
@@ -22,15 +37,22 @@ export async function sendOutreachEmail(
     }),
   );
 
-  const { error } = await resend.emails.send({
-    from: `Pär från ${env.EMAIL_FROM}`,
-    replyTo: env.OUTREACH_REPLY_TO,
+  const fromEmail = getOutreachFromEmail();
+  const replyTo = getOutreachReplyTo();
+
+  const { data, error } = await resend.emails.send({
+    from: fromEmail,
+    replyTo,
     to: input.to,
-    subject: "Öka förtroendet hos era hemsidebesökare",
+    subject: OUTREACH_EMAIL_SUBJECT,
     html,
   });
 
   if (error) {
     throw new Error(`Resend error: ${error.message}`);
   }
+
+  return {
+    providerMessageId: data?.id ?? null,
+  };
 }
