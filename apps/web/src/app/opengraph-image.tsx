@@ -7,9 +7,9 @@ const categories = [
   { label: "Performance", score: 52 },
   { label: "SEO", score: 88 },
   { label: "Accessibility", score: 30 },
-  { label: "Compliance", score: 35 },
-  { label: "Security", score: 91 },
+  { label: "Trust & Security", score: 35 },
   { label: "Quality", score: 67 },
+  { label: "AI Readiness", score: 44 },
 ];
 
 function dotColor(score: number) {

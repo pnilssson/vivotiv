@@ -140,18 +140,18 @@ export function ScanResultsPage({ scanId }: ScanResultsPageProps) {
     performance: scan.details?.performance ?? null,
     seo: scan.details?.seo ?? null,
     accessibility: scan.details?.accessibility ?? null,
-    legal: scan.details?.legal ?? null,
-    security: scan.details?.security ?? null,
+    trustSecurity: scan.details?.trustSecurity ?? null,
     standards: scan.details?.standards ?? null,
+    aiReadiness: scan.details?.aiReadiness ?? null,
   };
 
   const categoryScores: Record<ScanCategoryKey, number | null> = {
     performance: scan.performanceScore,
     seo: scan.seoScore,
     accessibility: scan.accessibilityScore,
-    legal: scan.legalScore,
-    security: scan.securityScore,
+    trustSecurity: scan.trustSecurityScore,
     standards: scan.standardsScore,
+    aiReadiness: scan.aiReadinessScore,
   };
 
   const overallScore = scan.overallScore ?? 0;

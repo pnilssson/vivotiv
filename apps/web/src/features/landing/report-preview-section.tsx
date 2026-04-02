@@ -14,12 +14,12 @@ import { useRef, useState } from "react";
 import { scoreBg, scoreColor } from "@/lib/score-color";
 
 const categoryKeys = [
-  "legal",
+  "trustSecurity",
   "accessibility",
   "seo",
   "performance",
-  "security",
   "standards",
+  "aiReadiness",
 ] as const;
 
 const statusLabelKey = {

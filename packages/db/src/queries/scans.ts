@@ -10,9 +10,9 @@ type CreateScanInput = {
   performanceScore: number | null;
   seoScore: number | null;
   accessibilityScore: number | null;
-  legalScore: number | null;
-  securityScore: number | null;
+  trustSecurityScore: number | null;
   standardsScore: number | null;
+  aiReadinessScore: number | null;
   source: string;
   details: unknown;
 };
@@ -27,9 +27,9 @@ export async function createScan(db: Database, input: CreateScanInput) {
       performanceScore: input.performanceScore,
       seoScore: input.seoScore,
       accessibilityScore: input.accessibilityScore,
-      legalScore: input.legalScore,
-      securityScore: input.securityScore,
+      trustSecurityScore: input.trustSecurityScore,
       standardsScore: input.standardsScore,
+      aiReadinessScore: input.aiReadinessScore,
       source: input.source,
       details: input.details,
     })

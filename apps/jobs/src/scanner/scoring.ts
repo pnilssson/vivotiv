@@ -11,9 +11,9 @@ const CATEGORY_WEIGHTS: Record<ScanCategoryKey, number> = {
   performance: 0.2,
   seo: 0.2,
   accessibility: 0.2,
-  legal: 0.2,
-  security: 0.1,
+  trustSecurity: 0.2,
   standards: 0.1,
+  aiReadiness: 0.1,
 };
 
 export function getTrafficLight(score: number): CheckStatus {

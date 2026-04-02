@@ -5,12 +5,14 @@ import type {
 } from "@vivotiv/shared";
 
 import {
+  buildCheck,
   extractLegalHeaderChecks,
   extractPerformanceChecks,
   extractSecurityChecks,
   extractSecurityHeaderChecks,
   extractSeoChecks,
 } from "./checks";
+import type { AiReadinessHttpResults } from "./ai-readiness-checks";
 import type { ApiCheckResults } from "./api-checks";
 import type { DomCheckResults } from "./dom-checks";
 import type { HeaderCheckResults } from "./header-checks";
@@ -29,10 +31,12 @@ interface RawResults {
   headers: HeaderCheckResults | null;
   api: ApiCheckResults | null;
   links: LinkCheckResults | null;
+  aiReadinessHttp: AiReadinessHttpResults | null;
   trackErrors?: {
     lighthouse?: string | null;
     dom?: string | null;
     headers?: string | null;
+    aiReadinessHttp?: string | null;
   };
 }
 
@@ -150,88 +154,58 @@ export function aggregate(url: string, raw: RawResults) {
       ? buildErrorCategory("accessibility-track-error", "Accessibility scan failed", domError)
       : null;
 
-  // Legal: DOM checks + SSL from headers
-  let legal: CategoryResult | null = null;
+  // Trust & Security: DOM legal checks + SSL headers + Lighthouse best-practices + security headers + API checks
+  let trustSecurity: CategoryResult | null = null;
   {
-    const legalDomChecks = raw.dom?.legal.checks ?? [];
-    const legalHeaderChecks = raw.headers
-      ? extractLegalHeaderChecks(raw.headers)
-      : [];
-    const allLegalMetrics = [...legalDomChecks, ...legalHeaderChecks];
-    const legalSplit = splitErrorChecks(allLegalMetrics);
+    const tsMetrics: CheckResult[] = [];
+    const tsOpportunities: CheckResult[] = [];
+    const tsDiagnostics: CheckResult[] = [];
 
-    if (legalSplit.scored.length > 0) {
-      legal = buildCategoryResult({
-        metrics: legalSplit.scored,
+    // Trust checks (from DOM + SSL headers)
+    if (raw.dom) {
+      tsMetrics.push(...raw.dom.legal.checks);
+    }
+    if (raw.headers) {
+      tsMetrics.push(...extractLegalHeaderChecks(raw.headers));
+    }
+
+    // Security checks (from Lighthouse best-practices + security headers + API)
+    if (raw.lighthouse) {
+      const securityExtraction = extractSecurityChecks(raw.lighthouse);
+      tsMetrics.push(...securityExtraction.metrics);
+      tsOpportunities.push(...securityExtraction.opportunities);
+      tsDiagnostics.push(...securityExtraction.diagnostics);
+    }
+    if (raw.headers) {
+      tsMetrics.push(...extractSecurityHeaderChecks(raw.headers));
+    }
+    if (raw.api) {
+      tsMetrics.push(...raw.api.securityChecks);
+    }
+
+    const tsSplit = splitErrorChecks(tsMetrics);
+
+    if (tsSplit.scored.length > 0) {
+      trustSecurity = buildCategoryResult({
+        metrics: tsSplit.scored,
+        opportunities: tsOpportunities,
         diagnostics: [
-          ...legalSplit.errors,
+          ...tsDiagnostics,
+          ...tsSplit.errors,
           ...(domError
             ? [
                 buildTrackErrorCheck(
-                  "legal-dom-error",
-                  "Legal DOM checks failed",
+                  "trust-security-dom-error",
+                  "Trust & Security DOM checks failed",
                   domError,
                 ),
               ]
             : []),
-          ...(headersError
-            ? [
-                buildTrackErrorCheck(
-                  "legal-header-error",
-                  "Legal header checks failed",
-                  headersError,
-                ),
-              ]
-            : []),
-        ],
-      });
-    } else if (legalSplit.errors.length > 0) {
-      legal = buildErrorCategory(
-        "legal-track-error",
-        "Legal scan failed",
-        legalSplit.errors.map((check) => check.value).filter(Boolean).join("; "),
-      );
-    } else if (domError || headersError) {
-      legal = buildErrorCategory(
-        "legal-track-error",
-        "Legal scan failed",
-        [domError, headersError].filter(Boolean).join("; "),
-      );
-    }
-  }
-
-  // Security: Lighthouse best-practices + header checks
-  let security: CategoryResult | null = null;
-  {
-    const secMetrics: CheckResult[] = [];
-    const secOpportunities: CheckResult[] = [];
-    const secDiagnostics: CheckResult[] = [];
-    if (raw.lighthouse) {
-      const securityExtraction = extractSecurityChecks(raw.lighthouse);
-      secMetrics.push(...securityExtraction.metrics);
-      secOpportunities.push(...securityExtraction.opportunities);
-      secDiagnostics.push(...securityExtraction.diagnostics);
-    }
-    if (raw.headers) {
-      secMetrics.push(...extractSecurityHeaderChecks(raw.headers));
-    }
-    if (raw.api) {
-      secMetrics.push(...raw.api.securityChecks);
-    }
-    const securitySplit = splitErrorChecks(secMetrics);
-
-    if (securitySplit.scored.length > 0) {
-      security = buildCategoryResult({
-        metrics: securitySplit.scored,
-        opportunities: secOpportunities,
-        diagnostics: [
-          ...secDiagnostics,
-          ...securitySplit.errors,
           ...(lighthouseError
             ? [
                 buildTrackErrorCheck(
-                  "security-lighthouse-error",
-                  "Security lighthouse failed",
+                  "trust-security-lighthouse-error",
+                  "Trust & Security lighthouse failed",
                   lighthouseError,
                 ),
               ]
@@ -239,25 +213,25 @@ export function aggregate(url: string, raw: RawResults) {
           ...(headersError
             ? [
                 buildTrackErrorCheck(
-                  "security-header-error",
-                  "Security header checks failed",
+                  "trust-security-header-error",
+                  "Trust & Security header checks failed",
                   headersError,
                 ),
               ]
             : []),
         ],
       });
-    } else if (securitySplit.errors.length > 0) {
-      security = buildErrorCategory(
-        "security-track-error",
-        "Security scan failed",
-        securitySplit.errors.map((check) => check.value).filter(Boolean).join("; "),
+    } else if (tsSplit.errors.length > 0) {
+      trustSecurity = buildErrorCategory(
+        "trust-security-track-error",
+        "Trust & Security scan failed",
+        tsSplit.errors.map((check) => check.value).filter(Boolean).join("; "),
       );
-    } else if (lighthouseError || headersError) {
-      security = buildErrorCategory(
-        "security-track-error",
-        "Security scan failed",
-        [lighthouseError, headersError].filter(Boolean).join("; "),
+    } else if (domError || lighthouseError || headersError) {
+      trustSecurity = buildErrorCategory(
+        "trust-security-track-error",
+        "Trust & Security scan failed",
+        [domError, lighthouseError, headersError].filter(Boolean).join("; "),
       );
     }
   }
@@ -304,13 +278,88 @@ export function aggregate(url: string, raw: RawResults) {
     }
   }
 
+  // AI Readiness: DOM checks + HTTP checks (robots.txt, llms.txt, SSR)
+  const aiReadinessHttpError = raw.trackErrors?.aiReadinessHttp ?? null;
+  let aiReadiness: CategoryResult | null = null;
+  {
+    const aiMetrics: CheckResult[] = [];
+    const aiDiagnostics: CheckResult[] = [];
+
+    // DOM checks
+    if (raw.dom) {
+      aiMetrics.push(...raw.dom.aiReadiness.checks);
+    }
+
+    // HTTP checks (robots.txt, llms.txt)
+    if (raw.aiReadinessHttp) {
+      aiMetrics.push(...raw.aiReadinessHttp.checks);
+    }
+
+    // SSR check: compare raw HTML text against Playwright-rendered text
+    if (raw.dom && raw.aiReadinessHttp?.rawTextContent != null) {
+      const renderedWords = raw.dom.renderedTextContent.split(/\s+/).filter((w) => w.length > 0).length;
+      const rawWords = raw.aiReadinessHttp.rawTextContent.split(/\s+/).filter((w) => w.length > 0).length;
+
+      if (renderedWords > 0) {
+        const ratio = Math.round((rawWords / renderedWords) * 100);
+        let status: "pass" | "warn" | "fail" = "pass";
+        let value = `${ratio}% of content visible without JavaScript`;
+        if (ratio < 50) {
+          status = "fail";
+          value = `Only ${ratio}% of content visible without JavaScript`;
+        } else if (ratio < 90) {
+          status = "warn";
+        }
+
+        aiMetrics.push(buildCheck(
+          "ai-content-renderability",
+          "Content Renderability (SSR)",
+          status,
+          value,
+          2,
+          "AI crawlers do not execute JavaScript. Content that requires JS to render is invisible to GPTBot, ClaudeBot, and PerplexityBot.",
+        ));
+      }
+    }
+
+    const aiSplit = splitErrorChecks(aiMetrics);
+
+    if (aiSplit.scored.length > 0) {
+      aiReadiness = buildCategoryResult({
+        metrics: aiSplit.scored,
+        diagnostics: [
+          ...aiDiagnostics,
+          ...aiSplit.errors,
+          ...(domError
+            ? [buildTrackErrorCheck("ai-readiness-dom-error", "AI Readiness DOM checks failed", domError)]
+            : []),
+          ...(aiReadinessHttpError
+            ? [buildTrackErrorCheck("ai-readiness-http-error", "AI Readiness HTTP checks failed", aiReadinessHttpError)]
+            : []),
+        ],
+      });
+    } else if (aiSplit.errors.length > 0) {
+      aiReadiness = buildErrorCategory(
+        "ai-readiness-track-error",
+        "AI Readiness scan failed",
+        aiSplit.errors.map((check) => check.value).filter(Boolean).join("; "),
+      );
+    } else if (domError || aiReadinessHttpError) {
+      aiReadiness = buildErrorCategory(
+        "ai-readiness-track-error",
+        "AI Readiness scan failed",
+        [domError, aiReadinessHttpError].filter(Boolean).join("; "),
+      );
+    }
+  }
+
   const categories = {
     performance,
     seo,
     accessibility,
-    legal,
-    security,
+    trustSecurity,
     standards,
+    aiReadiness,
   };
 
   const overallScore = calculateOverallScore(categories);

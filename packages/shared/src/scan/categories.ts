@@ -1,10 +1,10 @@
 export const scanCategoryKeys = [
-  "legal",
+  "trustSecurity",
   "accessibility",
   "seo",
   "performance",
-  "security",
   "standards",
+  "aiReadiness",
 ] as const;
 
 export type ScanCategoryKey = (typeof scanCategoryKeys)[number];

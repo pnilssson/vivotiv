@@ -6,9 +6,9 @@ family: "standalone"
 relatedSlugs: ["accessibility", "privacy-compliance"]
 ---
 
-## Five analysis tracks, one report
+## Six analysis tracks, one report
 
-Our scan combines five complementary analysis tracks to give you a complete picture of your website's health. Each track is purpose-built for specific types of checks, and together they cover performance, SEO, accessibility, trust and compliance, security, and website quality.
+Our scan combines six complementary analysis tracks to give you a complete picture of your website's health. Each track is purpose-built for specific types of checks, and together they cover performance, SEO, accessibility, trust and security, website quality, and AI readiness.
 
 The entire scan runs in the background and typically completes in 15 to 20 seconds.
 
@@ -66,11 +66,27 @@ These checks run via external APIs and complement the header analysis with an ou
 
 We crawl the links on your page and verify that they resolve correctly. Broken links hurt both user experience and SEO, as search engines treat dead links as a signal of poor site maintenance. The scan reports the number of broken links found and which URLs are affected.
 
+## AI readiness analysis
+
+AI-powered search engines (ChatGPT, Perplexity, Gemini, Google AI Overviews) are changing how people find businesses online. Traditional search volume is projected to drop 25% by 2026. This track checks whether your site is prepared for this shift.
+
+We analyze:
+
+- **AI crawler access** by parsing your robots.txt to determine which AI bots can reach your content. Blocking search crawlers like OAI-SearchBot or PerplexityBot means your business is invisible to AI search. Blocking training crawlers (GPTBot, ClaudeBot) is a valid choice and does not affect the score.
+- **llms.txt** presence and validity. This emerging standard (adopted by 844,000+ sites) provides a structured summary of your site for AI consumption.
+- **Structured data completeness** beyond the basic SEO check. We evaluate whether your schema is detailed enough for an AI to identify your business name, location, and offering.
+- **Content renderability** by comparing your raw HTML (what AI crawlers see) against the browser-rendered page. If your content requires JavaScript to appear, most AI crawlers cannot see it.
+- **Semantic HTML** usage. Tags like `<main>`, `<article>`, and `<nav>` help AI distinguish your actual content from navigation and chrome.
+- **Entity clarity** by cross-referencing your business name across title, meta description, Open Graph tags, and structured data for consistency.
+- **Citation readiness** by checking for content patterns that correlate with higher AI citation rates: data tables, lists, statistics, and self-contained answer sections.
+
+These checks run across two tracks: DOM analysis via Playwright (structured data, semantic HTML, entity clarity, citation readiness) and lightweight HTTP fetches (robots.txt, llms.txt, raw HTML for the renderability comparison). Both run in parallel with all other scan tracks.
+
 ## How we score results
 
 Each of the six categories receives a score from 0 to 100.
 
-**Checklist-based categories** (performance, SEO, trust and compliance, security, website quality) use a fixed set of checks. Each check returns pass, warn, or fail, and the category score is a weighted average.
+**Checklist-based categories** (performance, SEO, trust and security, website quality, AI readiness) use a fixed set of checks. Each check returns pass, warn, or fail, and the category score is a weighted average.
 
 **Accessibility** uses a deduction model. The score starts at 100 and points are deducted for each violation based on severity:
 
@@ -84,9 +100,9 @@ The overall score is a weighted average across all six categories:
 - Performance: 20%
 - SEO: 20%
 - Accessibility: 20%
-- Trust and compliance: 20%
-- Security: 10%
+- Trust and security: 20%
 - Website quality: 10%
+- AI readiness: 10%
 
 ## What the scores mean
 

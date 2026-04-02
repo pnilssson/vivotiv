@@ -60,17 +60,17 @@
       "title": "Accessibility",
       "description": "Since June 2025, most EU businesses are legally required to have accessible websites. We check if yours meets the requirements."
     },
-    "legal": {
-      "title": "Trust & Compliance",
-      "description": "Missing cookie consent, no privacy policy, tracking before user approval. This can potentially lead to fines."
-    },
-    "security": {
-      "title": "Security",
-      "description": "Outdated software and missing security headers make your site an easy target. Most of these issues are invisible until something breaks."
+    "trustSecurity": {
+      "title": "Trust & Security",
+      "description": "Missing cookie consent, no privacy policy, tracking before approval, and weak security headers. These issues erode visitor trust and leave your site exposed."
     },
     "standards": {
       "title": "Website Quality",
       "description": "Broken links, HTML errors, poor heading structure, and outdated code. These signal to visitors that your business doesn't invest in its online presence."
+    },
+    "aiReadiness": {
+      "title": "AI Readiness",
+      "description": "AI-powered search is growing fast. We check whether AI crawlers can access your content, whether your site is visible without JavaScript, and whether your data is structured for AI to understand."
     }
   },
   "reportPreview": {
@@ -90,9 +90,9 @@
       "performance": "72",
       "seo": "58",
       "accessibility": "41",
-      "legal": "35",
-      "security": "92",
-      "standards": "67"
+      "trustSecurity": "35",
+      "standards": "67",
+      "aiReadiness": "44"
     }
   },
   "howItWorks": {
@@ -514,17 +514,17 @@
       "performance": "Slow load times cost you visitors and lower your Google ranking",
       "seo": "Search engines are having trouble finding and ranking your pages",
       "accessibility": "Your site may not meet EU accessibility requirements",
-      "legal": "Missing compliance can lead to fines up to SEK 10M",
-      "security": "Missing security headers leave your site exposed",
-      "standards": "Broken links and code errors signal a neglected online presence"
+      "trustSecurity": "Missing compliance and weak security leave your site exposed and can lead to fines",
+      "standards": "Broken links and code errors signal a neglected online presence",
+      "aiReadiness": "Your site may be invisible to AI-powered search engines"
     },
     "checkImpact": {
       "performance": "This affects how fast your site loads and how Google ranks it.",
       "seo": "This limits how easily customers can find you through search.",
       "accessibility": "This may put you out of compliance with the EU Accessibility Act.",
-      "legal": "This is a compliance gap that could lead to regulatory action.",
-      "security": "This makes your site more vulnerable to attacks and data breaches.",
-      "standards": "This signals to visitors that the site is not actively maintained or built properly."
+      "trustSecurity": "This is a trust or security gap that could lead to regulatory action or leave your site exposed.",
+      "standards": "This signals to visitors that the site is not actively maintained or built properly.",
+      "aiReadiness": "This affects whether AI search engines can find and reference your business."
     },
     "failCount": "{count, plural, one {# failed} other {# failed}}",
     "warnCount": "{count, plural, one {# warning} other {# warnings}}",

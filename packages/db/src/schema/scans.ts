@@ -23,9 +23,9 @@ export const scans = pgTable(
     performanceScore: integer("performance_score"),
     seoScore: integer("seo_score"),
     accessibilityScore: integer("accessibility_score"),
-    legalScore: integer("legal_score"),
-    securityScore: integer("security_score"),
+    trustSecurityScore: integer("trust_security_score"),
     standardsScore: integer("standards_score"),
+    aiReadinessScore: integer("ai_readiness_score"),
     source: text("source").notNull().default(sql`'scan'`),
     details: jsonb("details"),
     createdAt: timestamp("created_at", { withTimezone: true })

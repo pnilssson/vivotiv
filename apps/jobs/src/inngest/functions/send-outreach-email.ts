@@ -81,12 +81,12 @@ export const sendOutreachEmailFunction = inngest.createFunction(
 
     const findings = await step.run("select-findings", () =>
       selectFindings({
-        legal: details.legal,
+        trustSecurity: details.trustSecurity,
         accessibility: details.accessibility,
         performance: details.performance,
         seo: details.seo,
-        security: details.security,
         standards: details.standards,
+        aiReadiness: details.aiReadiness,
       }),
     );
 
@@ -94,12 +94,12 @@ export const sendOutreachEmailFunction = inngest.createFunction(
       shouldSendOutreach(
         scan.overallScore,
         {
-          legal: scan.legalScore,
+          trustSecurity: scan.trustSecurityScore,
           accessibility: scan.accessibilityScore,
           performance: scan.performanceScore,
           seo: scan.seoScore,
-          security: scan.securityScore,
           standards: scan.standardsScore,
+          aiReadiness: scan.aiReadinessScore,
         },
         findings.length,
       ),

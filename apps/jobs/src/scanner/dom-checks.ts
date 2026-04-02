@@ -7,6 +7,10 @@ import {
   type AccessibilityResults,
 } from "./checks/accessibility";
 import {
+  extractAiReadinessDomChecks,
+  type AiReadinessDomResults,
+} from "./checks/ai-readiness-dom";
+import {
   extractLegalDomChecks,
   type LegalDomResults,
 } from "./checks/legal";
@@ -24,6 +28,9 @@ export interface DomCheckResults {
   accessibility: AccessibilityResults;
   legal: LegalDomResults;
   standards: StandardsDomResults;
+  aiReadiness: AiReadinessDomResults;
+  /** Rendered text content for SSR comparison */
+  renderedTextContent: string;
 }
 
 function errorCheck(id: string, reason: string): CheckResult {
@@ -63,6 +70,10 @@ function defaultStandards(reason: string): StandardsDomResults {
   return { checks: [errorCheck("standards-track", reason)] };
 }
 
+function defaultAiReadiness(reason: string): AiReadinessDomResults {
+  return { checks: [errorCheck("ai-readiness-dom-track", reason)] };
+}
+
 export async function runDomChecks(url: string): Promise<DomCheckResults> {
   const browser = await chromium.launch({
     args: ["--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage"],
@@ -78,12 +89,22 @@ export async function runDomChecks(url: string): Promise<DomCheckResults> {
         return page.goto(url, { waitUntil: "load", timeout: 30_000 });
       });
 
-    const [seoResult, a11yResult, legalResult, standardsResult] =
+    // Extract rendered text content for SSR comparison
+    const renderedTextContent = await page.evaluate(() => {
+      const clone = document.body.cloneNode(true) as HTMLElement;
+      for (const el of clone.querySelectorAll("script, style, noscript, svg")) {
+        el.remove();
+      }
+      return (clone.textContent ?? "").replace(/\s+/g, " ").trim();
+    });
+
+    const [seoResult, a11yResult, legalResult, standardsResult, aiReadinessResult] =
       await Promise.allSettled([
         extractSeoDomChecks(page),
         extractAccessibilityChecks(page),
         extractLegalDomChecks(page),
         extractStandardsDomChecks(page),
+        extractAiReadinessDomChecks(page),
       ]);
 
     const failures = [
@@ -91,6 +112,7 @@ export async function runDomChecks(url: string): Promise<DomCheckResults> {
       a11yResult.status === "rejected" && "accessibility",
       legalResult.status === "rejected" && "legal",
       standardsResult.status === "rejected" && "standards",
+      aiReadinessResult.status === "rejected" && "aiReadiness",
     ].filter(Boolean) as string[];
 
     if (failures.length > 0) {
@@ -101,6 +123,7 @@ export async function runDomChecks(url: string): Promise<DomCheckResults> {
         a11yError: a11yResult.status === "rejected" ? String(a11yResult.reason) : null,
         legalError: legalResult.status === "rejected" ? String(legalResult.reason) : null,
         standardsError: standardsResult.status === "rejected" ? String(standardsResult.reason) : null,
+        aiReadinessError: aiReadinessResult.status === "rejected" ? String(aiReadinessResult.reason) : null,
       });
     }
 
@@ -121,6 +144,11 @@ export async function runDomChecks(url: string): Promise<DomCheckResults> {
         standardsResult.status === "fulfilled"
           ? standardsResult.value
           : defaultStandards(String(standardsResult.reason)),
+      aiReadiness:
+        aiReadinessResult.status === "fulfilled"
+          ? aiReadinessResult.value
+          : defaultAiReadiness(String(aiReadinessResult.reason)),
+      renderedTextContent,
     };
   } finally {
     await browser.close();

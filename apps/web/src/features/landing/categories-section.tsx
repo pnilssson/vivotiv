@@ -2,9 +2,9 @@
 
 import {
   Activity,
+  Bot,
   FileSearch,
   Eye,
-  Scale,
   ShieldCheck,
   Globe,
 } from "lucide-react";
@@ -18,9 +18,9 @@ const categories = [
   { key: "performance", icon: Activity },
   { key: "seo", icon: FileSearch },
   { key: "accessibility", icon: Eye },
-  { key: "legal", icon: Scale },
-  { key: "security", icon: ShieldCheck },
+  { key: "trustSecurity", icon: ShieldCheck },
   { key: "standards", icon: Globe },
+  { key: "aiReadiness", icon: Bot },
 ] as const;
 
 export function CategoriesSection() {

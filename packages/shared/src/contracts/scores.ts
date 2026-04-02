@@ -4,9 +4,9 @@ export const AverageScoresResponseSchema = z.object({
   performance: z.number(),
   seo: z.number(),
   accessibility: z.number(),
-  legal: z.number(),
-  security: z.number(),
+  trustSecurity: z.number(),
   standards: z.number(),
+  aiReadiness: z.number(),
   scanCount: z.number(),
 });
 

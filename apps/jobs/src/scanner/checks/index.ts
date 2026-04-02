@@ -2,6 +2,10 @@ export {
   extractAccessibilityChecks,
   type AccessibilityResults,
 } from "./accessibility";
+export {
+  extractAiReadinessDomChecks,
+  type AiReadinessDomResults,
+} from "./ai-readiness-dom";
 export { buildCheck } from "./build-check";
 export { extractLegalDomChecks, type LegalDomResults } from "./legal";
 export { extractLegalHeaderChecks } from "./legal-headers";

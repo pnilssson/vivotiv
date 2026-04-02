@@ -10,12 +10,12 @@ import { useTickingNumber } from "@/lib/use-ticking-number";
 import { useAverageScores } from "./use-average-scores";
 
 const categories: ScanCategoryKey[] = [
-  "legal",
+  "trustSecurity",
   "accessibility",
   "seo",
   "performance",
-  "security",
   "standards",
+  "aiReadiness",
 ];
 
 function ScoreCard({

@@ -1,15 +1,15 @@
 ---
 title: "Hur vår webbplatsskanning fungerar"
-description: "Vår kostnadsfria skanning använder Lighthouse, axe-core, HTTP-headeranalys, Google Web Risk och länkkontroll för att granska er webbplats inom sex kategorier. Läs vad varje verktyg gör och hur vi tolkar resultaten."
+description: "Vår kostnadsfria skanning använder Lighthouse, axe-core, HTTP-headeranalys, Google Web Risk, länkkontroll och AI-beredskapsanalys för att granska er webbplats inom sex kategorier. Läs vad varje verktyg gör och hur vi tolkar resultaten."
 lastUpdated: "Senast uppdaterad april 2026"
 family: "standalone"
 localeSlug: "hur-skanningen-fungerar"
 relatedSlugs: ["accessibility", "privacy-compliance"]
 ---
 
-## Fem analysspår, en rapport
+## Sex analysspår, en rapport
 
-Vår skanning kombinerar fem kompletterande analysspår för att ge er en fullständig bild av er webbplats hälsa. Varje spår är specialbyggt för specifika typer av kontroller, och tillsammans täcker de prestanda, SEO, tillgänglighet, förtroende och efterlevnad, säkerhet och webbplatskvalitet.
+Vår skanning kombinerar sex kompletterande analysspår för att ge er en fullständig bild av er webbplats hälsa. Varje spår är specialbyggt för specifika typer av kontroller, och tillsammans täcker de prestanda, SEO, tillgänglighet, förtroende och säkerhet, webbplatskvalitet och AI-beredskap.
 
 Hela skanningen körs i bakgrunden och tar vanligtvis 15 till 20 sekunder.
 
@@ -67,11 +67,27 @@ Dessa kontroller körs via externa API:er och kompletterar headeranalysen med et
 
 Vi genomsöker länkarna på er sida och verifierar att de fungerar korrekt. Trasiga länkar skadar både användarupplevelsen och SEO, eftersom sökmotorer tolkar döda länkar som ett tecken på bristande underhåll. Skanningen rapporterar antalet trasiga länkar och vilka URL:er som berörs.
 
+## AI-beredskapsanalys
+
+AI-drivna sökmotorer (ChatGPT, Perplexity, Gemini, Google AI Overviews) förändrar hur människor hittar företag online. Traditionell sökvolym beräknas minska med 25 % till 2026. Detta spår kontrollerar om er webbplats är förberedd för denna förändring.
+
+Vi analyserar:
+
+- **AI-crawleråtkomst** genom att tolka er robots.txt för att avgöra vilka AI-botar som kan nå ert innehåll. Att blockera sökcrawlers som OAI-SearchBot eller PerplexityBot innebär att ert företag är osynligt för AI-sökning. Att blockera träningscrawlers (GPTBot, ClaudeBot) är ett giltigt val och påverkar inte betyget.
+- **llms.txt** förekomst och giltighet. Denna framväxande standard (antagen av 844 000+ webbplatser) ger en strukturerad sammanfattning av er webbplats för AI-konsumtion.
+- **Fullständighet i strukturerad data** utöver den grundläggande SEO-kontrollen. Vi utvärderar om ert schema är tillräckligt detaljerat för att en AI ska kunna identifiera ert företagsnamn, er plats och ert erbjudande.
+- **Innehållsrenderbarhet** genom att jämföra er råa HTML (det AI-crawlers ser) med den webbläsarrendererade sidan. Om ert innehåll kräver JavaScript för att visas kan de flesta AI-crawlers inte se det.
+- **Semantisk HTML** användning. Taggar som `<main>`, `<article>` och `<nav>` hjälper AI att skilja ert faktiska innehåll från navigation och sidkrom.
+- **Entitetstydlighet** genom att korsreferera ert företagsnamn mellan titel, metabeskrivning, Open Graph-taggar och strukturerad data för konsekvens.
+- **Citeringsberedskap** genom att kontrollera innehållsmönster som korrelerar med högre AI-citeringsfrekvens: datatabeller, listor, statistik och fristående svarsavsnitt.
+
+Dessa kontroller körs i två spår: DOM-analys via Playwright (strukturerad data, semantisk HTML, entitetstydlighet, citeringsberedskap) och lätta HTTP-anrop (robots.txt, llms.txt, rå HTML för renderbarhetsjämförelse). Båda körs parallellt med alla andra skanningsspår.
+
 ## Hur vi poängsätter resultat
 
 Var och en av de sex kategorierna får ett betyg från 0 till 100.
 
-**Checklistbaserade kategorier** (prestanda, SEO, förtroende och efterlevnad, säkerhet, webbplatskvalitet) använder en fast uppsättning kontroller. Varje kontroll returnerar godkänd, varning eller underkänd, och kategoribetyget är ett viktat genomsnitt.
+**Checklistbaserade kategorier** (prestanda, SEO, förtroende och säkerhet, webbplatskvalitet, AI-beredskap) använder en fast uppsättning kontroller. Varje kontroll returnerar godkänd, varning eller underkänd, och kategoribetyget är ett viktat genomsnitt.
 
 **Tillgänglighet** använder en avdragsmodell. Betyget startar på 100 och poäng dras av för varje överträdelse baserat på allvarlighetsgrad:
 
@@ -85,9 +101,9 @@ Det sammanlagda betyget är ett viktat genomsnitt över alla sex kategorier:
 - Prestanda: 20%
 - SEO: 20%
 - Tillgänglighet: 20%
-- Förtroende och efterlevnad: 20%
-- Säkerhet: 10%
+- Förtroende och säkerhet: 20%
 - Webbplatskvalitet: 10%
+- AI-beredskap: 10%
 
 ## Vad betygen betyder
 

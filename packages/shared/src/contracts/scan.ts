@@ -32,9 +32,9 @@ export const ScanResponseSchema = z.object({
   performanceScore: z.number().nullable(),
   seoScore: z.number().nullable(),
   accessibilityScore: z.number().nullable(),
-  legalScore: z.number().nullable(),
-  securityScore: z.number().nullable(),
+  trustSecurityScore: z.number().nullable(),
   standardsScore: z.number().nullable(),
+  aiReadinessScore: z.number().nullable(),
   details: ScanDetailsSchema.nullable(),
   createdAt: z.string(),
 });

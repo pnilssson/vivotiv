@@ -3,6 +3,7 @@ import { createDb, createScan } from "@vivotiv/db";
 import { type Locale, type ScanSource, DEFAULT_SCAN_SOURCE } from "@vivotiv/shared";
 
 import { env } from "../../env";
+import { runAiReadinessHttpChecks } from "../../scanner/ai-readiness-checks";
 import { aggregate } from "../../scanner/aggregate";
 import { runApiChecks } from "../../scanner/api-checks";
 import { validatePublicRedirectChain } from "../../scanner/dns-validation";
@@ -105,12 +106,20 @@ export const scanFunction = inngest.createFunction(
         return null;
       });
 
-    const [lighthouse, dom, headers, api, links] = await Promise.all([
+    const aiReadinessHttpPromise = step
+      .run("run-ai-readiness-http", () => runAiReadinessHttpChecks(validatedUrl))
+      .catch((err) => {
+        Sentry.logger.warn("AI readiness HTTP track failed", { leadId, url: validatedUrl, error: String(err) });
+        return null;
+      });
+
+    const [lighthouse, dom, headers, api, links, aiReadinessHttp] = await Promise.all([
       lighthousePromise,
       domPromise,
       headersPromise,
       apiPromise,
       linksPromise,
+      aiReadinessHttpPromise,
     ]);
 
     if (!lighthouse && !dom && !headers) {
@@ -124,6 +133,7 @@ export const scanFunction = inngest.createFunction(
       headers: !!headers,
       api: !!api,
       links: !!links,
+      aiReadinessHttp: !!aiReadinessHttp,
     });
 
     /* 3. Aggregate scores */
@@ -134,10 +144,12 @@ export const scanFunction = inngest.createFunction(
         headers,
         api: api ?? null,
         links: links ?? null,
+        aiReadinessHttp: aiReadinessHttp ?? null,
         trackErrors: {
           lighthouse: lighthouse ? null : "Track failed after retries",
           dom: dom ? null : "Track failed after retries",
           headers: headers ? null : "Track failed after retries",
+          aiReadinessHttp: aiReadinessHttp ? null : "Track failed after retries",
         },
       }),
     );
@@ -152,9 +164,9 @@ export const scanFunction = inngest.createFunction(
         performanceScore: details.performance?.score ?? null,
         seoScore: details.seo?.score ?? null,
         accessibilityScore: details.accessibility?.score ?? null,
-        legalScore: details.legal?.score ?? null,
-        securityScore: details.security?.score ?? null,
+        trustSecurityScore: details.trustSecurity?.score ?? null,
         standardsScore: details.standards?.score ?? null,
+        aiReadinessScore: details.aiReadiness?.score ?? null,
         source,
         details,
       }),

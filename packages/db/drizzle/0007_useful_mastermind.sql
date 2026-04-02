@@ -1,0 +1,1 @@
+ALTER TABLE "scans" ADD COLUMN "ai_readiness_score" integer;

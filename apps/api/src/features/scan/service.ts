@@ -55,9 +55,9 @@ export async function fetchScan(
     performanceScore: scan.performanceScore,
     seoScore: scan.seoScore,
     accessibilityScore: scan.accessibilityScore,
-    legalScore: scan.legalScore,
-    securityScore: scan.securityScore,
+    trustSecurityScore: scan.trustSecurityScore,
     standardsScore: scan.standardsScore,
+    aiReadinessScore: scan.aiReadinessScore,
     details: scan.details as ScanResponse["details"],
     createdAt: scan.createdAt.toISOString(),
   };

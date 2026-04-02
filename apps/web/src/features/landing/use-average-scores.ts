@@ -12,9 +12,9 @@ const FALLBACK_SCORES: AverageScoresResponse = {
   performance: 38,
   seo: 45,
   accessibility: 42,
-  legal: 29,
-  security: 72,
+  trustSecurity: 29,
   standards: 34,
+  aiReadiness: 44,
   scanCount: 0,
 };
 

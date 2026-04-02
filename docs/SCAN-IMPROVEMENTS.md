@@ -54,12 +54,38 @@ Combines all checks from the current Trust & Compliance and Security categories.
 - MDN HTTP Observatory grade (A+ to F)
 - Google Web Risk threat detection (malware, social engineering, unwanted software)
 
+### UI: two visible subsections
+
+The scan results UI groups checks within Trust & Security into two labeled subsections, even though they share a single category score. This keeps the report readable and tells a clear story without needing separate categories.
+
+**Trust & Compliance subsection:**
+- Cookie banner and reject option presence
+- Pre-consent tracking script behavior
+- Pre-consent tracking cookie detection
+- Privacy and cookie policy discoverability
+- Contact/business identification signals
+- About page / om-oss page discoverability
+- SSL/TLS trust and certificate status
+
+**Security subsection:**
+- CSP quality and permissive policy warnings
+- HSTS quality (`max-age`, `includeSubDomains`)
+- X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
+- Server and technology exposure headers
+- MDN HTTP Observatory grade (A+ to F)
+- Google Web Risk threat detection (malware, social engineering, unwanted software)
+
+### Internal key
+
+The merged category uses `"trustSecurity"` as the internal key, replacing both `"legal"` and `"security"`.
+
 ### Implementation notes
 
 - Rename category key across all projects (web, API, jobs, shared package, database seeds, email templates, marketing copy)
 - Merge check results from both old categories into the single new category in the aggregation layer
 - No checks are added or removed -- this is purely a structural merge
 - The combined category will have more checks than any other single category, which is fine -- it makes the category substantial
+- Each check carries a `subsection` field (`"trust"` or `"security"`) so the UI can group them under the correct heading
 
 ## AI Readiness: new category
 

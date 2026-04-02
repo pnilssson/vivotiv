@@ -8,36 +8,36 @@ type Finding = {
 };
 
 const categoryPriority: ScanCategoryKey[] = [
-  "legal",
+  "trustSecurity",
   "accessibility",
   "performance",
   "seo",
-  "security",
+  "aiReadiness",
   "standards",
 ];
 
 const categoryLabels: Record<ScanCategoryKey, string> = {
-  legal: "Trust & Compliance",
+  trustSecurity: "Trust & Security",
   accessibility: "Accessibility",
   performance: "Performance",
   seo: "SEO",
-  security: "Security",
   standards: "Website Quality",
+  aiReadiness: "AI Readiness",
 };
 
 const businessImpacts: Record<ScanCategoryKey, string> = {
-  legal:
-    "IMY har möjlighet att utfärda sanktionsavgifter vid GDPR-brister. EU:s tillgänglighetsdirektiv (EAA) trädde i kraft 28 juni 2025.",
+  trustSecurity:
+    "IMY har möjlighet att utfärda sanktionsavgifter vid GDPR-brister. Webbläsare visar varningar för sajter med säkerhetsbrister, vilket påverkar besökarnas förtroende.",
   accessibility:
     "EU:s tillgänglighetsdirektiv (EAA) ställer krav på digital tillgänglighet sedan 28 juni 2025. Bristande tillgänglighet utesluter även besökare med funktionsnedsättningar.",
   performance:
     "Google rekommenderar en laddtid under 2.5 sekunder. Långsamma sajter tappar besökare.",
   seo:
     "Utan synlighet i Google hittar potentiella kunder andra alternativ.",
-  security:
-    "Webbläsare visar varningar för sajter med säkerhetsbrister, vilket påverkar besökarnas förtroende.",
   standards:
     "Brutna länkar och valideringsfel påverkar både intrycket och sökmotorrankning.",
+  aiReadiness:
+    "AI-drivna sökmotorer växer snabbt. Sajter som är osynliga för ChatGPT, Perplexity och Google AI Overviews tappar synlighet till konkurrenter som anpassat sig.",
 };
 
 function summarizeFailedChecks(category: CategoryResult): string {
