@@ -1,4 +1,4 @@
-import { desc } from "drizzle-orm";
+import { desc, sql } from "drizzle-orm";
 import {
   index,
   integer,
@@ -26,6 +26,7 @@ export const scans = pgTable(
     legalScore: integer("legal_score"),
     securityScore: integer("security_score"),
     standardsScore: integer("standards_score"),
+    source: text("source").notNull().default(sql`'scan'`),
     details: jsonb("details"),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()

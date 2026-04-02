@@ -1,292 +1,386 @@
 # Scan Improvements Plan
 
-Working document for expanding the website scan based on analysis of squirrelscan's 230+ rule audit tool and gaps in our current implementation.
+Working document for adding AI Readiness as a scan category and merging Security into Trust & Compliance.
 
 ## Context
 
-Our scan targets Swedish SMBs with aging websites. It runs a single-page scan in 15-20 seconds and returns a scorecard designed to start a sales conversation. We are not building a comprehensive SEO audit tool. Every addition must pass this filter: **does this finding make a business owner think "I need to fix this"?**
+Our scan targets Swedish SMBs with aging websites. It runs a single-page scan in 15-30 seconds and returns a scorecard designed to start a sales conversation. Every addition must pass this filter: **does this finding make a business owner think "I need to fix this"?**
 
-The initial gap analysis was done against squirrelscan (230+ rules, 21 categories, HTTP-only crawler). That analysis is complete and the decisions are captured in this document.
+AI-powered search (ChatGPT, Perplexity, Gemini, Google AI Overviews) is growing fast. Traditional search volume is projected to drop 25% by 2026. Swedish SMBs that are invisible to AI search engines will lose ground to competitors who are. This is a real, emerging business risk worth surfacing in the scan.
 
-## Guiding principle: official tools over heuristics
+## Two changes
 
-We only add checks that produce reliable, deterministic results. That means:
+### 1. Merge Security into Trust & Compliance
 
-- **Use official tools and APIs** (Lighthouse, axe-core, MDN Observatory, W3C Validator, Google Web Risk) over hand-rolled pattern matching
-- **Use established libraries** (linkinator for broken links) over custom HTTP request management
-- **Drop checks that rely on heuristic guessing** (trust signal detection, secret scanning patterns) where false positives/negatives undermine credibility
-- If no reliable tool exists for a check, we skip it rather than ship something fragile
+Rename the combined category to **Trust & Security**. A business owner does not distinguish between "your site has no cookie banner" and "your site has no security headers." Both mean the same thing: this site does not feel safe or trustworthy. The categories already share SSL/TLS as a check.
 
-## Category reframing
+### 2. Add AI Readiness as the sixth category
 
-### "Modern Web Standards" becomes "Website Quality"
+AI Readiness analyzes how well a site is prepared for AI-powered search engines and AI agents. This is a site-analysis category only -- we scan the page with Playwright, fetch robots.txt and llms.txt, and inspect the DOM. We do NOT send prompts to AI models to check if the business is mentioned (that is a future premium feature: AI Visibility Check).
 
-Current Standards category has 4 thin checks (responsive viewport, deprecated HTML, favicon, third-party script count). "Modern web standards" does not create urgency for a business owner.
+## New category structure
 
-Rename to "Website Quality" and add checks that answer "Is this website built and maintained properly?":
+| Category | Weight | Tier |
+|---|---|---|
+| Performance | 20% | Core |
+| SEO | 20% | Core |
+| Accessibility | 20% | Core |
+| Trust & Security | 20% | Core |
+| Website Quality | 10% | Supporting |
+| AI Readiness | 10% | Supporting |
 
-- Broken links on page (via linkinator)
-- W3C HTML validation (via Nu HTML Checker, replaces deprecated HTML heuristic)
-- Heading structure (multiple H1s, skipped levels)
-- Content signals (thin content, missing lang attribute)
-- URL hygiene (uppercase, underscores, excessive parameters)
+Same 4x20% + 2x10% structure as before. Same 2x3 grid layout.
 
-### Proposal: Rename "EU Legal Compliance" to "Trust & Compliance"
+## Trust & Security: merged category
 
-Enrich the existing Legal category without adding a new one (avoids scoring weight, frontend layout, and database schema changes):
+Combines all checks from the current Trust & Compliance and Security categories. No checks are removed.
 
-- Keep all current legal checks (cookie banner, reject option, tracking, privacy/cookie policy, contact info, SSL)
-- Add: about page detection (scan links for about/om-oss/om/about-us patterns)
-- Rename "EU Legal Compliance" to "Trust & Compliance" in the UI
+### From Trust & Compliance (unchanged)
 
-### Scoring weights
+- Cookie banner and reject option presence
+- Pre-consent tracking script behavior
+- Pre-consent tracking cookie detection
+- Privacy and cookie policy discoverability
+- Contact/business identification signals
+- About page / om-oss page discoverability
+- SSL/TLS trust and certificate status
 
-No weight changes. Categories get richer, not restructured. Weights stay: Performance 20%, SEO 20%, Accessibility 20%, Trust & Compliance (was Legal) 20%, Security 10%, Website Quality (was Standards) 10%.
+### From Security (moved in)
 
-## New checks: implementation plan
+- CSP quality and permissive policy warnings
+- HSTS quality (`max-age`, `includeSubDomains`)
+- X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy
+- Server and technology exposure headers
+- MDN HTTP Observatory grade (A+ to F)
+- Google Web Risk threat detection (malware, social engineering, unwanted software)
 
-### Priority 1: High impact, reliable tools
+### Implementation notes
 
-These checks use either the Playwright page object we already have (deterministic DOM queries) or official external tools/APIs. No heuristic pattern matching.
+- Rename category key across all projects (web, API, jobs, shared package, database seeds, email templates, marketing copy)
+- Merge check results from both old categories into the single new category in the aggregation layer
+- No checks are added or removed -- this is purely a structural merge
+- The combined category will have more checks than any other single category, which is fine -- it makes the category substantial
 
-#### 1.1 Heading structure (add to Website Quality)
+## AI Readiness: new category
 
-**What:** Check for multiple H1 tags, skipped heading levels, empty headings.
+### What it checks
 
-**Why:** "Your page has 4 H1 tags and jumps from H2 to H5" signals a sloppy build. SEO-aware business owners know H1 matters. This is also an accessibility signal but surfaced here as a quality/SEO concern.
+#### 1. AI Crawler Access
 
-**Implementation:**
-- New check function in `checks/standards.ts`
-- Pure `page.evaluate()` - no HTTP requests needed
-- Checks:
-  - Exactly one H1 (fail if 0 or >1)
-  - No skipped levels (H1 then H3 without H2 = warn)
-  - No empty headings (warn)
-- Weight: 1
-- Items: list of heading issues
+**What:** Parse robots.txt and check how the site handles AI crawlers. AI companies operate three-tier bot systems: training crawlers (collect data for model training), search/index crawlers (power AI search results), and user-initiated fetchers (real-time retrieval when a user asks an AI to browse).
 
-**Estimated effort:** Small. Pure DOM query, no external requests.
+**Why:** Blocking search crawlers means you never appear in AI search results. Many sites unknowingly block all AI bots, or have a wildcard `Allow: /` without understanding the distinction. "Your site blocks AI search engines from finding you" is an immediate wake-up call.
 
-#### 1.2 Content basics (add to Website Quality)
+**Bots to check (minimum viable set):**
 
-**What:** Check for thin content (very low word count), missing lang attribute.
+Training crawlers:
+- `GPTBot` (OpenAI)
+- `ClaudeBot` (Anthropic)
+- `Google-Extended` (Google/Gemini)
+- `Bytespider` (ByteDance)
+- `CCBot` (Common Crawl)
+- `Applebot-Extended` (Apple)
+- `meta-externalagent` (Meta)
+- `Amazonbot` (Amazon)
 
-**Why:** "Your page has 43 words of content" signals an abandoned or placeholder page. Very common on aging SMB sites with "Lorem ipsum" still lurking.
+Search/index crawlers:
+- `OAI-SearchBot` (OpenAI/ChatGPT search)
+- `Claude-SearchBot` (Anthropic/Claude search)
+- `PerplexityBot` (Perplexity)
 
-**Implementation:**
-- New check function in `checks/standards.ts`
-- Uses `page.evaluate()` to:
-  - Count words in main content area (excluding nav, header, footer, scripts)
-  - Check `<html lang="...">` attribute exists and is valid
-- Weight: 1
-- Status: fail if <50 words, warn if <200, pass if 200+
-- Also: warn if lang attribute is missing (relevant for Swedish SEO and accessibility)
-
-**Estimated effort:** Small. Pure DOM query.
-
-#### 1.3 URL structure (add to Website Quality)
-
-**What:** Check the current page URL for common hygiene issues.
-
-**Why:** Less impactful than broken links or images, but still a signal of quality. "Your URL contains uppercase characters and special characters" is easy to understand.
-
-**Implementation:**
-- New check function in `checks/standards.ts`
-- Pure string analysis on `page.url()`:
-  - Uppercase characters in path (warn)
-  - Underscores instead of hyphens (warn)
-  - Excessive query parameters (>3 = warn)
-  - Double slashes in path (warn)
-  - Very long URL (>200 chars = warn)
-- Weight: 1
-- This is a lightweight check - no HTTP requests, no DOM queries
-
-**Estimated effort:** Small. String regex on a single URL.
-
-#### 1.4 MDN HTTP Observatory (upgrade Security category)
-
-**What:** Use Mozilla's official MDN HTTP Observatory API to get an authoritative security header grade.
-
-**Why:** We already check security headers manually in `security-headers.ts`. The MDN Observatory does the same thing but returns a standardized letter grade (A+ to F), checks additional things we do not (cookie security, CORS, subresource integrity, HTTP-to-HTTPS redirect quality), and is maintained by Mozilla/MDN staff. Despite low GitHub stars (~116), it is the official successor to Mozilla Observatory, hosted on Mozilla infrastructure, and linked from MDN docs.
+User-initiated fetchers:
+- `ChatGPT-User` (OpenAI)
+- `Claude-User` (Anthropic)
+- `Perplexity-User` (Perplexity)
 
 **Implementation:**
-- Single API call: `POST https://observatory-api.mdn.mozilla.net/api/v2/scan?host=<HOST>`
-- Free, no auth required
-- Rate limit: one scan per host per 60 seconds (returns cached result otherwise)
-- Returns: grade (A+ to F), score (0-135), pass/fail for 10 security tests
-- Run as part of a new API track in parallel with Lighthouse, DOM, and Headers
-- Weight: 2
-- Status: map grade to pass (A/A+), warn (B/C), fail (D/F)
-- Items: list of failed tests with descriptions
+- Fetch `/robots.txt` via HTTP (already available in the pipeline, or add a lightweight fetch)
+- Parse rules per user-agent using a robots.txt parser
+- Determine effective access for each bot category
+- Report: which bot categories are allowed, which are blocked, whether the site has made an explicit choice or is relying on a wildcard
 
-**Estimated effort:** Small. Single HTTP call, parse JSON response.
+**Scoring logic:**
+- Pass: Search crawlers are explicitly or implicitly allowed
+- Warn: No explicit AI bot rules (wildcard only -- site owner likely has not considered this)
+- Fail: Search crawlers are blocked (site is invisible to AI search)
+- Note: Blocking training crawlers is a valid choice and should not penalize the score
 
-#### 1.5 Google Web Risk API (add to Security)
+**Weight:** 2
 
-**What:** Check if the scanned URL is flagged by Google as malware, social engineering, or unwanted software.
+**Estimated effort:** Small. HTTP fetch + robots.txt parsing. No browser needed.
 
-**Why:** "Your website is flagged by Google as potentially dangerous" is a devastating finding for a business owner. This checks against the same database Chrome uses to show red warning pages.
+#### 2. llms.txt
 
-**Implementation:**
-- Single API call to Google Web Risk API
-- Free tier: 100,000 lookups/month (more than enough)
-- Requires a Google Cloud API key
-- Returns: threat types if flagged, empty if clean
-- Weight: 3 (this is critical if found)
-- Status: fail if any threat detected, pass if clean
-- Items: list of threat types
+**What:** Check if `/llms.txt` exists and follows the specification.
 
-**Estimated effort:** Small. Single API call.
+**Why:** llms.txt is an emerging standard (844,000+ sites adopted, including Anthropic, Cloudflare, Stripe) that provides a structured Markdown summary of the site for LLM consumption. No major AI platform has confirmed they read it yet, but adoption is growing and the implementation cost is near-zero. "Your competitors are already making their sites AI-friendly" creates urgency.
 
-#### 1.6 Broken links (add to Website Quality)
-
-**What:** Check all links on the page for 404/5xx responses.
-
-**Why:** Broken links are the most universally understood website problem. Every business owner has encountered a 404 page. "Your website has 7 broken links" needs no explanation.
+**Spec (from llmstxt.org):**
+- Served at `/llms.txt`
+- Markdown format
+- H1 with site/project name (required)
+- Optional blockquote with essential context
+- H2-delimited sections with markdown link lists
+- UTF-8, `text/plain` or `text/markdown` MIME type
+- HTTPS, returns HTTP 200, no auth
 
 **Implementation:**
-- Use **linkinator** npm library (800+ stars, actively maintained) instead of hand-rolling HTTP request management
-- Linkinator handles concurrency, timeouts, redirect following, and checks links, images, scripts, and stylesheets
-- Configure with: concurrency limit, timeout per request, recurse: false (single page only)
-- Weight: 2
-- Status: fail if any broken, warn if slow responses, pass if all resolve
-- Items: list of broken URLs with status codes
+- HTTP GET `/llms.txt`
+- Check HTTP status (200 = exists)
+- If exists: validate Markdown structure (H1 present, parseable)
+- Also check for `/llms-full.txt` variant (bonus, not required)
 
-**Estimated effort:** Medium. Library integration + timeout management to stay within scan budget.
+**Scoring logic:**
+- Pass: llms.txt exists with valid structure
+- Warn: llms.txt missing (most sites do not have this yet, so warn not fail)
+- Bonus note if llms-full.txt also exists
 
-**Timeout:** 30 seconds total cap. Return partial results (broken links found so far) if timeout hits. If no response at all, skip this check silently.
+**Weight:** 1
 
-### Priority 2: Medium impact, moderate effort
+**Estimated effort:** Small. Single HTTP fetch + basic Markdown parsing.
 
-#### 2.1 W3C HTML validation (upgrade Website Quality, replace deprecated HTML check)
+#### 3. Structured Data Completeness (AI lens)
 
-**What:** Validate the page HTML against the W3C HTML spec using the official Nu HTML Checker.
+**What:** Assess whether the structured data is complete enough for an AI to identify what the business is, where it operates, and what it offers. This goes beyond the existing SEO check ("does JSON-LD exist?") to evaluate depth and quality.
 
-**Why:** Our current "deprecated HTML" check is a heuristic DOM query. The W3C's own validator catches far more: malformed HTML, spec violations, missing required attributes, nesting errors. "Your website has 23 HTML validation errors" is concrete and authoritative.
+**Why:** Google and Bing confirmed (2025) they use schema markup for AI Overviews and Copilot. The mechanism is indirect: schema helps search engines build entity understanding, and AI models query those indexes. Incomplete or shallow schema means the AI has less to work with. "An AI cannot tell what your business does from your website's data" is concrete and actionable.
 
-**Implementation:**
-- Public endpoint: `POST https://validator.w3.org/nu/?out=json` with `Content-Type: text/html`
-- POST the HTML content directly (already available from Playwright via `page.content()`)
-- Parse JSON response: count errors vs warnings, extract message text
-- Log errors to Sentry. If validator is down or rate-limited, skip check silently (never report a fail because of our tooling)
-- Weight: 2
-- Status: fail if >10 errors, warn if 1-10 errors, pass if 0 errors
-- Items: list of error messages (capped at most impactful)
-- Replaces the current deprecated HTML check entirely
-
-**Estimated effort:** Medium. HTTP call + response parsing + fallback strategy for rate limits.
-
-#### 2.2 About page detection (add to Trust & Compliance)
-
-**What:** Check if the site has a discoverable about/om-oss page.
-
-**Why:** "Your website has no about page" tells a business owner their site looks untrustworthy. For local businesses, trust is conversion-critical.
+**What to check:**
+- Organization/LocalBusiness schema present with: `name`, `url`, `description`, `logo`, `sameAs` (links to LinkedIn, social profiles, directories)
+- If FAQ content exists on the page: FAQPage schema present with proper Question/Answer pairs
+- If service/product content exists: relevant schema types present
+- Entity cross-referencing: `@id` values used, `@graph` structure connecting entities
+- Schema content matches visible page content (no hidden-only schema)
 
 **Implementation:**
-- New check function in `checks/legal.ts`
-- Scans all `<a href>` for about/om-oss/om/about-us patterns
-- Optionally: HEAD request to verify the page exists (200)
-- Weight: 1
-- Status: warn if missing (not fail, since some businesses legitimately skip this)
+- Parse all `<script type="application/ld+json">` blocks from the DOM
+- Validate JSON structure
+- Check for Organization/LocalBusiness with required properties
+- Check for `sameAs` array with external links
+- Check for `@id` and `@graph` usage
+- Compare schema `name` against `<title>` and `<h1>` for consistency
 
-**Estimated effort:** Small. Link text/href scanning is straightforward and deterministic.
+**Scoring logic:**
+- Pass: Organization schema present with name, url, description, sameAs, and entities connected via @id
+- Warn: Schema exists but incomplete (missing sameAs, missing description, no @id cross-references)
+- Fail: No business-identifying schema at all
+
+**Weight:** 2
+
+**Estimated effort:** Medium. DOM parsing + JSON validation + cross-reference checking. No external requests.
+
+#### 4. Content Renderability (SSR check)
+
+**What:** Check whether critical content is present in the raw HTML without JavaScript execution.
+
+**Why:** GPTBot, ClaudeBot, and PerplexityBot do NOT execute JavaScript. If content requires JS to render, it is invisible to every AI crawler. This is described in the research as "the single most important technical gate" for AI discoverability. Very common issue on modern SPA/React sites. "AI search engines cannot see your website's content" is devastating.
+
+**Implementation:**
+- Fetch the page URL with a simple HTTP GET (no browser, no JS)
+- Extract text content from the raw HTML
+- Compare against the Playwright-rendered content (which we already have)
+- Calculate a content match ratio: what percentage of the rendered text is present in the raw HTML?
+
+**Scoring logic:**
+- Pass: 90%+ of visible text content present in raw HTML
+- Warn: 50-89% present (partial SSR, some JS-dependent content)
+- Fail: <50% present (content is primarily client-side rendered)
+
+**Weight:** 2
+
+**Estimated effort:** Medium. Requires an additional HTTP fetch (lightweight, no browser) and text comparison logic.
+
+#### 5. Semantic HTML
+
+**What:** Check whether the page uses semantic HTML elements that help AI distinguish primary content from navigation, sidebars, and chrome.
+
+**Why:** Without semantic tags, AI crawlers must parse hundreds of nested `<div>` tags to find the actual content. `<main>`, `<article>`, `<section>` provide clear signals about content hierarchy. Most aging SMB sites are built with div soup. "AI cannot tell your main content apart from your navigation" is a clear problem statement.
+
+**Implementation:**
+- `page.evaluate()` to check for presence of:
+  - `<main>` (exactly one expected)
+  - `<article>` (expected on content pages)
+  - `<section>` (expected for distinct content areas)
+  - `<nav>` (expected for navigation)
+  - `<header>` and `<footer>`
+- Count semantic elements vs total `<div>` elements as a ratio signal
+
+**Scoring logic:**
+- Pass: `<main>` present + at least 2 other semantic elements used
+- Warn: Some semantic elements but missing `<main>` or relying heavily on divs
+- Fail: No semantic HTML at all (pure div/span structure)
+
+**Weight:** 1
+
+**Estimated effort:** Small. Pure DOM query via `page.evaluate()`.
+
+#### 6. Entity Clarity
+
+**What:** Can an AI quickly identify the business name, location, and offering from the page's title, meta description, and structured data? Are these sources consistent with each other?
+
+**Why:** AI systems cross-reference entities against knowledge graphs (Wikidata, Google Knowledge Graph). Contradictory information across title, meta, and schema reduces trust weight. For a Swedish SMB, "AI cannot confidently identify what your business is called or what you do" hits close to home.
+
+**Implementation:**
+- Extract business identity signals from:
+  - `<title>` tag
+  - `<meta name="description">`
+  - `og:title` and `og:description`
+  - Organization/LocalBusiness schema `name` and `description`
+  - `<h1>` content
+- Check for:
+  - Entity name consistency across sources (title, OG, schema)
+  - Description present and substantive (not empty, not generic)
+  - `og:title` aligned with `<title>` and `<h1>`
+
+**Scoring logic:**
+- Pass: Business name identifiable and consistent across title, schema, and OG. Description present in meta and schema.
+- Warn: Partial consistency (name in some sources but not others, or description missing in schema)
+- Fail: Cannot identify a consistent business entity from the page signals
+
+**Weight:** 1
+
+**Estimated effort:** Medium. Multiple DOM extractions + cross-comparison logic.
+
+#### 7. Citation Readiness
+
+**What:** Does the page contain content that AI models have a reason to reference? This checks for structural patterns that correlate with higher AI citation rates: answer-first paragraphs, lists/tables, statistics, and self-contained sections.
+
+**Why:** Pages with data tables earn 4.1x more AI citations. Content with statistics gets 30-40% higher visibility. Answer-first positioning (direct answer in first 40-60 words of a section) gets cited 67% more. "Your content is not structured in a way that AI search engines can quote" connects to the business outcome.
+
+**Implementation:**
+- `page.evaluate()` to check for:
+  - Presence of `<table>` elements (comparison/data tables)
+  - Presence of `<ol>` / `<ul>` lists in content area (not navigation)
+  - Statistics/numbers in content (regex for percentages, currency amounts, specific figures)
+  - FAQ-pattern content (Q&A format, whether or not it has FAQ schema)
+  - Self-contained sections: heading followed by 80-250 words of content
+- This is a heuristic check -- it measures structural patterns, not content quality
+
+**Scoring logic:**
+- Pass: 3+ citation-friendly patterns present (tables, lists, statistics, FAQ sections, self-contained sections)
+- Warn: 1-2 patterns present
+- Fail: No citation-friendly content patterns found
+
+**Weight:** 1
+
+**Estimated effort:** Medium. Multiple DOM queries + content analysis via `page.evaluate()`.
 
 ## Implementation approach
 
-### Architecture: new API track for external services
+### Architecture
 
-The three existing tracks (Lighthouse, DOM, Headers) remain unchanged. Add a fourth parallel track for external API calls:
+AI Readiness checks split across existing and new tracks:
 
-- **API track:** MDN Observatory, Google Web Risk, W3C Validator (all independent HTTP calls, run concurrently within the track)
-- **DOM track additions:** heading structure, content basics, about page detection, URL structure
-- **Library track:** linkinator for broken links (runs in parallel with everything else)
+**DOM track additions** (run in existing Playwright context):
+- Structured data completeness (check 3)
+- Semantic HTML (check 5)
+- Entity clarity (check 6)
+- Citation readiness (check 7)
 
-All tracks run concurrently via `Promise.allSettled()`. Each external API call wrapped in a 10-second timeout. Failures treated as "could not check" rather than scan errors.
+**New lightweight HTTP track:**
+- AI Crawler Access: fetch and parse `/robots.txt` (check 1)
+- llms.txt: fetch `/llms.txt` and optionally `/llms-full.txt` (check 2)
+- Content renderability: fetch page URL without JS, compare to Playwright content (check 4)
+
+The HTTP track runs in parallel with all other tracks. Each fetch wrapped in a 5-second timeout. Failures treated as "could not check" rather than scan errors.
 
 ### Timing budget
 
-Current scan: ~15-20 seconds. The DOM track runs in parallel with Lighthouse and headers, so DOM check time is currently hidden behind Lighthouse's ~10-15 second runtime.
-
 **Checks with no HTTP overhead** (add ~0ms to DOM track):
-- Heading structure
-- Content basics
-- URL structure
+- Structured data completeness
+- Semantic HTML
+- Entity clarity
+- Citation readiness
 
-**External API calls** (run in parallel, new API track):
-- MDN Observatory: ~2-5 seconds typical
-- Google Web Risk: <1 second
-- W3C Validator: ~2-5 seconds typical
+**HTTP fetches** (run in parallel, new track):
+- robots.txt: <1 second
+- llms.txt: <1 second
+- Raw HTML fetch for SSR check: 1-3 seconds
 
-**Library-based checks** (run in parallel):
-- Broken links via linkinator: 30 second cap, partial results on timeout
-
-Worst case: 30 seconds for broken links. Lighthouse typically finishes in 10-15 seconds, so broken links may extend total scan time to ~30 seconds. All other checks finish well within that window.
+All AI Readiness checks fit within the existing scan time budget. No extension to the 15-30 second window needed.
 
 ### File changes
 
 **Modified files:**
-- `checks/standards.ts` - add heading structure, content basics, URL structure checks; replace deprecated HTML check with W3C validator results
-- `checks/legal.ts` - add about page detection
-- `scanner/dom-checks.ts` - add new checks to parallel array
-- `scanner/aggregate.ts` - update category names in aggregation
+- Category definitions in shared package: merge Security + Trust & Compliance into Trust & Security, add AI Readiness
+- Aggregation logic: merge old category keys, add new category
+- DOM checks runner: add new AI Readiness DOM checks
+- Frontend: update category display names, add AI Readiness card/section
+- Database seeds: update category entries
+- Email templates: update category references
+- Marketing copy: update category names
 
 **New files:**
-- `scanner/api-checks.ts` - new track for MDN Observatory + Google Web Risk + W3C Validator
-- `checks/observatory.ts` - MDN Observatory API integration
-- `checks/web-risk.ts` - Google Web Risk API integration
-- `checks/html-validation.ts` - W3C Nu HTML Checker integration
-- `checks/broken-links.ts` - linkinator integration
-
-**Shared package changes:**
-- `packages/shared/src/scan/categories.ts` - rename category keys if changing names
-
-**Frontend changes (not in scope for this plan but will be needed):**
-- Category display names
-- Possibly new icons for renamed categories
-- Updated descriptions/helper text
+- `checks/ai-readiness/crawler-access.ts` -- robots.txt parsing for AI bots
+- `checks/ai-readiness/llms-txt.ts` -- llms.txt detection and validation
+- `checks/ai-readiness/structured-data-completeness.ts` -- schema depth analysis
+- `checks/ai-readiness/content-renderability.ts` -- SSR detection
+- `checks/ai-readiness/semantic-html.ts` -- semantic element analysis
+- `checks/ai-readiness/entity-clarity.ts` -- cross-source entity consistency
+- `checks/ai-readiness/citation-readiness.ts` -- citation pattern detection
+- `scanner/ai-readiness-checks.ts` -- track runner for AI Readiness
 
 ### Rollout order
 
-**Phase 1: New checks + category rename (ship together)**
+**Phase 1: Category merge (ship first, independently)**
 
-1. Rename "Modern Web Standards" to "Website Quality" and "EU Legal Compliance" to "Trust & Compliance" across all projects
-2. Heading structure (Website Quality) - pure DOM
-3. Content basics (Website Quality) - pure DOM
-4. URL structure (Website Quality) - pure string analysis
-5. MDN Observatory (Security) - API call
-6. Google Web Risk (Security) - API call
-7. Broken links via linkinator (Website Quality) - library
+1. Merge Security into Trust & Compliance, rename to Trust & Security
+2. Update across all projects (shared package, API, jobs, web, database, emails, marketing)
+3. Verify scoring works correctly with merged category
 
-**Phase 2: W3C validator + about page**
+**Phase 2: AI Readiness category (ship together)**
 
-1. W3C HTML validation, replaces deprecated HTML check (Website Quality)
-2. About page detection (Trust & Compliance)
+1. AI Crawler Access (robots.txt parsing)
+2. llms.txt detection
+3. Structured Data Completeness
+4. Content Renderability (SSR check)
+5. Semantic HTML
+6. Entity Clarity
+7. Citation Readiness
+
+## Overlap management with existing categories
+
+Several AI Readiness checks touch areas that other categories also check. The key principle: **each category checks through its own lens**.
+
+| Signal | Existing category check | AI Readiness check |
+|---|---|---|
+| Structured data | SEO: "Does JSON-LD exist? Are there meta tags?" | AI Readiness: "Is the schema complete enough for an AI to identify the business?" |
+| Heading structure | Website Quality: "Is the heading hierarchy valid?" | AI Readiness does NOT re-check heading structure |
+| Content length | Website Quality: "Does the page have enough content?" | AI Readiness: "Are sections self-contained and citable?" (different question) |
+| Meta tags | SEO: "Are title/description/OG present?" | AI Readiness: "Are they consistent with each other and with schema?" (entity clarity) |
+| robots.txt | SEO: "Is robots.txt present and not blocking Googlebot?" | AI Readiness: "Are AI-specific crawlers allowed or blocked?" |
+
+## Threshold calibration
+
+Several scoring thresholds are educated guesses based on research (SSR 90/50 split, citation readiness pattern counts, semantic HTML pass/warn/fail criteria). These must be tested against 20-30 real Swedish SMB sites during implementation and adjusted based on observed score distributions. The goal is that a typical aging SMB site scores orange (50-89), not that everything fails or everything passes.
+
+## Future: AI Visibility Check
+
+The AI Readiness category analyzes the site itself. A future premium feature -- AI Visibility Check -- will send prompts to AI models (ChatGPT, Perplexity, Gemini) to check if the business is actually mentioned in AI responses. When designing the data model for AI Readiness results, keep a clear separation so AI Visibility Check data can be added alongside it without restructuring.
 
 ## Decisions log
 
-Checks evaluated and dropped:
-
-| Check | Reason dropped |
+| Decision | Rationale |
 |---|---|
-| **Trust signal detection** | Too fragile. Review widgets, certification badges, and social proof look completely different across sites. No reliable way to detect without high false positive/negative rates. |
-| **Leaked secrets scan** | Not relevant for SMB audience. Service companies and small businesses rarely use API keys in frontend code. Would mostly produce false positives (e.g. intentionally public Google Maps keys). |
-| **Enhanced structured data validation** | No reliable tooling exists. Adobe's validator is unmaintained (9 stars). Google's schemarama is abandoned. Google Rich Results Test has no public API. Current "does JSON-LD exist?" check is sufficient. |
-| **Image issues check** | Lighthouse already covers this via `uses-webp-avif`, `uses-optimized-images`, `uses-responsive-images`, `offscreen-images`, and `unsized-images` audits. Adding a separate check would be redundant. |
+| Merge Security into Trust & Compliance | Business owner does not distinguish these. Keeps 6 categories for clean 2x3 grid. Makes room for AI Readiness without adding a 7th category. |
+| AI Readiness at 10% weight | Forward-looking category. Important but not yet an immediate business risk like performance, SEO, accessibility, or trust/compliance. Same tier as Website Quality. |
+| No AI Visibility Check (prompt-based) | Sending prompts to AI models to check if a business is mentioned is a future premium feature. The current scan is site-analysis only via Playwright. |
+| llms.txt as warn-not-fail | 844k+ sites have adopted it but no AI platform has confirmed reading it. Penalizing absence too harshly would be premature. |
+| Blocking training crawlers is not penalized | Blocking GPTBot/ClaudeBot for training is a valid business choice. Only blocking search crawlers (OAI-SearchBot, PerplexityBot) affects the score negatively. |
+| Content renderability via raw HTML fetch | Separate HTTP GET without browser is the most reliable way to see what AI crawlers see. Comparing against Playwright output gives a clear delta. |
 
-## Constraints
+## Research sources
 
-- **Single-page scan only.** No multi-page crawling. Must stay within 15-20 second time budget.
-- **6 categories, no new ones.** Keeps scorecard clean, avoids schema changes.
-- **No heuristic pattern matching.** If there is no official tool or deterministic method, we skip the check.
+Key sources that informed the check design:
 
-## Resolved decisions
-
-1. **Broken links timeout:** 30 seconds total cap. Report whatever broken links were found by then, ignore the rest. If linkinator returns no response at all (full timeout, no partial results), ignore this check entirely and do not report it.
-
-2. **W3C Validator:** Use public endpoint (`validator.w3.org/nu`). Log errors to Sentry. Fail gracefully: if the validator is down or rate-limited, skip this check silently. Never report a fail to the user because our tooling had an issue.
-
-3. **Category renaming:** Rename at the same time as adding checks (not phased). **IMPORTANT: the rename must be applied across the entire codebase and all connected projects (web, API, jobs, shared package, database seeds, email templates, marketing copy). Do a full search for old category names before considering the rename complete.**
-
-4. **MDN Observatory caching:** Acceptable. The API caches results per host for 60 seconds. No action needed.
-
-5. **Google Web Risk API key:** Existing Google Cloud project. Key stored in `.env.local` locally and env vars on Railway.
+- Cloudflare: From Googlebot to GPTBot (2025) -- crawler landscape
+- SearchAtlas: The Limits of Schema Markup for AI Search (Dec 2024) -- no standalone correlation between schema and citations
+- Google and Bing: confirmed schema use in AI Overviews/Copilot (early 2025)
+- SearchVIU: Schema Markup and AI in 2025 -- AI models do not parse JSON-LD directly, mechanism is indirect via search indexes
+- JetOctopus: 2026 Technical SEO Playbook for AI Crawlers -- AI bot timeouts, SSR importance
+- llmstxt.org: llms.txt specification
+- Search Engine Land: Technical SEO for Generative Search (2025)
+- GenOptima: GEO Best Practices 2026 Playbook -- citation patterns and content structure
+- Discovered Labs: How AI Systems Decide What to Cite -- metadata priority order
+- OpenAI, Anthropic, Perplexity, Google, Apple, Amazon, Meta: official crawler documentation
+- ai-robots-txt GitHub: community-maintained crawler list (140+ entries)

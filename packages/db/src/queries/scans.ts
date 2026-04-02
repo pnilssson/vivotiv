@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, like } from "drizzle-orm";
 
 import type { Database } from "../client";
 import { scans } from "../schema";
@@ -13,6 +13,7 @@ type CreateScanInput = {
   legalScore: number | null;
   securityScore: number | null;
   standardsScore: number | null;
+  source: string;
   details: unknown;
 };
 
@@ -29,11 +30,23 @@ export async function createScan(db: Database, input: CreateScanInput) {
       legalScore: input.legalScore,
       securityScore: input.securityScore,
       standardsScore: input.standardsScore,
+      source: input.source,
       details: input.details,
     })
     .returning({ id: scans.id });
 
   return scan;
+}
+
+export async function hasScanForDomain(db: Database, domain: string) {
+  const pattern = `%${domain}%`;
+  const [scan] = await db
+    .select({ id: scans.id })
+    .from(scans)
+    .where(like(scans.url, pattern))
+    .limit(1);
+
+  return !!scan;
 }
 
 export async function getScanById(db: Database, id: string) {

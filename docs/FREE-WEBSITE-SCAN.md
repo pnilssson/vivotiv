@@ -29,7 +29,7 @@ The scan pipeline combines five parallel tracks:
 - **Lighthouse** for performance, SEO, and browser best-practices signals
 - **Playwright + axe-core** for DOM-level checks, accessibility, legal, and standards analysis
 - **HTTP/TLS header inspection** for security headers and SSL/TLS status
-- **External API checks** using MDN HTTP Observatory and Google Web Risk API for authoritative security grading and threat detection
+- **External API checks** using MDN HTTP Observatory, Google Web Risk API, and W3C Nu HTML Checker for security grading, threat detection, and HTML validation
 - **Link checking** via linkinator for broken link detection
 
 Job orchestration is handled by **Inngest**, with execution in the `apps/jobs` service.
@@ -73,6 +73,7 @@ Examples:
 - Pre-consent tracking cookie detection
 - Privacy and cookie policy discoverability
 - Contact/business identification signals
+- About page / om-oss page discoverability
 - SSL/TLS trust and certificate status
 
 ### 5) Security
@@ -97,7 +98,7 @@ Examples:
 - Content quality (word count, lang attribute)
 - URL hygiene (uppercase, underscores, excessive parameters)
 - Responsive viewport setup
-- Deprecated HTML usage
+- W3C HTML validation (errors, warnings, spec violations)
 - Favicon presence
 - Third-party resource footprint
 

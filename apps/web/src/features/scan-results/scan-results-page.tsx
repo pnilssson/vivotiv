@@ -9,7 +9,7 @@ import { scanCategoryKeys } from "@vivotiv/shared";
 import { ChevronDown, Loader2 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useQueryStates } from "nuqs";
 
 import { Switch } from "@/components/ui/switch";
 import { Link } from "@/i18n/navigation";
@@ -17,6 +17,7 @@ import { scoreColor, scoreStroke } from "@/lib/score-color";
 
 import { CheckList } from "./check-list";
 import { ResultsCta } from "./results-cta";
+import { scanSearchParams } from "./scan-search-params";
 import { ScoreOverview } from "./score-overview";
 import { StickyResultsBar } from "./sticky-results-bar";
 import { useScan } from "./use-scan";
@@ -104,8 +105,9 @@ function ScoreRing({ score }: { score: number }) {
 export function ScanResultsPage({ scanId }: ScanResultsPageProps) {
   const t = useTranslations("scanResults");
   const { data: scan, isLoading, isError } = useScan(scanId);
-  const [showPassing, setShowPassing] = useState(false);
-  const [scoringOpen, setScoringOpen] = useState(false);
+  const [{ showPassing, scoringOpen }, setSearchParams] = useQueryStates(scanSearchParams, {
+    history: "replace",
+  });
 
   if (isLoading) {
     return (
@@ -134,15 +136,6 @@ export function ScanResultsPage({ scanId }: ScanResultsPageProps) {
     );
   }
 
-  const categoryScores: Record<ScanCategoryKey, number | null> = {
-    performance: scan.performanceScore,
-    seo: scan.seoScore,
-    accessibility: scan.accessibilityScore,
-    legal: scan.legalScore,
-    security: scan.securityScore,
-    standards: scan.standardsScore,
-  };
-
   const categories: Record<ScanCategoryKey, CategoryResult | null> = {
     performance: scan.details?.performance ?? null,
     seo: scan.details?.seo ?? null,
@@ -150,6 +143,15 @@ export function ScanResultsPage({ scanId }: ScanResultsPageProps) {
     legal: scan.details?.legal ?? null,
     security: scan.details?.security ?? null,
     standards: scan.details?.standards ?? null,
+  };
+
+  const categoryScores: Record<ScanCategoryKey, number | null> = {
+    performance: scan.performanceScore,
+    seo: scan.seoScore,
+    accessibility: scan.accessibilityScore,
+    legal: scan.legalScore,
+    security: scan.securityScore,
+    standards: scan.standardsScore,
   };
 
   const overallScore = scan.overallScore ?? 0;
@@ -207,7 +209,9 @@ export function ScanResultsPage({ scanId }: ScanResultsPageProps) {
         <div className="mt-6 sm:pl-32">
           <button
             type="button"
-            onClick={() => setScoringOpen(!scoringOpen)}
+            onClick={() => {
+              void setSearchParams({ scoringOpen: !scoringOpen });
+            }}
             aria-expanded={scoringOpen}
             aria-controls="scoring-explanation"
             className="flex w-full items-center gap-2 text-left text-sm text-muted-foreground transition-colors hover:text-foreground"
@@ -262,7 +266,9 @@ export function ScanResultsPage({ scanId }: ScanResultsPageProps) {
                 id="show-passing"
                 size="sm"
                 checked={showPassing}
-                onCheckedChange={setShowPassing}
+                onCheckedChange={(checked) => {
+                  void setSearchParams({ showPassing: checked });
+                }}
               />
             </div>
           </div>

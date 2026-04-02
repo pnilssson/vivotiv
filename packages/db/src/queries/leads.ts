@@ -32,3 +32,19 @@ export async function upsertLead(db: Database, input: CreateLeadInput) {
 
   return existing;
 }
+
+export async function unsubscribeLead(db: Database, id: string) {
+  await db
+    .update(leads)
+    .set({ unsubscribed: true })
+    .where(eq(leads.id, id));
+}
+
+export async function isLeadUnsubscribed(db: Database, id: string) {
+  const [lead] = await db
+    .select({ unsubscribed: leads.unsubscribed })
+    .from(leads)
+    .where(eq(leads.id, id));
+
+  return lead?.unsubscribed ?? false;
+}

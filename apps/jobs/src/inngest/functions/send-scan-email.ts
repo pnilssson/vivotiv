@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/node";
 import { createDb, getLeadById, getScanById } from "@vivotiv/db";
-import type { Locale, ScanDetailsV1 } from "@vivotiv/shared";
+import { type Locale, type ScanDetailsV1, type ScanSource, DEFAULT_SCAN_SOURCE } from "@vivotiv/shared";
 import { NonRetriableError } from "inngest";
 
 import { sendScanCompleteEmail } from "../../email/send-scan-complete";
@@ -31,11 +31,17 @@ export const sendScanEmailFunction = inngest.createFunction(
   },
   { event: "scan.completed" },
   async ({ event, step }) => {
-    const { leadId, scanId, locale } = event.data as {
+    const { leadId, scanId, locale, source = DEFAULT_SCAN_SOURCE } = event.data as {
       leadId: string;
       scanId: string;
       locale: Locale;
+      source?: ScanSource;
     };
+
+    if (source !== DEFAULT_SCAN_SOURCE) {
+      Sentry.logger.info("Skipping scan email for non-organic scan", { leadId, scanId, source });
+      return;
+    }
 
     Sentry.logger.info("Sending scan email", { leadId, scanId });
 

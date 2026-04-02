@@ -31,4 +31,10 @@ export const env = {
   get GOOGLE_CLOUD_API_KEY() {
     return process.env.GOOGLE_CLOUD_API_KEY ?? "";
   },
+  get UNSUBSCRIBE_SECRET() {
+    return requireEnv("UNSUBSCRIBE_SECRET");
+  },
+  get OUTREACH_REPLY_TO() {
+    return requireEnv("OUTREACH_REPLY_TO");
+  },
 };

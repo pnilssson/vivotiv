@@ -8,7 +8,7 @@ export async function checkBrokenLinks(
   const { LinkChecker } = await import("linkinator");
 
   const checker = new LinkChecker();
-  const brokenLinks: Array<{ url: string; status: number }> = [];
+  const brokenLinks: Array<{ url: string; status: number | undefined }> = [];
   let totalLinksChecked = 0;
 
   // Collect results as they're found (for partial results on timeout)

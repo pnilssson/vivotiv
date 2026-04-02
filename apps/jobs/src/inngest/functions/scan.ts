@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/node";
 import { createDb, createScan } from "@vivotiv/db";
-import type { Locale } from "@vivotiv/shared";
+import { type Locale, type ScanSource, DEFAULT_SCAN_SOURCE } from "@vivotiv/shared";
 
 import { env } from "../../env";
 import { aggregate } from "../../scanner/aggregate";
@@ -42,10 +42,12 @@ export const scanFunction = inngest.createFunction(
   },
   { event: "scan.requested" },
   async ({ event, step }) => {
-    const { leadId, url, locale } = event.data as {
+    const { leadId, url, locale, source = DEFAULT_SCAN_SOURCE, ...extraData } = event.data as {
       leadId: string;
       url: string;
       locale: Locale;
+      source?: ScanSource;
+      [key: string]: unknown;
     };
     const scanStartedAt = Date.now();
     Sentry.logger.info("Scan started", { leadId, url });
@@ -153,6 +155,7 @@ export const scanFunction = inngest.createFunction(
         legalScore: details.legal?.score ?? null,
         securityScore: details.security?.score ?? null,
         standardsScore: details.standards?.score ?? null,
+        source,
         details,
       }),
     );
@@ -162,7 +165,7 @@ export const scanFunction = inngest.createFunction(
     /* 5. Notify - consumer fetches details from DB via scanId */
     await step.sendEvent("notify-scan-completed", {
       name: "scan.completed",
-      data: { leadId, scanId: scan.id, locale },
+      data: { leadId, scanId: scan.id, locale, source, ...extraData },
     });
 
     const durationMs = Date.now() - scanStartedAt;
