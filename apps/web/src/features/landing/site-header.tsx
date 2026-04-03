@@ -173,7 +173,7 @@ export function SiteHeader() {
                 <span className="px-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                   {t("resources")}
                 </span>
-                {mobileLink("/how-scan-works", t("howScanWorks"))}
+                {mobileLink("/how-scan-works", t("howScanWorks"), "how-scan-works")}
               </nav>
             </SheetContent>
           </Sheet>
