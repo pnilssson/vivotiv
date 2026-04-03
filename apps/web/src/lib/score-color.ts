@@ -17,8 +17,8 @@ const classesByTier: Record<ScoreTier, ScoreTierClasses> = {
   warning: {
     text: "text-yellow-800",
     bg: "bg-yellow-500",
-    border: "border-yellow-800",
-    stroke: "stroke-yellow-800",
+    border: "border-yellow-500",
+    stroke: "stroke-yellow-500",
   },
   critical: {
     text: "text-red-700",
