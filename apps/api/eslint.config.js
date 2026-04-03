@@ -1,18 +1,3 @@
-import eslint from "@eslint/js";
-import { defineConfig } from "eslint/config";
-import tseslint from "typescript-eslint";
+import cloudflareConfig from "@vivotiv/eslint-config/cloudflare";
 
-export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.recommended,
-  {
-    languageOptions: {
-      parserOptions: {
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
-  {
-    ignores: ["dist/", "node_modules/", ".wrangler/"],
-  },
-);
+export default cloudflareConfig;

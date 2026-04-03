@@ -1,8 +1,7 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "@vivotiv/typescript-config/library.json",
   "compilerOptions": {
-    "rootDir": "src",
-    "noEmit": true
+    "rootDir": "src"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]

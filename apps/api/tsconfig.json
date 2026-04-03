@@ -1,12 +1,6 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "@vivotiv/typescript-config/cloudflare.json",
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "strict": true,
-    "skipLibCheck": true,
-    "types": ["@cloudflare/workers-types"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx"
   },

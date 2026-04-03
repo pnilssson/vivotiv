@@ -1,0 +1,12 @@
+{
+  "name": "@vivotiv/typescript-config",
+  "private": true,
+  "version": "0.1.0",
+  "exports": {
+    "./base.json": "./base.json",
+    "./backend.json": "./backend.json",
+    "./cloudflare.json": "./cloudflare.json",
+    "./library.json": "./library.json",
+    "./nextjs.json": "./nextjs.json"
+  }
+}

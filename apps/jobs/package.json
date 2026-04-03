@@ -31,13 +31,13 @@
     "resend": "^6.10.0"
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.0",
     "@types/node": "^22.16.0",
     "@types/react": "^19.2.14",
-    "eslint": "^10.1.0",
+    "@vivotiv/eslint-config": "workspace:*",
+    "@vivotiv/typescript-config": "workspace:*",
+    "eslint": "^9.39.1",
     "tsup": "^8.5.0",
     "tsx": "^4.19.4",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.0"
+    "typescript": "^5.9.3"
   }
 }

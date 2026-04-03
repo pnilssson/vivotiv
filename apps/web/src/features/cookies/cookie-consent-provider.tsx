@@ -73,6 +73,9 @@ export function CookieConsentProvider({
   useEffect(() => {
     const stored = loadConsent();
     if (stored) {
+      // localStorage-backed consent is applied after mount by design.
+      // This avoids SSR mismatch while preserving previous user choice.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setConsent(stored);
     }
     setLoaded(true);

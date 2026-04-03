@@ -1,12 +1,6 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "@vivotiv/typescript-config/backend.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "jsx": "react-jsx",
-    "strict": true,
-    "skipLibCheck": true,
     "outDir": "dist",
     "rootDir": "src"
   },

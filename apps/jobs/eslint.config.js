@@ -1,18 +1,3 @@
-import eslint from "@eslint/js";
-import { defineConfig } from "eslint/config";
-import tseslint from "typescript-eslint";
+import backendConfig from "@vivotiv/eslint-config/backend";
 
-export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.recommended,
-  {
-    languageOptions: {
-      parserOptions: {
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
-  },
-  {
-    ignores: ["dist/", "node_modules/"],
-  },
-);
+export default backendConfig;
