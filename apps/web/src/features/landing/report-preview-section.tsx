@@ -103,7 +103,7 @@ export function ReportPreviewSection() {
   }
 
   return (
-    <section className="py-28 md:py-36" ref={ref} aria-labelledby="report-preview-heading">
+    <section className="py-32 md:py-40" ref={ref} aria-labelledby="report-preview-heading">
       <div className="mx-auto max-w-6xl px-6">
         <div className="text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("pretitle")}</p>

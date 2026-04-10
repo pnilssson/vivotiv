@@ -1,13 +1,11 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
-import { AudienceSection } from "@/features/landing/audience-section";
 import { BottomCtaSection } from "@/features/landing/bottom-cta-section";
 import { CategoriesSection } from "@/features/landing/categories-section";
-import { ComplianceSection } from "@/features/landing/compliance-section";
 import { FaqSection } from "@/features/landing/faq-section";
-import { GdprSection } from "@/features/landing/gdpr-section";
 import { HeroSection } from "@/features/landing/hero-section";
 import { HowItWorksSection } from "@/features/landing/how-it-works-section";
+import { LegalComplianceSection } from "@/features/landing/legal-compliance-section";
 import { ReportPreviewSection } from "@/features/landing/report-preview-section";
 import { SectionDivider } from "@/features/landing/section-divider";
 import { SiteFooter } from "@/features/landing/site-footer";
@@ -80,22 +78,16 @@ export default async function LocaleLandingPage() {
         <HeroSection />
         <SectionDivider wide />
 
-        <CategoriesSection />
+        <ReportPreviewSection />
         <SectionDivider wide />
 
-        <ReportPreviewSection />
+        <CategoriesSection />
         <SectionDivider wide />
 
         <HowItWorksSection />
         <SectionDivider wide />
 
-        <AudienceSection />
-        <SectionDivider wide />
-
-        <ComplianceSection />
-        <SectionDivider wide />
-
-        <GdprSection />
+        <LegalComplianceSection />
         <SectionDivider wide />
 
         <FaqSection />

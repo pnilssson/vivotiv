@@ -132,62 +132,36 @@
       "description": "Use the report to fix things yourself, hand it to your developer, or let us handle it."
     }
   },
-  "audience": {
-    "pretitle": "USE CASES",
-    "title": "Who this is for",
-    "subtitle": "Whether you run the website or report on it.",
-    "business": {
-      "title": "Business owners",
-      "description": "You know your site needs work but not what's wrong or where to start. This report gives you the answers."
+  "legalCompliance": {
+    "pretitle": "LEGAL COMPLIANCE",
+    "title": "Regulations that affect your website",
+    "subtitle": "EU accessibility and GDPR requirements apply to most Swedish businesses. Non-compliance carries real fines.",
+    "accessibility": {
+      "title": "EU Accessibility Act",
+      "description": "Since June 2025, most businesses above micro-enterprise size must meet EU accessibility requirements. Non-compliance means fines up to SEK 10M in Sweden. Most Swedish businesses don't know this applies to them yet.",
+      "stat1": {
+        "value": "SEK 10M",
+        "label": "Maximum fine in Sweden for non-compliance"
+      },
+      "stat2": {
+        "value": "WCAG 2.1 AA",
+        "label": "Required standard under the EU Accessibility Act"
+      },
+      "cta": "Read more about accessibility"
     },
-    "marketing": {
-      "title": "Marketing managers",
-      "description": "You need hard numbers to justify a website investment to leadership. This report is the business case."
-    },
-    "developer": {
-      "title": "Developers",
-      "description": "A quick audit across performance, security, and standards without running five different tools."
-    },
-    "agency": {
-      "title": "Agencies",
-      "description": "Send clients a scored report instead of explaining why their site needs a rebuild. Let the numbers talk."
+    "privacy": {
+      "title": "GDPR & Cookie Law",
+      "description": "Your cookie banner needs an equally prominent reject button. Loading analytics before consent is a direct GDPR violation. IMY has been issuing formal warnings to Swedish businesses since April 2025.",
+      "stat1": {
+        "value": "\u20ac20M / 4%",
+        "label": "Maximum GDPR fine, whichever is higher"
+      },
+      "stat2": {
+        "value": "IMY",
+        "label": "Issued formal reprimands to Swedish companies in April 2025"
+      },
+      "cta": "Read more about privacy compliance"
     }
-  },
-  "compliance": {
-    "pretitle": "ACCESSIBILITY",
-    "title": "The EU Accessibility Act is law",
-    "description": "Since June 2025, most businesses above micro-enterprise size must meet EU accessibility requirements. Non-compliance means fines up to SEK 10M in Sweden. Most Swedish businesses don't know this applies to them yet.",
-    "stat1": {
-      "value": "SEK 10M",
-      "label": "Maximum fine in Sweden for non-compliance"
-    },
-    "stat2": {
-      "value": "WCAG 2.1 AA",
-      "label": "Required standard under the EU Accessibility Act"
-    },
-    "stat3": {
-      "value": "10+ / \u20ac2M+",
-      "label": "Employees or annual turnover threshold for enforcement"
-    },
-    "cta": "Read more about accessibility"
-  },
-  "gdpr": {
-    "pretitle": "PRIVACY",
-    "title": "Cookie compliance is not optional",
-    "description": "Your cookie banner needs an equally prominent reject button. Loading analytics before consent is a direct GDPR violation. IMY has been issuing formal warnings to Swedish businesses since April 2025.",
-    "stat1": {
-      "value": "\u20ac20M / 4%",
-      "label": "Maximum GDPR fine, whichever is higher"
-    },
-    "stat2": {
-      "value": "IMY",
-      "label": "Issued formal reprimands to Swedish companies in April 2025"
-    },
-    "stat3": {
-      "value": "Symmetry",
-      "label": "Rejecting cookies must be as easy as accepting them"
-    },
-    "cta": "Read more about privacy compliance"
   },
   "faq": {
     "pretitle": "FAQ",
@@ -217,8 +191,8 @@
     ]
   },
   "bottomCta": {
-    "title": "Most businesses don't realize how much their website is costing them",
-    "subtitle": "The report your web developer should have given you already.",
+    "title": "Find out exactly where your website stands",
+    "subtitle": "150+ checks. One clear report. A path forward.",
     "button": "Scan your website"
   },
   "footer": {

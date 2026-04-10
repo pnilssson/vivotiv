@@ -12,7 +12,7 @@ export function HowItWorksSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="py-28 md:py-36" ref={ref} aria-labelledby="how-it-works-heading">
+    <section className="py-20 md:py-28" ref={ref} aria-labelledby="how-it-works-heading">
       <div className="mx-auto max-w-6xl px-6">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("pretitle")}</p>

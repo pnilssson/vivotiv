@@ -25,7 +25,7 @@ export function SiteFooter() {
 
   return (
     <footer className="border-t border-border bg-muted/40">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 py-32 sm:flex-row sm:justify-between">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-6 py-20 sm:flex-row sm:justify-between">
         <div className="flex flex-col gap-4">
           <span className="font-heading text-lg font-bold tracking-tight">
             Vivotiv

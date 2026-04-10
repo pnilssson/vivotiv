@@ -29,14 +29,14 @@ export function CategoriesSection() {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section className="py-28 md:py-36" ref={ref} aria-labelledby="categories-heading">
+    <section className="py-24 md:py-32" ref={ref} aria-labelledby="categories-heading">
       <div className="mx-auto max-w-6xl px-6">
-      <div className="mx-auto max-w-3xl text-center">
+      <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{t("pretitle")}</p>
         <h2 id="categories-heading" className="font-heading mt-4 text-3xl font-bold tracking-tight md:text-4xl">
           {t("title")}
         </h2>
-        <p className="mt-4 text-lg text-muted-foreground">{t("subtitle")}</p>
+        <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{t("subtitle")}</p>
       </div>
 
       <ContentCardGrid className="mt-16 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">

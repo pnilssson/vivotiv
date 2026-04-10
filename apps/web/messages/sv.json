@@ -132,62 +132,36 @@
       "description": "Anv\u00e4nd rapporten f\u00f6r att fixa sj\u00e4lv, skicka den till din utvecklare, eller l\u00e5t oss sk\u00f6ta det."
     }
   },
-  "audience": {
-    "pretitle": "ANV\u00c4NDNINGSFALL",
-    "title": "Vem det h\u00e4r \u00e4r f\u00f6r",
-    "subtitle": "Oavsett om du driver webbplatsen eller rapporterar om den.",
-    "business": {
-      "title": "F\u00f6retagare",
-      "description": "Du vet att din sida beh\u00f6ver \u00e5tg\u00e4rdas men inte vad som \u00e4r fel eller var du ska b\u00f6rja. Den h\u00e4r rapporten ger dig svaren."
+  "legalCompliance": {
+    "pretitle": "JURIDISK EFTERLEVNAD",
+    "title": "Regler som p\u00e5verkar er webbplats",
+    "subtitle": "EU:s tillg\u00e4nglighets- och GDPR-krav g\u00e4ller f\u00f6r de flesta svenska f\u00f6retag. Bristande efterlevnad inneb\u00e4r verkliga b\u00f6ter.",
+    "accessibility": {
+      "title": "EU:s tillg\u00e4nglighetsdirektiv",
+      "description": "Sedan juni 2025 m\u00e5ste alla utom de minsta f\u00f6retagen uppfylla EU:s tillg\u00e4nglighetskrav. Bristande efterlevnad inneb\u00e4r b\u00f6ter upp till 10 miljoner SEK i Sverige. De flesta svenska f\u00f6retag vet inte \u00e4n att det g\u00e4ller dem.",
+      "stat1": {
+        "value": "10 Mkr",
+        "label": "Maximala b\u00f6ter i Sverige f\u00f6r bristande efterlevnad"
+      },
+      "stat2": {
+        "value": "WCAG 2.1 AA",
+        "label": "Obligatorisk standard enligt EU:s tillg\u00e4nglighetsdirektiv"
+      },
+      "cta": "L\u00e4s mer om tillg\u00e4nglighet"
     },
-    "marketing": {
-      "title": "Marknadsansvariga",
-      "description": "Du beh\u00f6ver siffror f\u00f6r att motivera en webbplatsinvestering f\u00f6r ledningen. Den h\u00e4r rapporten \u00e4r aff\u00e4rsunderlaget."
-    },
-    "developer": {
-      "title": "Utvecklare",
-      "description": "En snabb granskning av prestanda, s\u00e4kerhet och standarder utan att k\u00f6ra fem olika verktyg."
-    },
-    "agency": {
-      "title": "Byr\u00e5er",
-      "description": "Skicka kunden en betygsatt rapport ist\u00e4llet f\u00f6r att f\u00f6rklara varf\u00f6r sidan beh\u00f6ver g\u00f6ras om. L\u00e5t siffrorna tala."
+    "privacy": {
+      "title": "GDPR & cookielagstiftning",
+      "description": "Er cookiebanner m\u00e5ste ha en lika tydlig avvisningsknapp. Att ladda analytics innan samtycke \u00e4r ett direkt GDPR-brott. IMY har utf\u00e4rdat formella varningar till svenska f\u00f6retag sedan april 2025.",
+      "stat1": {
+        "value": "\u20ac20M / 4%",
+        "label": "Maximala GDPR-b\u00f6ter, det h\u00f6gsta beloppet g\u00e4ller"
+      },
+      "stat2": {
+        "value": "IMY",
+        "label": "Utf\u00e4rdade formella varningar till svenska f\u00f6retag i april 2025"
+      },
+      "cta": "L\u00e4s mer om integritetskrav"
     }
-  },
-  "compliance": {
-    "pretitle": "TILLG\u00c4NGLIGHET",
-    "title": "EU:s tillg\u00e4nglighetsdirektiv \u00e4r lag",
-    "description": "Sedan juni 2025 m\u00e5ste alla utom de minsta f\u00f6retagen uppfylla EU:s tillg\u00e4nglighetskrav. Bristande efterlevnad inneb\u00e4r b\u00f6ter upp till 10 miljoner SEK i Sverige. De flesta svenska f\u00f6retag vet inte \u00e4n att det g\u00e4ller dem.",
-    "stat1": {
-      "value": "10 Mkr",
-      "label": "Maximala b\u00f6ter i Sverige f\u00f6r bristande efterlevnad"
-    },
-    "stat2": {
-      "value": "WCAG 2.1 AA",
-      "label": "Obligatorisk standard enligt EU:s tillg\u00e4nglighetsdirektiv"
-    },
-    "stat3": {
-      "value": "10+ / \u20ac2M+",
-      "label": "Anst\u00e4llda eller \u00e5rsoms\u00e4ttning f\u00f6r att lagen ska g\u00e4lla"
-    },
-    "cta": "Läs mer om tillgänglighet"
-  },
-  "gdpr": {
-    "pretitle": "INTEGRITET",
-    "title": "Cookielagstiftning \u00e4r inte frivillig",
-    "description": "Din cookiebanner m\u00e5ste ha en lika tydlig avvisningsknapp. Att ladda analytics innan samtycke \u00e4r ett direkt GDPR-brott. IMY har utf\u00e4rdat formella varningar till svenska f\u00f6retag sedan april 2025.",
-    "stat1": {
-      "value": "\u20ac20M / 4%",
-      "label": "Maximala GDPR-b\u00f6ter, det h\u00f6gsta beloppet g\u00e4ller"
-    },
-    "stat2": {
-      "value": "IMY",
-      "label": "Utf\u00e4rdade formella varningar till svenska f\u00f6retag i april 2025"
-    },
-    "stat3": {
-      "value": "Symmetri",
-      "label": "Att avvisa cookies m\u00e5ste vara lika enkelt som att acceptera"
-    },
-    "cta": "Läs mer om integritetskrav"
   },
   "faq": {
     "pretitle": "FAQ",
@@ -217,9 +191,9 @@
     ]
   },
   "bottomCta": {
-    "title": "De flesta f\u00f6retag inser inte hur mycket deras webbplats kostar dem",
-    "subtitle": "Rapporten din webbutvecklare redan borde ha gett dig.",
-    "button": "Skanna din webbplats"
+    "title": "Ta reda p\u00e5 exakt hur er webbplats ligger till",
+    "subtitle": "150+ kontroller. En tydlig rapport. En v\u00e4g fram\u00e5t.",
+    "button": "Skanna er webbplats"
   },
   "footer": {
     "copyright": "\u00a9 {year} Vivotiv",
