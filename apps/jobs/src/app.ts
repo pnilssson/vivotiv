@@ -18,14 +18,23 @@ const app = new Hono();
 
 app.route("/", healthRoutes);
 
+const inngestHandler = serveInngest({
+  client: inngest,
+  functions,
+});
+
 app.on(
   ["GET", "PUT", "POST"],
   "/api/inngest",
-  serveInngest({
-    client: inngest,
-    functions,
-  }),
+  inngestHandler,
 );
+
+app.all("/api/inngest", (c) => {
+  return c.json(
+    { error: { message: `Method ${c.req.method} Not Allowed` } },
+    405,
+  );
+});
 
 app.notFound((c) => {
   return c.json({ error: { message: "Not found" } }, 404);
