@@ -8,7 +8,7 @@ import {
   markOutreachEmailSent,
 } from "@vivotiv/db";
 import type { ScanDetailsV1 } from "@vivotiv/shared";
-import { OUTREACH_SCAN_SOURCE } from "@vivotiv/shared";
+import { buildLocalizedSiteUrl, OUTREACH_SCAN_SOURCE } from "@vivotiv/shared";
 import { NonRetriableError } from "inngest";
 
 import {
@@ -114,9 +114,12 @@ export const sendOutreachEmailFunction = inngest.createFunction(
       return { status: "skipped", reason: gate.reason };
     }
 
-    const resultsUrl = `https://vivotiv.se/sv/scan/${scanId}`;
+    const resultsUrl = buildLocalizedSiteUrl("sv", `scan/${scanId}`);
     const unsubscribeToken = createUnsubscribeToken(leadId, env.UNSUBSCRIBE_SECRET);
-    const unsubscribeUrl = `https://vivotiv.se/sv/unsubscribe?token=${unsubscribeToken}`;
+    const unsubscribeUrl = buildLocalizedSiteUrl(
+      "sv",
+      `unsubscribe?token=${unsubscribeToken}`,
+    );
 
     const emailBody = await step.run("generate-email", () =>
       generateOutreachEmail({

@@ -29,12 +29,12 @@
 - Added `gray-matter` for fast frontmatter-only parsing
 - Added slug resolution utilities: `resolveSlug()`, `getSlugMapping()`, `getLocaleSlug()`, `getAllContentPages()`
 - Locale-aware `generateStaticParams` using parent locale param
-- Redirect from English slug to Swedish slug on vivotiv.se (e.g., `/accessibility` redirects to `/tillganglighet`)
+- Redirect from English slug to Swedish slug under `/sv` (e.g., `/sv/accessibility` redirects to `/sv/tillganglighet`)
 - Full page metadata: canonical URLs, OG tags (article type), hreflang alternates, robots meta
 - Article + BreadcrumbList JSON-LD structured data on all content pages
 - Visual breadcrumbs component (`features/content/breadcrumbs.tsx`)
 - Scan CTA MDX component (`features/content/scan-cta.tsx`), use `<ScanCta />` in any MDX file
-- Guides hub page at `/guides` (`/guider` on vivotiv.se) grouping content by family, redesigned with ContentCardGrid layout
+- Guides hub page at `/guides` (`/sv/guider` for Swedish) grouping content by family, redesigned with ContentCardGrid layout
 - Sitemap dynamically generates entries for all non-noindex content pages
 - Footer and header updated with guides link
 - Message files updated with `breadcrumbs`, `scanCta`, `guides` namespaces (both locales)
@@ -301,13 +301,13 @@ content/pages/
 The directory name is always the English slug. The URL structure uses locale-specific slugs when available:
 
 - `vivotiv.com/cookie-consent-requirements` (EN: uses directory name)
-- `vivotiv.se/krav-cookie-samtycke` (SV: uses `localeSlug` from sv.mdx frontmatter)
+- `vivotiv.com/sv/krav-cookie-samtycke` (SV: uses `localeSlug` from sv.mdx frontmatter)
 - `vivotiv.com/accessibility` (EN: existing page, directory name)
-- `vivotiv.se/tillganglighet` (SV: uses `localeSlug` from sv.mdx frontmatter)
+- `vivotiv.com/sv/tillganglighet` (SV: uses `localeSlug` from sv.mdx frontmatter)
 
 ### Localized slugs
 
-Swedish SEO requires Swedish URLs. `vivotiv.se/tillganglighet` will outrank `vivotiv.se/accessibility` for Swedish queries because Google factors URL language signals into locale relevance.
+Swedish SEO requires Swedish URLs. `vivotiv.com/sv/tillganglighet` will outrank `vivotiv.com/sv/accessibility` for Swedish queries because Google factors URL language signals into locale relevance.
 
 **Implementation:**
 - The `localeSlug` field in sv.mdx frontmatter defines the Swedish URL
@@ -520,7 +520,7 @@ These are generated from frontmatter in the content page metadata function.
    - Add a function that builds a slug-to-directory mapping by scanning all content pages' frontmatter for `localeSlug` fields
    - Update the content page route handler to resolve locale-specific slugs
    - Ensure the English slug still works on vivotiv.com (no `localeSlug` needed for EN)
-   - Add redirects: if someone hits `vivotiv.se/accessibility` and a Swedish slug exists, redirect to `vivotiv.se/tillganglighet`
+   - Add redirects: if someone hits `vivotiv.com/sv/accessibility` and a Swedish slug exists, redirect to `vivotiv.com/sv/tillganglighet`
 
 3. **Update sitemap** in `apps/web/src/app/sitemap.ts`
    - Import `getAllContentSlugs` and `getContentPage`

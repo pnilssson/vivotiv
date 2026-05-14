@@ -7,14 +7,17 @@ import { SiteFooter } from "@/features/landing/site-footer";
 import { SiteHeader } from "@/features/landing/site-header";
 import { Link } from "@/i18n/navigation";
 
-import type { Locale } from "@vivotiv/shared";
+import {
+  buildLocalizedSiteUrl,
+  publicSiteOrigin,
+  type Locale,
+} from "@vivotiv/shared";
 
 import {
   getAllContentPages,
   getLocaleSlug,
   type ContentFamily,
 } from "@/lib/content";
-import { domainsByLocale } from "@/lib/site-domains";
 
 type GuidesPageProps = {
   params: Promise<{ locale: string }>;
@@ -38,23 +41,25 @@ export async function generateMetadata({
 }: GuidesPageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "guides" });
-  const domain = domainsByLocale[locale as Locale];
+  const typedLocale = locale as Locale;
   const guidesPath = getGuidesPath(locale);
+  const url = buildLocalizedSiteUrl(typedLocale, guidesPath);
 
   return {
+    metadataBase: new URL(publicSiteOrigin),
     title: `${t("title")} | Vivotiv`,
     description: t("description"),
     alternates: {
-      canonical: `${domain}${guidesPath}`,
+      canonical: url,
       languages: {
-        en: `${domainsByLocale.en}/guides`,
-        sv: `${domainsByLocale.sv}/guider`,
+        en: buildLocalizedSiteUrl("en", "guides"),
+        sv: buildLocalizedSiteUrl("sv", "guider"),
       },
     },
     openGraph: {
       title: t("title"),
       description: t("description"),
-      url: `${domain}${guidesPath}`,
+      url,
       siteName: "Vivotiv",
       locale: locale === "sv" ? "sv_SE" : "en_US",
       type: "website",

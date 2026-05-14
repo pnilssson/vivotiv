@@ -1,13 +1,10 @@
 import type { MetadataRoute } from "next";
 
-import { domainsByLocale } from "@/lib/site-domains";
+import { publicSiteOrigin } from "@vivotiv/shared";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", allow: "/" },
-    sitemap: [
-      `${domainsByLocale.en}/sitemap.xml`,
-      `${domainsByLocale.sv}/sitemap.xml`,
-    ],
+    sitemap: `${publicSiteOrigin}/sitemap.xml`,
   };
 }

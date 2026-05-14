@@ -5,29 +5,29 @@ import {
   getLocaleSlug,
   locales,
 } from "@/lib/content";
-import { domainsByLocale } from "@/lib/site-domains";
+import { buildLocalizedSiteUrl, publicBaseUrlByLocale } from "@vivotiv/shared";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [
     {
-      url: domainsByLocale.en,
+      url: publicBaseUrlByLocale.en,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
       alternates: {
         languages: {
-          sv: domainsByLocale.sv,
+          sv: publicBaseUrlByLocale.sv,
         },
       },
     },
     {
-      url: domainsByLocale.sv,
+      url: publicBaseUrlByLocale.sv,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 1,
       alternates: {
         languages: {
-          en: domainsByLocale.en,
+          en: publicBaseUrlByLocale.en,
         },
       },
     },
@@ -41,13 +41,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const languages: Record<string, string> = {};
     for (const loc of locales) {
-      const domain = domainsByLocale[loc];
       const slug = await getLocaleSlug(directorySlug, loc);
-      languages[loc] = `${domain}/${slug}`;
+      languages[loc] = buildLocalizedSiteUrl(loc, slug);
     }
 
     entries.push({
-      url: `${domainsByLocale.en}/${directorySlug}`,
+      url: buildLocalizedSiteUrl("en", directorySlug),
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
@@ -57,14 +56,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Add guides hub
   entries.push({
-    url: `${domainsByLocale.en}/guides`,
+    url: buildLocalizedSiteUrl("en", "guides"),
     lastModified: new Date(),
     changeFrequency: "weekly",
     priority: 0.8,
     alternates: {
       languages: {
-        en: `${domainsByLocale.en}/guides`,
-        sv: `${domainsByLocale.sv}/guider`,
+        en: buildLocalizedSiteUrl("en", "guides"),
+        sv: buildLocalizedSiteUrl("sv", "guider"),
       },
     },
   });

@@ -5,10 +5,9 @@ import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 
-import { locales, type Locale } from "@vivotiv/shared";
+import { publicBaseUrlByLocale, locales, type Locale } from "@vivotiv/shared";
 
 import { ScanCta } from "@/features/content/scan-cta";
-import { domainsByLocale } from "./site-domains";
 
 const mdxComponents = {
   ScanCta,
@@ -148,4 +147,4 @@ export async function getAllContentPages(locale: Locale) {
 }
 
 export { locales };
-export { domainsByLocale };
+export { publicBaseUrlByLocale };

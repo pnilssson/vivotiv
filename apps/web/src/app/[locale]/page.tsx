@@ -10,14 +10,15 @@ import { ReportPreviewSection } from "@/features/landing/report-preview-section"
 import { SectionDivider } from "@/features/landing/section-divider";
 import { SiteFooter } from "@/features/landing/site-footer";
 import { SiteHeader } from "@/features/landing/site-header";
-import { domainsByLocale } from "@/lib/site-domains";
+
+import { publicBaseUrlByLocale, type Locale } from "@vivotiv/shared";
 
 export default async function LocaleLandingPage() {
   const locale = await getLocale();
   const t = await getTranslations("metadata");
   const tFaq = await getTranslations("faq");
 
-  const domain = domainsByLocale[locale as keyof typeof domainsByLocale];
+  const domain = publicBaseUrlByLocale[locale as Locale];
   const faqItems = tFaq.raw("items") as { question: string; answer: string }[];
 
   const organizationSchema = {

@@ -1,20 +1,14 @@
 import { render } from "@react-email/components";
 import type { ScanCategoryKey, ScanDetailsV1 } from "@vivotiv/shared";
-import { scanCategoryKeys } from "@vivotiv/shared";
+import { buildLocalizedSiteUrl, scanCategoryKeys } from "@vivotiv/shared";
 import type { Locale } from "@vivotiv/shared";
 
 import { env } from "../env";
 import { resend } from "./client";
 import { ScanCompleteEmail } from "./templates/scan-complete";
 
-const domainByLocale: Record<Locale, string> = {
-  en: "https://vivotiv.com",
-  sv: "https://vivotiv.se",
-};
-
 function buildResultsUrl(scanId: string, locale: Locale): string {
-  const base = domainByLocale[locale];
-  return `${base}/${locale}/scan/${scanId}`;
+  return buildLocalizedSiteUrl(locale, `scan/${scanId}`);
 }
 
 type SendScanCompleteEmailInput = {

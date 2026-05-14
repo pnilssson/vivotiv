@@ -1,8 +1,9 @@
 import { hasLocale } from "next-intl";
+import type { Metadata } from "next";
 import { headers } from "next/headers";
 import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 
-import { locales } from "@vivotiv/shared";
+import { locales, publicSiteOrigin } from "@vivotiv/shared";
 
 import "./globals.css";
 
@@ -20,6 +21,10 @@ const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],
 });
+
+export const metadata: Metadata = {
+  metadataBase: new URL(publicSiteOrigin),
+};
 
 export default async function RootLayout({
   children,

@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
-import type { Locale } from "@vivotiv/shared";
+import {
+  buildLocalizedSiteUrl,
+  publicBaseUrlByLocale,
+  type Locale,
+} from "@vivotiv/shared";
 
 import { Breadcrumbs } from "@/features/content/breadcrumbs";
 import {
@@ -12,7 +16,6 @@ import {
   locales,
   resolveSlug,
 } from "@/lib/content";
-import { domainsByLocale } from "@/lib/site-domains";
 
 type ContentPageProps = {
   params: Promise<{ locale: string; slug: string }>;
@@ -42,28 +45,26 @@ export async function generateMetadata({
 
   try {
     const { frontmatter } = await getContentPage(directorySlug, locale);
-    const domain = domainsByLocale[typedLocale];
     const currentSlug = frontmatter.localeSlug ?? directorySlug;
 
-    // Build hreflang alternates
     const languages: Record<string, string> = {};
     for (const loc of locales) {
-      const locDomain = domainsByLocale[loc];
       const locSlug = await getLocaleSlug(directorySlug, loc);
-      languages[loc] = `${locDomain}/${locSlug}`;
+      languages[loc] = buildLocalizedSiteUrl(loc, locSlug);
     }
 
     return {
+      metadataBase: new URL(publicBaseUrlByLocale.en),
       title: `${frontmatter.title} | Vivotiv`,
       description: frontmatter.description,
       alternates: {
-        canonical: `${domain}/${currentSlug}`,
+        canonical: buildLocalizedSiteUrl(typedLocale, currentSlug),
         languages,
       },
       openGraph: {
         title: frontmatter.title,
         description: frontmatter.description,
-        url: `${domain}/${currentSlug}`,
+        url: buildLocalizedSiteUrl(typedLocale, currentSlug),
         siteName: "Vivotiv",
         locale: locale === "sv" ? "sv_SE" : "en_US",
         type: "article",
@@ -96,12 +97,12 @@ export default async function ContentPage({ params }: ContentPageProps) {
   // If the user hit the directory slug but a localeSlug exists, redirect
   const localeSlug = await getLocaleSlug(directorySlug, typedLocale);
   if (localeSlug !== directorySlug && slug === directorySlug) {
-    redirect(`/${localeSlug}`);
+    redirect(typedLocale === "sv" ? `/sv/${localeSlug}` : `/${localeSlug}`);
   }
 
   const { content, frontmatter } = await getContentPage(directorySlug, locale);
 
-  const domain = domainsByLocale[typedLocale];
+  const domain = publicBaseUrlByLocale[typedLocale];
   const currentSlug = frontmatter.localeSlug ?? directorySlug;
 
   const articleSchema = {
@@ -110,7 +111,7 @@ export default async function ContentPage({ params }: ContentPageProps) {
     headline: frontmatter.title,
     description: frontmatter.description,
     inLanguage: locale === "sv" ? "sv-SE" : "en-US",
-    url: `${domain}/${currentSlug}`,
+    url: buildLocalizedSiteUrl(typedLocale, currentSlug),
     publisher: {
       "@type": "Organization",
       name: "Vivotiv",
@@ -118,8 +119,8 @@ export default async function ContentPage({ params }: ContentPageProps) {
     },
   };
 
-  // Build breadcrumb based on family
-  const isStandalone = !frontmatter.family || frontmatter.family === "standalone";
+  const isStandalone =
+    !frontmatter.family || frontmatter.family === "standalone";
   const breadcrumbItems = [
     { "@type": "ListItem", position: 1, name: "Home", item: domain },
     ...(!isStandalone
@@ -128,7 +129,10 @@ export default async function ContentPage({ params }: ContentPageProps) {
             "@type": "ListItem",
             position: 2,
             name: locale === "sv" ? "Guider" : "Guides",
-            item: `${domain}${locale === "sv" ? "/guider" : "/guides"}`,
+            item: buildLocalizedSiteUrl(
+              typedLocale,
+              locale === "sv" ? "guider" : "guides",
+            ),
           },
           {
             "@type": "ListItem",

@@ -6,11 +6,16 @@ import { notFound } from "next/navigation";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Suspense } from "react";
 
+import {
+  publicBaseUrlByLocale,
+  publicSiteOrigin,
+  type Locale,
+} from "@vivotiv/shared";
+
 import { PostHogConsentBridge } from "@/features/analytics/posthog-consent-bridge";
 import { CookieBanner } from "@/features/cookies/cookie-banner";
 import { CookieConsentProvider } from "@/features/cookies/cookie-consent-provider";
 import { routing } from "@/i18n/routing";
-import { domainsByLocale } from "@/lib/site-domains";
 import { MotionProvider } from "@/providers/motion-provider";
 import { AppQueryClientProvider } from "@/providers/query-client-provider";
 
@@ -29,25 +34,25 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  const typedLocale = locale as Locale;
   const t = await getTranslations({ locale, namespace: "metadata" });
 
-  const domain = domainsByLocale[locale as keyof typeof domainsByLocale];
+  const domain = publicBaseUrlByLocale[typedLocale];
   const title = t("title");
   const description = t("description");
 
   return {
+    metadataBase: new URL(publicSiteOrigin),
     title,
     description,
-    ...(locale === "sv" && {
-      verification: {
-        google: "7X7Lvw8WJZrACqeicQU4_BXtMSQJ1nqeg-qyEePhkL4",
-      },
-    }),
+    verification: {
+      google: "4rwJVIcDIIijcKuTBW46S-nSPbmqO7Mjc0Ve_uf4Gc8",
+    },
     alternates: {
       canonical: domain,
       languages: {
-        en: domainsByLocale.en,
-        sv: domainsByLocale.sv,
+        en: publicBaseUrlByLocale.en,
+        sv: publicBaseUrlByLocale.sv,
       },
     },
     openGraph: {
@@ -59,7 +64,7 @@ export async function generateMetadata({
       type: "website",
       images: [
         {
-          url: `${domain}/opengraph-image`,
+          url: `${publicSiteOrigin}/opengraph-image`,
           width: 1200,
           height: 630,
           alt: "Vivotiv - Free website scan",
@@ -70,7 +75,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [`${domain}/opengraph-image`],
+      images: [`${publicSiteOrigin}/opengraph-image`],
     },
     robots: {
       index: true,

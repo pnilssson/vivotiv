@@ -11,8 +11,8 @@ The **Vivotiv landing page + Free Website Scan**. A standalone lead generation t
 ## Domain Strategy
 
 - `vivotiv.com` -- primary domain, defaults to English
-- `vivotiv.se` -- same Next.js app on same Vercel project, defaults to Swedish
-- Both served from the same codebase. next-intl middleware detects domain and sets default locale.
+- Swedish content is served from `vivotiv.com/sv`
+- Both locales are served from the same codebase. next-intl uses path-based locale routing.
 - Future languages as path segments on .com (e.g. vivotiv.com/no for Norwegian)
 
 ## Monorepo Structure

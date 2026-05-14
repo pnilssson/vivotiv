@@ -25,16 +25,9 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/guides",
-        destination: "/guider",
+        source: "/sv/guides",
+        destination: "/sv/guider",
         permanent: true,
-        has: [{ type: "host", value: "www.vivotiv.se" }],
-      },
-      {
-        source: "/guides",
-        destination: "/guider",
-        permanent: true,
-        has: [{ type: "host", value: "vivotiv.se" }],
       },
     ];
   },
