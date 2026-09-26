@@ -26,7 +26,7 @@ export const scanRoutes = new Hono<Env>()
         leadId: result.leadId,
         url: payload.url,
       });
-      c.var.posthog.capture({
+      c.var.posthog?.capture({
         distinctId: payload.email,
         event: "scan_submitted",
         properties: { url: payload.url },
